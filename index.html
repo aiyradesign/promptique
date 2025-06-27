@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Generator Action Figure | prompt.ique</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" xintegrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" xintegrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        :root {
+            --strong-orange: #f97316;
+            --strong-purple: #86198f;
+            --strong-blue: #2563eb;
+            --violet-dark: #6d28d9;
+            --violet: #8b5cf6;
+            
+            --fuchsia-accent: #f0abfc;
+            
+            --text-light: #f8fafc;
+            --text-secondary: #e2e8f0;
+            
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --border-radius-lg: 1.25rem;
+        }
+        
+        body {
+            font-family: "Poppins", sans-serif;
+            background: linear-gradient(135deg, var(--strong-orange) 0%, var(--strong-purple) 50%, var(--strong-blue) 100%);
+            color: var(--text-secondary);
+            min-height: 100vh;
+            background-attachment: fixed;
+        }
+        
+        .card-glass {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: var(--border-radius-lg);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, background 0.3s ease;
+            color: var(--text-secondary);
+        }
+        .card-glass:hover {
+             transform: translateY(-6px);
+             background: rgba(255, 255, 255, 0.15);
+        }
+
+        .main-title, .card-glass h5 {
+             color: var(--text-light) !important;
+             font-weight: 700;
+        }
+        .subtitle {
+            color: var(--text-secondary) !important;
+        }
+        
+        .btn {
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border: none;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        
+        .btn-gradient {
+            background-size: 200% auto;
+            color: white;
+        }
+        .btn-gradient:hover {
+            background-position: right center;
+        }
+
+        .btn-gradient-primary {
+             background-image: linear-gradient(to right, var(--violet) 0%, var(--violet-dark) 51%, var(--violet) 100%);
+        }
+        .btn-gradient-warning {
+             background-image: linear-gradient(to right, #facc15 0%, #f59e0b 51%, #facc15 100%);
+             color: #422006;
+        }
+        .btn-gradient-danger {
+            background-image: linear-gradient(to right, #f87171 0%, #dc2626 51%, #f87171 100%);
+        }
+        .btn-gradient-success {
+            background-image: linear-gradient(to right, #4ade80 0%, #22c55e 51%, #4ade80 100%);
+        }
+        .btn-gradient-info {
+            background-image: linear-gradient(to right, #60a5fa 0%, #3b82f6 51%, #60a5fa 100%);
+        }
+        .btn-gradient-secondary {
+            background-image: linear-gradient(to right, #e5e7eb 0%, #9ca3af 51%, #e5e7eb 100%);
+            color: #1f2937;
+        }
+        
+        .form-check-input {
+            background-color: transparent;
+            border-color: rgba(255,255,255,0.4);
+        }
+        .form-check-input:checked {
+            background-color: var(--fuchsia-accent);
+            border-color: var(--fuchsia-accent);
+        }
+        
+        .form-control, .form-select {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--glass-border);
+            color: var(--text-light);
+        }
+        .form-control::placeholder {
+            color: #94a3b8;
+        }
+        .form-control:focus, .form-select:focus {
+             border-color: var(--fuchsia-accent);
+             box-shadow: 0 0 0 0.25rem rgba(240, 171, 252, 0.25);
+             background: rgba(0, 0, 0, 0.3);
+             color: var(--text-light);
+        }
+        
+        .modal-content {
+            background: rgba(20, 18, 28, 0.85);
+            backdrop-filter: blur(24px);
+            border-radius: var(--border-radius-lg);
+            border: 1px solid var(--glass-border);
+            color: var(--text-secondary);
+        }
+        .modal-header, .modal-footer {
+             border: none;
+        }
+        .modal-body p, .modal-body li {
+            color: var(--text-secondary);
+        }
+        .modal-body strong {
+            color: var(--text-light);
+        }
+
+        .text-accent, .modal-title, .modal .list-group-item .fas {
+            color: var(--fuchsia-accent) !important;
+        }
+        
+        a {
+            color: #c084fc;
+        }
+        a:hover {
+            color: #e9d5ff;
+        }
+        a.btn {
+            color: inherit;
+        }
+        
+        #outputPrompt {
+            white-space: pre-wrap;
+            color: var(--text-light);
+        }
+        .output-wrapper {
+            background: rgba(0, 0, 0, 0.3);
+            min-height: 150px;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        
+        .custom-alert-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(5px); display: flex; align-items: center; justify-content: center; z-index: 3000; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; }
+        .custom-alert-overlay.show { opacity: 1; visibility: visible; }
+        .custom-alert-box {
+            background: rgba(30, 27, 38, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 1rem; padding: 2rem; width: 90%; max-width: 400px; text-align: center; color: var(--text-light);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2); transform: scale(0.9); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .custom-alert-overlay.show .custom-alert-box { transform: scale(1); }
+
+        /* Custom Scrollbar Styling for Textarea */
+        textarea.form-control::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        textarea.form-control::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+
+        textarea.form-control::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, var(--violet), var(--fuchsia-accent));
+            border-radius: 10px;
+            border: 2px solid rgba(0,0,0,0.2);
+        }
+
+        textarea.form-control::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, var(--violet-dark), var(--violet));
+        }
+
+        /* Firefox specific scrollbar styles */
+        textarea.form-control {
+            scrollbar-width: thin;
+            scrollbar-color: var(--violet) rgba(0,0,0,0.2);
+        }
+
+    </style>
+</head>
+<body>
+    
+    <main class="container py-5">
+        <div class="row g-lg-5">
+            <!-- Left Column: Title and Generator -->
+            <div class="col-lg-7 mb-4 mb-lg-0">
+                <header class="mb-4">
+                    <div class="d-flex flex-row align-items-center justify-content-center text-start gap-4">
+                        <img src="./karakter.png" alt="Action Figure Generator" style="height: 120px; width: auto;">
+                        <div>
+                            <h4 class="main-title">GENERATOR</h4>
+                            <h3 class="main-title">ACTION FIGURE</h3>
+                            <p class="subtitle">By Aiyra Design | prompt.ique</p>
+                        </div>
+                    </div>
+                </header>
+
+                <!-- Password Section -->
+                <div id="password-section" class="mb-5">
+                    <div class="card-glass p-4 text-center">
+                        <i class="fas fa-lock fa-2x mb-3 text-accent"></i>
+                        <h5>Akses Terbatas</h5>
+                        <p class="small mb-3">Gunakan Sandi untuk menggunakan Aplikasi ini.</p>
+                        <div class="mx-auto" style="max-width: 300px;">
+                            <input type="password" id="appPasswordInput" class="form-control text-center mb-3" placeholder="Masukkan Sandi">
+                            <button id="unlockBtn" class="btn btn-gradient btn-gradient-primary w-100 mb-3">Buka Akses</button>
+                            <a id="getPassBtn" href="https://lynk.id/aiyradesign/e39qnxl23nl3" target="_blank" class="btn btn-gradient btn-gradient-success w-100">
+                                <i class="fas fa-shopping-cart me-2"></i>Dapatkan Sandi GRATIS
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Generator Content -->
+                <fieldset id="generator-fieldset" disabled>
+                    <!-- Logout Section Card -->
+                    <div id="logout-section" class="mb-3" style="display: none;">
+                        <div class="card-glass p-3">
+                            <button type="button" id="logout-btn-form" class="btn btn-gradient btn-gradient-danger w-100"><i class="fas fa-sign-out-alt me-2"></i>Kunci Ulang Aplikasi</button>
+                        </div>
+                    </div>
+                    
+                    <div class="card-glass p-4 h-100">
+                        <div class="row g-2 mb-4 border-bottom pb-3 align-items-center" style="border-color: var(--glass-border) !important;">
+                            <div class="col-6">
+                                <button type="button" class="btn btn-gradient btn-gradient-primary w-100" data-bs-toggle="modal" data-bs-target="#apiKeyModal">
+                                    <i class="fas fa-key me-1"></i> Get API Key
+                                </button>
+                            </div>
+                            <div class="col-6">
+                                <button type="button" class="btn btn-gradient btn-gradient-warning w-100" data-bs-toggle="modal" data-bs-target="#guideModal">
+                                    <i class="fas fa-question-circle me-1"></i> API Key Guide
+                                </button>
+                            </div>
+                        </div>
+
+                        <h5 class="mb-3 fw-bold text-accent"><i class="fas fa-robot me-2"></i> Mulai dengan AI</h5>
+                        <div class="mb-3"><label for="ceritaKarakter" class="form-label">Ceritakan singkat tentang karakter Anda</label><textarea class="form-control" id="ceritaKarakter" rows="4" placeholder="Contoh: Seorang prajurit wanita bernama Aiyra..."></textarea></div>
+                        <button type="button" id="aiBtn" class="btn btn-gradient btn-gradient-primary w-100 py-2"><span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span><span id="aiBtnText"><i class="fas fa-lightbulb me-2"></i> Sesuaikan dengan AI</span></button>
+                        <hr class="my-4" style="border-color: var(--glass-border);">
+                        <h5 class="mb-4 fw-bold text-accent"><i class="fas fa-pencil-alt me-2"></i> Detail Manual</h5>
+                        <form id="promptForm">
+                            <div class="row g-3">
+                                <div class="col-12 col-md-6 mb-3"><label for="namaKarakter" class="form-label">Nama Karakter</label><input type="text" class="form-control" id="namaKarakter" placeholder="Contoh: TOMI"></div>
+                                <div class="col-12 col-md-6 mb-3"><label for="gender" class="form-label">Gender</label><select class="form-select" id="gender"><option value="" selected>Pilih...</option><option value="Pria">Pria</option><option value="Wanita">Wanita</option><option value="Non-biner">Non-biner</option></select></div>
+                                <div class="col-12 col-md-6 mb-3"><label for="deskripsiKarakter" class="form-label">Deskripsi Karakter</label><textarea class="form-control" id="deskripsiKarakter" rows="3" placeholder="Rambut perak, mata bersinar..."></textarea></div>
+                                <div class="col-12 col-md-6 mb-3"><label for="deskripsiKostum" class="form-label">Deskripsi Kostum</label><textarea class="form-control" id="deskripsiKostum" rows="3" placeholder="Armor kulit hitam dengan rune..."></textarea></div>
+                                <div class="col-12 col-md-6 mb-3"><label for="deskripsiSenjata" class="form-label">Deskripsi Senjata</label><textarea class="form-control" id="deskripsiSenjata" rows="3" placeholder="Pedang besar menyala..."></textarea></div>
+                                <div class="col-12 col-md-6 mb-3"><label for="deskripsiPose" class="form-label">Pose dan Ekspresi</label><textarea class="form-control" id="deskripsiPose" rows="3" placeholder="Siap tempur, ekspresi fokus..."></textarea></div>
+                                <div class="col-12 mb-3"><label for="lingkungan" class="form-label">Nuansa Alas Patung</label><textarea class="form-control" id="lingkungan" rows="3" placeholder="Reruntuhan kastil kuno..."></textarea></div>
+                                <div class="col-12 mb-3"><label for="generateBy" class="form-label">Generate By</label><input type="text" class="form-control" id="generateBy" value="PROMPT BY AIYRA DESIGN"></div>
+                            </div>
+                            <div class="mb-3 mt-3"><label class="form-label d-block text-center">Pilih Gaya Visual</label><div class="d-flex justify-content-center"><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="promptStyle" id="styleHyper" value="4D Hyper Realism" checked><label class="form-check-label" for="styleHyper">4D Hyper Realism</label></div><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="promptStyle" id="styleChibi" value="3D Chibi"><label class="form-check-label" for="styleChibi">3D Chibi</label></div></div></div>
+                            <div class="row g-2 mt-3">
+                                <div class="col-3"><button type="button" id="resetBtn" class="btn btn-gradient btn-gradient-danger w-100 py-2" title="Reset Formulir"><i class="fas fa-rotate-left"></i></button></div>
+                                <div class="col-9"><button type="button" id="generateBtn" class="btn btn-gradient btn-gradient-primary w-100 py-2"><i class="fas fa-cogs me-2"></i>Hasilkan</button></div>
+                            </div>
+                        </form>
+                    </div>
+                </fieldset>
+            </div>
+
+            <!-- Right Column: Result -->
+            <div class="col-lg-5">
+                <div style="position: -webkit-sticky; position: sticky; top: 1.5rem;">
+                    <fieldset id="generator-result-fieldset" disabled>
+                        <div class="card-glass p-4 d-flex flex-column" style="min-height: 400px;">
+                             <!-- Placeholder, visible by default -->
+                            <div id="result-placeholder" class="text-center m-auto">
+                                <svg class="mx-auto text-accent" style="height: 5rem; width: 5rem; opacity: 0.7;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846-.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.898 20.572L16.5 21.75l-.398-1.178a3.375 3.375 0 00-2.455-2.456L12.75 18l1.178-.398a3.375 3.375 0 002.455-2.456L16.5 14.25l.398 1.178a3.375 3.375 0 002.456 2.456L20.25 18l-1.178.398a3.375 3.375 0 00-2.456 2.456z" />
+                                </svg>
+                                <h5 class="mt-2">Hasil Prompt Anda</h5>
+                                <p>Hasil akan muncul di sini.</p>
+                            </div>
+
+                            <!-- Result, hidden by default -->
+                            <div id="result-content" class="d-none h-100 flex-column">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h5 class="fw-bold mb-0 text-accent"><i class="fa-solid fa-file-lines me-2"></i> Hasil Prompt</h5>
+                                    <button type="button" id="copyBtn" class="btn btn-gradient btn-gradient-secondary"><i class="fas fa-copy me-2"></i> Salin</button>
+                                </div>
+                                <div class="output-wrapper p-3 rounded flex-grow-1">
+                                    <p id="outputPrompt" class="small mb-0"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Modals -->
+    <div class="modal fade" id="apiKeyModal" tabindex="-1"><div class="modal-dialog modal-dialog-centered"><div class="modal-content"><div class="modal-header"><h5 class="modal-title"><i class="fas fa-key me-2"></i> Kunci API Gemini</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div><div class="modal-body"><p>Untuk menggunakan fitur AI, Anda memerlukan Kunci API dari Google AI Studio.</p><div class="mb-3"><label for="apiKeyInput" class="form-label">Masukkan Kunci API Anda:</label><input type="password" class="form-control" id="apiKeyInput"></div><a href="https://aistudio.google.com/" target="_blank" class="btn btn-sm btn-gradient btn-gradient-info w-100">Dapatkan Kunci API di Sini <i class="fas fa-external-link-alt ms-1"></i></a></div><div class="modal-footer pt-3"><button type="button" class="btn btn-gradient btn-gradient-secondary" data-bs-dismiss="modal">Tutup</button><button type="button" class="btn btn-gradient btn-gradient-primary" id="saveApiKeyBtn">Simpan</button></div></div></div></div>
+    <div class="modal fade" id="guideModal" tabindex="-1"><div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title"><i class="fas fa-magic-wand-sparkles me-2"></i> Panduan Mendapatkan Kunci API</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div><div class="modal-body"><p>Aplikasi ini memerlukan Kunci API pribadi Anda untuk terhubung ke layanan AI Google. Prosesnya gratis dan cepat. Ikuti langkah-langkah berikut:</p><ul class="list-group list-group-flush"><li class="list-group-item bg-transparent"><i class="fas fa-globe me-2 text-accent"></i><strong>Langkah 1</strong><br>Kunjungi situs <a href="https://aistudio.google.com/" target="_blank">Google AI Studio</a>.</li><li class="list-group-item bg-transparent"><i class="fas fa-plus-circle me-2 text-accent"></i><strong>Langkah 2</strong><br>Klik <strong>"Get API key"</strong> &gt; <strong>"Create API key"</strong>.</li><li class="list-group-item bg-transparent"><i class="fas fa-copy me-2 text-accent"></i><strong>Langkah 3</strong><br>Salin kunci Anda.</li><li class="list-group-item bg-transparent"><i class="fas fa-paste me-2 text-accent"></i><strong>Langkah 4</strong><br>Tempel kunci di aplikasi ini.</li></ul><hr style="border-color: var(--glass-border);"><div class="text-center"><small>Anda siap menggunakan fitur AI!</small></div></div><div class="modal-footer"><button type="button" class="btn btn-gradient btn-gradient-primary" data-bs-dismiss="modal">Saya Mengerti</button></div></div></div></div>
+
+    <!-- Logout Confirmation Modal -->
+    <div class="modal fade" id="logoutConfirmModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-accent">Konfirmasi Keluar</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Apakah Anda yakin ingin keluar dan mengunci ulang aplikasi?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-gradient btn-gradient-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" id="confirmLogoutBtn" class="btn btn-gradient-danger">Ya, Keluar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Alert Container -->
+    <div class="custom-alert-overlay" id="custom-alert-overlay"><div class="custom-alert-box"><div class="custom-alert-icon-container"><i class="custom-alert-icon" id="custom-alert-icon"></i></div><p class="custom-alert-message" id="custom-alert-message"></p></div></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" xintegrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- SECURITY: Enhanced Protection ---
+        function blockContextMenu(event) {
+            event.preventDefault();
+            return false;
+        }
+        document.addEventListener('contextmenu', blockContextMenu);
+        document.body.oncontextmenu = blockContextMenu;
+        setInterval(() => {
+            document.body.oncontextmenu = blockContextMenu;
+        }, 500);
+
+        document.addEventListener('keydown', event => {
+            if (event.key === 'F12' || (event.ctrlKey && event.shiftKey && ['I', 'J', 'C'].includes(event.key.toUpperCase())) || (event.metaKey && event.altKey && ['I', 'J', 'C'].includes(event.key.toUpperCase())) || (event.ctrlKey && event.key.toUpperCase() === 'U')) {
+                event.preventDefault();
+            }
+        });
+        
+        // --- Get All DOM Elements ---
+        const passwordSection = document.getElementById('password-section');
+        const generatorFieldset = document.getElementById('generator-fieldset');
+        const generatorResultFieldset = document.getElementById('generator-result-fieldset');
+        const unlockBtn = document.getElementById('unlockBtn');
+        const appPasswordInput = document.getElementById('appPasswordInput');
+        const logoutSection = document.getElementById('logout-section');
+        const logoutBtnForm = document.getElementById('logout-btn-form');
+        const logoutConfirmModal = new bootstrap.Modal(document.getElementById('logoutConfirmModal'));
+        const confirmLogoutBtn = document.getElementById('confirmLogoutBtn');
+        const resultPlaceholder = document.getElementById('result-placeholder');
+        const resultContent = document.getElementById('result-content');
+        const outputPromptEl = document.getElementById('outputPrompt');
+        const aiBtn = document.getElementById('aiBtn');
+        const generateBtn = document.getElementById('generateBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const copyBtn = document.getElementById('copyBtn');
+        const alertOverlay = document.getElementById('custom-alert-overlay');
+        const alertIcon = document.getElementById('custom-alert-icon');
+        const alertMessage = document.getElementById('custom-alert-message');
+        const saveApiKeyBtn = document.getElementById('saveApiKeyBtn');
+        const apiKeyInput = document.getElementById('apiKeyInput');
+        const apiKeyModal = new bootstrap.Modal(document.getElementById('apiKeyModal'));
+        const promptForm = document.getElementById('promptForm');
+        const ceritaKarakterEl = document.getElementById('ceritaKarakter');
+        
+        // --- Main Functions ---
+        function showAlert(type, message) {
+            alertMessage.textContent = message;
+            alertIcon.className = 'custom-alert-icon fas ' + (type === 'success' ? 'fa-check-circle text-success' : 'fa-times-circle text-danger');
+            alertOverlay.classList.add('show');
+            setTimeout(() => alertOverlay.classList.remove('show'), 3000); 
+        }
+        
+        function grantAccess() {
+            passwordSection.style.display = 'none';
+            generatorFieldset.disabled = false;
+            generatorResultFieldset.disabled = false;
+            logoutSection.style.display = 'block'; 
+        }
+        
+        function lockAccess() {
+            localStorage.removeItem('unlockTimestamp');
+            showAlert('success', 'Akses telah dikunci.');
+            setTimeout(() => location.reload(), 1500);
+        }
+
+        function checkAccess() {
+            const unlockedTime = localStorage.getItem('unlockTimestamp');
+            if (unlockedTime) {
+                const oneDay = 24 * 60 * 60 * 1000;
+                const timeDiff = new Date().getTime() - unlockedTime;
+                if (timeDiff < oneDay) {
+                    grantAccess();
+                    return;
+                } else {
+                    localStorage.removeItem('unlockTimestamp');
+                }
+            }
+            passwordSection.style.display = 'block';
+            generatorFieldset.disabled = true;
+            generatorResultFieldset.disabled = true;
+            logoutSection.style.display = 'none';
+        }
+        
+        async function fetchAI(apiKey, payload) {
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.error("API Error:", errorData);
+                throw new Error(errorData.error?.message || 'Respon API tidak valid.');
+            }
+            
+            const result = await response.json();
+
+            if (result.candidates && result.candidates.length > 0 && result.candidates[0].content?.parts[0]?.text) {
+                 return JSON.parse(result.candidates[0].content.parts[0].text);
+            } else {
+                console.error("Invalid response structure:", result);
+                throw new Error('Gagal mendapatkan data dari AI atau respons tidak valid.');
+            }
+        }
+
+        // --- Event Listeners ---
+        alertOverlay.addEventListener('click', () => alertOverlay.classList.remove('show'));
+        
+        unlockBtn.addEventListener('click', () => {
+            if (appPasswordInput.value === 'prompt.ique.975') {
+                localStorage.setItem('unlockTimestamp', new Date().getTime());
+                showAlert('success', 'Akses Diberikan!');
+                grantAccess();
+            } else {
+                showAlert('error', 'Sandi Salah!');
+                appPasswordInput.value = '';
+            }
+        });
+        
+        appPasswordInput.addEventListener('keyup', (event) => {
+            if (event.key === 'Enter') unlockBtn.click();
+        });
+
+        logoutBtnForm.addEventListener('click', () => logoutConfirmModal.show());
+
+        confirmLogoutBtn.addEventListener('click', () => {
+            logoutConfirmModal.hide();
+            lockAccess();
+        });
+
+        saveApiKeyBtn.addEventListener('click', () => {
+            const apiKey = apiKeyInput.value.trim();
+            if (apiKey) {
+                localStorage.setItem('geminiApiKey', apiKey);
+                showAlert('success', 'Kunci API berhasil disimpan!');
+                apiKeyModal.hide();
+            } else {
+                showAlert('error', 'Masukkan Kunci API yang valid.');
+            }
+        });
+
+        aiBtn.addEventListener('click', async () => {
+            const apiKey = localStorage.getItem('geminiApiKey') || "";
+            const userStory = ceritaKarakterEl.value.trim();
+
+            if (!userStory) {
+                showAlert('error', 'Ceritakan dulu tentang karakter Anda.');
+                return;
+            }
+            if (!apiKey) {
+                showAlert('error', 'Kunci API Gemini belum disimpan.');
+                apiKeyModal.show();
+                return;
+            }
+
+            const aiBtnText = document.getElementById('aiBtnText');
+            const spinner = aiBtn.querySelector('.spinner-border');
+            aiBtnText.textContent = 'Memvalidasi cerita...';
+            spinner.classList.remove('d-none');
+            aiBtn.disabled = true;
+
+            try {
+                const validationPayload = {
+                    contents: [{ role: "user", parts: [{ text: `Analyze the following text. Is it a coherent, understandable sentence or story, or is it meaningless gibberish (random characters like "asdfasdf")? Respond in JSON. Text: "${userStory}"` }] }],
+                    generationConfig: {
+                        responseMimeType: "application/json",
+                        responseSchema: {
+                            type: "OBJECT",
+                            properties: { "isValid": { "type": "BOOLEAN", "description": "True if the text is a real story, false if it is gibberish." } },
+                            required: ["isValid"]
+                        }
+                    }
+                };
+
+                const validationResult = await fetchAI(apiKey, validationPayload);
+
+                if (!validationResult.isValid) {
+                    showAlert('error', 'Cerita tidak dapat diproses. Harap masukkan kalimat yang jelas dan masuk akal.');
+                    aiBtnText.innerHTML = `<i class="fas fa-lightbulb me-2"></i> Sesuaikan dengan AI`;
+                    spinner.classList.add('d-none');
+                    aiBtn.disabled = false;
+                    return;
+                }
+
+                aiBtnText.textContent = 'Membuat karakter...';
+                
+                const generationPayload = {
+                    contents: [{ role: "user", parts: [{ text: `Based on the following story, generate a detailed fantasy character. Elaborate creatively on all fields as instructed in the schema. Story: "${userStory}"` }] }],
+                    generationConfig: {
+                        responseMimeType: "application/json",
+                        responseSchema: {
+                            type: "OBJECT",
+                            properties: {
+                                "namaKarakter": { 
+                                    "type": "STRING", 
+                                    "description": "Nama karakter fantasi. Ini HARUS berupa nama orang (misal: Kael, Elara, Zephyr). JANGAN gunakan nama benda, lokasi, atau konsep abstrak. Jika cerita menyebut nama, gunakan itu. Jika tidak, buat nama yang sesuai." 
+                                },
+                                "gender": { "type": "STRING", "enum": ["Pria", "Wanita", "Non-biner"], "description": "Gender karakter." },
+                                "deskripsiKarakter": { "type": "STRING", "description": "Deskripsi fisik yang SANGAT DETAIL. Wajib mencakup: bentuk tubuh (atletis, berisi, dll.), perkiraan tinggi, warna kulit, warna mata yang mencolok, gaya dan warna rambut (misal: panjang dikepang, pendek acak-acakan), dan setidaknya satu fitur wajah unik (misal: bekas luka di pipi, tato kuno di dahi)." },
+                                "deskripsiKostum": { "type": "STRING", "description": "Deskripsi kostum yang imajinatif dan detail. Sebutkan bahan (kulit, logam, kain) dan elemen-elemennya (misal: jubah compang-camping, pelat bahu berukir)." },
+                                "deskripsiSenjata": { "type": "STRING", "description": "Deskripsi senjata yang detail. Sebutkan jenisnya dan ciri khasnya (misal: pedang besar yang memancarkan api biru, busur dari kayu yew dengan ukiran rune)." },
+                                "deskripsiPose": { "type": "STRING", "description": "Pose aksi yang dinamis dan ekspresi wajah yang kuat dan hidup (misal: 'berpose menerjang ke depan dengan teriakan perang, mata menyala karena amarah')." },
+                                "lingkungan": { "type": "STRING", "description": "Deskripsi diorama miniatur untuk alas patung. Harus detail dan spesifik, bukan latar belakang umum (misal: 'reruntuhan kuil kuno dengan pilar-pilar yang hancur dan ditumbuhi tanaman merambat')." }
+                            },
+                            required: ["namaKarakter", "gender", "deskripsiKarakter", "deskripsiKostum", "deskripsiSenjata", "deskripsiPose", "lingkungan"]
+                        }
+                    }
+                };
+
+                const characterData = await fetchAI(apiKey, generationPayload);
+
+                document.getElementById('namaKarakter').value = characterData.namaKarakter || '';
+                document.getElementById('gender').value = characterData.gender || '';
+                document.getElementById('deskripsiKarakter').value = characterData.deskripsiKarakter || '';
+                document.getElementById('deskripsiKostum').value = characterData.deskripsiKostum || '';
+                document.getElementById('deskripsiSenjata').value = characterData.deskripsiSenjata || '';
+                document.getElementById('deskripsiPose').value = characterData.deskripsiPose || '';
+                document.getElementById('lingkungan').value = characterData.lingkungan || '';
+                showAlert('success', 'Detail karakter berhasil diisi AI!');
+
+            } catch (error) {
+                console.error('Error with AI feature:', error);
+                showAlert('error', `Gagal terhubung dengan AI. ${error.message}`);
+            } finally {
+                aiBtnText.innerHTML = `<i class="fas fa-lightbulb me-2"></i> Sesuaikan dengan AI`;
+                spinner.classList.add('d-none');
+                aiBtn.disabled = false;
+            }
+        });
+        
+        generateBtn.addEventListener('click', () => {
+            const fields = {
+                gender: document.getElementById('gender').value,
+                deskripsiKarakter: document.getElementById('deskripsiKarakter').value.trim(),
+                deskripsiKostum: document.getElementById('deskripsiKostum').value.trim(),
+                deskripsiSenjata: document.getElementById('deskripsiSenjata').value.trim(),
+                deskripsiPose: document.getElementById('deskripsiPose').value.trim(),
+                lingkungan: document.getElementById('lingkungan').value.trim(),
+                namaKarakter: document.getElementById('namaKarakter').value.trim().toUpperCase(),
+                generateBy: document.getElementById('generateBy').value.trim()
+            };
+            
+            if (Object.values(fields).some(val => val === '')) {
+                showAlert("error", "Harap isi semua kolom deskripsi.");
+                return;
+            }
+
+            const selectedStyleValue = document.querySelector('input[name="promptStyle"]:checked').value;
+            
+            let styleKeywords = selectedStyleValue === '4D Hyper Realism'
+                ? '4D Stylized Hyper-Realism, Ultra-Detail, High-Realistic, UHD 8K, Highly Detailed, Hyper Cinematic Lighting, Sharp Depth of Field, High Saturation, Rich Color Palette, Sharp Contrast, Photographed with DSLR Mirrorless Camera, Realistic Proportional Anatomy, Full-body, Scale 1:16, Aspect Ratio 9:16, Long Legs, Balanced Body, HD Focused:'
+                : '3D Chibi Stylized Action Figure, Disney Pixar Style, Cute, Adorable, Soft Round Shapes, Big Expressive Eyes, Vibrant Colors, Claymation look, High Detail, Studio Lighting, on a detailed miniature base:';
+
+            const promptTemplate = `Buat Gambar Visual Patung Fantasi dengan gaya ${styleKeywords}\n\nKarakter: ${fields.gender} ${fields.deskripsiKarakter}\nKostum: ${fields.deskripsiKostum}\nSenjata: ${fields.deskripsiSenjata}\nPose dan Ekspresi: ${fields.deskripsiPose}\n\nSemua elemen ini dipasang di atas alas monumental yang dirancang —menampilkan miniatur ${fields.lingkungan} tanpa efek kabut atau efek energi apapun yang membuat karakter tenggelam dan tidak ada elemen yang keluar dari area monumental].\n\nName Base: "${fields.namaKarakter}" ukuran: Large, Subtitle: “${fields.generateBy}” ukuran: Medium, terukir dalam tipografi bergaya iblis dan timbul.\n\nSinar cahaya menembus ruang sinematik, menerangi partikel yang mengambang dan menghasilkan bayangan dramatis. Nada keseluruhannya muram dan epik, seolah diambil dari adegan klimaks sebuah film.\n\nPatung Fantasi Realistis ini diletakkan di atas meja putih, dengan latar belakang kabur berupa ruangan nyaman dan terang, di mana sebuah Koleksi Aksi Figur dalam Etalase. Figur aksi lainnya terlihat diburamkan di latar belakang. Fokus utama hanya tertuju pada Patung Fantasi Realistis dan alasnya, dengan pencahayaan terang dan lembut. Gaya keseluruhan harus kuat.`;
+            
+            outputPromptEl.textContent = promptTemplate.trim();
+            resultPlaceholder.classList.add('d-none');
+            resultContent.classList.remove('d-none');
+            resultContent.classList.add('d-flex');
+            
+            showAlert('success', 'Prompt berhasil dibuat!');
+        });
+
+        resetBtn.addEventListener('click', () => {
+            promptForm.reset();
+            ceritaKarakterEl.value = '';
+            document.getElementById('generateBy').value = 'PROMPT BY AIYRA DESIGN';
+            outputPromptEl.textContent = '';
+            resultPlaceholder.classList.remove('d-none');
+            resultContent.classList.add('d-none');
+            resultContent.classList.remove('d-flex');
+            showAlert('success', 'Formulir telah direset.');
+        });
+
+        copyBtn.addEventListener('click', () => {
+            if (!outputPromptEl.textContent) {
+                showAlert('error', 'Tidak ada prompt untuk disalin.');
+                return;
+            }
+            const tempTextArea = document.createElement('textarea');
+            tempTextArea.value = outputPromptEl.textContent;
+            document.body.appendChild(tempTextArea);
+            tempTextArea.select();
+            try {
+                document.execCommand('copy');
+                showAlert('success', 'Prompt berhasil disalin!');
+            } catch (err) {
+                showAlert('error', 'Gagal menyalin prompt.');
+                console.error('Copy failed', err);
+            }
+            document.body.removeChild(tempTextArea);
+        });
+
+        // --- Initial Load ---
+        checkAccess();
+        apiKeyInput.value = localStorage.getItem('geminiApiKey') || '';
+    });
+    </script>
+</body>
+</html>
