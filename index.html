@@ -220,16 +220,16 @@
             <!-- Left Column: Title and Generator -->
             <div class="col-lg-7 mb-4 mb-lg-0">
                 <header class="mb-4">
-                    <div class="d-flex align-items-center justify-content-center">
-                         <img 
+                    <div class="d-flex align-items-center justify-content-between">
+                        <img 
                             src="./karakter_1.png" 
                             alt="Generator Action Figure" 
                             class="d-none d-md-block"
                             style="height: auto; width: 120px;"
-                            >
-                        <div class="text-start text-md-center">
-                            <h3 class="main-title" style="font-weight: 600; letter-spacing: 0.05em;">PROMPT GENERATOR</h3>
-                            <h2 class="main-title" style="letter-spacing: 0.05em;">ACTION FIGURE</h2>
+                            onerror="this.onerror=null;this.src='https://placehold.co/120x180/8b5cf6/ffffff/png?text=Error';">
+                        <div class="text-center">
+                            <h2 class="main-title" style="font-weight: 600; letter-spacing: 0.05em;">PROMPT GENERATOR</h2>
+                            <h1 class="main-title" style="letter-spacing: 0.05em;">ACTION FIGURE</h1>
                             <p class="subtitle">By Aiyra Design | prompt.ique</p>
                             <!-- ADDED: License Button -->
                             <button type="button" class="btn btn-sm btn-light" style="--bs-btn-padding-y: .2rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;" data-bs-toggle="modal" data-bs-target="#licenseModal">
@@ -239,8 +239,9 @@
                          <img 
                             src="./karakter_2.png" 
                             alt="Kreasi Action Figure" 
+                            class="d-none d-md-block"
                             style="height: auto; width: 120px;"
-                            >
+                            onerror="this.onerror=null;this.src='https://placehold.co/120x180/f97316/ffffff/png?text=Error';">
                     </div>
                 </header>
 
@@ -294,7 +295,7 @@
                                 <div class="col-12 col-md-6 mb-3"><label for="gender" class="form-label">Gender</label><select class="form-select" id="gender"><option value="" selected>Pilih...</option><option value="Pria">Pria</option><option value="Wanita">Wanita</option><option value="Non-biner">Non-biner</option></select></div>
                                 <div class="col-12 col-md-6 mb-3"><label for="deskripsiKarakter" class="form-label">Deskripsi Karakter</label><textarea class="form-control" id="deskripsiKarakter" rows="3" placeholder="Rambut perak, mata bersinar..."></textarea></div>
                                 <div class="col-12 col-md-6 mb-3"><label for="deskripsiKostum" class="form-label">Deskripsi Kostum</label><textarea class="form-control" id="deskripsiKostum" rows="3" placeholder="Armor kulit hitam dengan rune..."></textarea></div>
-                                <div class="col-12 col-md-6 mb-3"><label for="deskripsiSenjata" class="form-label">Deskripsi Senjata</label><textarea class="form-control" id="deskripsiSenjata" rows="3" placeholder="Pedang besar menyala..."></textarea></div>
+                                <div class="col-12 col-md-6 mb-3"><label for="senjataAtauBenda" class="form-label">Senjata / Benda</label><textarea class="form-control" id="senjataAtauBenda" rows="3" placeholder="Pedang besar atau memegang buku kuno..."></textarea></div>
                                 <div class="col-12 col-md-6 mb-3"><label for="deskripsiPose" class="form-label">Pose dan Ekspresi</label><textarea class="form-control" id="deskripsiPose" rows="3" placeholder="Siap tempur, ekspresi fokus..."></textarea></div>
                                 <div class="col-12 mb-3"><label for="lingkungan" class="form-label">Nuansa Alas Patung</label><textarea class="form-control" id="lingkungan" rows="3" placeholder="Reruntuhan kastil kuno..."></textarea></div>
                                 <!-- NEW: Base Shape Dropdown -->
@@ -368,7 +369,6 @@
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <!-- UPDATED: License Content -->
                     <section id="license-content">
                       <h2 style="text-align: center;">Personal Use License</h2>
 
@@ -634,11 +634,11 @@
                                     "description": "ATURAN SANGAT PENTING: Prioritaskan detail dari cerita. Jika cerita menyebut 'rambut merah panjang', 'badan kurus', atau 'mata biru', Anda WAJIB menggunakan detail itu. HANYA JIKA cerita tidak menyebutkan detail fisik (bentuk tubuh, rambut, mata, dll), Anda boleh berkreasi dan menyimpulkannya dari konteks. Hasil akhir harus dalam Bahasa Indonesia." 
                                 },
                                 "deskripsiKostum": { "type": "STRING", "description": "Rancang kostum berdasarkan latar belakang karakter dalam Bahasa Indonesia. Jelaskan gaya dan kondisinya, sebutkan bahan (kulit usang, baja mengkilap) dan detail unik (simbol klan, jubah sobek)." },
-                                "deskripsiSenjata": { "type": "STRING", "description": "Rancang senjata khas yang bercerita dalam Bahasa Indonesia. Hubungkan dengan sejarahnya, jelaskan penampilan dan kekuatannya (misal: pedang leluhur dengan rune menyala)." },
-                                "deskripsiPose": { "type": "STRING", "description": "Rancang pose aksi dinamis yang menangkap momen emosional dalam Bahasa Indonesia. Hindari pose statis (misal: 'melompat di udara dengan pedang terangkat, teriakan perang di wajahnya')." },
+                                "senjataAtauBenda": { "type": "STRING", "description": "Rancang senjata khas atau benda penting yang dipegang karakter, hubungkan dengan cerita. Contoh: 'pedang leluhur dengan rune menyala' atau 'buku tebal bersampul kulit'." },
+                                "deskripsiPose": { "type": "STRING", "description": "Rancang pose yang bercerita, tidak harus selalu bertarung. Bisa pose santai, berpikir, atau misterius sesuai cerita. Contoh: 'duduk di atas batu sambil membaca buku kuno, ekspresi serius' atau 'berdiri tegap dengan senyum tipis, tangan memegang tongkat'." },
                                 "lingkungan": { "type": "STRING", "description": "ATURAN FINAL: Jelaskan sebuah adegan pemandangan yang detail untuk alas patung. JANGAN gunakan kata 'latar belakang', 'miniatur', atau 'diorama'. Cukup deskripsikan lokasinya. Contoh: 'reruntuhan kuil kuno dengan pilar-pilar hancur', 'tanah hutan ajaib dengan jamur bercahaya'." }
                             },
-                            required: ["namaKarakter", "gender", "deskripsiKarakter", "deskripsiKostum", "deskripsiSenjata", "deskripsiPose", "lingkungan"]
+                            required: ["namaKarakter", "gender", "deskripsiKarakter", "deskripsiKostum", "senjataAtauBenda", "deskripsiPose", "lingkungan"]
                         }
                     }
                 };
@@ -649,7 +649,7 @@
                 document.getElementById('gender').value = characterData.gender || '';
                 document.getElementById('deskripsiKarakter').value = characterData.deskripsiKarakter || '';
                 document.getElementById('deskripsiKostum').value = characterData.deskripsiKostum || '';
-                document.getElementById('deskripsiSenjata').value = characterData.deskripsiSenjata || '';
+                document.getElementById('senjataAtauBenda').value = characterData.senjataAtauBenda || '';
                 document.getElementById('deskripsiPose').value = characterData.deskripsiPose || '';
                 document.getElementById('lingkungan').value = characterData.lingkungan || '';
                 showAlert('success', 'Detail karakter berhasil diisi AI!');
@@ -669,7 +669,7 @@
                 gender: document.getElementById('gender').value,
                 deskripsiKarakter: document.getElementById('deskripsiKarakter').value.trim(),
                 deskripsiKostum: document.getElementById('deskripsiKostum').value.trim(),
-                deskripsiSenjata: document.getElementById('deskripsiSenjata').value.trim(),
+                senjataAtauBenda: document.getElementById('senjataAtauBenda').value.trim(),
                 deskripsiPose: document.getElementById('deskripsiPose').value.trim(),
                 lingkungan: document.getElementById('lingkungan').value.trim(),
                 namaKarakter: document.getElementById('namaKarakter').value.trim().toUpperCase(),
@@ -688,7 +688,7 @@
                 ? '4D Stylized Hyper-Realism, Ultra-Detail, High-Realistic, UHD 8K, Highly Detailed, Hyper Cinematic Lighting, Sharp Depth of Field, High Saturation, Rich Color Palette, Sharp Contrast, Photographed with DSLR Mirrorless Camera, Realistic Proportional Anatomy, Full-body, Scale 1:16, Aspect Ratio 9:16, Long Legs, Balanced Body, HD Focused:'
                 : '3D Chibi Stylized Action Figure, Disney Pixar Style, Cute, Adorable, Soft Round Shapes, Big Expressive Eyes, Vibrant Colors, Claymation look, High Detail, Studio Lighting, on a detailed miniature base:';
 
-            const promptTemplate = `Buat Gambar Visual Patung Fantasi dengan gaya ${styleKeywords}\n\nKarakter: ${fields.gender} ${fields.deskripsiKarakter}\nKostum: ${fields.deskripsiKostum}\nSenjata: ${fields.deskripsiSenjata}\nPose dan Ekspresi: ${fields.deskripsiPose}\n\nSemua elemen ini dipasang di atas alas monumental ${fields.bentukAlas} yang dirancang —menampilkan miniatur ${fields.lingkungan} tanpa efek kabut atau efek energi apapun yang membuat karakter tenggelam dan tidak ada elemen yang keluar dari area monumental.\n\nName Base: "${fields.namaKarakter}" ukuran: Large, Subtitle: “${fields.generateBy}” ukuran: Medium, terukir dalam tipografi bergaya iblis dan timbul.\n\nSinar cahaya menembus ruang sinematik, menerangi partikel yang mengambang dan menghasilkan bayangan dramatis. Nada keseluruhannya muram dan epik, seolah diambil dari adegan klimaks sebuah film.\n\nPatung Fantasi Realistis ini diletakkan di atas meja putih, dengan latar belakang kabur berupa ruangan nyaman dan terang, di mana sebuah Koleksi Aksi Figur dalam Etalase. Figur aksi lainnya terlihat diburamkan di latar belakang. Fokus utama hanya tertuju pada Patung Fantasi Realistis dan alasnya, dengan pencahayaan terang dan lembut. Gaya keseluruhan harus kuat.`;
+            const promptTemplate = `Buat Gambar Visual Patung Fantasi dengan gaya ${styleKeywords}\n\nKarakter: ${fields.gender} ${fields.deskripsiKarakter}\nKostum: ${fields.deskripsiKostum}\nBenda: ${fields.senjataAtauBenda}\nPose dan Ekspresi: ${fields.deskripsiPose}\n\nSemua elemen ini dipasang di atas alas monumental ${fields.bentukAlas} yang dirancang —menampilkan miniatur ${fields.lingkungan} tanpa efek kabut atau efek energi apapun yang membuat karakter tenggelam dan tidak ada elemen yang keluar dari area monumental.\n\nName Base: "${fields.namaKarakter}" ukuran: Large, Subtitle: “${fields.generateBy}” ukuran: Medium, terukir dalam tipografi bergaya iblis dan timbul.\n\nSinar cahaya menembus ruang sinematik, menerangi partikel yang mengambang dan menghasilkan bayangan dramatis. Nada keseluruhannya muram dan epik, seolah diambil dari adegan klimaks sebuah film.\n\nPatung Fantasi Realistis ini diletakkan di atas meja putih, dengan latar belakang kabur berupa ruangan nyaman dan terang, di mana sebuah Koleksi Aksi Figur dalam Etalase. Figur aksi lainnya terlihat diburamkan di latar belakang. Fokus utama hanya tertuju pada Patung Fantasi Realistis dan alasnya, dengan pencahayaan terang dan lembut. Gaya keseluruhan harus kuat.`;
             
             outputPromptEl.textContent = promptTemplate.trim();
             resultPlaceholder.classList.add('d-none');
