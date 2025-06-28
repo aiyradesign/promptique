@@ -201,7 +201,16 @@
             scrollbar-width: thin;
             scrollbar-color: var(--violet) rgba(0,0,0,0.2);
         }
-
+        
+        /* License Modal Specific Styles */
+        #license-content { font-family: sans-serif; line-height: 1.6; }
+        #license-content h2, #license-content h3 { color: var(--text-light); }
+        #license-content a { color: #c084fc; }
+        #license-content a:hover { color: #e9d5ff; }
+        #license-content strong { color: var(--text-light); }
+        #license-content ul { padding-left: 20px; }
+        #license-content li { margin-bottom: 0.5rem; }
+        #license-content h3 { margin-top: 1.5rem; border-bottom: 1px solid var(--glass-border); padding-bottom: 0.5rem; }
     </style>
 </head>
 <body>
@@ -222,6 +231,10 @@
                             <h3 class="main-title" style="font-weight: 600; letter-spacing: 0.05em;">PROMPT GENERATOR</h3>
                             <h2 class="main-title" style="letter-spacing: 0.05em;">ACTION FIGURE</h2>
                             <p class="subtitle">By Aiyra Design | prompt.ique</p>
+                            <!-- ADDED: License Button -->
+                            <button type="button" class="btn btn-sm btn-outline-light mt-2" style="--bs-btn-padding-y: .2rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;" data-bs-toggle="modal" data-bs-target="#licenseModal">
+                                <i class="fas fa-file-contract me-1"></i> Lihat Lisensi
+                            </button>
                         </div>
                          <img 
                             src="./karakter_2.png" 
@@ -346,6 +359,51 @@
     <div class="modal fade" id="apiKeyModal" tabindex="-1"><div class="modal-dialog modal-dialog-centered"><div class="modal-content"><div class="modal-header"><h5 class="modal-title"><i class="fas fa-key me-2"></i> Kunci API Gemini</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div><div class="modal-body"><p>Untuk menggunakan fitur AI, Anda memerlukan Kunci API dari Google AI Studio.</p><div class="mb-3"><label for="apiKeyInput" class="form-label">Masukkan Kunci API Anda:</label><input type="password" class="form-control" id="apiKeyInput"></div><a href="https://aistudio.google.com/" target="_blank" class="btn btn-sm btn-gradient btn-gradient-info w-100">Dapatkan Kunci API di Sini <i class="fas fa-external-link-alt ms-1"></i></a></div><div class="modal-footer pt-3"><button type="button" class="btn btn-gradient btn-gradient-secondary" data-bs-dismiss="modal">Tutup</button><button type="button" class="btn btn-gradient btn-gradient-primary" id="saveApiKeyBtn">Simpan</button></div></div></div></div>
     <div class="modal fade" id="guideModal" tabindex="-1"><div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title"><i class="fas fa-magic-wand-sparkles me-2"></i> Panduan Mendapatkan Kunci API</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div><div class="modal-body"><p>Aplikasi ini memerlukan Kunci API pribadi Anda untuk terhubung ke layanan AI Google. Prosesnya gratis dan cepat. Ikuti langkah-langkah berikut:</p><ul class="list-group list-group-flush"><li class="list-group-item bg-transparent"><i class="fas fa-globe me-2 text-accent"></i><strong>Langkah 1</strong><br>Kunjungi situs <a href="https://aistudio.google.com/" target="_blank">Google AI Studio</a>.</li><li class="list-group-item bg-transparent"><i class="fas fa-plus-circle me-2 text-accent"></i><strong>Langkah 2</strong><br>Klik <strong>"Get API key"</strong> &gt; <strong>"Create API key"</strong>.</li><li class="list-group-item bg-transparent"><i class="fas fa-copy me-2 text-accent"></i><strong>Langkah 3</strong><br>Salin kunci Anda.</li><li class="list-group-item bg-transparent"><i class="fas fa-paste me-2 text-accent"></i><strong>Langkah 4</strong><br>Tempel kunci di aplikasi ini.</li></ul><hr style="border-color: var(--glass-border);"><div class="text-center"><small>Anda siap menggunakan fitur AI!</small></div></div><div class="modal-footer"><button type="button" class="btn btn-gradient btn-gradient-primary" data-bs-dismiss="modal">Saya Mengerti</button></div></div></div></div>
 
+    <!-- License Modal -->
+    <div class="modal fade" id="licenseModal" tabindex="-1" aria-labelledby="licenseModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="licenseModalLabel"><i class="fas fa-file-contract me-2 text-accent"></i> Lisensi Penggunaan Pribadi</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- UPDATED: License Content -->
+                    <section id="license-content">
+                      <h2 style="text-align: center;">Personal Use License</h2>
+
+                      <p><strong>Produk:</strong> Prompt Generator – Action Figure Edition</p>
+                      <p><strong>Pemilik Hak Cipta:</strong> KARDIANSYAH / AIYRA DESIGN</p>
+                      <p><strong>Tanggal Lisensi:</strong> 28 Juni 2025</p>
+
+                      <h3 style="color: #4ade80;">✅ Anda Diperbolehkan:</h3>
+                      <ul>
+                        <li>Mengakses dan menggunakan generator untuk keperluan pribadi.</li>
+                        <li>Memposting hasil gambar ke media sosial atau portofolio pribadi (bukan untuk jualan).</li>
+                        <li>Menggunakan hasil prompt di platform AI seperti ChatGPT, Midjourney, dll.</li>
+                        <li>Menyimpan hasil untuk koleksi atau referensi pribadi.</li>
+                      </ul>
+
+                      <h3 style="color: #f87171;">❌ Anda Tidak Diperbolehkan:</h3>
+                      <ul>
+                        <li>Menjual atau mendistribusikan ulang isi maupun hasil generator.</li>
+                        <li>Menggunakan konten untuk proyek klien atau tujuan komersial.</li>
+                        <li>Mengklaim sebagai pencipta sistem atau konten.</li>
+                        <li>Mengunggah ulang isi sistem ke platform lain.</li>
+                      </ul>
+
+                      <p><strong>Catatan Penting:</strong> Lisensi ini bersifat pribadi, non-komersial, dan terbatas. Penggunaan publik diperbolehkan selama tidak digunakan untuk tujuan komersial.</p>
+
+                      <p style="text-align: right; font-style: italic;">Dikeluarkan oleh: AIYRA DESIGN | Kardiansyah</p>
+                    </section>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-gradient btn-primary" data-bs-dismiss="modal">Mengerti</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
     <!-- Logout Confirmation Modal -->
     <div class="modal fade" id="logoutConfirmModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
