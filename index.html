@@ -210,13 +210,22 @@
             <!-- Left Column: Title and Generator -->
             <div class="col-lg-7 mb-4 mb-lg-0">
                 <header class="mb-4">
-                    <div class="d-flex flex-row align-items-center justify-content-center text-start gap-4">
-                        <img src="./karakter.png" alt="Action Figure Generator" style="height: 120px; width: auto;">
-                        <div>
-                            <h4 class="main-title">GENERATOR</h4>
-                            <h3 class="main-title">ACTION FIGURE</h3>
+                    <div class="d-flex align-items-center justify-content-between">
+                         <img 
+                            src="./karakter_1.png" 
+                            alt="Generator Action Figure" 
+                            style="height: auto; width: 120px;"
+                            >
+                        <div class="text-center">
+                            <h3 class="main-title" style="font-weight: 600; letter-spacing: 0.1em; margin-bottom: -0.5rem;">GENERATOR</h3>
+                            <h2 class="main-title" style="letter-spacing: 0.05em;">ACTION FIGURE</h2>
                             <p class="subtitle">By Aiyra Design | prompt.ique</p>
                         </div>
+                         <img 
+                            src="./karakter_2.png" 
+                            alt="Kreasi Action Figure" 
+                            style="height: auto; width: 120px;"
+                            >
                     </div>
                 </header>
 
@@ -266,16 +275,31 @@
                         <h5 class="mb-4 fw-bold text-accent"><i class="fas fa-pencil-alt me-2"></i> Detail Manual</h5>
                         <form id="promptForm">
                             <div class="row g-3">
-                                <div class="col-12 col-md-6 mb-3"><label for="namaKarakter" class="form-label">Nama Karakter</label><input type="text" class="form-control" id="namaKarakter" placeholder="Contoh: TOMI"></div>
+                                <div class="col-12 col-md-6 mb-3"><label for="namaKarakter" class="form-label">Nama Karakter</label><input type="text" class="form-control" id="namaKarakter" placeholder="Contoh: Tomi"></div>
                                 <div class="col-12 col-md-6 mb-3"><label for="gender" class="form-label">Gender</label><select class="form-select" id="gender"><option value="" selected>Pilih...</option><option value="Pria">Pria</option><option value="Wanita">Wanita</option><option value="Non-biner">Non-biner</option></select></div>
                                 <div class="col-12 col-md-6 mb-3"><label for="deskripsiKarakter" class="form-label">Deskripsi Karakter</label><textarea class="form-control" id="deskripsiKarakter" rows="3" placeholder="Rambut perak, mata bersinar..."></textarea></div>
                                 <div class="col-12 col-md-6 mb-3"><label for="deskripsiKostum" class="form-label">Deskripsi Kostum</label><textarea class="form-control" id="deskripsiKostum" rows="3" placeholder="Armor kulit hitam dengan rune..."></textarea></div>
                                 <div class="col-12 col-md-6 mb-3"><label for="deskripsiSenjata" class="form-label">Deskripsi Senjata</label><textarea class="form-control" id="deskripsiSenjata" rows="3" placeholder="Pedang besar menyala..."></textarea></div>
                                 <div class="col-12 col-md-6 mb-3"><label for="deskripsiPose" class="form-label">Pose dan Ekspresi</label><textarea class="form-control" id="deskripsiPose" rows="3" placeholder="Siap tempur, ekspresi fokus..."></textarea></div>
                                 <div class="col-12 mb-3"><label for="lingkungan" class="form-label">Nuansa Alas Patung</label><textarea class="form-control" id="lingkungan" rows="3" placeholder="Reruntuhan kastil kuno..."></textarea></div>
+                                <!-- NEW: Base Shape Dropdown -->
+                                <div class="col-12 col-md-6 mb-3">
+                                    <label for="bentukAlas" class="form-label">Bentuk Alas</label>
+                                    <select class="form-select" id="bentukAlas">
+                                        <option value="Bulat" selected>Bulat</option>
+                                        <option value="Persegi">Persegi</option>
+                                    </select>
+                                </div>
+                                <!-- NEW: Visual Style Dropdown -->
+                                <div class="col-12 col-md-6 mb-3">
+                                    <label for="gayaVisual" class="form-label">Pilih Gaya Visual</label>
+                                    <select class="form-select" id="gayaVisual">
+                                        <option value="4D Hyper Realism" selected>4D Hyper Realism</option>
+                                        <option value="3D Chibi">3D Chibi</option>
+                                    </select>
+                                </div>
                                 <div class="col-12 mb-3"><label for="generateBy" class="form-label">Generate By</label><input type="text" class="form-control" id="generateBy" value="PROMPT BY AIYRA DESIGN"></div>
                             </div>
-                            <div class="mb-3 mt-3"><label class="form-label d-block text-center">Pilih Gaya Visual</label><div class="d-flex justify-content-center"><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="promptStyle" id="styleHyper" value="4D Hyper Realism" checked><label class="form-check-label" for="styleHyper">4D Hyper Realism</label></div><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="promptStyle" id="styleChibi" value="3D Chibi"><label class="form-check-label" for="styleChibi">3D Chibi</label></div></div></div>
                             <div class="row g-2 mt-3">
                                 <div class="col-3"><button type="button" id="resetBtn" class="btn btn-gradient btn-gradient-danger w-100 py-2" title="Reset Formulir"><i class="fas fa-rotate-left"></i></button></div>
                                 <div class="col-9"><button type="button" id="generateBtn" class="btn btn-gradient btn-gradient-primary w-100 py-2"><i class="fas fa-cogs me-2"></i>Hasilkan</button></div>
@@ -510,12 +534,12 @@
 
             try {
                 const validationPayload = {
-                    contents: [{ role: "user", parts: [{ text: `Analyze the following text. Is it a coherent, understandable sentence or story, or is it meaningless gibberish (random characters like "asdfasdf")? Respond in JSON. Text: "${userStory}"` }] }],
+                    contents: [{ role: "user", parts: [{ text: `Analisis teks ini: "${userStory}". Apakah ini cerita yang bisa dipahami atau hanya tulisan acak (seperti "fghfgh")? Jawab dalam format JSON.` }] }],
                     generationConfig: {
                         responseMimeType: "application/json",
                         responseSchema: {
                             type: "OBJECT",
-                            properties: { "isValid": { "type": "BOOLEAN", "description": "True if the text is a real story, false if it is gibberish." } },
+                            properties: { "isValid": { "type": "BOOLEAN", "description": "True jika teks adalah cerita, false jika tulisan acak." } },
                             required: ["isValid"]
                         }
                     }
@@ -531,10 +555,10 @@
                     return;
                 }
 
-                aiBtnText.textContent = 'Membuat karakter...';
+                aiBtnText.textContent = 'Menganalisis cerita...';
                 
                 const generationPayload = {
-                    contents: [{ role: "user", parts: [{ text: `Based on the following story, generate a detailed fantasy character. Elaborate creatively on all fields as instructed in the schema. Story: "${userStory}"` }] }],
+                    contents: [{ role: "user", parts: [{ text: `Anda adalah seorang asisten kreatif berbahasa Indonesia. Tugas Anda adalah membaca sinopsis cerita dari pengguna dan mengembangkannya menjadi konsep action figure yang detail. Semua respons Anda WAJIB dalam Bahasa Indonesia. Analisis cerita berikut: "${userStory}"` }] }],
                     generationConfig: {
                         responseMimeType: "application/json",
                         responseSchema: {
@@ -542,14 +566,17 @@
                             properties: {
                                 "namaKarakter": { 
                                     "type": "STRING", 
-                                    "description": "Nama karakter fantasi. Ini HARUS berupa nama orang (misal: Kael, Elara, Zephyr). JANGAN gunakan nama benda, lokasi, atau konsep abstrak. Jika cerita menyebut nama, gunakan itu. Jika tidak, buat nama yang sesuai." 
+                                    "description": "ATURAN WAJIB: Cari nama karakter di cerita. Polanya bisa 'bernama [NAMA]' atau 'adalah [NAMA]'. Jika ada, gunakan nama itu. Contoh: Jika cerita 'dia adalah Zareth', nama harus 'Zareth'. Jika tidak ada pola itu, baru buat nama fantasi. JANGAN gunakan jabatan seperti 'Prajurit'."
                                 },
-                                "gender": { "type": "STRING", "enum": ["Pria", "Wanita", "Non-biner"], "description": "Gender karakter." },
-                                "deskripsiKarakter": { "type": "STRING", "description": "Deskripsi fisik yang SANGAT DETAIL. Wajib mencakup: bentuk tubuh (atletis, berisi, dll.), perkiraan tinggi, warna kulit, warna mata yang mencolok, gaya dan warna rambut (misal: panjang dikepang, pendek acak-acakan), dan setidaknya satu fitur wajah unik (misal: bekas luka di pipi, tato kuno di dahi)." },
-                                "deskripsiKostum": { "type": "STRING", "description": "Deskripsi kostum yang imajinatif dan detail. Sebutkan bahan (kulit, logam, kain) dan elemen-elemennya (misal: jubah compang-camping, pelat bahu berukir)." },
-                                "deskripsiSenjata": { "type": "STRING", "description": "Deskripsi senjata yang detail. Sebutkan jenisnya dan ciri khasnya (misal: pedang besar yang memancarkan api biru, busur dari kayu yew dengan ukiran rune)." },
-                                "deskripsiPose": { "type": "STRING", "description": "Pose aksi yang dinamis dan ekspresi wajah yang kuat dan hidup (misal: 'berpose menerjang ke depan dengan teriakan perang, mata menyala karena amarah')." },
-                                "lingkungan": { "type": "STRING", "description": "Deskripsi diorama miniatur untuk alas patung. Harus detail dan spesifik, bukan latar belakang umum (misal: 'reruntuhan kuil kuno dengan pilar-pilar yang hancur dan ditumbuhi tanaman merambat')." }
+                                "gender": { "type": "STRING", "enum": ["Pria", "Wanita", "Non-biner"], "description": "Gender karakter berdasarkan interpretasi cerita." },
+                                "deskripsiKarakter": { 
+                                    "type": "STRING", 
+                                    "description": "ATURAN SANGAT PENTING: Prioritaskan detail dari cerita. Jika cerita menyebut 'rambut merah panjang', 'badan kurus', atau 'mata biru', Anda WAJIB menggunakan detail itu. HANYA JIKA cerita tidak menyebutkan detail fisik (bentuk tubuh, rambut, mata, dll), Anda boleh berkreasi dan menyimpulkannya dari konteks. Hasil akhir harus dalam Bahasa Indonesia." 
+                                },
+                                "deskripsiKostum": { "type": "STRING", "description": "Rancang kostum berdasarkan latar belakang karakter dalam Bahasa Indonesia. Jelaskan gaya dan kondisinya, sebutkan bahan (kulit usang, baja mengkilap) dan detail unik (simbol klan, jubah sobek)." },
+                                "deskripsiSenjata": { "type": "STRING", "description": "Rancang senjata khas yang bercerita dalam Bahasa Indonesia. Hubungkan dengan sejarahnya, jelaskan penampilan dan kekuatannya (misal: pedang leluhur dengan rune menyala)." },
+                                "deskripsiPose": { "type": "STRING", "description": "Rancang pose aksi dinamis yang menangkap momen emosional dalam Bahasa Indonesia. Hindari pose statis (misal: 'melompat di udara dengan pedang terangkat, teriakan perang di wajahnya')." },
+                                "lingkungan": { "type": "STRING", "description": "ATURAN FINAL: Jelaskan sebuah adegan pemandangan yang detail untuk alas patung. JANGAN gunakan kata 'latar belakang', 'miniatur', atau 'diorama'. Cukup deskripsikan lokasinya. Contoh: 'reruntuhan kuil kuno dengan pilar-pilar hancur', 'tanah hutan ajaib dengan jamur bercahaya'." }
                             },
                             required: ["namaKarakter", "gender", "deskripsiKarakter", "deskripsiKostum", "deskripsiSenjata", "deskripsiPose", "lingkungan"]
                         }
@@ -586,7 +613,8 @@
                 deskripsiPose: document.getElementById('deskripsiPose').value.trim(),
                 lingkungan: document.getElementById('lingkungan').value.trim(),
                 namaKarakter: document.getElementById('namaKarakter').value.trim().toUpperCase(),
-                generateBy: document.getElementById('generateBy').value.trim()
+                generateBy: document.getElementById('generateBy').value.trim(),
+                bentukAlas: document.getElementById('bentukAlas').value
             };
             
             if (Object.values(fields).some(val => val === '')) {
@@ -594,13 +622,13 @@
                 return;
             }
 
-            const selectedStyleValue = document.querySelector('input[name="promptStyle"]:checked').value;
+            const gayaVisual = document.getElementById('gayaVisual').value;
             
-            let styleKeywords = selectedStyleValue === '4D Hyper Realism'
+            let styleKeywords = gayaVisual === '4D Hyper Realism'
                 ? '4D Stylized Hyper-Realism, Ultra-Detail, High-Realistic, UHD 8K, Highly Detailed, Hyper Cinematic Lighting, Sharp Depth of Field, High Saturation, Rich Color Palette, Sharp Contrast, Photographed with DSLR Mirrorless Camera, Realistic Proportional Anatomy, Full-body, Scale 1:16, Aspect Ratio 9:16, Long Legs, Balanced Body, HD Focused:'
                 : '3D Chibi Stylized Action Figure, Disney Pixar Style, Cute, Adorable, Soft Round Shapes, Big Expressive Eyes, Vibrant Colors, Claymation look, High Detail, Studio Lighting, on a detailed miniature base:';
 
-            const promptTemplate = `Buat Gambar Visual Patung Fantasi dengan gaya ${styleKeywords}\n\nKarakter: ${fields.gender} ${fields.deskripsiKarakter}\nKostum: ${fields.deskripsiKostum}\nSenjata: ${fields.deskripsiSenjata}\nPose dan Ekspresi: ${fields.deskripsiPose}\n\nSemua elemen ini dipasang di atas alas monumental yang dirancang —menampilkan miniatur ${fields.lingkungan} tanpa efek kabut atau efek energi apapun yang membuat karakter tenggelam dan tidak ada elemen yang keluar dari area monumental].\n\nName Base: "${fields.namaKarakter}" ukuran: Large, Subtitle: “${fields.generateBy}” ukuran: Medium, terukir dalam tipografi bergaya iblis dan timbul.\n\nSinar cahaya menembus ruang sinematik, menerangi partikel yang mengambang dan menghasilkan bayangan dramatis. Nada keseluruhannya muram dan epik, seolah diambil dari adegan klimaks sebuah film.\n\nPatung Fantasi Realistis ini diletakkan di atas meja putih, dengan latar belakang kabur berupa ruangan nyaman dan terang, di mana sebuah Koleksi Aksi Figur dalam Etalase. Figur aksi lainnya terlihat diburamkan di latar belakang. Fokus utama hanya tertuju pada Patung Fantasi Realistis dan alasnya, dengan pencahayaan terang dan lembut. Gaya keseluruhan harus kuat.`;
+            const promptTemplate = `Buat Gambar Visual Patung Fantasi dengan gaya ${styleKeywords}\n\nKarakter: ${fields.gender} ${fields.deskripsiKarakter}\nKostum: ${fields.deskripsiKostum}\nSenjata: ${fields.deskripsiSenjata}\nPose dan Ekspresi: ${fields.deskripsiPose}\n\nSemua elemen ini dipasang di atas alas monumental ${fields.bentukAlas} yang dirancang —menampilkan miniatur ${fields.lingkungan} tanpa efek kabut atau efek energi apapun yang membuat karakter tenggelam dan tidak ada elemen yang keluar dari area monumental.\n\nName Base: "${fields.namaKarakter}" ukuran: Large, Subtitle: “${fields.generateBy}” ukuran: Medium, terukir dalam tipografi bergaya iblis dan timbul.\n\nSinar cahaya menembus ruang sinematik, menerangi partikel yang mengambang dan menghasilkan bayangan dramatis. Nada keseluruhannya muram dan epik, seolah diambil dari adegan klimaks sebuah film.\n\nPatung Fantasi Realistis ini diletakkan di atas meja putih, dengan latar belakang kabur berupa ruangan nyaman dan terang, di mana sebuah Koleksi Aksi Figur dalam Etalase. Figur aksi lainnya terlihat diburamkan di latar belakang. Fokus utama hanya tertuju pada Patung Fantasi Realistis dan alasnya, dengan pencahayaan terang dan lembut. Gaya keseluruhan harus kuat.`;
             
             outputPromptEl.textContent = promptTemplate.trim();
             resultPlaceholder.classList.add('d-none');
@@ -614,6 +642,8 @@
             promptForm.reset();
             ceritaKarakterEl.value = '';
             document.getElementById('generateBy').value = 'PROMPT BY AIYRA DESIGN';
+            document.getElementById('bentukAlas').value = 'Bulat';
+            document.getElementById('gayaVisual').value = '4D Hyper Realism';
             outputPromptEl.textContent = '';
             resultPlaceholder.classList.remove('d-none');
             resultContent.classList.add('d-none');
