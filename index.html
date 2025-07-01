@@ -7,57 +7,130 @@
     <link rel="icon" href="./icon.png" type="image/png" />
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" xintegrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" xintegrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
+        /* --- THEME VARIABLES --- */
         :root {
-            --strong-orange: #f97316;
-            --strong-purple: #86198f;
-            --strong-blue: #2563eb;
+            /* Shared Colors */
             --violet-dark: #6d28d9;
             --violet: #8b5cf6;
-            
-            --fuchsia-accent: #f0abfc;
-            
+            --pink: #ec4899;
+            --cyan: #06b6d4;
             --text-light: #f8fafc;
-            --text-secondary: #e2e8f0;
+            --text-dark: #1f2937;
+            --text-secondary-dark: #9ca3af;
             
-            --glass-border: rgba(255, 255, 255, 0.2);
+            /* Dark Theme (Default) */
+            --theme-bg-image: linear-gradient(135deg, #020617, #1e1b4b, #4c1d95);
+            --theme-bg-animation: gradientAnimation 15s ease infinite;
+            --main-title-color: var(--text-light);
+            --subtitle-color: rgba(226, 232, 240, 0.8);
+            --body-text-color: var(--text-light);
+            --card-bg: rgba(15, 23, 42, 0.4);
+            --card-border: rgba(167, 139, 250, 0.3);
+            --card-text-color: var(--text-light);
+            --card-h5-color: var(--text-light);
+            --accent-color: var(--cyan);
+            --form-bg: rgba(15, 23, 42, 0.6);
+            --form-border: rgba(167, 139, 250, 0.3);
+            --form-text-color: var(--text-light);
+            --form-placeholder-color: var(--text-secondary-dark);
+            --form-select-arrow: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23f8fafc' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+            --hr-color: rgba(255, 255, 255, 0.2);
+            --output-bg: rgba(0, 0, 0, 0.5);
+            --output-border: rgba(255, 255, 255, 0.1);
+            --output-text-color: var(--text-light);
+            --option-bg: #1e293b;
+            --option-text: var(--text-light);
+            --modal-bg: rgba(20, 18, 28, 0.85);
+            --modal-border: rgba(255, 255, 255, 0.2);
+            --modal-text-color: var(--text-secondary);
+            --modal-strong-color: var(--text-light);
+            
             --border-radius-lg: 1.25rem;
         }
+
+        body.light-theme {
+            --theme-bg-image: url('https://images.unsplash.com/photo-1579546929518-9e396f3cc809?auto=format&fit=crop&w=1920&q=80');
+            --theme-bg-animation: none;
+            --main-title-color: var(--text-dark);
+            --subtitle-color: #374151;
+            --body-text-color: var(--text-dark);
+            --card-bg: rgba(255, 255, 255, 0.5);
+            --card-border: rgba(255, 255, 255, 0.8);
+            --card-text-color: var(--text-dark);
+            --card-h5-color: var(--text-dark);
+            --accent-color: var(--violet-dark);
+            --form-bg: rgba(255, 255, 255, 0.7);
+            --form-border: rgba(0, 0, 0, 0.1);
+            --form-text-color: var(--text-dark);
+            --form-placeholder-color: #6b7280;
+            --form-select-arrow: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23374151' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+            --hr-color: rgba(0,0,0,0.1);
+            --output-bg: rgba(255, 255, 255, 0.5);
+            --output-border: rgba(0, 0, 0, 0.05);
+            --output-text-color: var(--text-dark);
+            --option-bg: white;
+            --option-text: var(--text-dark);
+            --modal-bg: rgba(248, 250, 252, 0.85);
+            --modal-border: rgba(255, 255, 255, 0.7);
+            --modal-text-color: var(--text-primary);
+            --modal-strong-color: var(--text-strong);
+        }
         
+        /* --- GENERAL STYLES --- */
         body {
             font-family: "Poppins", sans-serif;
-            background: linear-gradient(135deg, var(--strong-orange) 0%, var(--strong-purple) 50%, var(--strong-blue) 100%);
-            color: var(--text-secondary);
-            min-height: 100vh;
+            background-image: var(--theme-bg-image);
+            background-size: 400% 400%;
+            background-position: center;
             background-attachment: fixed;
-        }
-        
-        .card-glass {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border-radius: var(--border-radius-lg);
-            border: 1px solid var(--glass-border);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-            transition: transform 0.3s ease, background 0.3s ease;
-            color: var(--text-secondary);
-        }
-        .card-glass:hover {
-             transform: translateY(-6px);
-             background: rgba(255, 255, 255, 0.15);
+            min-height: 100vh;
+            animation: var(--theme-bg-animation);
+            transition: background 0.5s ease;
+            color: var(--body-text-color);
         }
 
-        .main-title, .card-glass h5 {
-             color: var(--text-light) !important;
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        /* --- COMPONENTS --- */
+        .card-glass {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: var(--border-radius-lg);
+            border: 1px solid var(--card-border);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            color: var(--card-text-color);
+        }
+        
+        .card-glass:hover {
+             transform: translateY(-4px) scale(1.01); /* EDITED: More subtle hover effect */
+             box-shadow: 0 12px 35px rgba(0,0,0,0.25);
+        }
+
+        .main-title {
+             color: var(--main-title-color) !important;
+             font-weight: 700;
+             text-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .card-glass h5 {
+             color: var(--card-h5-color) !important;
              font-weight: 700;
         }
         .subtitle {
-            color: var(--text-secondary) !important;
+             color: var(--subtitle-color) !important;
+             opacity: 0.8;
         }
         
         .btn {
@@ -69,169 +142,158 @@
         }
         .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
         
         .btn-gradient {
             background-size: 200% auto;
             color: white;
+            box-shadow: 0 4px 15px 0 rgba(0, 0, 0, 0.1);
         }
         .btn-gradient:hover {
             background-position: right center;
+            color: white; 
+            box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.2);
         }
 
         .btn-gradient-primary {
-             background-image: linear-gradient(to right, var(--violet) 0%, var(--violet-dark) 51%, var(--violet) 100%);
+             background-image: linear-gradient(to right, var(--pink) 0%, var(--violet) 51%, var(--pink) 100%);
         }
         .btn-gradient-warning {
              background-image: linear-gradient(to right, #facc15 0%, #f59e0b 51%, #facc15 100%);
-             color: #422006;
+             color: white;
         }
         .btn-gradient-danger {
             background-image: linear-gradient(to right, #f87171 0%, #dc2626 51%, #f87171 100%);
         }
         .btn-gradient-success {
             background-image: linear-gradient(to right, #4ade80 0%, #22c55e 51%, #4ade80 100%);
+            color: white;
         }
         .btn-gradient-info {
             background-image: linear-gradient(to right, #60a5fa 0%, #3b82f6 51%, #60a5fa 100%);
         }
         .btn-gradient-secondary {
             background-image: linear-gradient(to right, #e5e7eb 0%, #9ca3af 51%, #e5e7eb 100%);
-            color: #1f2937;
+            color: var(--text-dark);
         }
-        
-        .form-check-input {
-            background-color: transparent;
-            border-color: rgba(255,255,255,0.4);
+         .btn-gradient-secondary:hover {
+             color: var(--text-dark);
         }
-        .form-check-input:checked {
-            background-color: var(--fuchsia-accent);
-            border-color: var(--fuchsia-accent);
-        }
-        
+
         .form-control, .form-select {
-            background: rgba(0, 0, 0, 0.2);
-            border: 1px solid var(--glass-border);
-            color: var(--text-light);
+            background-color: var(--form-bg);
+            border: 1px solid var(--form-border);
+            color: var(--form-text-color);
+            transition: all 0.3s ease;
+        }
+        .form-select {
+            background-image: var(--form-select-arrow);
+            background-repeat: no-repeat;
+            background-position: right .75rem center;
+            background-size: 16px 12px;
+        }
+        .form-select option {
+            background: var(--option-bg);
+            color: var(--option-text);
         }
         .form-control::placeholder {
-            color: #94a3b8;
+            color: var(--form-placeholder-color);
         }
         .form-control:focus, .form-select:focus {
-             border-color: var(--fuchsia-accent);
-             box-shadow: 0 0 0 0.25rem rgba(240, 171, 252, 0.25);
-             background: rgba(0, 0, 0, 0.3);
-             color: var(--text-light);
+             border-color: var(--accent-color);
+             box-shadow: 0 0 0 0.25rem rgba(139, 92, 246, 0.25);
+             background-color: var(--form-bg);
+        }
+        hr {
+            border-color: var(--hr-color) !important;
+            opacity: 1;
         }
         
         .modal-content {
-            background: rgba(20, 18, 28, 0.85);
-            backdrop-filter: blur(24px);
+            background: var(--modal-bg);
+            backdrop-filter: blur(20px);
             border-radius: var(--border-radius-lg);
-            border: 1px solid var(--glass-border);
-            color: var(--text-secondary);
+            border: 1px solid var(--modal-border);
+            color: var(--modal-text-color);
         }
-        .modal-header, .modal-footer {
-             border: none;
-        }
-        .modal-body p, .modal-body li {
-            color: var(--text-secondary);
-        }
-        .modal-body strong {
-            color: var(--text-light);
-        }
+        .modal-header, .modal-footer { border: none; }
+        .modal-body p, .modal-body li { color: var(--modal-text-color); }
+        .modal-body strong { color: var(--modal-strong-color); }
 
-        .text-accent, .modal-title, .modal .list-group-item .fas {
-            color: var(--fuchsia-accent) !important;
-        }
+        .text-accent { color: var(--accent-color) !important; }
+        .modal-title, .modal .list-group-item .fas { color: var(--accent-color) !important; }
         
-        a {
-            color: #c084fc;
-        }
-        a:hover {
-            color: #e9d5ff;
-        }
-        a.btn {
-            color: inherit;
-        }
+        a { color: var(--violet-dark); }
+        a:hover { color: var(--violet); }
+        a.btn { color: inherit; }
         
         #outputPrompt {
             white-space: pre-wrap;
-            color: var(--text-light);
+            color: var(--output-text-color);
         }
         .output-wrapper {
-            background: rgba(0, 0, 0, 0.3);
+            background: var(--output-bg);
+            border: 1px solid var(--output-border);
             min-height: 150px;
             font-family: 'Courier New', Courier, monospace;
         }
         
-        .custom-alert-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(5px); display: flex; align-items: center; justify-content: center; z-index: 3000; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; }
+        .custom-alert-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.3); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 3000; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; }
         .custom-alert-overlay.show { opacity: 1; visibility: visible; }
         .custom-alert-box {
-            background: rgba(30, 27, 38, 0.8);
+            background: rgba(30, 27, 38, 0.9);
             backdrop-filter: blur(10px);
-            border: 1px solid var(--glass-border);
-            border-radius: 1rem; padding: 2rem; width: 90%; max-width: 400px; text-align: center; color: var(--text-light);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 1rem; padding: 2rem; width: 90%; max-width: 400px; text-align: center; 
+            color: var(--text-light);
             box-shadow: 0 10px 40px rgba(0,0,0,0.2); transform: scale(0.9); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         .custom-alert-overlay.show .custom-alert-box { transform: scale(1); }
 
-        /* Custom Scrollbar Styling for Textarea */
-        textarea.form-control::-webkit-scrollbar {
-            width: 10px;
+        .theme-toggle-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1050;
         }
-
-        textarea.form-control::-webkit-scrollbar-track {
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 10px;
+        .theme-toggle-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            color: var(--card-text-color);
         }
-
-        textarea.form-control::-webkit-scrollbar-thumb {
-            background: linear-gradient(135deg, var(--violet), var(--fuchsia-accent));
-            border-radius: 10px;
-            border: 2px solid rgba(0,0,0,0.2);
-        }
-
-        textarea.form-control::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(135deg, var(--violet-dark), var(--violet));
-        }
-
-        /* Firefox specific scrollbar styles */
-        textarea.form-control {
-            scrollbar-width: thin;
-            scrollbar-color: var(--violet) rgba(0,0,0,0.2);
-        }
-        
-        /* License Modal Specific Styles */
-        #license-content { font-family: sans-serif; line-height: 1.6; }
-        #license-content h2, #license-content h3 { color: var(--text-light); }
-        #license-content a { color: #c084fc; }
-        #license-content a:hover { color: #e9d5ff; }
-        #license-content strong { color: var(--text-light); }
-        #license-content ul { padding-left: 20px; }
-        #license-content li { margin-bottom: 0.5rem; }
-        #license-content h3 { margin-top: 1.5rem; border-bottom: 1px solid var(--glass-border); padding-bottom: 0.5rem; }
     </style>
 </head>
 <body>
     
+    <!-- Theme Toggle Button -->
+    <div class="theme-toggle-container">
+        <button id="theme-toggle" class="btn theme-toggle-btn">
+            <i class="fas fa-sun"></i>
+        </button>
+    </div>
+
     <main class="container py-5">
         <div class="row g-lg-5">
             <!-- Left Column: Title and Generator -->
             <div class="col-lg-7 mb-4 mb-lg-0">
                 <header class="mb-4">
-                    <div class="d-flex align-items-center justify-content-center">
+                    <div class="d-flex align-items-center justify-content-between">
                         <img 
                             src="./karakter_1.png" 
                             alt="Generator Action Figure" 
                             class="d-none d-md-block"
                             style="height: auto; width: 120px;"
-                            onerror="this.onerror=null;this.src='https://placehold.co/120x180/8b5cf6/ffffff/png?text=Error';">
+                            onerror="this.onerror=null;this.src='https://placehold.co/120x180/8b5cf6/ffffff/png?text=Figure+1';">
                         <div class="text-start text-md-center">
                             <h3 class="main-title" style="font-weight: 600; letter-spacing: 0.05em;">PROMPT GENERATOR</h3>
                             <h2 class="main-title" style="letter-spacing: 0.05em;">ACTION FIGURE</h2>
                             <p class="subtitle">By Aiyra Design | prompt.ique</p>
-                            <!-- ADDED: License Button -->
                             <button type="button" class="btn btn-sm btn-light" style="--bs-btn-padding-y: .2rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;" data-bs-toggle="modal" data-bs-target="#licenseModal">
                                 <i class="fas fa-file-contract me-1"></i> Lihat Lisensi
                             </button>
@@ -239,8 +301,9 @@
                          <img 
                             src="./karakter_2.png" 
                             alt="Kreasi Action Figure" 
+                            class=""
                             style="height: auto; width: 120px;"
-                            onerror="this.onerror=null;this.src='https://placehold.co/120x180/f97316/ffffff/png?text=Error';">
+                            onerror="this.onerror=null;this.src='https://placehold.co/120x180/f97316/ffffff/png?text=Figure+2';">
                     </div>
                 </header>
 
@@ -270,7 +333,7 @@
                     </div>
                     
                     <div class="card-glass p-4 h-100">
-                        <div class="row g-2 mb-4 border-bottom pb-3 align-items-center" style="border-color: var(--glass-border) !important;">
+                        <div class="row g-2 mb-4 pb-3 align-items-center">
                             <div class="col-6">
                                 <button type="button" class="btn btn-gradient btn-gradient-primary w-100" data-bs-toggle="modal" data-bs-target="#apiKeyModal">
                                     <i class="fas fa-key me-1"></i> Get API Key
@@ -286,7 +349,7 @@
                         <h5 class="mb-3 fw-bold text-accent"><i class="fas fa-robot me-2"></i> Mulai dengan AI</h5>
                         <div class="mb-3"><label for="ceritaKarakter" class="form-label">Ceritakan singkat tentang karakter Anda</label><textarea class="form-control" id="ceritaKarakter" rows="4" placeholder="Contoh: Seorang prajurit wanita bernama Aiyra..."></textarea></div>
                         <button type="button" id="aiBtn" class="btn btn-gradient btn-gradient-primary w-100 py-2"><span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span><span id="aiBtnText"><i class="fas fa-lightbulb me-2"></i> Sesuaikan dengan AI</span></button>
-                        <hr class="my-4" style="border-color: var(--glass-border);">
+                        <hr class="my-4">
                         <h5 class="mb-4 fw-bold text-accent"><i class="fas fa-pencil-alt me-2"></i> Detail Manual</h5>
                         <form id="promptForm">
                             <div class="row g-3">
@@ -296,8 +359,14 @@
                                 <div class="col-12 col-md-6 mb-3"><label for="deskripsiKostum" class="form-label">Deskripsi Kostum</label><textarea class="form-control" id="deskripsiKostum" rows="3" placeholder="Armor kulit hitam dengan rune..."></textarea></div>
                                 <div class="col-12 col-md-6 mb-3"><label for="senjataAtauBenda" class="form-label">Senjata / Benda</label><textarea class="form-control" id="senjataAtauBenda" rows="3" placeholder="Pedang besar atau memegang buku kuno..."></textarea></div>
                                 <div class="col-12 col-md-6 mb-3"><label for="deskripsiPose" class="form-label">Pose dan Ekspresi</label><textarea class="form-control" id="deskripsiPose" rows="3" placeholder="Siap tempur, ekspresi fokus..."></textarea></div>
-                                <div class="col-12 mb-3"><label for="lingkungan" class="form-label">Nuansa Alas Patung</label><textarea class="form-control" id="lingkungan" rows="3" placeholder="Reruntuhan kastil kuno..."></textarea></div>
-                                <!-- NEW: Base Shape Dropdown -->
+                                
+                                <div class="col-12 col-md-6 mb-3">
+                                    <label for="astralMagis" class="form-label">Hewan/Makhluk</label>
+                                    <textarea class="form-control" id="astralMagis" rows="3" placeholder="Contoh: Naga es transparan..."></textarea>
+                                </div>
+
+                                <div class="col-12 col-md-6 mb-3"><label for="lingkungan" class="form-label">Nuansa Alas Patung</label><textarea class="form-control" id="lingkungan" rows="3" placeholder="Reruntuhan kastil kuno..."></textarea></div>
+
                                 <div class="col-12 col-md-6 mb-3">
                                     <label for="bentukAlas" class="form-label">Bentuk Alas</label>
                                     <select class="form-select" id="bentukAlas">
@@ -305,7 +374,6 @@
                                         <option value="Persegi">Persegi</option>
                                     </select>
                                 </div>
-                                <!-- NEW: Visual Style Dropdown -->
                                 <div class="col-12 col-md-6 mb-3">
                                     <label for="gayaVisual" class="form-label">Pilih Gaya Visual</label>
                                     <select class="form-select" id="gayaVisual">
@@ -357,7 +425,7 @@
     
     <!-- Modals -->
     <div class="modal fade" id="apiKeyModal" tabindex="-1"><div class="modal-dialog modal-dialog-centered"><div class="modal-content"><div class="modal-header"><h5 class="modal-title"><i class="fas fa-key me-2"></i> Kunci API Gemini</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div><div class="modal-body"><p>Untuk menggunakan fitur AI, Anda memerlukan Kunci API dari Google AI Studio.</p><div class="mb-3"><label for="apiKeyInput" class="form-label">Masukkan Kunci API Anda:</label><input type="password" class="form-control" id="apiKeyInput"></div><a href="https://aistudio.google.com/" target="_blank" class="btn btn-sm btn-gradient btn-gradient-info w-100">Dapatkan Kunci API di Sini <i class="fas fa-external-link-alt ms-1"></i></a></div><div class="modal-footer pt-3"><button type="button" class="btn btn-gradient btn-gradient-secondary" data-bs-dismiss="modal">Tutup</button><button type="button" class="btn btn-gradient btn-gradient-primary" id="saveApiKeyBtn">Simpan</button></div></div></div></div>
-    <div class="modal fade" id="guideModal" tabindex="-1"><div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title"><i class="fas fa-magic-wand-sparkles me-2"></i> Panduan Mendapatkan Kunci API</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div><div class="modal-body"><p>Aplikasi ini memerlukan Kunci API pribadi Anda untuk terhubung ke layanan AI Google. Prosesnya gratis dan cepat. Ikuti langkah-langkah berikut:</p><ul class="list-group list-group-flush"><li class="list-group-item bg-transparent"><i class="fas fa-globe me-2 text-accent"></i><strong>Langkah 1</strong><br>Kunjungi situs <a href="https://aistudio.google.com/" target="_blank">Google AI Studio</a>.</li><li class="list-group-item bg-transparent"><i class="fas fa-plus-circle me-2 text-accent"></i><strong>Langkah 2</strong><br>Klik <strong>"Get API key"</strong> &gt; <strong>"Create API key"</strong>.</li><li class="list-group-item bg-transparent"><i class="fas fa-copy me-2 text-accent"></i><strong>Langkah 3</strong><br>Salin kunci Anda.</li><li class="list-group-item bg-transparent"><i class="fas fa-paste me-2 text-accent"></i><strong>Langkah 4</strong><br>Tempel kunci di aplikasi ini.</li></ul><hr style="border-color: var(--glass-border);"><div class="text-center"><small>Anda siap menggunakan fitur AI!</small></div></div><div class="modal-footer"><button type="button" class="btn btn-gradient btn-gradient-primary" data-bs-dismiss="modal">Saya Mengerti</button></div></div></div></div>
+    <div class="modal fade" id="guideModal" tabindex="-1"><div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title"><i class="fas fa-magic-wand-sparkles me-2"></i> Panduan Mendapatkan Kunci API</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div><div class="modal-body"><p>Aplikasi ini memerlukan Kunci API pribadi Anda untuk terhubung ke layanan AI Google. Prosesnya gratis dan cepat. Ikuti langkah-langkah berikut:</p><ul class="list-group list-group-flush"><li class="list-group-item bg-transparent"><i class="fas fa-globe me-2 text-accent"></i><strong>Langkah 1</strong><br>Kunjungi situs <a href="https://aistudio.google.com/" target="_blank">Google AI Studio</a>.</li><li class="list-group-item bg-transparent"><i class="fas fa-plus-circle me-2 text-accent"></i><strong>Langkah 2</strong><br>Klik <strong>"Get API key"</strong> &gt; <strong>"Create API key"</strong>.</li><li class="list-group-item bg-transparent"><i class="fas fa-copy me-2 text-accent"></i><strong>Langkah 3</strong><br>Salin kunci Anda.</li><li class="list-group-item bg-transparent"><i class="fas fa-paste me-2 text-accent"></i><strong>Langkah 4</strong><br>Tempel kunci di aplikasi ini.</li></ul><hr style="border-color: rgba(0,0,0,0.1);"><div class="text-center"><small>Anda siap menggunakan fitur AI!</small></div></div><div class="modal-footer"><button type="button" class="btn btn-gradient btn-gradient-primary" data-bs-dismiss="modal">Saya Mengerti</button></div></div></div></div>
 
     <!-- License Modal -->
     <div class="modal fade" id="licenseModal" tabindex="-1" aria-labelledby="licenseModalLabel" aria-hidden="true">
@@ -397,7 +465,7 @@
                     </section>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-gradient btn-primary" data-bs-dismiss="modal">Mengerti</button>
+                    <button type="button" class="btn btn-gradient btn-gradient-primary" data-bs-dismiss="modal">Mengerti</button>
                 </div>
             </div>
         </div>
@@ -435,10 +503,6 @@
             return false;
         }
         document.addEventListener('contextmenu', blockContextMenu);
-        document.body.oncontextmenu = blockContextMenu;
-        setInterval(() => {
-            document.body.oncontextmenu = blockContextMenu;
-        }, 500);
 
         document.addEventListener('keydown', event => {
             if (event.key === 'F12' || (event.ctrlKey && event.shiftKey && ['I', 'J', 'C'].includes(event.key.toUpperCase())) || (event.metaKey && event.altKey && ['I', 'J', 'C'].includes(event.key.toUpperCase())) || (event.ctrlKey && event.key.toUpperCase() === 'U')) {
@@ -468,11 +532,16 @@
         const alertMessage = document.getElementById('custom-alert-message');
         const saveApiKeyBtn = document.getElementById('saveApiKeyBtn');
         const apiKeyInput = document.getElementById('apiKeyInput');
-        const apiKeyModal = new bootstrap.Modal(document.getElementById('apiKeyModal'));
+        const apiKeyModalEl = document.getElementById('apiKeyModal');
+        const apiKeyModal = new bootstrap.Modal(apiKeyModalEl);
         const promptForm = document.getElementById('promptForm');
         const ceritaKarakterEl = document.getElementById('ceritaKarakter');
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const body = document.body;
         
         // --- Main Functions ---
+
+        // Function to show a custom, non-blocking alert
         function showAlert(type, message) {
             alertMessage.textContent = message;
             alertIcon.className = 'custom-alert-icon fas ' + (type === 'success' ? 'fa-check-circle text-success' : 'fa-times-circle text-danger');
@@ -480,6 +549,7 @@
             setTimeout(() => alertOverlay.classList.remove('show'), 3000); 
         }
         
+        // Function to unlock the main application
         function grantAccess() {
             passwordSection.style.display = 'none';
             generatorFieldset.disabled = false;
@@ -487,12 +557,14 @@
             logoutSection.style.display = 'block'; 
         }
         
+        // Function to lock the application
         function lockAccess() {
             localStorage.removeItem('unlockTimestamp');
             showAlert('success', 'Akses telah dikunci.');
             setTimeout(() => location.reload(), 1500);
         }
 
+        // Check if user has valid access from a previous session
         function checkAccess() {
             const unlockedTime = localStorage.getItem('unlockTimestamp');
             if (unlockedTime) {
@@ -511,8 +583,9 @@
             logoutSection.style.display = 'none';
         }
         
+        // Function to make API calls to Gemini
         async function fetchAI(apiKey, payload) {
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
             const response = await fetch(apiUrl, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -528,7 +601,9 @@
             const result = await response.json();
 
             if (result.candidates && result.candidates.length > 0 && result.candidates[0].content?.parts[0]?.text) {
-                 return JSON.parse(result.candidates[0].content.parts[0].text);
+                 let rawText = result.candidates[0].content.parts[0].text;
+                 rawText = rawText.replace(/^```json\s*/, '').replace(/```$/, '');
+                 return JSON.parse(rawText);
             } else {
                 console.error("Invalid response structure:", result);
                 throw new Error('Gagal mendapatkan data dari AI atau respons tidak valid.');
@@ -538,6 +613,7 @@
         // --- Event Listeners ---
         alertOverlay.addEventListener('click', () => alertOverlay.classList.remove('show'));
         
+        // Handle password submission for unlocking
         unlockBtn.addEventListener('click', () => {
             if (appPasswordInput.value === 'prompt.ique.975') {
                 localStorage.setItem('unlockTimestamp', new Date().getTime());
@@ -549,17 +625,21 @@
             }
         });
         
+        // Allow unlocking with the Enter key
         appPasswordInput.addEventListener('keyup', (event) => {
             if (event.key === 'Enter') unlockBtn.click();
         });
 
+        // Show logout confirmation modal
         logoutBtnForm.addEventListener('click', () => logoutConfirmModal.show());
 
+        // Handle the final logout confirmation
         confirmLogoutBtn.addEventListener('click', () => {
             logoutConfirmModal.hide();
             lockAccess();
         });
 
+        // Save the Gemini API key to local storage
         saveApiKeyBtn.addEventListener('click', () => {
             const apiKey = apiKeyInput.value.trim();
             if (apiKey) {
@@ -571,6 +651,7 @@
             }
         });
 
+        // Main AI feature logic
         aiBtn.addEventListener('click', async () => {
             const apiKey = localStorage.getItem('geminiApiKey') || "";
             const userStory = ceritaKarakterEl.value.trim();
@@ -585,37 +666,16 @@
                 return;
             }
 
+            // Update UI to show loading state
             const aiBtnText = document.getElementById('aiBtnText');
             const spinner = aiBtn.querySelector('.spinner-border');
-            aiBtnText.textContent = 'Memvalidasi cerita...';
+            aiBtnText.textContent = 'Memproses dengan AI...';
             spinner.classList.remove('d-none');
             aiBtn.disabled = true;
 
             try {
-                const validationPayload = {
-                    contents: [{ role: "user", parts: [{ text: `Analisis teks ini: "${userStory}". Apakah ini cerita yang bisa dipahami atau hanya tulisan acak (seperti "fghfgh")? Jawab dalam format JSON.` }] }],
-                    generationConfig: {
-                        responseMimeType: "application/json",
-                        responseSchema: {
-                            type: "OBJECT",
-                            properties: { "isValid": { "type": "BOOLEAN", "description": "True jika teks adalah cerita, false jika tulisan acak." } },
-                            required: ["isValid"]
-                        }
-                    }
-                };
-
-                const validationResult = await fetchAI(apiKey, validationPayload);
-
-                if (!validationResult.isValid) {
-                    showAlert('error', 'Cerita tidak dapat diproses. Harap masukkan kalimat yang jelas dan masuk akal.');
-                    aiBtnText.innerHTML = `<i class="fas fa-lightbulb me-2"></i> Sesuaikan dengan AI`;
-                    spinner.classList.add('d-none');
-                    aiBtn.disabled = false;
-                    return;
-                }
-
-                aiBtnText.textContent = 'Menganalisis cerita...';
-                
+                // The main prompt that asks Gemini to act as a creative assistant
+                // and return a structured JSON object based on the user's story.
                 const generationPayload = {
                     contents: [{ role: "user", parts: [{ text: `Anda adalah seorang asisten kreatif berbahasa Indonesia. Tugas Anda adalah membaca sinopsis cerita dari pengguna dan mengembangkannya menjadi konsep action figure yang detail. Semua respons Anda WAJIB dalam Bahasa Indonesia. Analisis cerita berikut: "${userStory}"` }] }],
                     generationConfig: {
@@ -635,7 +695,8 @@
                                 "deskripsiKostum": { "type": "STRING", "description": "Rancang kostum berdasarkan latar belakang karakter dalam Bahasa Indonesia. Jelaskan gaya dan kondisinya, sebutkan bahan (kulit usang, baja mengkilap) dan detail unik (simbol klan, jubah sobek)." },
                                 "senjataAtauBenda": { "type": "STRING", "description": "Rancang senjata khas atau benda penting yang dipegang karakter, hubungkan dengan cerita. Contoh: 'pedang leluhur dengan rune menyala' atau 'buku tebal bersampul kulit'." },
                                 "deskripsiPose": { "type": "STRING", "description": "Rancang pose yang bercerita, tidak harus selalu bertarung. Bisa pose santai, berpikir, atau misterius sesuai cerita. Contoh: 'duduk di atas batu sambil membaca buku kuno, ekspresi serius' atau 'berdiri tegap dengan senyum tipis, tangan memegang tongkat'." },
-                                "lingkungan": { "type": "STRING", "description": "ATURAN FINAL: Jelaskan sebuah adegan pemandangan yang detail untuk alas patung. JANGAN gunakan kata 'latar belakang', 'miniatur', atau 'diorama'. Cukup deskripsikan lokasinya. Contoh: 'reruntuhan kuil kuno dengan pilar-pilar hancur', 'tanah hutan ajaib dengan jamur bercahaya'." }
+                                "lingkungan": { "type": "STRING", "description": "ATURAN FINAL: Jelaskan sebuah adegan pemandangan yang detail untuk alas patung. JANGAN gunakan kata 'latar belakang', 'miniatur', atau 'diorama'. Cukup deskripsikan lokasinya. Contoh: 'reruntuhan kuil kuno dengan pilar-pilar hancur', 'tanah hutan ajaib dengan jamur bercahaya'." },
+                                "astralMagis": { "type": "STRING", "description": "ATURAN OPSIONAL: Analisis cerita untuk hewan atau makhluk. Ini termasuk jika karakter 'menaiki' seekor hewan, 'memiliki' pendamping, atau 'ditemani oleh' makhluk. Jika ada, deskripsikan makhluk itu dan interaksinya dengan karakter dalam pose statis (misal: 'menaiki seekor griffin yang sedang menderu', 'seekor rubah kecil duduk di kakinya', 'seekor naga hantu besar melingkar di belakangnya'). Jelaskan posisi dan ukurannya. Makhluk harus berada di dalam alas patung. Jika tidak ada makhluk yang disebutkan, kembalikan string kosong ''." }
                             },
                             required: ["namaKarakter", "gender", "deskripsiKarakter", "deskripsiKostum", "senjataAtauBenda", "deskripsiPose", "lingkungan"]
                         }
@@ -644,6 +705,7 @@
 
                 const characterData = await fetchAI(apiKey, generationPayload);
 
+                // Populate the form fields with the data from the AI
                 document.getElementById('namaKarakter').value = characterData.namaKarakter || '';
                 document.getElementById('gender').value = characterData.gender || '';
                 document.getElementById('deskripsiKarakter').value = characterData.deskripsiKarakter || '';
@@ -651,18 +713,21 @@
                 document.getElementById('senjataAtauBenda').value = characterData.senjataAtauBenda || '';
                 document.getElementById('deskripsiPose').value = characterData.deskripsiPose || '';
                 document.getElementById('lingkungan').value = characterData.lingkungan || '';
+                document.getElementById('astralMagis').value = characterData.astralMagis || '';
                 showAlert('success', 'Detail karakter berhasil diisi AI!');
 
             } catch (error) {
                 console.error('Error with AI feature:', error);
                 showAlert('error', `Gagal terhubung dengan AI. ${error.message}`);
             } finally {
+                // Restore the button to its original state
                 aiBtnText.innerHTML = `<i class="fas fa-lightbulb me-2"></i> Sesuaikan dengan AI`;
                 spinner.classList.add('d-none');
                 aiBtn.disabled = false;
             }
         });
         
+        // Generate the final image prompt
         generateBtn.addEventListener('click', () => {
             const fields = {
                 gender: document.getElementById('gender').value,
@@ -670,24 +735,31 @@
                 deskripsiKostum: document.getElementById('deskripsiKostum').value.trim(),
                 senjataAtauBenda: document.getElementById('senjataAtauBenda').value.trim(),
                 deskripsiPose: document.getElementById('deskripsiPose').value.trim(),
+                astralMagis: document.getElementById('astralMagis').value.trim(),
                 lingkungan: document.getElementById('lingkungan').value.trim(),
                 namaKarakter: document.getElementById('namaKarakter').value.trim().toUpperCase(),
                 generateBy: document.getElementById('generateBy').value.trim(),
                 bentukAlas: document.getElementById('bentukAlas').value
             };
             
-            if (Object.values(fields).some(val => val === '')) {
-                showAlert("error", "Harap isi semua kolom deskripsi.");
+            // Basic validation
+            if (!fields.gender || !fields.deskripsiKarakter || !fields.deskripsiKostum || !fields.senjataAtauBenda || !fields.deskripsiPose || !fields.lingkungan || !fields.namaKarakter || !fields.generateBy) {
+                showAlert("error", "Harap isi semua kolom deskripsi (kecuali Hewan/Makhluk).");
                 return;
             }
 
             const gayaVisual = document.getElementById('gayaVisual').value;
             
+            // Select keywords based on the chosen visual style
             let styleKeywords = gayaVisual === '4D Hyper Realism'
                 ? '4D Stylized Hyper-Realism, Ultra-Detail, High-Realistic, UHD 8K, Highly Detailed, Hyper Cinematic Lighting, Sharp Depth of Field, High Saturation, Rich Color Palette, Sharp Contrast, Photographed with DSLR Mirrorless Camera, Realistic Proportional Anatomy, Full-body, Scale 1:16, Aspect Ratio 9:16, Long Legs, Balanced Body, HD Focused:'
                 : '3D Chibi Stylized Action Figure, Disney Pixar Style, Cute, Adorable, Soft Round Shapes, Big Expressive Eyes, Vibrant Colors, Claymation look, High Detail, Studio Lighting, on a detailed miniature base:';
 
-            const promptTemplate = `Buat Gambar Visual Patung Fantasi dengan gaya ${styleKeywords}\n\nKarakter: ${fields.gender} ${fields.deskripsiKarakter}\nKostum: ${fields.deskripsiKostum}\nBenda: ${fields.senjataAtauBenda}\nPose dan Ekspresi: ${fields.deskripsiPose}\n\nSemua elemen ini dipasang di atas alas monumental ${fields.bentukAlas} yang dirancang —menampilkan miniatur ${fields.lingkungan} tanpa efek kabut atau efek energi apapun yang membuat karakter tenggelam dan tidak ada elemen yang keluar dari area monumental.\n\nName Base: "${fields.namaKarakter}" ukuran: Large, Subtitle: “${fields.generateBy}” ukuran: Medium, terukir dalam tipografi bergaya iblis dan timbul.\n\nSinar cahaya menembus ruang sinematik, menerangi partikel yang mengambang dan menghasilkan bayangan dramatis. Nada keseluruhannya muram dan epik, seolah diambil dari adegan klimaks sebuah film.\n\nPatung Fantasi Realistis ini diletakkan di atas meja putih, dengan latar belakang kabur berupa ruangan nyaman dan terang, di mana sebuah Koleksi Aksi Figur dalam Etalase. Figur aksi lainnya terlihat diburamkan di latar belakang. Fokus utama hanya tertuju pada Patung Fantasi Realistis dan alasnya, dengan pencahayaan terang dan lembut. Gaya keseluruhan harus kuat.`;
+            // Conditionally add the creature to the prompt
+            const creaturePrompt = fields.astralMagis ? `\nPendamping: ${fields.astralMagis}, pastikan makhluk ini berada sepenuhnya di dalam area alas monumental, meskipun melayang.` : '';
+
+            // Construct the final prompt using a template
+            const promptTemplate = `Buat Gambar Visual Patung Fantasi dengan gaya ${styleKeywords}\n\nKarakter: ${fields.gender} ${fields.deskripsiKarakter}\nKostum: ${fields.deskripsiKostum}\nBenda: ${fields.senjataAtauBenda}\nPose dan Ekspresi: ${fields.deskripsiPose}${creaturePrompt}\n\nSemua elemen ini dipasang di atas alas monumental ${fields.bentukAlas} yang dirancang —menampilkan miniatur ${fields.lingkungan} tanpa efek kabut atau efek energi apapun yang membuat karakter tenggelam dan tidak ada elemen yang keluar dari area monumental.\n\nName Base: "${fields.namaKarakter}" ukuran: Large, Subtitle: “${fields.generateBy}” ukuran: Medium, terukir dalam tipografi bergaya iblis dan timbul.\n\nSinar cahaya menembus ruang sinematik, menerangi partikel yang mengambang dan menghasilkan bayangan dramatis. Nada keseluruhannya muram dan epik, seolah diambil dari adegan klimaks sebuah film.\n\nPatung Fantasi Realistis ini diletakkan di atas meja putih, dengan latar belakang kabur berupa ruangan nyaman dan terang, di mana sebuah Koleksi Aksi Figur dalam Etalase. Figur aksi lainnya terlihat diburamkan di latar belakang. Fokus utama hanya tertuju pada Patung Fantasi Realistis dan alasnya, dengan pencahayaan terang dan lembut. Gaya keseluruhan harus kuat.`;
             
             outputPromptEl.textContent = promptTemplate.trim();
             resultPlaceholder.classList.add('d-none');
@@ -697,6 +769,7 @@
             showAlert('success', 'Prompt berhasil dibuat!');
         });
 
+        // Reset all form fields
         resetBtn.addEventListener('click', () => {
             promptForm.reset();
             ceritaKarakterEl.value = '';
@@ -710,6 +783,7 @@
             showAlert('success', 'Formulir telah direset.');
         });
 
+        // Copy the generated prompt to the clipboard
         copyBtn.addEventListener('click', () => {
             if (!outputPromptEl.textContent) {
                 showAlert('error', 'Tidak ada prompt untuk disalin.');
@@ -729,9 +803,24 @@
             document.body.removeChild(tempTextArea);
         });
 
+        // --- Theme Toggle Logic ---
+        function applyTheme(theme) {
+            body.classList.toggle('light-theme', theme === 'light');
+            themeToggleBtn.innerHTML = theme === 'light' ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
+        }
+
+        themeToggleBtn.addEventListener('click', () => {
+            let currentTheme = localStorage.getItem('theme') || 'dark';
+            let newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            localStorage.setItem('theme', newTheme);
+            applyTheme(newTheme);
+        });
+
         // --- Initial Load ---
-        checkAccess();
-        apiKeyInput.value = localStorage.getItem('geminiApiKey') || '';
+        checkAccess(); // Check if the user is already "logged in"
+        apiKeyInput.value = localStorage.getItem('geminiApiKey') || ''; // Load saved API key
+        const savedTheme = localStorage.getItem('theme') || 'dark'; // Default to dark
+        applyTheme(savedTheme);
     });
     </script>
 </body>
