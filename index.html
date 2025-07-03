@@ -46,7 +46,8 @@
             --card-text-color: var(--text-light);
             --card-h5-color: var(--text-light);
             --accent-color: var(--cyan);
-            --form-bg: rgba(15, 23, 42, 0.6);
+            --form-bg: rgba(15, 23, 42, 0.5);
+            --form-bg-focus: rgba(30, 41, 59, 0.7);
             --form-border: rgba(167, 139, 250, 0.3);
             --form-text-color: var(--text-light);
             --form-placeholder-color: var(--text-secondary-dark);
@@ -58,8 +59,8 @@
             --option-bg: #1e293b;
             --option-text: var(--text-light);
             --modal-bg: rgba(20, 18, 28, 0.85);
-            --modal-border: var(--glass-border);
-            --modal-text-color: var(--text-secondary);
+            --modal-border: rgba(255, 255, 255, 0.2);
+            --modal-text-color: var(--text-secondary-dark);
             --modal-strong-color: var(--text-light);
             
             --border-radius-lg: 1.25rem;
@@ -77,6 +78,7 @@
             --card-h5-color: var(--text-dark);
             --accent-color: var(--violet-dark);
             --form-bg: rgba(255, 255, 255, 0.7);
+            --form-bg-focus: rgba(255, 255, 255, 0.9);
             --form-border: rgba(0, 0, 0, 0.1);
             --form-text-color: var(--text-dark);
             --form-placeholder-color: #6b7280;
@@ -212,7 +214,8 @@
         .form-control:focus, .form-select:focus {
              border-color: var(--accent-color);
              box-shadow: 0 0 0 0.25rem rgba(139, 92, 246, 0.25);
-             background-color: var(--form-bg);
+             background-color: var(--form-bg-focus);
+             color: var(--form-text-color);
         }
         hr {
             border-color: var(--hr-color) !important;
