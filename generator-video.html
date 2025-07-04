@@ -5,20 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PROMPT GENERATOR VIDEO VEO3 - By Aiyra Design</title>
     
-    <!-- Tailwind CSS & Font Awesome -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
+        /* --- DEFAULT DARK THEME --- */
         body {
             font-family: 'Inter', sans-serif;
             background-color: #0f172a; /* slate-900 */
             color: #cbd5e1; /* slate-300 */
+            transition: background-color 0.3s, color 0.3s;
         }
         .gradient-text {
             background: linear-gradient(to right, #5eead4, #a78bfa, #f472b6);
@@ -28,9 +28,7 @@
             text-fill-color: transparent;
         }
         .form-label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
+            display: block; margin-bottom: 0.5rem; font-weight: 500;
             color: #94a3b8; /* slate-400 */
         }
         .form-input, .form-textarea, .form-select {
@@ -47,17 +45,10 @@
             box-shadow: 0 0 0 2px rgba(45, 212, 191, 0.3);
             outline: none;
         }
-        .checkbox-custom {
-            background-color: #1e293b;
-            border-color: #334155;
-        }
-        .checkbox-custom:checked {
-            background-color: #5eead4;
-            border-color: #5eead4;
-        }
+        .checkbox-custom { background-color: #1e293b; border-color: #334155; }
+        .checkbox-custom:checked { background-color: #5eead4; border-color: #5eead4; }
         .loading-spinner {
-            border: 3px solid rgba(255, 255, 255, 0.2);
-            width: 20px; height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.2); width: 20px; height: 20px;
             border-radius: 50%; border-left-color: white;
             animation: spin 1s linear infinite;
         }
@@ -69,8 +60,7 @@
             color: white; padding: 1rem 1.5rem; border-radius: 0.5rem;
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
             transition: bottom 0.5s ease-in-out, opacity 0.5s ease-in-out;
-            z-index: 100;
-            opacity: 0;
+            z-index: 100; opacity: 0;
         }
         .toast.show { bottom: 20px; opacity: 1; }
         .toast.error { background-color: #7f1d1d; border-color: #991b1b; }
@@ -86,38 +76,83 @@
             transform: scale(0.95); transition: transform 0.3s ease;
         }
         .modal-overlay.show .modal-content { transform: scale(1); }
+        fieldset:disabled { opacity: 0.5; pointer-events: none; }
+        .floating-btn {
+            background-color: #334155; /* slate-700 */
+            color: #cbd5e1; /* slate-300 */
+        }
+        
+        /* --- NEW LIGHT THEME --- */
+        body.light-theme {
+            background-color: #f1f5f9; /* slate-100 */
+            color: #1e293b; /* slate-800 */
+        }
+        body.light-theme .text-slate-400 { color: #64748b; /* slate-500 */ }
+        body.light-theme .bg-slate-800\/50 { background-color: rgba(255,255,255,0.7); }
+        body.light-theme .border-slate-700 { border-color: #e2e8f0; /* slate-200 */ }
+        body.light-theme .form-label { color: #475569; /* slate-600 */ }
+        body.light-theme .form-input, body.light-theme .form-textarea, body.light-theme .form-select {
+            background-color: #ffffff;
+            border-color: #cbd5e1; /* slate-300 */
+            color: #1e293b;
+        }
+        body.light-theme .form-input:focus, body.light-theme .form-textarea:focus, body.light-theme .form-select:focus {
+            border-color: #8b5cf6; /* purple-500 */
+            box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.3);
+        }
+        body.light-theme .modal-content { background-color: #f8fafc; border-color: #e2e8f0; }
+        body.light-theme .modal-overlay { background-color: rgba(226, 232, 240, 0.8); }
+        body.light-theme .floating-btn { background-color: white; color: #1e293b; }
+        body.light-theme .text-slate-500 { color: #64748b; /* slate-500 */ }
+        body.light-theme .bg-slate-700, body.light-theme .bg-slate-600 { background-color: #e2e8f0; }
+        body.light-theme .text-white { color: #1e293b; }
+        body.light-theme .bg-teal-600 { background-color: #0d9488; }
+        body.light-theme .bg-red-600 { background-color: #dc2626; }
+        body.light-theme .bg-blue-600 { background-color: #2563eb; }
+
     </style>
 </head>
 <body class="antialiased">
 
-    <!-- Login Section -->
-    <section id="login-section" class="flex items-center justify-center min-h-screen">
-        <div class="w-full max-w-sm p-8 bg-slate-800/50 border border-slate-700 rounded-xl shadow-2xl">
-            <h2 class="text-2xl font-bold text-center gradient-text mb-6">Login</h2>
-            <div class="space-y-4">
-                <div>
+    <div class="fixed top-5 right-5 z-50 flex flex-col gap-2">
+        <button id="theme-toggle" class="floating-btn h-12 w-12 flex items-center justify-center rounded-full shadow-lg border" title="Ganti Tema">
+            <i class="fas fa-sun"></i>
+        </button>
+        <button id="history-btn" class="floating-btn h-12 w-12 flex items-center justify-center rounded-full shadow-lg border" title="Riwayat Cerita">
+            <i class="fas fa-history"></i>
+        </button>
+    </div>
+
+    <div class="container mx-auto max-w-4xl px-4 py-8 sm:py-12">
+        <header class="text-center mb-10">
+            <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight gradient-text">
+                PROMPT GENERATOR VIDEO VEO3
+            </h1>
+            <p class="mt-3 text-lg text-slate-400">
+                By Aiyra Design | PROMPT.IQUE
+            </p>
+        </header>
+        
+        <section id="auth-section" class="bg-slate-800/50 border border-slate-700 rounded-xl p-6 sm:p-8 mb-8">
+            <div id="login-form">
+                <h3 class="text-xl font-bold text-center gradient-text mb-4">Akses Diperlukan</h3>
+                <div class="max-w-sm mx-auto">
                     <label for="password-input" class="form-label">Kata Sandi</label>
-                    <input type="password" id="password-input" class="form-input" placeholder="••••••••">
+                    <div class="flex flex-col sm:flex-row gap-2">
+                        <input type="password" id="password-input" class="form-input flex-grow" placeholder="••••••••">
+                        <button id="login-btn" class="w-full sm:w-auto bg-teal-600 hover:bg-teal-500 text-white font-bold py-2 px-6 rounded-lg">Masuk</button>
+                    </div>
                 </div>
-                <button id="login-btn" class="w-full bg-teal-600 hover:bg-teal-500 text-white font-bold py-3 px-4 rounded-lg">Masuk</button>
             </div>
-        </div>
-    </section>
+            <div id="logout-area" class="hidden">
+                <div class="flex justify-between items-center">
+                    <p class="text-lg font-semibold text-teal-400">Selamat datang!</p>
+                    <button id="logout-btn" class="px-4 py-2 bg-red-600 hover:bg-red-500 text-white font-semibold rounded-lg flex items-center justify-center flex-shrink-0"><i class="fas fa-sign-out-alt mr-2"></i>Logout</button>
+                </div>
+            </div>
+        </section>
 
-    <!-- Main Content (Initially Hidden) -->
-    <div id="main-content" class="hidden">
-        <div class="container mx-auto max-w-4xl px-4 py-8 sm:py-12">
-
-            <header class="text-center mb-10">
-                <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight gradient-text">
-                    PROMPT GENERATOR VIDEO VEO3
-                </h1>
-                <p class="mt-3 text-lg text-slate-400">
-                    By Aiyra Design | PROMPT.IQUE
-                </p>
-            </header>
-
-            <!-- AI Workflow Section -->
+        <fieldset id="generator-fieldset" disabled>
             <section class="bg-slate-800/50 border border-slate-700 rounded-xl p-6 sm:p-8 mb-8">
                 <div class="mb-6">
                     <label for="api-key-input" class="form-label"><i class="fas fa-key w-5 mr-1"></i>API Key Google AI</label>
@@ -137,7 +172,7 @@
                 </div>
                 
                 <div class="border-t border-slate-700 pt-6">
-                    <p class="mb-4 font-semibold text-lg text-slate-200">
+                    <p class="mb-4 font-semibold text-lg">
                         <span class="text-teal-400 font-bold">Langkah 1:</span> Sediakan Konsep Awal
                     </p>
                     <div class="space-y-4 mb-6">
@@ -162,11 +197,11 @@
                         </div>
                     </div>
                     
-                    <p class="mb-4 font-semibold text-lg text-slate-200 text-center">
+                    <p class="mb-4 font-semibold text-lg text-center">
                         <span class="text-teal-400 font-bold">Langkah 2:</span> Biarkan AI Mengembangkan Ide
                     </p>
                     <div class="text-center">
-                        <button id="fill-with-ai-btn" class="w-full sm:w-auto inline-flex items-center justify-center px-8 py-3 font-bold text-white rounded-full transition-all duration-300 bg-gradient-to-r from-teal-500 via-purple-500 to-pink-500 hover:from-teal-600 hover:via-purple-600 hover:to-pink-600 hover:shadow-lg hover:shadow-purple-500/20 disabled:opacity-50">
+                        <button id="fill-with-ai-btn" class="w-full sm:w-auto inline-flex items-center justify-center px-8 py-3 font-bold text-white rounded-full transition-all duration-300 bg-gradient-to-r from-teal-500 via-purple-500 to-pink-500 hover:from-teal-600 hover:via-purple-600 hover:to-pink-600 hover:shadow-lg hover:shadow-purple-500/20">
                             <i class="fas fa-magic mr-3"></i>
                             <span>Isi Form Otomatis</span>
                             <div id="ai-spinner" class="loading-spinner ml-3 hidden"></div>
@@ -175,16 +210,12 @@
                 </div>
             </section>
 
-            <!-- Detailed Form Section (Initially Hidden) -->
             <section id="detailed-form-section" class="hidden bg-slate-800/50 border border-slate-700 rounded-xl p-6 sm:p-8">
-                <h3 class="text-xl font-bold text-slate-200 mb-6 text-center">
+                <h3 class="text-xl font-bold text-center mb-6">
                     <span class="text-teal-400 font-bold">Langkah 3:</span> Sesuaikan Hasil Analisis AI
                 </h3>
                 <form id="prompt-form" class="space-y-6">
-                    <!-- Hidden inputs for title and art style to be used by generate button -->
-                    <input type="hidden" id="title">
-                    <input type="hidden" id="art-style">
-
+                    <input type="hidden" id="title"><input type="hidden" id="art-style">
                     <div>
                         <label for="description" class="form-label"><i class="fas fa-align-left w-5 mr-1"></i>Deskripsi / Narasi</label>
                         <textarea id="description" rows="4" class="form-textarea" placeholder="Deskripsi naratif yang dikembangkan oleh AI..."></textarea>
@@ -238,9 +269,7 @@
                     </div>
                     <div>
                         <label class="form-label"><i class="fas fa-comments w-5 mr-1"></i>Dialog Karakter</label>
-                        <div id="dialogue-container" class="space-y-2">
-                            <!-- Dialogue rows will be added here dynamically -->
-                        </div>
+                        <div id="dialogue-container" class="space-y-2"></div>
                         <button type="button" id="add-dialogue-btn" class="mt-2 text-sm text-teal-400 hover:text-teal-300 font-semibold"><i class="fas fa-plus-circle mr-1"></i>Tambah Dialog</button>
                     </div>
                     <div>
@@ -248,7 +277,7 @@
                         <textarea id="negative-prompt" rows="3" class="form-textarea" placeholder="Hal-hal yang harus dihindari..."></textarea>
                     </div>
                     <div class="pt-4 text-center">
-                         <p class="mb-4 font-semibold text-lg text-slate-200">
+                         <p class="mb-4 font-semibold text-lg">
                             <span class="text-teal-400 font-bold">Langkah 4:</span> Hasilkan & Salin Prompt Final
                         </p>
                         <button type="button" id="generate-btn" class="w-full md:w-auto bg-teal-600 hover:bg-teal-500 text-white font-bold py-3 px-8 rounded-lg shadow-md">
@@ -258,356 +287,6 @@
                 </form>
                 
                 <div id="result-section" class="mt-10 pt-6 border-t border-slate-700" style="display: none;">
-                    <h3 id="result-title" class="text-lg font-semibold mb-2 text-slate-300">Prompt Final:</h3>
+                    <h3 id="result-title" class="text-lg font-semibold mb-2">Prompt Final:</h3>
                     <div class="relative">
-                        <textarea id="generated-prompt" rows="12" class="form-textarea font-mono text-sm" readonly></textarea>
-                        <div class="absolute top-3 right-3 flex flex-col gap-2">
-                            <button id="copy-btn" class="bg-slate-600 hover:bg-slate-500 text-white font-semibold py-2 px-3 rounded-lg text-sm flex items-center justify-center">
-                                <i class="fas fa-copy mr-2"></i><span id="copy-text">Copy</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </div>
-
-        <footer class="text-center py-8 text-slate-500">
-            <p>Made with <i class="fas fa-heart text-red-500"></i> for Veo3 Prompting</p>
-        </footer>
-    </div>
-    
-    <!-- Modals -->
-    <div id="guide-modal" class="modal-overlay">
-        <div class="modal-content">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-xl font-bold text-white">Panduan API Key</h2>
-                <button id="close-guide-btn" class="text-slate-400 hover:text-white text-2xl">&times;</button>
-            </div>
-            <div class="text-slate-300 space-y-3">
-                <p>Untuk menggunakan fitur AI, Anda memerlukan Google AI API Key. Ikuti langkah-langkah berikut:</p>
-                <ol class="list-decimal list-inside space-y-2 pl-2">
-                    <li>Klik tombol "Dapatkan Key" untuk membuka <a href="https://aistudio.google.com/" target="_blank" class="text-teal-400 hover:underline font-semibold">Google AI Studio</a>.</li>
-                    <li>Login dengan akun Google Anda.</li>
-                    <li>Klik tombol <code class="bg-slate-700 text-slate-200 px-2 py-1 rounded-md text-sm">Get API key</code>.</li>
-                    <li>Klik <code class="bg-slate-700 text-slate-200 px-2 py-1 rounded-md text-sm">Create API key in new project</code>.</li>
-                    <li>Salin API key yang muncul, lalu tempel di aplikasi ini dan klik "Simpan".</li>
-                </ol>
-                <p class="text-sm text-slate-500 pt-2">Jaga kerahasiaan API Key Anda dan jangan bagikan kepada siapapun.</p>
-            </div>
-        </div>
-    </div>
-
-    <div id="toast" class="toast"></div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // --- Element References ---
-            const loginSection = document.getElementById('login-section');
-            const mainContent = document.getElementById('main-content');
-            const passwordInput = document.getElementById('password-input');
-            const loginBtn = document.getElementById('login-btn');
-            
-            const apiKeyInput = document.getElementById('api-key-input');
-            const saveApiKeyBtn = document.getElementById('save-api-key');
-            const apiKeyStatus = document.getElementById('api-key-status');
-            const mainTitleInput = document.getElementById('main-title');
-            const mainArtStyleSelect = document.getElementById('main-art-style');
-            const storyInput = document.getElementById('story-input');
-            const fillWithAiBtn = document.getElementById('fill-with-ai-btn');
-            const aiSpinner = document.getElementById('ai-spinner');
-            const detailedFormSection = document.getElementById('detailed-form-section');
-            const generateBtn = document.getElementById('generate-btn');
-            const resultSection = document.getElementById('result-section');
-            const resultTitle = document.getElementById('result-title');
-            const generatedPromptTextarea = document.getElementById('generated-prompt');
-            const copyBtn = document.getElementById('copy-btn');
-            const copyText = document.getElementById('copy-text');
-            const toast = document.getElementById('toast');
-            const guideBtn = document.getElementById('guide-btn');
-            const guideModal = document.getElementById('guide-modal');
-            const closeGuideBtn = document.getElementById('close-guide-btn');
-            const dialogueContainer = document.getElementById('dialogue-container');
-            const addDialogueBtn = document.getElementById('add-dialogue-btn');
-
-            // --- Toast Notification ---
-            function showToast(message, isError = false) {
-                toast.textContent = message;
-                toast.className = 'toast';
-                if (isError) toast.classList.add('error');
-                toast.classList.add('show');
-                setTimeout(() => {
-                    toast.classList.remove('show');
-                }, 3000);
-            }
-            
-            // --- Login Logic ---
-            function showMainContent() {
-                loginSection.classList.add('hidden');
-                mainContent.classList.remove('hidden');
-            }
-
-            loginBtn.addEventListener('click', () => {
-                if (passwordInput.value === '123') {
-                    sessionStorage.setItem('isLoggedIn', 'true');
-                    showMainContent();
-                } else {
-                    showToast('Kata sandi salah.', true);
-                }
-            });
-            
-            // Check if already logged in this session
-            if (sessionStorage.getItem('isLoggedIn') === 'true') {
-                showMainContent();
-            }
-
-
-            // --- Modal Management ---
-            function openModal(modal) { modal.classList.add('show'); }
-            function closeModal(modal) { modal.classList.remove('show'); }
-            guideBtn.addEventListener('click', () => openModal(guideModal));
-            closeGuideBtn.addEventListener('click', () => closeModal(guideModal));
-            guideModal.addEventListener('click', (e) => {
-                if (e.target === guideModal) closeModal(guideModal);
-            });
-
-            // --- API Key Management ---
-            const updateApiKeyStatus = () => {
-                const key = localStorage.getItem('geminiApiKey');
-                apiKeyStatus.textContent = key ? 'Status: API Key tersimpan.' : 'Status: API Key belum diatur.';
-                apiKeyStatus.style.color = key ? '#5eead4' : '#f59e0b';
-                if(key) apiKeyInput.value = key;
-            };
-            saveApiKeyBtn.addEventListener('click', () => {
-                const key = apiKeyInput.value.trim();
-                if (key) {
-                    localStorage.setItem('geminiApiKey', key);
-                    showToast('API Key berhasil disimpan.');
-                } else {
-                    localStorage.removeItem('geminiApiKey');
-                    showToast('API Key dihapus.', true);
-                }
-                updateApiKeyStatus();
-            });
-            updateApiKeyStatus();
-            
-            // --- Dialogue Management ---
-            const createDialogueRow = (character = '', line = '') => {
-                const row = document.createElement('div');
-                row.className = 'flex flex-col sm:flex-row gap-2 items-center dialogue-row';
-                row.innerHTML = `
-                    <input type="text" class="form-input w-full sm:w-1/3 dialogue-character" placeholder="Karakter" value="${character}">
-                    <input type="text" class="form-input w-full sm:w-2/3 dialogue-line" placeholder="Kalimat dialog..." value="${line}">
-                    <button type="button" class="text-red-500 hover:text-red-400 remove-dialogue-btn p-1"><i class="fas fa-times-circle"></i></button>
-                `;
-                row.querySelector('.remove-dialogue-btn').addEventListener('click', () => row.remove());
-                dialogueContainer.appendChild(row);
-            };
-            addDialogueBtn.addEventListener('click', () => createDialogueRow());
-
-            // --- AI Form Filling Logic ---
-            fillWithAiBtn.addEventListener('click', async () => {
-                const apiKey = localStorage.getItem('geminiApiKey');
-                const title = mainTitleInput.value.trim();
-                const artStyle = mainArtStyleSelect.value;
-                const story = storyInput.value.trim();
-
-                if (!apiKey) return showToast('Harap masukkan dan simpan API Key Anda.', true);
-                if (!title) return showToast('Harap isi Judul Video.', true);
-                if (!story) return showToast('Harap tulis ide cerita Anda.', true);
-
-                aiSpinner.classList.remove('hidden');
-                fillWithAiBtn.disabled = true;
-
-                const getOptions = (selector) => Array.from(document.querySelectorAll(selector)).map(el => `"${el.value}"`).join(', ');
-                
-                const systemPrompt = `Act as a world-class film producer, creative director, and entire pre-production team. Your task is to take a core concept and flesh it out into a detailed, cinematic treatment for a short, impactful **8-second video clip**.
-                
-                You are given the following initial concept:
-                - **Working Title**: "${title}"
-                - **Chosen Visual Style**: "${artStyle}"
-                - **Core Idea / Story / Dialogue**: "${story}"
-
-                Your response MUST be a valid JSON object only, with no other text, comments, or markdown formatting. All string values in the JSON must be in **Bahasa Indonesia**.
-                The JSON object must have these exact keys: "description", "mood", "action", "sound", "cameraMovements", "colorPalette", "importantObjects", "dialogue", "negativePrompt".
-                
-                Instructions for your creative process (for an 8-second clip):
-                - **description**: Write a rich, narrative description for the scene in Bahasa Indonesia. Focus on a single, powerful moment from the story, suitable for an 8-second clip. Avoid generic names unless provided.
-                - **mood**: Select a mood from this list that enhances the story: ${getOptions('#mood option')}.
-                - **action**: Describe the primary, concise action happening in the scene, in Bahasa Indonesia.
-                - **sound**: Suggest a key sound effect or music style, in Bahasa Indonesia.
-                - **cameraMovements**: Choose one or two impactful camera movements from this list: [${getOptions('input[name="camera"]')}].
-                - **colorPalette**: Define a dominant color palette. Choose one or more from: [${getOptions('input[name="color"]')}].
-                - **importantObjects**: List 1-3 crucial props or set elements, in Bahasa Indonesia.
-                - **dialogue**: This must be an array of objects, each with a "character" and "line" property. **CRITICAL**: If the user provided dialogue in quotes (e.g., "Dialog 1." "Dialog 2."), you MUST extract all of it, assign speakers (e.g., "Pria 1", "Wanita"), and format it into the array. If no dialogue is provided, creatively write a short exchange for the array.
-                - **negativePrompt**: Specify what to avoid to maintain the desired quality and tone, in Bahasa Indonesia.`;
-                
-                const payload = {
-                    contents: [{ parts: [{ text: systemPrompt }] }],
-                    generationConfig: { responseMimeType: "application/json" }
-                };
-
-                try {
-                    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload)
-                    });
-
-                    if (!response.ok) throw new Error((await response.json()).error.message);
-
-                    const result = await response.json();
-                    if (!result.candidates?.[0]?.content?.parts?.[0]?.text) throw new Error("Invalid AI response structure.");
-
-                    let rawText = result.candidates[0].content.parts[0].text.replace(/^```json\s*/, '').replace(/\s*```$/, '');
-                    const data = JSON.parse(rawText);
-
-                    // Populate the form with Indonesian values
-                    document.getElementById('title').value = title;
-                    document.getElementById('art-style').value = artStyle;
-                    
-                    document.getElementById('description').value = data.description || '';
-                    document.getElementById('mood').value = data.mood || 'Dramatis';
-                    document.getElementById('action').value = data.action || '';
-                    document.getElementById('sound').value = data.sound || '';
-                    document.getElementById('important-objects').value = data.importantObjects || '';
-                    document.getElementById('negative-prompt').value = data.negativePrompt || '';
-                    
-                    dialogueContainer.innerHTML = ''; // Clear existing dialogue rows
-                    if (data.dialogue && Array.isArray(data.dialogue)) {
-                        data.dialogue.forEach(d => createDialogueRow(d.character, d.line));
-                    } else if (data.dialogue) { // Fallback for single string
-                        createDialogueRow('Karakter', data.dialogue);
-                    } else {
-                        createDialogueRow(); // Add one empty row if AI provides no dialogue
-                    }
-
-
-                    document.querySelectorAll('input[name="camera"]').forEach(cb => cb.checked = data.cameraMovements?.includes(cb.value));
-                    document.querySelectorAll('input[name="color"]').forEach(cb => cb.checked = data.colorPalette?.includes(cb.value));
-                    
-                    detailedFormSection.classList.remove('hidden');
-                    showToast('Form berhasil diisi oleh AI!');
-                    detailedFormSection.scrollIntoView({ behavior: 'smooth' });
-
-                } catch (error) {
-                    console.error('AI Error:', error);
-                    showToast(`Error: ${error.message}`, true);
-                } finally {
-                    aiSpinner.classList.add('hidden');
-                    fillWithAiBtn.disabled = false;
-                }
-            });
-
-            // --- Final Prompt Generation Logic ---
-            generateBtn.addEventListener('click', async () => {
-                const getCheckedValues = (name) => Array.from(document.querySelectorAll(`input[name="${name}"]:checked`)).map(cb => cb.value).join(', ');
-                
-                const dialogueRows = document.querySelectorAll('.dialogue-row');
-                const dialogueData = [];
-                dialogueRows.forEach(row => {
-                    const char = row.querySelector('.dialogue-character').value.trim();
-                    const line = row.querySelector('.dialogue-line').value.trim();
-                    if (char && line) {
-                        dialogueData.push({ character: char, line: line });
-                    }
-                });
-
-                const indonesianData = {
-                    title: document.getElementById('title').value.trim(),
-                    description: document.getElementById('description').value.trim(),
-                    artStyle: document.getElementById('art-style').value,
-                    mood: document.getElementById('mood').value,
-                    action: document.getElementById('action').value.trim(),
-                    sound: document.getElementById('sound').value.trim(),
-                    cameraMovements: getCheckedValues('camera'),
-                    colorPalette: getCheckedValues('color'),
-                    importantObjects: document.getElementById('important-objects').value.trim(),
-                    dialogue: dialogueData,
-                    negativePrompt: document.getElementById('negative-prompt').value.trim()
-                };
-                
-                const apiKey = localStorage.getItem('geminiApiKey');
-                if (!apiKey) return showToast('API Key diperlukan untuk membuat prompt.', true);
-
-                generateBtn.disabled = true;
-                generateBtn.innerHTML = `<div class="loading-spinner mx-auto"></div>`;
-
-                const translationPrompt = `Translate the values in the following JSON object from Indonesian to English.
-                **CRITICAL EXCEPTION**: In the "dialogue" array, translate the "character" value, but do NOT translate the "line" value. Keep the "line" in its original language.
-                Return a valid JSON object with the same structure.
-
-                Indonesian JSON:
-                ${JSON.stringify(indonesianData, null, 2)}
-                `;
-
-                try {
-                    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            contents: [{ parts: [{ text: translationPrompt }] }],
-                            generationConfig: { responseMimeType: "application/json" }
-                        })
-                    });
-
-                    if (!response.ok) throw new Error((await response.json()).error.message);
-                    
-                    const result = await response.json();
-                    let rawText = result.candidates[0].content.parts[0].text.replace(/^```json\s*/, '').replace(/\s*```$/, '');
-                    const englishData = JSON.parse(rawText);
-
-                    let promptLines = [];
-                    if (englishData.title && englishData.description) promptLines.push(`${englishData.title} — ${englishData.description}`);
-                    else if (englishData.title) promptLines.push(englishData.title);
-                    else if (englishData.description) promptLines.push(englishData.description);
-
-                    if (englishData.artStyle) promptLines.push(`Visual style: ${englishData.artStyle}.`);
-                    if (englishData.mood) promptLines.push(`Mood: ${englishData.mood}.`);
-                    if (englishData.action) promptLines.push(`Action: ${englishData.action}.`);
-                    if (englishData.cameraMovements) promptLines.push(`Camera movement: ${englishData.cameraMovements}.`);
-                    if (englishData.colorPalette) promptLines.push(`Color palette: ${englishData.colorPalette}.`);
-                    if (englishData.importantObjects) promptLines.push(`Important objects: ${englishData.importantObjects}.`);
-                    if (englishData.sound) promptLines.push(`Sound/Music: ${englishData.sound}.`);
-                    
-                    if (englishData.dialogue && Array.isArray(englishData.dialogue)) {
-                        englishData.dialogue.forEach(d => {
-                            if (d.character && d.line) {
-                                promptLines.push(`${d.character} says: "${d.line}"`);
-                            }
-                        });
-                    }
-                    
-                    if (englishData.negativePrompt) promptLines.push(`Negative prompt: ${englishData.negativePrompt}`);
-
-                    generatedPromptTextarea.value = promptLines.join('\n');
-                    resultTitle.textContent = "Prompt Final (Bahasa Inggris):";
-                    resultSection.style.display = 'block';
-                    resultSection.scrollIntoView({ behavior: 'smooth' });
-
-                } catch (error) {
-                    console.error('Translation/Generation Error:', error);
-                    showToast(`Gagal membuat prompt: ${error.message}`, true);
-                } finally {
-                    generateBtn.disabled = false;
-                    generateBtn.innerHTML = `<i class="fas fa-cogs mr-2"></i>Generate Prompt`;
-                }
-            });
-
-            // --- Copy to Clipboard Logic ---
-            copyBtn.addEventListener('click', () => {
-                if (generatedPromptTextarea.value) {
-                    navigator.clipboard.writeText(generatedPromptTextarea.value).then(() => {
-                        copyText.textContent = 'Copied!';
-                        setTimeout(() => { copyText.textContent = 'Copy'; }, 2000);
-                    }).catch(err => {
-                        showToast('Gagal menyalin prompt.', true);
-                    });
-                }
-            });
-            
-            // Initialize with one dialogue row
-            createDialogueRow();
-        });
-    </script>
-</body>
-</html>
+                        <textarea id="generated-prompt" rows="12" class="fo
