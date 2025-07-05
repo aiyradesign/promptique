@@ -302,9 +302,14 @@
                          <p class="mb-4 font-semibold text-lg">
                             <span class="text-teal-400 font-bold">Langkah 4:</span> Hasilkan & Salin Prompt Final
                         </p>
-                        <button type="button" id="generate-btn" class="w-full md:w-auto bg-teal-600 hover:bg-teal-500 text-white font-bold py-3 px-8 rounded-lg shadow-md">
-                            <i class="fas fa-cogs mr-2"></i>Generate Prompt
-                        </button>
+                        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                            <button type="button" id="generate-btn" class="w-full sm:w-auto bg-teal-600 hover:bg-teal-500 text-white font-bold py-3 px-8 rounded-lg shadow-md">
+                                <i class="fas fa-cogs mr-2"></i>Generate Prompt
+                            </button>
+                            <button type="button" id="reset-form-btn" class="w-full sm:w-auto bg-slate-600 hover:bg-slate-500 text-white font-bold py-3 px-8 rounded-lg shadow-md">
+                                <i class="fas fa-sync-alt mr-2"></i>Reset Form
+                            </button>
+                        </div>
                     </div>
                 </form>
                 
@@ -315,9 +320,6 @@
                         <div class="absolute top-3 right-3 flex flex-col gap-2">
                             <button id="copy-btn" class="bg-slate-600 hover:bg-slate-500 text-white font-semibold py-2 px-3 rounded-lg text-sm flex items-center justify-center">
                                 <i class="fas fa-copy mr-2"></i><span id="copy-text">Copy</span>
-                            </button>
-                            <button id="reset-output-btn" class="bg-slate-600 hover:bg-slate-500 text-white font-semibold py-2 px-3 rounded-lg text-sm flex items-center justify-center" title="Hapus Hasil">
-                                <i class="fas fa-broom"></i>
                             </button>
                         </div>
                     </div>
@@ -407,12 +409,12 @@
             const aiSpinner = document.getElementById('ai-spinner');
             const detailedFormSection = document.getElementById('detailed-form-section');
             const generateBtn = document.getElementById('generate-btn');
+            const resetFormBtn = document.getElementById('reset-form-btn');
             const resultSection = document.getElementById('result-section');
             const resultTitle = document.getElementById('result-title');
             const generatedPromptTextarea = document.getElementById('generated-prompt');
             const copyBtn = document.getElementById('copy-btn');
             const copyText = document.getElementById('copy-text');
-            const resetOutputBtn = document.getElementById('reset-output-btn');
             const toastContainer = document.getElementById('toast-container');
             const guideBtn = document.getElementById('guide-btn');
             const guideModal = document.getElementById('guide-modal');
@@ -591,9 +593,9 @@
                 
                 const index = button.dataset.index;
                 let history = getHistory();
-                const item = history[index];
-
+                
                 if (button.classList.contains('load-history-btn')) {
+                    const item = history[index];
                     if (item) {
                         mainTitleInput.value = item.title;
                         mainArtStyleSelect.value = item.artStyle;
@@ -818,10 +820,16 @@
                 }
             });
             
-            resetOutputBtn.addEventListener('click', () => {
-                generatedPromptTextarea.value = '';
+            resetFormBtn.addEventListener('click', () => {
+                document.getElementById('prompt-form').reset();
+                mainTitleInput.value = '';
+                storyInput.value = '';
+                mainArtStyleSelect.selectedIndex = 0;
+                dialogueContainer.innerHTML = '';
+                createDialogueRow();
+                detailedFormSection.classList.add('hidden');
                 resultSection.style.display = 'none';
-                showToast('Hasil prompt telah dibersihkan.');
+                showToast('Formulir telah berhasil direset.');
             });
             
             // Initialize with one dialogue row
