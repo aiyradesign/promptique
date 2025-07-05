@@ -5,9 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PROMPT GENERATOR VIDEO VEO3 - By Aiyra Design</title>
     
+    <!-- Tailwind CSS & Font Awesome -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -80,9 +82,10 @@
         .floating-btn {
             background-color: #334155; /* slate-700 */
             color: #cbd5e1; /* slate-300 */
+            border: 1px solid #4b5563; /* slate-600 */
         }
         
-        /* --- NEW LIGHT THEME --- */
+        /* --- LIGHT THEME OVERRIDES --- */
         body.light-theme {
             background-color: #f1f5f9; /* slate-100 */
             color: #1e293b; /* slate-800 */
@@ -107,18 +110,20 @@
         body.light-theme .bg-slate-700, body.light-theme .bg-slate-600 { background-color: #e2e8f0; }
         body.light-theme .text-white { color: #1e293b; }
         body.light-theme .bg-teal-600 { background-color: #0d9488; }
-        body.light-theme .bg-red-600 { background-color: #dc2626; }
+        body.light-theme .bg-red-600, body.light-theme .bg-red-700 { background-color: #dc2626; }
         body.light-theme .bg-blue-600 { background-color: #2563eb; }
-
+        body.light-theme .toast { background-color: #ffffff; color: #1e293b; }
+        body.light-theme .toast.error { background-color: #fee2e2; color: #991b1b; }
     </style>
 </head>
 <body class="antialiased">
 
+    <!-- Floating Buttons -->
     <div class="fixed top-5 right-5 z-50 flex flex-col gap-2">
-        <button id="theme-toggle" class="floating-btn h-12 w-12 flex items-center justify-center rounded-full shadow-lg border" title="Ganti Tema">
+        <button id="theme-toggle" class="floating-btn h-12 w-12 flex items-center justify-center rounded-full shadow-lg" title="Ganti Tema">
             <i class="fas fa-sun"></i>
         </button>
-        <button id="history-btn" class="floating-btn h-12 w-12 flex items-center justify-center rounded-full shadow-lg border" title="Riwayat Cerita">
+        <button id="history-btn" class="floating-btn h-12 w-12 flex items-center justify-center rounded-full shadow-lg" title="Riwayat Cerita">
             <i class="fas fa-history"></i>
         </button>
     </div>
@@ -133,6 +138,7 @@
             </p>
         </header>
         
+        <!-- Auth Section -->
         <section id="auth-section" class="bg-slate-800/50 border border-slate-700 rounded-xl p-6 sm:p-8 mb-8">
             <div id="login-form">
                 <h3 class="text-xl font-bold text-center gradient-text mb-4">Akses Diperlukan</h3>
@@ -152,7 +158,9 @@
             </div>
         </section>
 
+        <!-- Main Generator Fieldset -->
         <fieldset id="generator-fieldset" disabled>
+            <!-- AI Workflow Section -->
             <section class="bg-slate-800/50 border border-slate-700 rounded-xl p-6 sm:p-8 mb-8">
                 <div class="mb-6">
                     <label for="api-key-input" class="form-label"><i class="fas fa-key w-5 mr-1"></i>API Key Google AI</label>
@@ -166,7 +174,10 @@
                     
                     <div class="flex flex-col sm:flex-row gap-2">
                         <input type="password" id="api-key-input" class="form-input flex-grow" placeholder="Masukkan API Key Anda...">
-                        <button id="save-api-key" class="w-full sm:w-auto px-4 py-2 bg-slate-600 hover:bg-slate-500 text-white font-semibold rounded-lg flex-shrink-0"><i class="fas fa-save mr-2"></i>Simpan</button>
+                        <div class="grid grid-cols-2 sm:flex gap-2 mt-2 sm:mt-0 w-full sm:w-auto">
+                            <button id="save-api-key" class="w-full justify-center px-4 py-2 bg-slate-600 hover:bg-slate-500 text-white font-semibold rounded-lg flex items-center flex-shrink-0"><i class="fas fa-save mr-2"></i>Simpan</button>
+                            <button id="delete-api-key" class="w-full justify-center px-4 py-2 bg-red-700 hover:bg-red-600 text-white font-semibold rounded-lg flex items-center flex-shrink-0"><i class="fas fa-trash-alt mr-2"></i>Hapus</button>
+                        </div>
                     </div>
                     <p id="api-key-status" class="text-xs mt-2 text-slate-500">Status: Belum diatur.</p>
                 </div>
@@ -210,6 +221,7 @@
                 </div>
             </section>
 
+            <!-- Detailed Form Section (Initially Hidden) -->
             <section id="detailed-form-section" class="hidden bg-slate-800/50 border border-slate-700 rounded-xl p-6 sm:p-8">
                 <h3 class="text-xl font-bold text-center mb-6">
                     <span class="text-teal-400 font-bold">Langkah 3:</span> Sesuaikan Hasil Analisis AI
@@ -305,6 +317,7 @@
         </fieldset>
     </div>
     
+    <!-- Modals -->
     <div id="guide-modal" class="modal-overlay">
         <div class="modal-content">
             <div class="flex justify-between items-center mb-4">
@@ -312,14 +325,27 @@
                 <button id="close-guide-btn" class="text-2xl">&times;</button>
             </div>
             <div class="space-y-3">
-                <p>Untuk menggunakan fitur AI, Anda memerlukan Google AI API Key. Ikuti langkah-langkah berikut:</p>
-                <ol class="list-decimal list-inside space-y-2 pl-2">
-                    <li>Klik tombol "Dapatkan Key" untuk membuka <a href="https://aistudio.google.com/" target="_blank" class="text-teal-400 hover:underline font-semibold">Google AI Studio</a>.</li>
-                    <li>Login dengan akun Google Anda.</li>
-                    <li>Klik tombol <code class="bg-slate-700 text-slate-200 px-2 py-1 rounded-md text-sm">Get API key</code>.</li>
-                    <li>Klik <code class="bg-slate-700 text-slate-200 px-2 py-1 rounded-md text-sm">Create API key in new project</code>.</li>
-                    <li>Salin API key yang muncul, lalu tempel di aplikasi ini dan klik "Simpan".</li>
-                </ol>
+                <div class="hidden md:block">
+                    <h3 class="font-semibold text-lg text-teal-400">Tampilan Desktop:</h3>
+                    <ol class="list-decimal list-inside space-y-2 pl-2">
+                        <li>Buka <a href="https://aistudio.google.com/" target="_blank" class="text-teal-400 hover:underline font-semibold">Google AI Studio</a>.</li>
+                        <li>Login dengan akun Google Anda.</li>
+                        <li>Di sisi kiri, klik tombol <code class="bg-slate-700 text-slate-200 px-2 py-1 rounded-md text-sm">Get API key</code>.</li>
+                        <li>Klik <code class="bg-slate-700 text-slate-200 px-2 py-1 rounded-md text-sm">Create API key in new project</code>.</li>
+                        <li>Salin API key yang muncul, lalu tempel di aplikasi ini dan klik "Simpan".</li>
+                    </ol>
+                </div>
+                <div class="block md:hidden">
+                    <h3 class="font-semibold text-lg text-teal-400">Tampilan Mobile:</h3>
+                     <ol class="list-decimal list-inside space-y-2 pl-2">
+                        <li>Buka <a href="https://aistudio.google.com/" target="_blank" class="text-teal-400 hover:underline font-semibold">Google AI Studio</a>.</li>
+                        <li>Login dengan akun Google Anda.</li>
+                        <li>Ketuk ikon menu (&#9776;) di pojok kiri atas.</li>
+                        <li>Ketuk menu <code class="bg-slate-700 text-slate-200 px-2 py-1 rounded-md text-sm">Get API key</code>.</li>
+                        <li>Klik <code class="bg-slate-700 text-slate-200 px-2 py-1 rounded-md text-sm">Create API key in new project</code>.</li>
+                        <li>Salin API key yang muncul, lalu tempel di aplikasi ini dan klik "Simpan".</li>
+                    </ol>
+                </div>
                 <p class="text-sm text-slate-500 pt-2">Jaga kerahasiaan API Key Anda dan jangan bagikan kepada siapapun.</p>
             </div>
         </div>
@@ -349,6 +375,7 @@
             
             const apiKeyInput = document.getElementById('api-key-input');
             const saveApiKeyBtn = document.getElementById('save-api-key');
+            const deleteApiKeyBtn = document.getElementById('delete-api-key');
             const apiKeyStatus = document.getElementById('api-key-status');
             const mainTitleInput = document.getElementById('main-title');
             const mainArtStyleSelect = document.getElementById('main-art-style');
@@ -453,9 +480,14 @@
                     localStorage.setItem('geminiApiKey', key);
                     showToast('API Key berhasil disimpan.');
                 } else {
-                    localStorage.removeItem('geminiApiKey');
-                    showToast('API Key dihapus.', true);
+                   showToast('Kolom API Key kosong.', true);
                 }
+                updateApiKeyStatus();
+            });
+            deleteApiKeyBtn.addEventListener('click', () => {
+                localStorage.removeItem('geminiApiKey');
+                apiKeyInput.value = '';
+                showToast('API Key berhasil dihapus.');
                 updateApiKeyStatus();
             });
             updateApiKeyStatus();
