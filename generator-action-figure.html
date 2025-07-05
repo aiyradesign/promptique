@@ -584,21 +584,20 @@
 
             try {
                 const generationPayload = {
-                    contents: [{ role: "user", parts: [{ text: `Anda adalah seorang asisten kreatif berbahasa Indonesia. Tugas Anda adalah membaca sinopsis cerita dari pengguna dan mengembangkannya menjadi konsep action figure yang detail. Berdasarkan cerita berikut: "${userStory}" dan tema yang dipilih: "${theme}", isi semua detail karakter. Penting: Pastikan field "lingkungan" (detail alas) sangat sesuai dengan tema "${theme}" yang dipilih. Untuk field "senjataAtauBenda", HANYA isi jika ada penyebutan senjata atau benda penting yang dipegang/digunakan karakter. Jika tidak ada, biarkan kosong. Untuk field "astralMagis", HANYA isi jika ada penyebutan hewan atau makhluk dalam cerita. Jika tidak ada, biarkan kosong.` }] }],
+                    contents: [{ role: "user", parts: [{ text: `Anda adalah seorang asisten kreatif berbahasa Indonesia. Tugas Anda adalah membaca sinopsis cerita dari pengguna dan mengembangkannya menjadi konsep action figure yang detail. Berdasarkan cerita berikut: "${userStory}", isi semua detail karakter. Penting: Untuk field "lingkungan", deskripsikan miniatur diorama yang sesuai dengan cerita karakter (misal: jika putri duyung, maka "lautan dalam dengan terumbu karang"). Untuk field "senjataAtauBenda", HANYA isi jika ada penyebutan senjata atau benda penting yang dipegang/digunakan karakter. Jika tidak ada, biarkan kosong. Untuk field "astralMagis", HANYA isi jika ada penyebutan hewan atau makhluk dalam cerita. Jika tidak ada, biarkan kosong.` }] }],
                     generationConfig: {
                         responseMimeType: "application/json",
                         responseSchema: {
                             type: "OBJECT",
                             properties: {
-                                "isValid": { "type": "BOOLEAN" }, "namaKarakter": { "type": "STRING" }, "gender": { "type": "STRING", "enum": ["Pria", "Wanita", "Non-biner"] }, "deskripsiKarakter": { "type": "STRING" }, "deskripsiKostum": { "type": "STRING" }, "senjataAtauBenda": { "type": "STRING" }, "deskripsiPose": { "type": "STRING" }, "lingkungan": { "type": "STRING" }, "astralMagis": { "type": "STRING" }
-                            },
-                            required: ["isValid"]
+                                "namaKarakter": { "type": "STRING" }, "gender": { "type": "STRING", "enum": ["Pria", "Wanita", "Non-biner"] }, "deskripsiKarakter": { "type": "STRING" }, "deskripsiKostum": { "type": "STRING" }, "senjataAtauBenda": { "type": "STRING" }, "deskripsiPose": { "type": "STRING" }, "lingkungan": { "type": "STRING" }, "astralMagis": { "type": "STRING" }
+                            }
                         }
                     }
                 };
                 const characterData = await fetchAI(apiKey, generationPayload);
 
-                if (characterData && characterData.isValid) {
+                if (characterData) {
                     document.getElementById('namaKarakter').value = characterData.namaKarakter || '';
                     document.getElementById('gender').value = characterData.gender || '';
                     document.getElementById('deskripsiKarakter').value = characterData.deskripsiKarakter || '';
