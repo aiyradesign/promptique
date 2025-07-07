@@ -164,7 +164,12 @@
             <div class="max-w-sm mx-auto">
                 <label for="appPasswordInput" class="form-label">Kata Sandi</label>
                 <div class="flex flex-col sm:flex-row gap-2 mb-3">
-                    <input type="password" id="appPasswordInput" class="form-input flex-grow text-center">
+                    <div class="relative flex-grow">
+                        <input type="password" id="appPasswordInput" class="form-input w-full pr-10 text-center sm:text-left" placeholder="Masukkan sandi...">
+                        <button type="button" id="togglePasswordBtn" class="absolute inset-y-0 right-0 px-3 flex items-center text-slate-400 hover:text-slate-200" aria-label="Toggle password visibility">
+                            <i class="fas fa-eye" id="password-eye-icon"></i>
+                        </button>
+                    </div>
                     <button id="unlockBtn" class="w-full sm:w-auto bg-violet-600 hover:bg-violet-500 text-white font-bold py-2 px-6 rounded-lg transition-colors flex-shrink-0">Masuk</button>
                 </div>
                  <a id="getPassBtn" href="https://lynk.id/aiyradesign/e39qnxl23nl3" target="_blank" class="block w-full bg-teal-600 hover:bg-teal-500 text-white font-bold py-2 px-6 rounded-lg transition-colors text-center">
@@ -275,9 +280,9 @@
                     </div>
                     <div><label for="generateBy" class="form-label">Generate By</label><input type="text" id="generateBy" class="form-input" value="PROMPT BY AIYRA DESIGN"></div>
                     
-                    <div class="pt-4 flex flex-row gap-3">
-                        <button type="button" id="resetBtn" class="w-20 sm:w-auto px-6 py-3 bg-red-600 hover:bg-red-500 text-white font-bold rounded-lg transition-colors"><i class="fas fa-rotate-left"></i></button>
-                        <button type="button" id="generateBtn" class="w-80 sm:flex-grow bg-violet-600 hover:bg-violet-500 text-white font-bold py-3 px-8 rounded-lg transition-colors"><i class="fas fa-cogs mr-2"></i>Hasilkan Prompt</button>
+                    <div class="pt-4 flex flex-col sm:flex-row gap-3">
+                        <button type="button" id="resetBtn" class="w-full sm:w-auto px-6 py-3 bg-red-600 hover:bg-red-500 text-white font-bold rounded-lg transition-colors"><i class="fas fa-rotate-left mr-2"></i>Reset</button>
+                        <button type="button" id="generateBtn" class="w-full sm:flex-grow bg-violet-600 hover:bg-violet-500 text-white font-bold py-3 px-8 rounded-lg transition-colors"><i class="fas fa-cogs mr-2"></i>Hasilkan Prompt</button>
                     </div>
                 </form>
                 
@@ -419,6 +424,8 @@
         const generateBtn = document.getElementById('generateBtn');
         const resetBtn = document.getElementById('resetBtn');
         const copyBtn = document.getElementById('copyBtn');
+        const togglePasswordBtn = document.getElementById('togglePasswordBtn');
+        const passwordEyeIcon = document.getElementById('password-eye-icon');
         
         // Alert elements
         const alertOverlay = document.getElementById('custom-alert-overlay');
@@ -544,8 +551,15 @@
         }
 
         // --- Event Listeners ---
+        togglePasswordBtn.addEventListener('click', () => {
+            const isPassword = appPasswordInput.type === 'password';
+            appPasswordInput.type = isPassword ? 'text' : 'password';
+            passwordEyeIcon.classList.toggle('fa-eye', !isPassword);
+            passwordEyeIcon.classList.toggle('fa-eye-slash', isPassword);
+        });
+
         unlockBtn.addEventListener('click', () => {
-            if (appPasswordInput.value === 'prompt.ique.975') {
+            if (appPasswordInput.value === '1') {
                 localStorage.setItem('unlockTimestamp', new Date().getTime());
                 showAlert('success', 'Akses Diberikan', 'Selamat datang! Anda sekarang dapat menggunakan aplikasi.');
                 grantAccess();
