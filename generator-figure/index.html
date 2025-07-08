@@ -26,10 +26,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
+        /* --- Base Styles (Dark Mode) --- */
         body {
             font-family: 'Inter', sans-serif;
             background-color: #0f172a; /* slate-900 */
             color: #cbd5e1; /* slate-300 */
+            transition: background-color 0.3s, color 0.3s;
         }
         .gradient-text {
             background: linear-gradient(to right, #5eead4, #a78bfa, #f472b6);
@@ -75,7 +77,7 @@
         }
         @keyframes spin { to { transform: rotate(360deg); } }
         
-        /* Custom Alert System Styles */
+        /* --- Custom Alert System Styles --- */
         .custom-alert-overlay {
             position: fixed; inset: 0; background-color: rgba(15, 23, 42, 0.6);
             backdrop-filter: blur(5px); display: flex; align-items: center; justify-content: center;
@@ -97,6 +99,7 @@
         .custom-alert-icon.success { background-color: rgba(45, 212, 191, 0.1); color: #5eead4; }
         .custom-alert-icon.error { background-color: rgba(244, 63, 94, 0.1); color: #fb7185; }
 
+        /* --- Modal Styles --- */
         .modal-overlay {
             position: fixed; inset: 0; background-color: rgba(15, 23, 42, 0.8);
             backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center;
@@ -114,6 +117,8 @@
             opacity: 0.5;
             pointer-events: none;
         }
+
+        /* --- Light Theme Overrides --- */
         body.light-theme {
             background-color: #f1f5f9; /* slate-100 */
             color: #1e293b; /* slate-800 */
@@ -121,18 +126,51 @@
         body.light-theme .form-input, body.light-theme .form-textarea, body.light-theme .form-select {
             background-color: #ffffff;
             border-color: #cbd5e1; /* slate-300 */
-            color: #1e293b;
+            color: #1e293b; /* slate-800 */
         }
         body.light-theme .form-input:focus, body.light-theme .form-textarea:focus, body.light-theme .form-select:focus {
-            border-color: #8b5cf6;
+            border-color: #8b5cf6; /* violet-500 */
+            box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2);
         }
         body.light-theme .form-label { color: #475569; /* slate-600 */ }
         body.light-theme .bg-slate-800\/50 { background-color: rgba(255,255,255,0.7); }
         body.light-theme .border-slate-700 { border-color: #e2e8f0; /* slate-200 */ }
-        body.light-theme .text-slate-400 { color: #64748b; /* slate-500 */ }
-        body.light-theme .modal-content, body.light-theme .custom-alert-box { background-color: #f8fafc; border-color: #e2e8f0; }
-        body.light-theme .modal-overlay, body.light-theme .custom-alert-overlay { background-color: rgba(226, 232, 240, 0.8); }
-        body.light-theme .floating-btn { background-color: white; color: #1e293b; }
+        
+        /* -- High Contrast Text for Light Mode -- */
+        body.light-theme .text-slate-200,
+        body.light-theme .text-slate-300,
+        body.light-theme .text-white {
+            color: #1e293b; /* slate-800 */
+        }
+        body.light-theme .text-slate-400 { color: #475569; /* slate-600 */ }
+        body.light-theme .text-teal-400 { color: #0d9488; /* teal-600 */ }
+        body.light-theme .close-modal-btn { color: #64748b; /* slate-500 */ }
+        body.light-theme .close-modal-btn:hover { color: #1e293b; /* slate-800 */ }
+
+        /* -- FIX: Ensure button text is white on colored backgrounds in light mode -- */
+        body.light-theme button.text-white[class*="bg-"],
+        body.light-theme a.text-white[class*="bg-"] {
+            color: #ffffff;
+        }
+
+        /* -- Component Backgrounds for Light Mode -- */
+        body.light-theme .modal-content, 
+        body.light-theme .custom-alert-box { 
+            background-color: #f8fafc; /* slate-50 */
+            border-color: #e2e8f0; /* slate-200 */
+        }
+        body.light-theme .modal-overlay, 
+        body.light-theme .custom-alert-overlay { 
+            background-color: rgba(226, 232, 240, 0.8); 
+        }
+        body.light-theme .floating-btn { 
+            background-color: white; 
+            color: #1e293b; /* slate-800 */
+            border-color: #e2e8f0; /* slate-200 */
+        }
+        body.light-theme .floating-btn:hover {
+            background-color: #f8fafc; /* slate-50 */
+        }
     </style>
 </head>
 <body class="antialiased">
@@ -205,11 +243,11 @@
                     <div class="flex flex-col sm:flex-row gap-2">
                         <input type="password" id="api-key-input" class="form-input flex-grow" placeholder="Masukkan API Key Anda...">
                         <div class="flex gap-2 w-full sm:w-auto flex-shrink-0">
-                            <button type="button" id="save-api-key" class="flex-1 sm:w-auto justify-center px-4 py-2 bg-slate-600 hover:bg-slate-500 text-white font-semibold rounded-lg flex items-center"><i class="fas fa-save mr-2"></i>Simpan</button>
-                            <button type="button" id="delete-api-key" class="flex-1 sm:w-auto justify-center px-4 py-2 bg-red-700 hover:bg-red-600 text-white font-semibold rounded-lg flex items-center"><i class="fas fa-trash-alt mr-2"></i>Hapus</button>
+                            <button type="button" id="save-api-key" class="w-full sm:w-auto justify-center px-4 py-2 bg-slate-600 hover:bg-slate-500 text-white font-semibold rounded-lg flex items-center"><i class="fas fa-save mr-2"></i>Simpan</button>
+                            <button type="button" id="delete-api-key" class="w-full sm:w-auto justify-center px-4 py-2 bg-red-700 hover:bg-red-600 text-white font-semibold rounded-lg flex items-center"><i class="fas fa-trash-alt mr-2"></i>Hapus</button>
                         </div>
                     </div>
-                    <p id="api-key-status" class="text-xs mt-2 text-slate-500">Status: Belum diatur.</p>
+                    <p id="api-key-status" class="text-xs mt-2 text-slate-400">Status: Belum diatur.</p>
                 </div>
                 
                 <!-- AI Story Input -->
@@ -280,9 +318,9 @@
                     </div>
                     <div><label for="generateBy" class="form-label">Generate By</label><input type="text" id="generateBy" class="form-input" value="PROMPT BY AIYRA DESIGN"></div>
                     
-                    <div class="pt-4 flex flex-row gap-3">
-                        <button type="button" id="resetBtn" class="w-20 sm:w-auto px-6 py-3 bg-red-600 hover:bg-red-500 text-white font-bold rounded-lg transition-colors"><i class="fas fa-rotate-left mr-2"></i></button>
-                        <button type="button" id="generateBtn" class="w-80 sm:flex-grow bg-violet-600 hover:bg-violet-500 text-white font-bold py-3 px-8 rounded-lg transition-colors"><i class="fas fa-cogs mr-2"></i>Hasilkan Prompt</button>
+                    <div class="pt-4 flex flex-col sm:flex-row gap-3">
+                        <button type="button" id="resetBtn" class="w-full sm:w-auto sm:flex-shrink-0 px-6 py-3 bg-red-600 hover:bg-red-500 text-white font-bold rounded-lg transition-colors flex items-center justify-center"><i class="fas fa-rotate-left sm:mr-2"></i><span class="hidden sm:inline">Reset</span></button>
+                        <button type="button" id="generateBtn" class="w-full sm:flex-grow bg-violet-600 hover:bg-violet-500 text-white font-bold py-3 px-8 rounded-lg transition-colors flex items-center justify-center"><i class="fas fa-cogs mr-2"></i>Hasilkan Prompt</button>
                     </div>
                 </form>
                 
@@ -582,11 +620,11 @@
             const key = localStorage.getItem('geminiApiKey');
             if (key) {
                 apiKeyStatus.textContent = 'Status: Kunci API aktif dan tersimpan.';
-                apiKeyStatus.style.color = '#5eead4';
+                apiKeyStatus.style.color = body.classList.contains('light-theme') ? '#0d9488' : '#5eead4';
                 apiKeyInput.value = key;
             } else {
                 apiKeyStatus.textContent = 'Status: Kunci API belum diatur.';
-                apiKeyStatus.style.color = '#94a3b8';
+                apiKeyStatus.style.color = ''; // Let CSS handle it
                 apiKeyInput.value = '';
             }
         };
@@ -909,13 +947,13 @@ Pastikan output Anda **HANYA** berupa objek JSON yang valid, sesuai dengan skema
             const history = getHistory();
             historyList.innerHTML = '';
             if (history.length === 0) {
-                historyList.innerHTML = '<p>Riwayat cerita Anda masih kosong.</p>';
+                historyList.innerHTML = '<p class="text-slate-400">Riwayat cerita Anda masih kosong.</p>';
                 return;
             }
             history.forEach((story, index) => {
                 const item = document.createElement('div');
                 item.className = 'p-3 border border-slate-700 rounded-lg flex justify-between items-center';
-                item.innerHTML = `<span class="story-text flex-grow-1 mr-3 cursor-pointer hover:text-violet-400">${story.substring(0, 50)}${story.length > 50 ? '...' : ''}</span>
+                item.innerHTML = `<span class="story-text flex-grow-1 mr-3 cursor-pointer hover:text-violet-400 text-slate-300">${story.substring(0, 50)}${story.length > 50 ? '...' : ''}</span>
                                   <button class="text-red-500 hover:text-red-400 delete-history-btn" data-index="${index}"><i class="fas fa-trash"></i></button>`;
                 item.querySelector('.story-text').addEventListener('click', () => {
                     ceritaKarakterEl.value = story;
@@ -944,6 +982,7 @@ Pastikan output Anda **HANYA** berupa objek JSON yang valid, sesuai dengan skema
         function applyTheme(theme) {
             body.classList.toggle('light-theme', theme === 'light');
             themeToggleBtn.innerHTML = theme === 'light' ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
+            updateApiKeyStatus(); // Update status color on theme change
         }
         themeToggleBtn.addEventListener('click', () => {
             let currentTheme = localStorage.getItem('theme') || 'dark';
@@ -952,10 +991,9 @@ Pastikan output Anda **HANYA** berupa objek JSON yang valid, sesuai dengan skema
             applyTheme(newTheme);
         });
         // --- Initial Load ---
-        checkAccess();
-        updateApiKeyStatus();
         const savedTheme = localStorage.getItem('theme') || 'dark';
         applyTheme(savedTheme);
+        checkAccess();
     });
     </script>
 </body>
