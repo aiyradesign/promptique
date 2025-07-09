@@ -1,1 +1,297 @@
-TES
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prompt Generator & Store - By Aiyra Design</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- DEFAULT DARK THEME --- */
+        body {
+            font-family: 'Inter', sans-serif;
+            /* Diagonal Gradient Background */
+            background-color: #020617; /* Fallback */
+            background-image: linear-gradient(to bottom right, #020617, #1e1b4b, #4c1d95);
+            background-attachment: fixed;
+            color: #cbd5e1; /* slate-300 */
+            transition: background-image 0.3s, background-color 0.3s, color 0.3s;
+        }
+        .card-container {
+            background-color: rgba(15, 23, 42, 0.75); /* slate-900 with 75% opacity */
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, border-color 0.3s ease-in-out, background-color 0.3s ease;
+        }
+        .card-container:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.2), 0 8px 10px -6px rgb(0 0 0 / 0.2);
+        }
+        .disabled-card {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        .disabled-card .card-container {
+             pointer-events: none;
+        }
+        .disabled-card:hover .card-container {
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* --- THEME TOGGLE BUTTON --- */
+        #theme-toggle {
+            position: relative;
+            width: 3rem; /* 48px */
+            height: 3rem; /* 48px */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 9999px; /* rounded-full */
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background-color: #1e293b; /* slate-800 */
+            border: 1px solid #334155; /* slate-700 */
+        }
+        #theme-toggle:hover {
+            transform: scale(1.1);
+        }
+        #theme-toggle i {
+            position: absolute;
+            font-size: 1.25rem; /* text-xl */
+            transition: transform 0.4s ease, opacity 0.4s ease;
+        }
+        #theme-icon-moon {
+            color: #fcd34d; /* amber-300 */
+            transform: scale(1) rotate(0deg);
+            opacity: 1;
+        }
+        #theme-icon-sun {
+            color: #f59e0b; /* amber-500 */
+            transform: scale(0) rotate(-90deg);
+            opacity: 0;
+        }
+
+        /* --- LIGHT THEME OVERRIDES --- */
+        body.light-theme {
+            background-image: none;
+            background-color: #f1f5f9; /* slate-100 */
+            color: #1e293b; /* slate-800 */
+        }
+        body.light-theme .text-slate-100 { color: #1e293b; /* slate-800 */ }
+        body.light-theme .text-slate-300 { color: #475569; /* slate-600 */ }
+        body.light-theme .text-slate-400 { color: #64748b; /* slate-500 */ }
+        body.light-theme .card-container { 
+            background-color: #ffffff;
+            backdrop-filter: blur(0px);
+            -webkit-backdrop-filter: blur(0px);
+        }
+        body.light-theme .border-slate-800 { border-color: #e2e8f0; /* slate-200 */ }
+        body.light-theme .border-slate-700 { border-color: #e2e8f0; /* slate-200 */ }
+        body.light-theme .text-slate-500 { color: #94a3b8; /* slate-400 */ }
+        body.light-theme .card-container:hover {
+             box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+        body.light-theme #theme-toggle {
+            background-color: #ffffff;
+            border-color: #e2e8f0; /* slate-200 */
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        body.light-theme #theme-icon-moon {
+            transform: scale(0) rotate(90deg);
+            opacity: 0;
+        }
+        body.light-theme #theme-icon-sun {
+            transform: scale(1) rotate(0deg);
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Tombol Light/Dark Mode (Posisi Fixed) -->
+    <div class="fixed top-5 right-5 z-50">
+        <button id="theme-toggle" type="button" title="Toggle theme">
+            <i id="theme-icon-moon" class="fa-solid fa-moon"></i>
+            <i id="theme-icon-sun" class="fa-solid fa-sun"></i>
+        </button>
+    </div>
+
+    <!-- Kontainer Utama -->
+    <div class="container mx-auto px-6 py-12 md:py-20">
+
+        <!-- Header Section -->
+        <header class="text-center mb-16">
+            <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight mb-3">
+                <span class="bg-clip-text text-transparent bg-gradient-to-r from-purple-500 via-pink-500 to-red-500">
+                    PROMPT GENERATOR
+                </span>
+            </h1>
+            <p class="text-lg md:text-xl text-slate-400 font-semibold tracking-wider">
+                BY AIYRA DESIGN | PROMPT.IQUE
+            </p>
+        </header>
+
+        <!-- Main Content -->
+        <main>
+            <!-- Grid untuk Kartu Generator -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                
+                <!-- Figure Generator -->
+                <a href="https://promptique.my.id/generator-figure/" target="_blank" class="block group">
+                    <div class="card-container border border-slate-700 rounded-2xl p-8 h-full flex flex-col items-center text-center group-hover:border-purple-400">
+                        <div class="text-purple-400 mb-6"><i class="fa-solid fa-palette fa-4x"></i></div>
+                        <h3 class="font-bold text-2xl text-slate-100 mb-2">Figure Generator</h3>
+                        <p class="text-slate-400">Buat prompt untuk menghasilkan gambar figur dan karakter yang detail.</p>
+                    </div>
+                </a>
+
+                <!-- Veo Generator -->
+                <a href="https://promptique.my.id/generator-veo/" target="_blank" class="block group">
+                    <div class="card-container border border-slate-700 rounded-2xl p-8 h-full flex flex-col items-center text-center group-hover:border-pink-500">
+                        <div class="text-pink-500 mb-6"><i class="fa-solid fa-video fa-4x"></i></div>
+                        <h3 class="font-bold text-2xl text-slate-100 mb-2">Veo Generator</h3>
+                        <p class="text-slate-400">Hasilkan ide dan prompt untuk pembuatan konten video AI yang sinematik.</p>
+                    </div>
+                </a>
+
+                <!-- Chibi Generator (Coming Soon) -->
+                <div class="disabled-card">
+                    <div class="card-container border border-slate-700 rounded-2xl p-8 h-full flex flex-col items-center text-center">
+                        <div class="text-slate-500 mb-6"><i class="fa-solid fa-hourglass-half fa-4x"></i></div>
+                        <h3 class="font-bold text-2xl text-slate-300 mb-2">Chibi Generator</h3>
+                        <p class="text-slate-400">Dapatkan prompt unik untuk membuat karakter Chibi yang lucu dan menggemaskan.</p>
+                        <p class="font-semibold text-sky-400 text-sm mt-4">Segera Hadir</p>
+                    </div>
+                </div>
+
+                <!-- Logo Generator (Coming Soon) -->
+                <div class="disabled-card">
+                     <div class="card-container border border-slate-700 rounded-2xl p-8 h-full flex flex-col items-center text-center">
+                        <div class="text-slate-500 mb-6"><i class="fa-solid fa-hourglass-half fa-4x"></i></div>
+                        <h3 class="font-bold text-2xl text-slate-300 mb-2">Logo Generator</h3>
+                        <p class="text-slate-400">Ciptakan konsep dan prompt untuk desain logo yang profesional dan kreatif.</p>
+                        <p class="font-semibold text-sky-400 text-sm mt-4">Segera Hadir</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Separator -->
+            <hr class="border-slate-700 my-16 md:my-20">
+
+            <!-- Store Section -->
+            <section class="text-center">
+                <h2 class="text-4xl md:text-5xl font-extrabold tracking-tight mb-4">
+                    <span class="bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-blue-500">
+                        Toko Prompt & Produk Digital
+                    </span>
+                </h2>
+                <p class="text-lg text-slate-400 mb-12 max-w-2xl mx-auto">
+                    Tingkatkan kualitas konten Anda dengan koleksi prompt premium dan produk digital kami.
+                </p>
+
+                <!-- Grid untuk Produk Toko -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 text-left">
+                    
+                    <a href="https://lynk.id/aiyradesign/437rvjw35205" target="_blank" class="block group">
+                        <div class="card-container border border-slate-700 rounded-2xl p-6 h-full group-hover:border-green-400">
+                            <i class="fa-solid fa-camera-retro text-green-400 text-2xl mb-3"></i>
+                            <h3 class="font-bold text-xl text-slate-100 mb-1">PROMPT 400+ Foto Produk UMKM</h3>
+                            <p class="text-slate-400 text-sm">Hasilkan foto produk profesional untuk bisnis Anda.</p>
+                        </div>
+                    </a>
+
+                    <a href="https://lynk.id/aiyradesign/yko2813jowg4" target="_blank" class="block group">
+                        <div class="card-container border border-slate-700 rounded-2xl p-6 h-full group-hover:border-green-400">
+                            <i class="fa-solid fa-file-image text-green-400 text-2xl mb-3"></i>
+                            <h3 class="font-bold text-xl text-slate-100 mb-1">PROMPT 400+ Poster Produk UMKM</h3>
+                            <p class="text-slate-400 text-sm">Desain poster promosi yang menarik dengan mudah.</p>
+                        </div>
+                    </a>
+
+                    <a href="https://lynk.id/aiyradesign/nd713kpmz6zy" target="_blank" class="block group">
+                        <div class="card-container border border-slate-700 rounded-2xl p-6 h-full group-hover:border-green-400">
+                            <i class="fa-solid fa-users text-green-400 text-2xl mb-3"></i>
+                            <h3 class="font-bold text-xl text-slate-100 mb-1">PROMPT 400+ Karakter 3D Chibi</h3>
+                            <p class="text-slate-400 text-sm">Koleksi prompt untuk membuat karakter 3D Chibi.</p>
+                        </div>
+                    </a>
+
+                    <a href="https://lynk.id/aiyradesign/e39qnxl23nl3" target="_blank" class="block group">
+                        <div class="card-container border border-slate-700 rounded-2xl p-6 h-full group-hover:border-blue-500">
+                            <i class="fa-solid fa-robot text-blue-500 text-2xl mb-3"></i>
+                            <h3 class="font-bold text-xl text-slate-100 mb-1">GENERATOR PROMPT ACTION FIGURE</h3>
+                            <p class="text-slate-400 text-sm">Generator eksklusif untuk action figure.</p>
+                        </div>
+                    </a>
+
+                    <div class="disabled-card">
+                        <div class="card-container border border-slate-700 rounded-2xl p-6 h-full">
+                            <i class="fa-solid fa-video-slash text-slate-500 text-2xl mb-3"></i>
+                            <h3 class="font-bold text-xl text-slate-300 mb-1">GENERATOR PROMPT VEO</h3>
+                            <p class="font-semibold text-sky-400 text-sm">Segera Hadir</p>
+                        </div>
+                    </div>
+
+                    <div class="disabled-card">
+                        <div class="card-container border border-slate-700 rounded-2xl p-6 h-full">
+                            <i class="fa-solid fa-copyright text-slate-500 text-2xl mb-3"></i>
+                            <h3 class="font-bold text-xl text-slate-300 mb-1">GENERATOR PROMPT LOGO UMKM</h3>
+                            <p class="font-semibold text-sky-400 text-sm">Segera Hadir</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tombol ke Toko Utama -->
+                <div class="mt-12">
+                    <a href="https://lynk.id/aiyradesign/" target="_blank" class="inline-block bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-600 hover:to-blue-700 text-white font-bold py-4 px-8 rounded-full text-lg transition-transform transform hover:scale-105 shadow-lg">
+                        <i class="fa-solid fa-store mr-2"></i>
+                        Kunjungi Toko Utama Kami
+                    </a>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer Section -->
+        <footer class="text-center mt-20 pt-8 border-t border-slate-700">
+            <p class="text-slate-500">&copy; 2024 AIYRA DESIGN | PROMPT.IQUE. All Rights Reserved.</p>
+        </footer>
+
+    </div>
+
+    <script>
+        // Script untuk Light/Dark Mode Toggle
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const body = document.body;
+
+        const applyTheme = (theme) => {
+            if (theme === 'light') {
+                body.classList.add('light-theme');
+            } else {
+                body.classList.remove('light-theme');
+            }
+        };
+
+        // Cek tema dari localStorage saat halaman dimuat
+        // Default ke dark mode jika tidak ada preferensi
+        const currentTheme = localStorage.getItem('theme') || 'dark';
+        applyTheme(currentTheme);
+
+        themeToggleBtn.addEventListener('click', function() {
+            let newTheme = body.classList.contains('light-theme') ? 'dark' : 'light';
+            localStorage.setItem('theme', newTheme);
+            applyTheme(newTheme);
+        });
+    </script>
+</body>
+</html>
