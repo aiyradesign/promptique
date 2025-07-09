@@ -722,7 +722,7 @@ Lengkapi **semua** field dalam struktur JSON berikut. Jangan tinggalkan field ap
 - **deskripsiKarakter**: (string) Deskripsikan penampilan fisik karakter secara detail (wajah, rambut, mata, ciri khas).
 - **deskripsiKostum**: (string) Rancang kostum yang ikonik dan detail. Kembangkan ide pengguna atau buat dari awal jika tidak ada.
 - **senjataAtauBenda**: (string) **PENTING**: Jika relevan dengan cerita (misal: pedang untuk ksatria, laptop untuk peretas), deskripsikan. Jika sama sekali tidak relevan (misal: untuk seorang penari), **WAJIB** isi dengan string kosong ("").
-- **deskripsiPose**: (string) Ciptakan pose yang dinamis, ekspresif, dan menceritakan karakter.
+- **deskripsiPose**: (string) Ciptakan pose yang dinamis, ekspresif, dan menceritakan karakter tanpa latar belakang.
 - **lingkungan**: (string) Deskripsikan diorama miniatur yang ada **di atas alas figur**. Ini harus mencerminkan cerita inti karakter (misal: untuk astronot, 'permukaan bulan dengan kawah kecil'; untuk koki, 'potongan meja dapur dengan talenan').
 - **astralMagis**: (string) **PENTING**: Jika ada hewan, makhluk, atau pendamping magis dalam cerita, deskripsikan. Jika tidak ada, **WAJIB** isi dengan string kosong ("").
 
@@ -914,7 +914,7 @@ Pastikan output Anda **HANYA** berupa objek JSON yang valid, sesuai dengan skema
                 promptLines.push(`Pendamping: ${fields.astralMagis}, pastikan makhluk ini berada sepenuhnya di dalam area alas monumental, meskipun melayang.`);
             }
             
-            promptLines.push(`\nSemua elemen ini dipasang di atas alas base ${fields.bentukAlas} yang dirancang dari ${baseStyle}, di atasnya menampilkan miniatur detail dari ${fields.lingkungan}, dan dibuat tanpa efek kabut atau efek energi apapun yang membuat karakter tenggelam dan tidak ada elemen yang keluar dari area base.`);
+            promptLines.push(`\nSemua elemen ini dipasang di atas alas base ${fields.bentukAlas} yang terbuat ${baseStyle}, di atasnya menampilkan miniatur detail dari ${fields.lingkungan}, dan dibuat tanpa efek kabut atau efek energi apapun yang membuat karakter tenggelam dan tidak ada elemen yang keluar dari area base.`);
             
             promptLines.push(`\nName Base: "${fields.namaKarakter}" ukuran: Large, Subtitle: “${fields.generateBy}” ukuran: Medium, terukir dalam tipografi bergaya iblis dan timbul.`);
             
