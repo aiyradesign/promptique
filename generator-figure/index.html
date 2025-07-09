@@ -454,9 +454,10 @@
         const devToolCheck = () => {
             const threshold = 160;
         
-            // Tambahkan pengecekan user agent untuk mobile
-            const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+            // Pastikan hanya berjalan di desktop (bukan mobile sama sekali)
+            const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
             if (isMobile) {
+                // Matikan deteksi sepenuhnya di mobile
                 return;
             }
         
@@ -464,24 +465,28 @@
                 window.outerWidth - window.innerWidth > threshold ||
                 window.outerHeight - window.innerHeight > threshold
             ) {
-                document.body.innerHTML = '<div style="position:fixed;top:0;left:0;width:100%;height:100%;background:#0f172a;color:white;display:flex;justify-content:center;align-items:center;font-family:sans-serif;font-size:2rem;">Akses tidak diizinkan.</div>';
-                setTimeout(() => {
-                    window.location.href = "about:blank";
-                }, 1000);
+                // Validasi ulang agar tidak false positive ketika resize normal
+                if (window.outerHeight > 0 && window.innerHeight > 0) {
+                    document.body.innerHTML = '<div style="position:fixed;top:0;left:0;width:100%;height:100%;background:#0f172a;color:white;display:flex;justify-content:center;align-items:center;font-family:sans-serif;font-size:2rem;">Akses tidak diizinkan.</div>';
+                    setTimeout(() => {
+                        window.location.href = "about:blank";
+                    }, 1000);
+                }
             }
         };
-        setInterval(devToolCheck, 1000);
+        
+        // Jalankan hanya 1x saat load, atau jika ingin berkala gunakan interval lebih lama (10 detik)
+        setTimeout(devToolCheck, 2000);
+        
+        // Context menu blocker tetap aktif
         
         document.addEventListener('contextmenu', (event) => {
             const target = event.target;
             if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable) {
-                // Izinkan klik kanan pada input, textarea, dan editor
                 return;
             }
             event.preventDefault();
         });
-
-
 
         // --- Get All DOM Elements ---
         const passwordSection = document.getElementById('password-section');
