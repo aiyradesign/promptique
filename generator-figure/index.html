@@ -453,6 +453,13 @@
         // --- Security: Dev Tools Check & Right-Click ---
         const devToolCheck = () => {
             const threshold = 160;
+        
+            // Tambahkan pengecekan user agent untuk mobile
+            const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+            if (isMobile) {
+                return;
+            }
+        
             if (
                 window.outerWidth - window.innerWidth > threshold ||
                 window.outerHeight - window.innerHeight > threshold
@@ -467,11 +474,13 @@
         
         document.addEventListener('contextmenu', (event) => {
             const target = event.target;
-            if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA') {
+            if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable) {
+                // Izinkan klik kanan pada input, textarea, dan editor
                 return;
             }
             event.preventDefault();
         });
+
 
 
         // --- Get All DOM Elements ---
