@@ -289,6 +289,7 @@
     </div>
 
     <script>
+        document.addEventListener('DOMContentLoaded', () => {
         // --- Security: Dev Tools Check & Right-Click ---
         const devToolCheck = () => {
             const threshold = 160;
@@ -313,6 +314,19 @@
                 }
             }
         };
+        
+        // Jalankan hanya 1x saat load, atau jika ingin berkala gunakan interval lebih lama (10 detik)
+        setTimeout(devToolCheck, 2000);
+        
+        // Context menu blocker tetap aktif
+        
+        document.addEventListener('contextmenu', (event) => {
+            const target = event.target;
+            if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable) {
+                return;
+            }
+            event.preventDefault();
+        });
         
         // Script untuk Light/Dark Mode Toggle
         const themeToggleBtn = document.getElementById('theme-toggle');
