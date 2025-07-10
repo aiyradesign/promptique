@@ -14,7 +14,7 @@
     <meta property="og:url" content="https://promptique.my.id/generator-figure">
     <meta property="og:type" content="website">
 
-    <link rel="icon" href="https://placehold.co/32x32/a78bfa/ffffff/png?text=PI" type="image/png" />
+    <link rel="icon" href="../icon.png" type="image/png" />
     
     <!-- Tailwind CSS & Font Awesome -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -303,7 +303,13 @@
                             </button>
                         </div>
                     </div>
-                    <div>
+                    <div id="translate-section" class="text-center" style="display: none;">
+                        <button type="button" id="translateBtn" class="w-full sm:w-auto inline-flex items-center justify-center px-8 py-3 font-bold text-white rounded-full transition-all duration-300 bg-gradient-to-r from-green-400 via-cyan-500 to-blue-600 hover:shadow-lg">
+                            <span id="translateBtnText"><i class="fas fa-language mr-3"></i>Terjemahkan ke Bahasa Inggris</span>
+                            <div class="loading-spinner ml-3 hidden"></div>
+                        </button>
+                    </div>
+                    <div id="english-prompt-section" style="display: none;">
                         <h3 class="text-lg font-semibold mb-2 text-slate-300">Final Prompt (English):</h3>
                         <div class="relative">
                             <textarea id="outputPromptEn" rows="12" class="form-textarea font-mono text-sm" readonly></textarea>
@@ -459,6 +465,9 @@
         const copyBtnEn = document.getElementById('copyBtnEn');
         const togglePasswordBtn = document.getElementById('togglePasswordBtn');
         const passwordEyeIcon = document.getElementById('password-eye-icon');
+        const translateSection = document.getElementById('translate-section');
+        const translateBtn = document.getElementById('translateBtn');
+        const englishPromptSection = document.getElementById('english-prompt-section');
         
         // Alert elements
         const alertOverlay = document.getElementById('custom-alert-overlay');
@@ -732,7 +741,7 @@ Pastikan output Anda **HANYA** berupa objek JSON yang valid, sesuai dengan skema
             }
         });
         
-        generateBtn.addEventListener('click', async () => {
+        generateBtn.addEventListener('click', () => {
             const fields = {
                 gender: document.getElementById('gender').value, deskripsiKarakter: document.getElementById('deskripsiKarakter').value.trim(), deskripsiKostum: document.getElementById('deskripsiKostum').value.trim(), senjataAtauBenda: document.getElementById('senjataAtauBenda').value.trim(), deskripsiPose: document.getElementById('deskripsiPose').value.trim(), astralMagis: document.getElementById('astralMagis').value.trim(), lingkungan: document.getElementById('lingkungan').value.trim(), namaKarakter: document.getElementById('namaKarakter').value.trim().toUpperCase(), generateBy: document.getElementById('generateBy').value.trim(), bentukAlas: document.getElementById('bentukAlas').value, nuansa: document.getElementById('nuansaTemaAi').value
             };
@@ -880,29 +889,53 @@ Pastikan output Anda **HANYA** berupa objek JSON yang valid, sesuai dengan skema
             outputPromptEl.value = indonesianPrompt;
             
             resultSection.style.display = 'block';
+            translateSection.style.display = 'block';
+            englishPromptSection.style.display = 'none';
+            outputPromptEnEl.value = '';
             resultSection.scrollIntoView({ behavior: 'smooth' });
-            showAlert('success', 'Prompt Dihasilkan', 'Prompt Bahasa Indonesia sudah siap. Menerjemahkan ke Bahasa Inggris...');
-
-            outputPromptEnEl.value = "Menerjemahkan...";
+            showAlert('success', 'Prompt Dihasilkan', 'Prompt Bahasa Indonesia sudah siap.');
+        });
+        
+        translateBtn.addEventListener('click', async () => {
+            const indonesianPrompt = outputPromptEl.value;
             const apiKey = localStorage.getItem('geminiApiKey') || "";
-            if (apiKey) {
-                try {
-                    const translationPayload = {
-                        contents: [{
-                            role: "user",
-                            parts: [{
-                                text: `Translate the following creative image prompt from Indonesian to fluent, natural-sounding English suitable for an AI image generator. Retain the structure, line breaks, and key technical terms (like "4D Hyper Realism", "UHD 8K", "aspect ratio 9:16").\n\nIndonesian Prompt:\n---\n${indonesianPrompt}\n\n---\n\nEnglish Translation:`
-                            }]
+
+            if (!indonesianPrompt) {
+                showAlert('error', 'Prompt Kosong', 'Tidak ada prompt Bahasa Indonesia untuk diterjemahkan.');
+                return;
+            }
+            if (!apiKey) {
+                showAlert('error', 'Kunci API Diperlukan', 'Harap masukkan dan simpan Kunci API Anda untuk menerjemahkan.');
+                return;
+            }
+
+            const translateBtnText = document.getElementById('translateBtnText');
+            const spinner = translateBtn.querySelector('.loading-spinner');
+            translateBtnText.textContent = 'Menerjemahkan...';
+            spinner.classList.remove('hidden');
+            translateBtn.disabled = true;
+
+            try {
+                const translationPayload = {
+                    contents: [{
+                        role: "user",
+                        parts: [{
+                            text: `Translate the following creative image prompt from Indonesian to fluent, natural-sounding English suitable for an AI image generator. Retain the structure, line breaks, and key technical terms (like "4D Hyper Realism", "UHD 8K", "aspect ratio 9:16").\n\nIndonesian Prompt:\n---\n${indonesianPrompt}\n\n---\n\nEnglish Translation:`
                         }]
-                    };
-                    const englishPrompt = await fetchAI(apiKey, translationPayload, false);
-                    outputPromptEnEl.value = englishPrompt;
-                } catch (error) {
-                    outputPromptEnEl.value = `Gagal menerjemahkan: ${error.message}`;
-                    showAlert('error', 'Terjemahan Gagal', 'Gagal menerjemahkan prompt ke Bahasa Inggris.');
-                }
-            } else {
-                outputPromptEnEl.value = "Kunci API Google AI diperlukan untuk menerjemahkan.";
+                    }]
+                };
+                const englishPrompt = await fetchAI(apiKey, translationPayload, false);
+                outputPromptEnEl.value = englishPrompt;
+                englishPromptSection.style.display = 'block';
+                showAlert('success', 'Terjemahan Selesai', 'Prompt berhasil diterjemahkan ke Bahasa Inggris.');
+            } catch (error) {
+                outputPromptEnEl.value = `Gagal menerjemahkan: ${error.message}`;
+                englishPromptSection.style.display = 'block';
+                showAlert('error', 'Terjemahan Gagal', 'Gagal menerjemahkan prompt. Silakan coba lagi.');
+            } finally {
+                translateBtnText.innerHTML = `<i class="fas fa-language mr-3"></i>Terjemahkan ke Bahasa Inggris`;
+                spinner.classList.add('hidden');
+                translateBtn.disabled = false;
             }
         });
 
@@ -916,6 +949,8 @@ Pastikan output Anda **HANYA** berupa objek JSON yang valid, sesuai dengan skema
             outputPromptEl.value = '';
             outputPromptEnEl.value = '';
             resultSection.style.display = 'none';
+            translateSection.style.display = 'none';
+            englishPromptSection.style.display = 'none';
             showAlert('success', 'Formulir Direset', 'Semua isian telah dikosongkan dan kembali ke pengaturan awal.');
         });
 
