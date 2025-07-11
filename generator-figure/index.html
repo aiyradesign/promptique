@@ -114,6 +114,31 @@
             opacity: 0.5;
             pointer-events: none;
         }
+
+        /* --- Eye-catching Button Styles --- */
+        .floating-btn {
+            background-color: rgba(30, 41, 59, 0.5); /* slate-800 with opacity */
+            border: 1px solid #475569; /* slate-600 */
+            color: #cbd5e1; /* slate-300 */
+            backdrop-filter: blur(8px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 0 20px rgba(167, 139, 250, 0.1);
+            transition: all 0.3s ease;
+        }
+        .floating-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 14px rgba(0, 0, 0, 0.1), 0 0 30px rgba(167, 139, 250, 0.2);
+            background-color: rgba(51, 65, 85, 0.7); /* slate-700 with opacity */
+            color: #f1f5f9; /* slate-100 */
+        }
+        .floating-btn:active .icon-wrapper {
+            animation: pulse-and-rotate 0.4s ease-out;
+        }
+        @keyframes pulse-and-rotate {
+            0% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.2) rotate(15deg); }
+            100% { transform: scale(1) rotate(0deg); }
+        }
+
         body.light-theme {
             background-color: #f1f5f9; /* slate-100 */
             color: #1e293b; /* slate-800 */
@@ -132,18 +157,58 @@
         body.light-theme .text-slate-400 { color: #64748b; /* slate-500 */ }
         body.light-theme .modal-content, body.light-theme .custom-alert-box { background-color: #f8fafc; border-color: #e2e8f0; }
         body.light-theme .modal-overlay, body.light-theme .custom-alert-overlay { background-color: rgba(226, 232, 240, 0.8); }
-        body.light-theme .floating-btn { background-color: white; color: #1e293b; }
+        
+        body.light-theme .floating-btn {
+            background-color: rgba(255, 255, 255, 0.7);
+            border-color: #cbd5e1; /* slate-300 */
+            color: #334155; /* slate-700 */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05), 0 0 20px rgba(0, 0, 0, 0.05);
+        }
+        body.light-theme .floating-btn:hover {
+            color: #0f172a; /* slate-900 */
+            background-color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Light Theme Text Contrast Fixes */
+        body.light-theme .modal-content, 
+        body.light-theme .custom-alert-box {
+            color: #1e293b; /* slate-800 */
+        }
+        body.light-theme .modal-content .text-white,
+        body.light-theme .custom-alert-box .text-white {
+            color: #1e293b !important; /* slate-800 */
+        }
+        body.light-theme .modal-content .text-slate-300,
+        body.light-theme .modal-content .text-slate-400,
+        body.light-theme .custom-alert-box .text-slate-300 {
+            color: #475569 !important; /* slate-600 */
+        }
+        body.light-theme .modal-content .close-modal-btn:hover {
+            color: #0f172a !important; /* slate-900 */
+        }
+        body.light-theme .modal-header {
+            background-color: rgba(248, 250, 252, 0.8) !important; /* slate-50 with opacity */
+        }
+        body.light-theme #licenseModal h3[style*="#4ade80"] {
+            color: #15803d !important; /* Darker green */
+        }
+        body.light-theme #licenseModal h3[style*="#f87171"] {
+            color: #b91c1c !important; /* Darker red */
+        }
+        body.light-theme .modal-content a.text-teal-300 {
+            color: #0d9488; /* Darker teal for links */
+        }
     </style>
 </head>
 <body class="antialiased">
 
     <!-- Floating Buttons -->
     <div class="fixed top-4 right-4 z-50 flex flex-col gap-3">
-        <button id="theme-toggle" class="floating-btn h-12 w-12 flex items-center justify-center rounded-full bg-slate-700/50 text-slate-300 hover:bg-slate-600/70 transition-colors backdrop-blur-sm border border-slate-600 shadow-lg" title="Ganti Tema">
-            <i class="fas fa-sun"></i>
+        <button id="theme-toggle" class="floating-btn h-12 w-12 flex items-center justify-center rounded-full" title="Ganti Tema">
+            <span class="icon-wrapper"><i class="fas fa-sun"></i></span>
         </button>
-        <button id="history-btn" class="floating-btn h-12 w-12 flex items-center justify-center rounded-full bg-slate-700/50 text-slate-300 hover:bg-slate-600/70 transition-colors backdrop-blur-sm border border-slate-600 shadow-lg" title="Riwayat Cerita">
-            <i class="fas fa-history"></i>
+        <button id="history-btn" class="floating-btn h-12 w-12 flex items-center justify-center rounded-full" title="Riwayat Cerita">
+            <span class="icon-wrapper"><i class="fas fa-history"></i></span>
         </button>
     </div>
 
@@ -327,7 +392,7 @@
     <!-- Modals -->
     <div id="guideModal" class="modal-overlay">
         <div class="modal-content p-6 max-h-[90vh] overflow-y-auto">
-            <div class="flex justify-between items-center mb-6 sticky top-0 bg-slate-800/80 backdrop-blur-sm -m-6 p-6 z-10">
+            <div class="modal-header flex justify-between items-center mb-6 sticky top-0 bg-slate-800/80 backdrop-blur-sm -m-6 p-6 z-10">
                 <h2 class="text-xl font-bold text-white"><i class="fas fa-book-open mr-2"></i>Panduan Mendapatkan API Key</h2>
                 <button class="close-modal-btn text-slate-400 hover:text-white text-2xl">&times;</button>
             </div>
@@ -404,9 +469,9 @@
             </div>
         </div>
     </div>
-    <div id="licenseModal" class="modal-overlay"><div class="modal-content p-6"><div class="flex justify-between items-center mb-4"><h2 class="text-xl font-bold text-white"><i class="fas fa-file-contract mr-2"></i>Lisensi</h2><button class="close-modal-btn text-slate-400 hover:text-white text-2xl">&times;</button></div><div class="text-slate-300 space-y-3 max-h-[70vh] overflow-y-auto pr-2"> <h3 style="color: #4ade80;">✅ Anda Diperbolehkan:</h3> <ul> <li>Mengakses dan menggunakan generator untuk keperluan pribadi.</li> <li>Memposting hasil gambar ke media sosial atau portofolio pribadi (bukan untuk jualan).</li> <li>Menggunakan hasil prompt di platform AI seperti ChatGPT, Midjourney, dll.</li> <li>Menyimpan hasil untuk koleksi atau referensi pribadi.</li> </ul> <h3 style="color: #f87171;">❌ Anda Tidak Diperbolehkan:</h3> <ul> <li>Menjual atau mendistribusikan ulang isi maupun hasil generator.</li> <li>Menggunakan konten untuk proyek klien atau tujuan komersial.</li> <li>Mengklaim sebagai pencipta sistem atau konten.</li> <li>Mengunggah ulang isi sistem ke platform lain.</li> </ul> <p><strong>Catatan Penting:</strong> Lisensi ini bersifat pribadi, non-komersial, dan terbatas. Penggunaan publik diperbolehkan selama tidak digunakan untuk tujuan komersial.</p> <p style="text-align: right; font-style: italic;">Dikeluarkan oleh: AIYRA DESIGN | Kardiansyah</p></div></div></div>
+    <div id="licenseModal" class="modal-overlay"><div class="modal-content p-6"><div class="modal-header flex justify-between items-center mb-4"><h2 class="text-xl font-bold text-white"><i class="fas fa-file-contract mr-2"></i>Lisensi</h2><button class="close-modal-btn text-slate-400 hover:text-white text-2xl">&times;</button></div><div class="text-slate-300 space-y-3 max-h-[70vh] overflow-y-auto pr-2"> <h3 style="color: #4ade80;">✅ Anda Diperbolehkan:</h3> <ul> <li>Mengakses dan menggunakan generator untuk keperluan pribadi.</li> <li>Memposting hasil gambar ke media sosial atau portofolio pribadi (bukan untuk jualan).</li> <li>Menggunakan hasil prompt di platform AI seperti ChatGPT, Midjourney, dll.</li> <li>Menyimpan hasil untuk koleksi atau referensi pribadi.</li> </ul> <h3 style="color: #f87171;">❌ Anda Tidak Diperbolehkan:</h3> <ul> <li>Menjual atau mendistribusikan ulang isi maupun hasil generator.</li> <li>Menggunakan konten untuk proyek klien atau tujuan komersial.</li> <li>Mengklaim sebagai pencipta sistem atau konten.</li> <li>Mengunggah ulang isi sistem ke platform lain.</li> </ul> <p><strong>Catatan Penting:</strong> Lisensi ini bersifat pribadi, non-komersial, dan terbatas. Penggunaan publik diperbolehkan selama tidak digunakan untuk tujuan komersial.</p> <p style="text-align: right; font-style: italic;">Dikeluarkan oleh: AIYRA DESIGN | Kardiansyah</p></div></div></div>
     <div id="logoutConfirmModal" class="modal-overlay"><div class="modal-content p-6"><h2 class="text-xl font-bold text-white mb-4">Konfirmasi Keluar</h2><p class="text-slate-300 mb-6">Apakah Anda yakin ingin keluar dan mengunci ulang aplikasi?</p><div class="flex justify-end gap-3"><button class="close-modal-btn px-4 py-2 bg-slate-600 hover:bg-slate-500 text-white font-semibold rounded-lg">Batal</button><button id="confirmLogoutBtn" class="px-4 py-2 bg-red-600 hover:bg-red-500 text-white font-semibold rounded-lg">Ya, Keluar</button></div></div></div>
-    <div id="historyModal" class="modal-overlay"><div class="modal-content p-6"><div class="flex justify-between items-center mb-4"><h2 class="text-xl font-bold text-white"><i class="fas fa-history mr-2"></i>Riwayat Cerita</h2><button class="close-modal-btn text-slate-400 hover:text-white text-2xl">&times;</button></div><div id="history-list" class="text-slate-300 space-y-2 max-h-[60vh] overflow-y-auto"></div><div class="mt-6 flex justify-end gap-3"><button id="clear-history-btn" class="px-4 py-2 bg-red-600 hover:bg-red-500 text-white font-semibold rounded-lg">Bersihkan Riwayat</button><button class="close-modal-btn px-4 py-2 bg-slate-600 hover:bg-slate-500 text-white font-semibold rounded-lg">Tutup</button></div></div></div>
+    <div id="historyModal" class="modal-overlay"><div class="modal-content p-6"><div class="modal-header flex justify-between items-center mb-4"><h2 class="text-xl font-bold text-white"><i class="fas fa-history mr-2"></i>Riwayat Cerita</h2><button class="close-modal-btn text-slate-400 hover:text-white text-2xl">&times;</button></div><div id="history-list" class="text-slate-300 space-y-2 max-h-[60vh] overflow-y-auto"></div><div class="mt-6 flex justify-end gap-3"><button id="clear-history-btn" class="px-4 py-2 bg-red-600 hover:bg-red-500 text-white font-semibold rounded-lg">Bersihkan Riwayat</button><button class="close-modal-btn px-4 py-2 bg-slate-600 hover:bg-slate-500 text-white font-semibold rounded-lg">Tutup</button></div></div></div>
 
     <!-- Custom Alert Container -->
     <div id="custom-alert-overlay" class="custom-alert-overlay">
@@ -688,11 +753,11 @@ Lengkapi **semua** field dalam struktur JSON berikut sesuai aturan yang spesifik
 - **namaKarakter**: (string) Cari nama karakter yang disebut secara eksplisit dalam cerita (contoh: 'Prajurit bernama Aiyra'). Jika nama disebutkan, gunakan nama itu. Jika **TIDAK ADA** nama yang disebutkan, maka **WAJIB** ciptakan satu nama baru yang keren dan legendaris untuk karakter tersebut.
 - **gender**: (string) Analisis cerita untuk menentukan jenis karakter. Pilihannya adalah "Pria", "Wanita", "Hewan", "Non-biner". **ATURAN TEGAS:** Jika cerita jelas menggambarkan manusia pria atau wanita, gunakan pilihan itu. Jika cerita jelas menggambarkan seekor hewan (misal 'serigala', 'naga', 'kucing'), **WAJIB** pilih "Hewan". Jika cerita menggambarkan makhluk non-manusia (robot, monster) atau tidak memberikan petunjuk gender yang jelas, **WAJIB** pilih "Non-biner".
 - **deskripsiKarakter**: (string) Kembangkan penampilan fisik karakter. **ATURAN PENTING:** Jika gender adalah "Hewan", deskripsi **HARUS** fokus pada ciri-ciri hewan (bulu, sisik, cakar, moncong) dan **HINDARI** deskripsi humanoid, kecuali cerita secara spesifik menyebutkan karakter antropomorfik. Untuk gender lain, kembangkan detail (wajah, rambut, mata) yang kaya dan masuk akal sesuai cerita. Jangan menambahkan elemen visual seperti bekas luka atau tato kecuali diminta.
-- **deskripsiKostum**: (string) Rancang kostum/perlengkapan yang **ikonik dan sangat detail**. Jika karakter adalah "Hewan", kostum bisa berupa armor khusus hewan, kalung, atau pelana; jika tidak ada ide, biarkan kosong. Untuk yang lain, kembangkan ide dari cerita dengan material dan tekstur yang rumit. Jangan menambahkan efek energi kecuali diminta.
-- **senjataAtauBenda**: (string) **PERIKSA DENGAN TELITI:** Jika cerita secara eksplisit **menyebutkan** sebuah senjata, item, atau benda yang dipegang karakter, deskripsikan benda itu dengan detail yang **kreatif**. Jika cerita **TIDAK** menyebutkan benda apa pun, **WAJIB** isi field ini dengan string kosong (""). Jangan mengarang senjata jika tidak disebutkan.
+- **deskripsiKostum**: (string) Rancang kostum/perlengkapan yang **ikonik dan sangat detail**. Jika karakter adalah "Hewan", kostum bisa berupa armor khusus hewan, kalung, atau pelana. Jika tidak ada ide atau tidak disebutkan, isi dengan "Tidak ada deskripsi kostum". Untuk yang lain, kembangkan ide dari cerita dengan material dan tekstur yang rumit. Jangan menambahkan efek energi kecuali diminta.
+- **senjataAtauBenda**: (string) **PERIKSA DENGAN TELITI:** Jika cerita secara eksplisit **menyebutkan** sebuah senjata, item, atau benda yang dipegang karakter, deskripsikan benda itu dengan detail yang **kreatif**. Jika cerita **TIDAK** menyebutkan benda apa pun, **WAJIB** isi field ini dengan "Tidak ada senjata atau benda".
 - **deskripsiPose**: (string) Rancang pose yang **dinamis dan penuh emosi** yang mencerminkan kepribadian dan situasi karakter sesuai cerita.
 - **lingkungan**: (string) Desain diorama miniatur untuk alas figur yang **mencengangkan** dan memperkuat cerita inti karakter (misal: bukan 'reruntuhan', tapi 'reruntuhan kuil kuno yang sebagian terendam air, dengan ukiran yang menceritakan ramalan').
-- **astralMagis**: (string) **PERIKSA DENGAN TELITI:** Jika cerita secara eksplisit **menyebutkan** seekor hewan, makhluk, atau pendamping magis, deskripsikan makhluk itu secara **fantastis dan tak terduga**. Jika cerita **TIDAK** menyebutkan makhluk apa pun, **WAJIB** isi field ini dengan string kosong (""). Jangan mengarang makhluk jika tidak disebutkan.
+- **astralMagis**: (string) **PERIKSA DENGAN TELITI:** Jika cerita secara eksplisit **menyebutkan** seekor hewan, makhluk, atau pendamping magis, deskripsikan makhluk itu secara **fantastis dan tak terduga**. Jika cerita **TIDAK** menyebutkan makhluk apa pun, **WAJIB** isi field ini dengan "Tidak ada hewan atau makhluk pendamping".
 
 Output Anda **HARUS** berupa objek JSON yang valid, tanpa teks atau pemformatan tambahan.`;
 
@@ -748,7 +813,7 @@ Output Anda **HARUS** berupa objek JSON yang valid, tanpa teks atau pemformatan 
             };
             
             if (!fields.gender || !fields.deskripsiKarakter || !fields.deskripsiPose || !fields.lingkungan || !fields.namaKarakter || !fields.generateBy) {
-                showAlert("error", 'Formulir Belum Lengkap', 'Mohon isi semua kolom yang wajib diisi (kecuali Kostum, Senjata & Hewan) sebelum menghasilkan prompt.');
+                showAlert("error", 'Formulir Belum Lengkap', 'Mohon isi semua kolom yang wajib diisi sebelum menghasilkan prompt.');
                 return;
             }
 
@@ -872,7 +937,7 @@ Output Anda **HARUS** berupa objek JSON yang valid, tanpa teks atau pemformatan 
             else {
                 const styleKeywords = gayaVisual === '4D Hyper Realism'
                     ? '4D Stylized Hyper-Realism, Ultra-Detail, High-Realistic, UHD 8K, Highly Detailed, Hyper Cinematic Lighting, Sharp Depth of Field, High Saturation, Rich Color Palette, Sharp Contrast, Photographed with DSLR Mirrorless Camera, Realistic Proportional Anatomy, Full-body, Scale 1:16, Aspect Ratio 9:16, Long Legs, Balanced Body, HD Focused:'
-                    : '3D Chibi Stylized Action Figure, Disney Pixar Style, Cute, Adorable, Soft Round Shapes, Big Expressive Eyes, Vibrant Colors, Claymation look, High Detail, Studio Lighting, Scale 1:16, Aspect Ratio 9:16, on a detailed miniature base:';
+                    : '3D Chibi Stylized Action Figure, Disney Pixar Style, Cute, Adorable, Soft Round Shapes, Big Expressive Eyes, Vibrant Colors, Claymation look, High Detail, Studio Lighting,skala 1:16, aspek rasio 9:16, on a detailed miniature base:';
                 firstLine = `Buat Gambar Visual Patung Fantasi dengan gaya ${styleKeywords}`;
             }
             
@@ -1063,7 +1128,8 @@ Output Anda **HARUS** berupa objek JSON yang valid, tanpa teks atau pemformatan 
         // --- Theme Toggle Logic ---
         function applyTheme(theme) {
             body.classList.toggle('light-theme', theme === 'light');
-            themeToggleBtn.innerHTML = theme === 'light' ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
+            const themeIcon = themeToggleBtn.querySelector('.icon-wrapper i');
+            themeIcon.className = theme === 'light' ? 'fas fa-moon' : 'fas fa-sun';
         }
         themeToggleBtn.addEventListener('click', () => {
             let currentTheme = localStorage.getItem('theme') || 'dark';
