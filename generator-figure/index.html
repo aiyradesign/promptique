@@ -259,7 +259,7 @@
                 <form id="promptForm" class="space-y-6">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div><label for="namaKarakter" class="form-label">Nama Karakter</label><input type="text" id="namaKarakter" class="form-input" placeholder="Contoh: Tomi"></div>
-                        <div><label for="gender" class="form-label">Gender</label><select id="gender" class="form-select"><option value="" selected>Pilih...</option><option value="Pria">Pria</option><option value="Wanita">Wanita</option><option value="Non-biner">Non-biner</option></select></div>
+                        <div><label for="gender" class="form-label">Gender / Jenis</label><select id="gender" class="form-select"><option value="" selected>Pilih...</option><option value="Pria">Pria</option><option value="Wanita">Wanita</option><option value="Hewan">Hewan</option><option value="Non-biner">Non-biner</option></select></div>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div><label for="deskripsiKarakter" class="form-label">Deskripsi Karakter</label><textarea id="deskripsiKarakter" rows="3" class="form-textarea" placeholder="Rambut perak, mata bersinar..."></textarea></div>
@@ -679,16 +679,16 @@
             aiBtn.disabled = true;
 
             try {
-                const improvedPrompt = `Anda adalah seorang Master Desainer figur aksi AI yang sangat imajinatif dan detail. Tugas Anda adalah mengambil ide dasar pengguna dan mengubahnya menjadi konsep figur aksi yang **spektakuler** dan **mendalam**. Ikuti aturan dengan **tegas** dan berimprovisasilah secara **kreatif** untuk menciptakan detail yang kaya berdasarkan cerita yang diberikan, dalam format JSON yang ketat.
+                const improvedPrompt = `Anda adalah seorang Master Desainer figur aksi AI yang sangat imajinatif dan analitis. Tugas Anda adalah mengambil ide dasar pengguna dan mengubahnya menjadi konsep figur aksi yang **spektakuler** dan **mendalam**. Ikuti aturan dengan **tegas** dan berimprovisasilah secara **kreatif** untuk menciptakan detail yang kaya berdasarkan cerita yang diberikan, dalam format JSON yang ketat.
 
 Berdasarkan cerita pengguna ini: "${userStory}"
 
 Lengkapi **semua** field dalam struktur JSON berikut sesuai aturan yang spesifik:
 
 - **namaKarakter**: (string) Cari nama karakter yang disebut secara eksplisit dalam cerita (contoh: 'Prajurit bernama Aiyra'). Jika nama disebutkan, gunakan nama itu. Jika **TIDAK ADA** nama yang disebutkan, maka **WAJIB** ciptakan satu nama baru yang keren dan legendaris untuk karakter tersebut.
-- **gender**: (string) Tentukan dari cerita: "Pria", "Wanita", atau "Non-biner".
-- **deskripsiKarakter**: (string) Kembangkan penampilan fisik karakter (wajah, rambut, mata) dengan detail yang kaya dan masuk akal sesuai cerita. **PENTING:** Jangan menambahkan elemen visual yang signifikan seperti bekas luka, tato, atau fitur non-manusia kecuali disebutkan secara eksplisit dalam cerita pengguna. Fokus pada penyempurnaan detail yang sudah ada.
-- **deskripsiKostum**: (string) Rancang kostum yang **ikonik dan sangat detail**. Ambil ide dasar dari cerita dan kembangkan dengan material, tekstur, dan hiasan yang rumit namun tetap sesuai dengan tema. Jangan menambahkan efek energi atau cahaya pada kostum kecuali diminta.
+- **gender**: (string) Analisis cerita untuk menentukan jenis karakter. Pilihannya adalah "Pria", "Wanita", "Hewan", "Non-biner". **ATURAN TEGAS:** Jika cerita jelas menggambarkan manusia pria atau wanita, gunakan pilihan itu. Jika cerita jelas menggambarkan seekor hewan (misal 'serigala', 'naga', 'kucing'), **WAJIB** pilih "Hewan". Jika cerita menggambarkan makhluk non-manusia (robot, monster) atau tidak memberikan petunjuk gender yang jelas, **WAJIB** pilih "Non-biner".
+- **deskripsiKarakter**: (string) Kembangkan penampilan fisik karakter. **ATURAN PENTING:** Jika gender adalah "Hewan", deskripsi **HARUS** fokus pada ciri-ciri hewan (bulu, sisik, cakar, moncong) dan **HINDARI** deskripsi humanoid, kecuali cerita secara spesifik menyebutkan karakter antropomorfik. Untuk gender lain, kembangkan detail (wajah, rambut, mata) yang kaya dan masuk akal sesuai cerita. Jangan menambahkan elemen visual seperti bekas luka atau tato kecuali diminta.
+- **deskripsiKostum**: (string) Rancang kostum/perlengkapan yang **ikonik dan sangat detail**. Jika karakter adalah "Hewan", kostum bisa berupa armor khusus hewan, kalung, atau pelana; jika tidak ada ide, biarkan kosong. Untuk yang lain, kembangkan ide dari cerita dengan material dan tekstur yang rumit. Jangan menambahkan efek energi kecuali diminta.
 - **senjataAtauBenda**: (string) **PERIKSA DENGAN TELITI:** Jika cerita secara eksplisit **menyebutkan** sebuah senjata, item, atau benda yang dipegang karakter, deskripsikan benda itu dengan detail yang **kreatif**. Jika cerita **TIDAK** menyebutkan benda apa pun, **WAJIB** isi field ini dengan string kosong (""). Jangan mengarang senjata jika tidak disebutkan.
 - **deskripsiPose**: (string) Rancang pose yang **dinamis dan penuh emosi** yang mencerminkan kepribadian dan situasi karakter sesuai cerita.
 - **lingkungan**: (string) Desain diorama miniatur untuk alas figur yang **mencengangkan** dan memperkuat cerita inti karakter (misal: bukan 'reruntuhan', tapi 'reruntuhan kuil kuno yang sebagian terendam air, dengan ukiran yang menceritakan ramalan').
@@ -704,7 +704,7 @@ Output Anda **HARUS** berupa objek JSON yang valid, tanpa teks atau pemformatan 
                             type: "OBJECT",
                             properties: {
                                 "namaKarakter": { "type": "STRING" }, 
-                                "gender": { "type": "STRING", "enum": ["Pria", "Wanita", "Non-biner"] }, 
+                                "gender": { "type": "STRING", "enum": ["Pria", "Wanita", "Hewan", "Non-biner"] }, 
                                 "deskripsiKarakter": { "type": "STRING" }, 
                                 "deskripsiKostum": { "type": "STRING" }, 
                                 "senjataAtauBenda": { "type": "STRING" }, 
@@ -722,11 +722,11 @@ Output Anda **HARUS** berupa objek JSON yang valid, tanpa teks atau pemformatan 
                     document.getElementById('namaKarakter').value = characterData.namaKarakter || '';
                     document.getElementById('gender').value = characterData.gender || '';
                     document.getElementById('deskripsiKarakter').value = characterData.deskripsiKarakter || '';
-                    document.getElementById('deskripsiKostum').value = characterData.deskripsiKostum || '';
-                    document.getElementById('senjataAtauBenda').value = characterData.senjataAtauBenda || '';
+                    document.getElementById('deskripsiKostum').value = characterData.deskripsiKostum || 'Tidak ada deskripsi kostum';
+                    document.getElementById('senjataAtauBenda').value = characterData.senjataAtauBenda || 'Tidak ada senjata atau benda';
                     document.getElementById('deskripsiPose').value = characterData.deskripsiPose || '';
                     document.getElementById('lingkungan').value = characterData.lingkungan || '';
-                    document.getElementById('astralMagis').value = characterData.astralMagis || '';
+                    document.getElementById('astralMagis').value = characterData.astralMagis || 'Tidak ada hewan atau makhluk pendamping';
                     showAlert('success', 'Analisis Selesai', 'AI telah berhasil mengisi detail karakter untuk Anda.');
                     saveStoryToHistory(userStory);
                 } else {
@@ -747,8 +747,8 @@ Output Anda **HARUS** berupa objek JSON yang valid, tanpa teks atau pemformatan 
                 gender: document.getElementById('gender').value, deskripsiKarakter: document.getElementById('deskripsiKarakter').value.trim(), deskripsiKostum: document.getElementById('deskripsiKostum').value.trim(), senjataAtauBenda: document.getElementById('senjataAtauBenda').value.trim(), deskripsiPose: document.getElementById('deskripsiPose').value.trim(), astralMagis: document.getElementById('astralMagis').value.trim(), lingkungan: document.getElementById('lingkungan').value.trim(), namaKarakter: document.getElementById('namaKarakter').value.trim().toUpperCase(), generateBy: document.getElementById('generateBy').value.trim(), bentukAlas: document.getElementById('bentukAlas').value, nuansa: document.getElementById('nuansaTemaAi').value
             };
             
-            if (!fields.gender || !fields.deskripsiKarakter || !fields.deskripsiKostum || !fields.deskripsiPose || !fields.lingkungan || !fields.namaKarakter || !fields.generateBy) {
-                showAlert("error", 'Formulir Belum Lengkap', 'Mohon isi semua kolom yang wajib diisi (kecuali Senjata & Hewan) sebelum menghasilkan prompt.');
+            if (!fields.gender || !fields.deskripsiKarakter || !fields.deskripsiPose || !fields.lingkungan || !fields.namaKarakter || !fields.generateBy) {
+                showAlert("error", 'Formulir Belum Lengkap', 'Mohon isi semua kolom yang wajib diisi (kecuali Kostum, Senjata & Hewan) sebelum menghasilkan prompt.');
                 return;
             }
 
@@ -876,14 +876,28 @@ Output Anda **HARUS** berupa objek JSON yang valid, tanpa teks atau pemformatan 
                 firstLine = `Buat Gambar Visual Patung Fantasi dengan gaya ${styleKeywords}`;
             }
             
+            const defaultCostume = 'Tidak ada deskripsi kostum';
+            const defaultWeapon = 'Tidak ada senjata atau benda';
+            const defaultAnimal = 'Tidak ada hewan atau makhluk pendamping';
+
             let promptLines = [
                 firstLine,
-                `\nKarakter: ${fields.gender} ${fields.deskripsiKarakter}`,
-                `Kostum: ${fields.deskripsiKostum}`
+                `\nKarakter: ${fields.gender} ${fields.deskripsiKarakter}`
             ];
-            if (fields.senjataAtauBenda) promptLines.push(`Benda: ${fields.senjataAtauBenda}`);
+
+            if (fields.deskripsiKostum && fields.deskripsiKostum !== defaultCostume) {
+                promptLines.push(`Kostum: ${fields.deskripsiKostum}`);
+            }
+            if (fields.senjataAtauBenda && fields.senjataAtauBenda !== defaultWeapon) {
+                promptLines.push(`Benda: ${fields.senjataAtauBenda}`);
+            }
+            
             promptLines.push(`Pose dan Ekspresi: ${fields.deskripsiPose}`);
-            if (fields.astralMagis) promptLines.push(`Pendamping: ${fields.astralMagis}, pastikan makhluk ini berada sepenuhnya di dalam area alas monumental, meskipun melayang.`);
+
+            if (fields.astralMagis && fields.astralMagis !== defaultAnimal) {
+                promptLines.push(`Pendamping: ${fields.astralMagis}, pastikan makhluk ini berada sepenuhnya di dalam area alas monumental, meskipun melayang.`);
+            }
+
             promptLines.push(`\nSemua elemen ini dipasang di atas alas base ${fields.bentukAlas} yang terbuat dari bahan ${baseStyle}, di atasnya menampilkan miniatur detail dari ${fields.lingkungan}, dan dibuat tanpa efek kabut atau efek energi apapun yang membuat karakter tenggelam dan tidak ada elemen yang keluar dari area base.`);
             promptLines.push(`\nName Base: "${fields.namaKarakter}" ukuran: Large, Subtitle: “${fields.generateBy}” ukuran: Medium, terukir dalam tipografi bergaya iblis dan timbul.`);
             const backgroundDescription = `Figur ini ${placement}, dengan Latar Belakang ${scene}. Fokus utama hanya tertuju pada Patung Fantasi Realistis dan alasnya, dengan pencahayaan terang dan lembut. Gaya keseluruhan harus kuat.`;
