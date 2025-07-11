@@ -282,6 +282,7 @@
                                 <option value="4D Hyper Realism" selected>4D Hyper Realism</option>
                                 <option value="3D Chibi">3D Chibi</option>
                                 <option value="Ilustrasi 3D Vector">Ilustrasi 3D Vector</option>
+                                <option value="3D Lego Modern">3D Lego Modern</option>
                             </select>
                         </div>
                     </div>
@@ -678,22 +679,22 @@
             aiBtn.disabled = true;
 
             try {
-                const improvedPrompt = `Anda adalah asisten desainer figur aksi AI yang sangat presisi. Tugas utama Anda adalah mengubah cerita singkat dari pengguna menjadi data terstruktur dalam format JSON yang **ketat** dan **valid**. Anda harus berimprovisasi secara kreatif untuk mengisi detail yang hilang.
+                const improvedPrompt = `Anda adalah seorang Master Desainer figur aksi AI yang sangat imajinatif dan detail. Tugas Anda adalah mengambil ide dasar pengguna dan mengubahnya menjadi konsep figur aksi yang **spektakuler** dan **mendalam**. Ikuti aturan dengan **tegas** dan berimprovisasilah secara **kreatif** untuk menciptakan detail yang kaya berdasarkan cerita yang diberikan, dalam format JSON yang ketat.
 
 Berdasarkan cerita pengguna ini: "${userStory}"
 
-Lengkapi **semua** field dalam struktur JSON berikut. Jangan tinggalkan field apa pun.
+Lengkapi **semua** field dalam struktur JSON berikut sesuai aturan yang spesifik:
 
-- **namaKarakter**: (string) Ekstrak nama dari cerita. Jika tidak ada, ciptakan nama yang keren dan sesuai.
-- **gender**: (string) Tentukan dari cerita. **Harus** salah satu dari: "Pria", "Wanita", atau "Non-biner".
-- **deskripsiKarakter**: (string) Deskripsikan penampilan fisik karakter secara detail (wajah, rambut, mata, ciri khas).
-- **deskripsiKostum**: (string) Rancang kostum yang ikonik dan detail. Kembangkan ide pengguna atau buat dari awal jika tidak ada.
-- **senjataAtauBenda**: (string) **PENTING**: Jika relevan dengan cerita (misal: pedang untuk ksatria, laptop untuk peretas), deskripsikan. Jika sama sekali tidak relevan (misal: untuk seorang penari), **WAJIB** isi dengan string kosong ("").
-- **deskripsiPose**: (string) Ciptakan pose yang dinamis, ekspresif, dan menceritakan karakter.
-- **lingkungan**: (string) Deskripsikan diorama miniatur yang ada **di atas alas figur**. Ini harus mencerminkan cerita inti karakter (misal: untuk astronot, 'permukaan bulan dengan kawah kecil'; untuk koki, 'potongan meja dapur dengan talenan').
-- **astralMagis**: (string) **PENTING**: Jika ada hewan, makhluk, atau pendamping magis dalam cerita, deskripsikan. Jika tidak ada, **WAJIB** isi dengan string kosong ("").
+- **namaKarakter**: (string) Cari nama karakter yang disebut secara eksplisit dalam cerita (contoh: 'Prajurit bernama Aiyra'). Jika nama disebutkan, gunakan nama itu. Jika **TIDAK ADA** nama yang disebutkan, maka **WAJIB** ciptakan satu nama baru yang keren dan legendaris untuk karakter tersebut.
+- **gender**: (string) Tentukan dari cerita: "Pria", "Wanita", atau "Non-biner".
+- **deskripsiKarakter**: (string) Kembangkan penampilan fisik karakter (wajah, rambut, mata) dengan detail yang kaya dan masuk akal sesuai cerita. **PENTING:** Jangan menambahkan elemen visual yang signifikan seperti bekas luka, tato, atau fitur non-manusia kecuali disebutkan secara eksplisit dalam cerita pengguna. Fokus pada penyempurnaan detail yang sudah ada.
+- **deskripsiKostum**: (string) Rancang kostum yang **ikonik dan sangat detail**. Ambil ide dasar dari cerita dan kembangkan dengan material, tekstur, dan hiasan yang rumit namun tetap sesuai dengan tema. Jangan menambahkan efek energi atau cahaya pada kostum kecuali diminta.
+- **senjataAtauBenda**: (string) **PERIKSA DENGAN TELITI:** Jika cerita secara eksplisit **menyebutkan** sebuah senjata, item, atau benda yang dipegang karakter, deskripsikan benda itu dengan detail yang **kreatif**. Jika cerita **TIDAK** menyebutkan benda apa pun, **WAJIB** isi field ini dengan string kosong (""). Jangan mengarang senjata jika tidak disebutkan.
+- **deskripsiPose**: (string) Rancang pose yang **dinamis dan penuh emosi** yang mencerminkan kepribadian dan situasi karakter sesuai cerita.
+- **lingkungan**: (string) Desain diorama miniatur untuk alas figur yang **mencengangkan** dan memperkuat cerita inti karakter (misal: bukan 'reruntuhan', tapi 'reruntuhan kuil kuno yang sebagian terendam air, dengan ukiran yang menceritakan ramalan').
+- **astralMagis**: (string) **PERIKSA DENGAN TELITI:** Jika cerita secara eksplisit **menyebutkan** seekor hewan, makhluk, atau pendamping magis, deskripsikan makhluk itu secara **fantastis dan tak terduga**. Jika cerita **TIDAK** menyebutkan makhluk apa pun, **WAJIB** isi field ini dengan string kosong (""). Jangan mengarang makhluk jika tidak disebutkan.
 
-Pastikan output Anda **HANYA** berupa objek JSON yang valid, sesuai dengan skema yang diberikan, tanpa teks atau pemformatan tambahan.`;
+Output Anda **HARUS** berupa objek JSON yang valid, tanpa teks atau pemformatan tambahan.`;
 
                 const generationPayload = {
                     contents: [{ role: "user", parts: [{ text: improvedPrompt }] }],
@@ -865,10 +866,13 @@ Pastikan output Anda **HANYA** berupa objek JSON yang valid, sesuai dengan skema
             let firstLine;
             if (gayaVisual === 'Ilustrasi 3D Vector') {
                 firstLine = 'Buat Gambar Visual Patung Fantasi bergaya komik 3D vektor modern, sangat detail. Tekankan garis-garis vektor yang bersih dan tajam, bayangan tegas bergaya stylized, highlight reflektif, palet warna kaya dan kontras tinggi, saturasi warna tinggi. Pencahayaan sinematik dramatis dengan depth of field tajam. Anatomi realistis yang proporsional dengan kaki panjang dan pose dinamis, skala 1:16, aspek rasio 9:16, full-body. Efek seperti difoto dengan kamera DSLR mirrorless:';
-            } else {
+            } else if (gayaVisual === '3D Lego Modern') {
+                firstLine = 'Buat Gambar Visual Patung Fantasi bergaya Lego 3D modern, sangat detail. Tekankan bentuk balok dan sambungan khas Lego yang bersih dan tajam, bayangan tegas bergaya stylized, highlight reflektif, palet warna kaya dan kontras tinggi, saturasi warna tinggi. Anatomi proporsional khas Lego, kepala silinder besar, tangan c-hook, kaki balok pendek, namun tetap dalam pose dinamis full-body. Pencahayaan sinematik dramatis dengan depth of field tajam, skala 1:16, aspek rasio 9:16. Efek visual seperti difoto dengan kamera DSLR mirrorless, menonjolkan detail permukaan plastik Lego yang mengilap dan artistik:';
+            }
+            else {
                 const styleKeywords = gayaVisual === '4D Hyper Realism'
                     ? '4D Stylized Hyper-Realism, Ultra-Detail, High-Realistic, UHD 8K, Highly Detailed, Hyper Cinematic Lighting, Sharp Depth of Field, High Saturation, Rich Color Palette, Sharp Contrast, Photographed with DSLR Mirrorless Camera, Realistic Proportional Anatomy, Full-body, Scale 1:16, Aspect Ratio 9:16, Long Legs, Balanced Body, HD Focused:'
-                    : '3D Chibi Stylized Action Figure, Disney Pixar Style, Cute, Adorable, Soft Round Shapes, Big Expressive Eyes, Vibrant Colors, Claymation look, High Detail, Studio Lighting, on a detailed miniature base:';
+                    : '3D Chibi Stylized Action Figure, Disney Pixar Style, Cute, Adorable, Soft Round Shapes, Big Expressive Eyes, Vibrant Colors, Claymation look, High Detail, Studio Lighting, Scale 1:16, Aspect Ratio 9:16, on a detailed miniature base:';
                 firstLine = `Buat Gambar Visual Patung Fantasi dengan gaya ${styleKeywords}`;
             }
             
@@ -1018,7 +1022,7 @@ Pastikan output Anda **HANYA** berupa objek JSON yang valid, sesuai dengan skema
                 const item = document.createElement('div');
                 item.className = 'p-3 border border-slate-700 rounded-lg flex justify-between items-center';
                 item.innerHTML = `<span class="story-text flex-grow-1 mr-3 cursor-pointer hover:text-violet-400">${story.substring(0, 50)}${story.length > 50 ? '...' : ''}</span>
-                                  <button class="text-red-500 hover:text-red-400 delete-history-btn" data-index="${index}"><i class="fas fa-trash"></i></button>`;
+                                    <button class="text-red-500 hover:text-red-400 delete-history-btn" data-index="${index}"><i class="fas fa-trash"></i></button>`;
                 item.querySelector('.story-text').addEventListener('click', () => {
                     ceritaKarakterEl.value = story;
                     closeModal(historyModal);
