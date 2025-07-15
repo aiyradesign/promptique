@@ -268,7 +268,12 @@
                     </div>
                     
                     <div class="flex flex-col sm:flex-row gap-2">
-                        <input type="password" id="api-key-input" class="form-input flex-grow" placeholder="Masukkan API Key Anda...">
+                        <div class="relative flex-grow">
+                            <input type="password" id="api-key-input" class="form-input flex-grow pr-10" placeholder="Masukkan API Key Anda...">
+                            <button type="button" id="toggleApiKeyBtn" class="absolute inset-y-0 right-0 px-3 flex items-center text-slate-400 hover:text-slate-200" aria-label="Toggle API Key visibility">
+                                <i class="fas fa-eye" id="apiKey-eye-icon"></i>
+                            </button>
+                        </div>
                         <div class="flex gap-2 w-full sm:w-auto flex-shrink-0">
                             <button type="button" id="save-api-key" class="flex-1 sm:w-auto justify-center px-4 py-2 bg-slate-600 hover:bg-slate-500 text-white font-semibold rounded-lg flex items-center"><i class="fas fa-save mr-2"></i>Simpan</button>
                             <button type="button" id="delete-api-key" class="flex-1 sm:w-auto justify-center px-4 py-2 bg-red-700 hover:bg-red-600 text-white font-semibold rounded-lg flex items-center"><i class="fas fa-trash-alt mr-2"></i>Hapus</button>
@@ -345,9 +350,10 @@
                             <label for="gayaVisual" class="form-label">Gaya Visual</label>
                             <select id="gayaVisual" class="form-select">
                                 <option value="4D Hyper Realism" selected>4D Hyper Realism</option>
-                                <option value="3D Chibi">3D Chibi</option>
-                                <option value="Ilustrasi 3D Vector">Ilustrasi 3D Vector</option>
+                                <option value="3D Chibi Stylized">3D Chibi Stylized</option>
+                                <option value="3D Vector Ilustrasi">3D Vector Ilustrasi</option>
                                 <option value="3D Lego Modern">3D Lego Modern</option>
+                                <option value="3D Brick Block Toy">3D Brick Block Toy</option>
                             </select>
                         </div>
                     </div>
@@ -531,6 +537,8 @@
         const copyBtnEn = document.getElementById('copyBtnEn');
         const togglePasswordBtn = document.getElementById('togglePasswordBtn');
         const passwordEyeIcon = document.getElementById('password-eye-icon');
+        const toggleApiKeyBtn = document.getElementById('toggleApiKeyBtn');
+        const apiKeyEyeIcon = document.getElementById('apiKey-eye-icon');
         const translateSection = document.getElementById('translate-section');
         const translateBtn = document.getElementById('translateBtn');
         const englishPromptSection = document.getElementById('english-prompt-section');
@@ -667,6 +675,13 @@
             appPasswordInput.type = isPassword ? 'text' : 'password';
             passwordEyeIcon.classList.toggle('fa-eye', !isPassword);
             passwordEyeIcon.classList.toggle('fa-eye-slash', isPassword);
+        });
+
+        toggleApiKeyBtn.addEventListener('click', () => {
+            const isPassword = apiKeyInput.type === 'password';
+            apiKeyInput.type = isPassword ? 'text' : 'password';
+            apiKeyEyeIcon.classList.toggle('fa-eye', !isPassword);
+            apiKeyEyeIcon.classList.toggle('fa-eye-slash', isPassword);
         });
 
         unlockBtn.addEventListener('click', () => {
@@ -929,10 +944,12 @@ Output Anda **HARUS** berupa objek JSON yang valid, tanpa teks atau pemformatan 
             const gayaVisual = document.getElementById('gayaVisual').value;
             
             let firstLine;
-            if (gayaVisual === 'Ilustrasi 3D Vector') {
+            if (gayaVisual === '3D Vector Ilustrasi') {
                 firstLine = 'Buat Gambar Visual Patung Fantasi bergaya komik 3D vektor modern, sangat detail. Tekankan garis-garis vektor yang bersih dan tajam, bayangan tegas bergaya stylized, highlight reflektif, palet warna kaya dan kontras tinggi, saturasi warna tinggi. Pencahayaan sinematik dramatis dengan depth of field tajam. Anatomi realistis yang proporsional dengan kaki panjang dan pose dinamis, Scale 1:16, Aspect Ratio 2:3, full-body. Efek seperti difoto dengan kamera DSLR mirrorless:';
             } else if (gayaVisual === '3D Lego Modern') {
                 firstLine = 'Buat Gambar Visual Patung Fantasi bergaya Lego 3D modern, sangat detail. Tekankan bentuk balok dan sambungan khas Lego yang bersih dan tajam, bayangan tegas bergaya stylized, highlight reflektif, palet warna kaya dan kontras tinggi, saturasi warna tinggi. Anatomi proporsional khas Lego, kepala silinder besar, tangan c-hook, kaki balok pendek, namun tetap dalam pose dinamis full-body. Pencahayaan sinematik dramatis dengan depth of field tajam, Scale 1:16, Aspect Ratio 2:3. Efek visual seperti difoto dengan kamera DSLR mirrorless, menonjolkan detail permukaan plastik Lego yang mengilap dan artistik:';
+            } else if (gayaVisual === '3D Brick Block Toy') {
+                firstLine = 'Buat Gambar Visual Patung Fantasi dengan gaya 3D Brick Block Toy Style, Stylized Toy-Like, Blocky Construction, Plastic Texture, Bright and Solid Colors, Chunky Proportions, No Realistic Details, Cute and Playful Design, Miniature Scale 1:16, Aspect Ratio 2:3, Toy Photography Style, Studio Lighting, Clean Background, Visible Studs and Joints, Built Entirely from Brick Pieces, Simple Facial Expressions, Clear Outlines, dan Compact, Modular Body Shapes:';
             }
             else {
                 const styleKeywords = gayaVisual === '4D Hyper Realism'
@@ -963,7 +980,7 @@ Output Anda **HARUS** berupa objek JSON yang valid, tanpa teks atau pemformatan 
                 promptLines.push(`Pendamping: ${fields.astralMagis}, pastikan makhluk ini berada sepenuhnya di dalam area alas monumental, meskipun melayang.`);
             }
 
-            promptLines.push(`\nSemua elemen ini dipasang di atas alas base ${fields.bentukAlas} yang terbuat dari bahan ${baseStyle}, di atasnya menampilkan miniatur detail dari ${fields.lingkungan}, dan dibuat tanpa efek kabut atau efek energi apapun yang membuat karakter tenggelam dan tidak ada elemen yang keluar dari area base.`);
+            promptLines.push(`\nSemua elemen ini dipasang di atas alas base ${fields.bentukAlas} yang terbuat dari bahan ${baseStyle}, di atasnya menampilkan miniatur detail dari ${fields.lingkungan} Dibuat tanpa efek kabut atau efek energi apapun yang membuat karakter tenggelam dan tidak ada elemen yang keluar dari area base.`);
             promptLines.push(`\nName Base: "${fields.namaKarakter}" ukuran: Large, Subtitle: “${fields.generateBy}” ukuran: Medium, terukir dalam tipografi bergaya iblis dan timbul.`);
             const backgroundDescription = `Figur ini ${placement}, dengan Latar Belakang ${scene}. Fokus utama hanya tertuju pada Patung Fantasi Realistis dan alasnya, dengan pencahayaan terang dan lembut. Gaya keseluruhan harus kuat.`;
             promptLines.push(`\n${backgroundDescription}`);
@@ -1003,7 +1020,7 @@ Output Anda **HARUS** berupa objek JSON yang valid, tanpa teks atau pemformatan 
                     contents: [{
                         role: "user",
                         parts: [{
-                            text: `Translate the following creative image prompt from Indonesian to fluent, natural-sounding English suitable for an AI image generator. Retain the structure, line breaks, and key technical terms (like "4D Hyper Realism", "UHD 8K", "aspect ratio 9:16").\n\nIndonesian Prompt:\n---\n${indonesianPrompt}\n\n---\n\nEnglish Translation:`
+                            text: `Translate the following creative image prompt from Indonesian to fluent, natural-sounding English suitable for an AI image generator. Retain the structure, line breaks, and key technical terms (like "4D Hyper Realism", "UHD 8K", "aspect ratio 2:3").\n\nIndonesian Prompt:\n---\n${indonesianPrompt}\n\n---\n\nEnglish Translation:`
                         }]
                     }]
                 };
