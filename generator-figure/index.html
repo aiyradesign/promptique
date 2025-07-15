@@ -752,6 +752,13 @@
                 return;
             }
 
+            // Reset previous results
+            resultSection.style.display = 'none';
+            outputPromptEl.value = '';
+            outputPromptEnEl.value = '';
+            englishPromptSection.style.display = 'none';
+            translateSection.style.display = 'none';
+
             const aiBtnText = document.getElementById('aiBtnText');
             const spinner = aiBtn.querySelector('.loading-spinner');
             aiBtnText.textContent = 'Memproses...';
