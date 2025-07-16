@@ -230,11 +230,11 @@
                 <div id="login-form">
                     <h3 class="text-xl font-bold text-center gradient-text mb-4">Akses Diperlukan</h3>
                     <div class="max-w-sm mx-auto">
-                        <label for="password-input" class="form-label justify-center">Kata Sandi</label>
+                        <label for="-input" class="form-label justify-center">Kata Sandi</label>
                         <div class="relative flex items-center">
-                            <input type="password" id="password-input" class="form-input w-full pr-10" placeholder="Masukkan sandi...">
-                            <button type="button" id="toggle-password-btn" class="absolute inset-y-0 right-0 px-3 flex items-center text-slate-400 hover:text-slate-200">
-                                <i class="fas fa-eye" id="password-eye-icon"></i>
+                            <input type="" id="-input" class="form-input w-full pr-10" placeholder="Masukkan sandi...">
+                            <button type="button" id="toggle--btn" class="absolute inset-y-0 right-0 px-3 flex items-center text-slate-400 hover:text-slate-200">
+                                <i class="fas fa-eye" id="-eye-icon"></i>
                             </button>
                         </div>
                         <button id="login-btn" class="mt-4 w-full bg-violet-600 hover:bg-violet-500 text-white font-bold py-2 px-6 rounded-lg transition-colors">Masuk</button>
@@ -263,7 +263,7 @@
                             </a>
                         </div>
                         <div class="flex flex-col sm:flex-row gap-2">
-                            <input type="password" id="api-key-input" class="form-input flex-grow" placeholder="Masukkan API Key Anda...">
+                            <input type="" id="api-key-input" class="form-input flex-grow" placeholder="Masukkan API Key Anda...">
                             <div class="flex gap-2 w-full sm:w-auto flex-shrink-0">
                                 <button type="button" id="delete-api-key-button" class="flex-1 sm:w-auto justify-center px-4 py-2 bg-red-600 hover:bg-red-500 text-white font-semibold rounded-lg flex items-center"><i class="fas fa-trash-alt mr-2"></i>Hapus</button>
                                 <button type="button" id="save-api-key-button" class="flex-1 sm:w-auto justify-center px-4 py-2 bg-violet-600 hover:bg-violet-500 text-white font-semibold rounded-lg flex items-center"><i class="fas fa-save mr-2"></i>Simpan</button>
@@ -858,7 +858,7 @@ Output HANYA berupa objek JSON yang valid, tanpa teks tambahan. Semua nilai stri
         };
 
         loginBtn.addEventListener('click', () => {
-            if (passwordInput.value === '123') {
+            if (passwordInput.value === 'prompt.ique.852') {
                 sessionStorage.setItem('isLoggedIn', 'true');
                 grantAccess();
                 showAlert('success', 'Berhasil Masuk', 'Selamat datang! Aplikasi siap digunakan.');
