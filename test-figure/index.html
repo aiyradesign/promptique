@@ -1,0 +1,1245 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Prompt Generator – Action Figure | prompt.ique</title>
+    <meta name="description" content="Buat prompt AI untuk desain action figure dengan gaya visual 4D Hyper Realism atau 3D Chibi melalui Promptique.">
+    
+    <meta property="og:title" content="Promptique | AI Prompt Generator Action Figure">
+    <meta property="og:description" content="Buat prompt AI untuk desain action figure keren. Siap digunakan di ChatGPT, Midjourney, dan AI Studio.">
+    <meta property="og:image" content="https://promptique.my.id/generator-figure/action_poster.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:url" content="https://promptique.my.id/generator-figure">
+    <meta property="og:type" content="website">
+
+    <link rel="icon" href="../icon.png" type="image/png" />
+    
+    <!-- Tailwind CSS & Font Awesome -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a; /* slate-900 */
+            color: #cbd5e1; /* slate-300 */
+        }
+        .gradient-text {
+            background: linear-gradient(to right, #5eead4, #a78bfa, #f472b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
+        }
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #94a3b8; /* slate-400 */
+        }
+        .form-input, .form-textarea, .form-select {
+            width: 100%;
+            background-color: #1e293b; /* slate-800 */
+            border: 1px solid #334155; /* slate-700 */
+            border-radius: 0.5rem;
+            padding: 0.75rem 1rem;
+            color: #f1f5f9; /* slate-100 */
+            transition: all 0.2s;
+        }
+        .form-input:focus, .form-textarea:focus, .form-select:focus {
+            border-color: #a78bfa; /* violet-400 */
+            box-shadow: 0 0 0 2px rgba(167, 139, 250, 0.3);
+            outline: none;
+        }
+        .form-select {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%2394a3b8' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 0.5rem center;
+            background-repeat: no-repeat;
+            background-size: 1.5em 1.5em;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+        .loading-spinner {
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            width: 20px; height: 20px;
+            border-radius: 50%; border-left-color: white;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        
+        .modal-overlay {
+            position: fixed; inset: 0; background-color: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center;
+            padding: 1rem; z-index: 110; opacity: 0; transition: opacity 0.3s ease; pointer-events: none;
+        }
+        .modal-overlay.show { opacity: 1; pointer-events: auto; }
+        .modal-content {
+            background-color: #1e293b; border: 1px solid #334155; border-radius: 0.75rem;
+            width: 100%; max-width: 500px;
+            transform: scale(0.95); transition: transform 0.3s ease;
+        }
+        .modal-overlay.show .modal-content { transform: scale(1); }
+        
+        fieldset:disabled {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+        
+        /* Custom Alert System Styles */
+        .custom-alert-overlay {
+            position: fixed; inset: 0; background-color: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(5px); display: flex; align-items: center; justify-content: center;
+            padding: 1rem; z-index: 120; opacity: 0; transition: opacity 0.3s ease; pointer-events: none;
+        }
+        .custom-alert-overlay.show { opacity: 1; pointer-events: auto; }
+        .custom-alert-box {
+            background-color: #1e293b; border: 1px solid #334155; border-radius: 0.75rem;
+            width: 100%; max-width: 400px; padding: 2rem; text-align: center;
+            transform: scale(0.95); transition: transform 0.3s ease;
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+        .custom-alert-overlay.show .custom-alert-box { transform: scale(1); }
+        .custom-alert-icon {
+            width: 4rem; height: 4rem; border-radius: 50%;
+            display: inline-flex; align-items: center; justify-content: center;
+            margin-bottom: 1rem; font-size: 2rem;
+        }
+        .custom-alert-icon.success { background-color: rgba(45, 212, 191, 0.1); color: #5eead4; }
+        .custom-alert-icon.error { background-color: rgba(244, 63, 94, 0.1); color: #fb7185; }
+        .custom-alert-icon.info { background-color: rgba(59, 130, 246, 0.1); color: #60a5fa; }
+
+        /* API Modal Tab Styles */
+        .api-tab {
+            background-color: #334155; /* slate-700 */
+            color: #94a3b8; /* slate-400 */
+        }
+        .api-tab.active {
+            background-image: linear-gradient(to right, #f472b6, #a78bfa);
+            color: white;
+            font-weight: 600;
+        }
+
+        /* Off-canvas Menu */
+        #offcanvas-menu {
+            transition: transform .3s ease-in-out;
+        }
+        #offcanvas-menu.open {
+            transform: translateX(0);
+        }
+
+        /* Light Theme Styles */
+        body.light-theme {
+            background-color: #f1f5f9; /* slate-100 */
+            color: #1e293b; /* slate-800 */
+        }
+        body.light-theme .form-input, 
+        body.light-theme .form-textarea, 
+        body.light-theme .form-select {
+            background-color: #ffffff;
+            border-color: #cbd5e1; /* slate-300 */
+            color: #1e293b;
+        }
+        body.light-theme .form-input:focus, 
+        body.light-theme .form-textarea:focus, 
+        body.light-theme .form-select:focus {
+            border-color: #8b5cf6; /* violet-500 */
+        }
+        body.light-theme .form-label { color: #475569; /* slate-600 */ }
+        body.light-theme .bg-slate-800\/50 { background-color: rgba(248, 250, 252, 0.8); } /* slate-50 with opacity */
+        body.light-theme .border-slate-700 { border-color: #e2e8f0; /* slate-200 */ }
+        body.light-theme .text-slate-300 { color: #475569; } /* slate-600 */
+        body.light-theme .text-slate-400 { color: #64748b; /* slate-500 */ }
+        body.light-theme .navbar-desktop { background-color: rgba(241, 245, 249, 0.8); border-bottom-color: #e2e8f0; }
+        body.light-theme .nav-btn { background-color: #e2e8f0; color: #334155; }
+        body.light-theme .nav-btn:hover { background-color: #cbd5e1; }
+        body.light-theme .api-tab { background-color: #e2e8f0; color: #475569; }
+        body.light-theme .api-tab.active { color: white; }
+        body.light-theme #offcanvas-menu { background-color: #f8fafc; }
+        body.light-theme #offcanvas-menu .text-slate-300 { color: #334155; }
+        body.light-theme #offcanvas-menu .hover\:bg-slate-700:hover { background-color: #e2e8f0; }
+        
+        /* Modal & Alert Light Theme Overrides */
+        body.light-theme .modal-overlay, 
+        body.light-theme .custom-alert-overlay { 
+            background-color: rgba(226, 232, 240, 0.8); 
+        }
+        body.light-theme .modal-content, 
+        body.light-theme .custom-alert-box { 
+            background-color: #f8fafc; /* slate-50 */
+            border-color: #e2e8f0; /* slate-200 */
+            color: #1e293b; /* slate-800 */
+        }
+        body.light-theme .modal-content .text-white, 
+        body.light-theme .custom-alert-box .text-white { 
+            color: #1e293b !important; 
+        }
+        body.light-theme .modal-content .text-blue-200 { color: #1e40af; } /* dark blue */
+        body.light-theme .modal-content .text-yellow-200 { color: #92400e; } /* dark yellow */
+        body.light-theme .modal-content .bg-blue-900\/20 { background-color: rgba(96, 165, 250, 0.2); }
+        body.light-theme .modal-content .bg-yellow-900\/20 { background-color: rgba(251, 191, 36, 0.2); }
+        body.light-theme .modal-content a.text-teal-300 { color: #0d9488; }
+        body.light-theme .modal-content .text-slate-200 { color: #334155; }
+        
+        /* Modal Buttons Light Theme */
+        body.light-theme .modal-content .bg-slate-600 {
+            background-color: #e2e8f0; /* slate-200 */
+            color: #334155; /* slate-700 */
+        }
+        body.light-theme .modal-content .bg-slate-600:hover {
+            background-color: #cbd5e1; /* slate-300 */
+        }
+        /* Keep text white on buttons with their own dark/colored background */
+        body.light-theme .modal-content .bg-red-600,
+        body.light-theme .modal-content .bg-gradient-to-r {
+            color: white !important;
+        }
+        /* Top right 'x' close button */
+        body.light-theme .modal-content .close-modal-btn.text-slate-400 {
+            color: #64748b; /* slate-500 */
+        }
+        body.light-theme .modal-content .close-modal-btn.text-slate-400:hover {
+            color: #1e293b; /* slate-800 */
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Universal Navbar -->
+    <header class="navbar-desktop flex sticky top-0 z-30 bg-slate-900/80 backdrop-blur-lg border-b border-slate-700">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between h-16">
+                <!-- Left: Logo -->
+                <div class="flex-shrink-0">
+                    <a href="#" class="text-xl font-bold gradient-text flex items-center gap-2">
+                        <i class="fas fa-robot"></i>
+                        <span id="nav-title" class="hidden sm:inline">Promptique Generator</span>
+                    </a>
+                </div>
+
+                <!-- Right: Actions -->
+                <div class="flex items-center gap-2">
+                    <button id="language-toggle" class="nav-btn px-3 py-2 text-sm bg-slate-700 hover:bg-slate-600 rounded-lg transition-colors flex items-center">
+                        <i class="fas fa-language"></i>
+                        <span class="hidden md:inline ml-2" id="lang-btn-text">ID</span>
+                    </button>
+                    <button id="riwayat-btn" class="nav-btn px-3 py-2 text-sm bg-slate-700 hover:bg-slate-600 rounded-lg transition-colors flex items-center">
+                        <i class="fas fa-folder-open"></i>
+                        <span class="hidden md:inline ml-2" id="history-btn-text">Riwayat</span>
+                    </button>
+                    <button id="api-key-modal-btn" class="nav-btn px-3 py-2 text-sm bg-slate-700 hover:bg-slate-600 rounded-lg transition-colors flex items-center">
+                        <i class="fas fa-key"></i>
+                        <span class="hidden md:inline ml-2" id="api-btn-text">API Key</span>
+                    </button>
+                    <!-- Desktop-only buttons -->
+                    <div class="hidden md:flex items-center gap-2">
+                         <button id="logout-btn" class="nav-btn h-10 w-10 flex items-center justify-center rounded-lg bg-slate-700 hover:bg-slate-600 transition-colors hidden" title="Kunci Ulang">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </button>
+                        <button id="theme-toggle" class="nav-btn h-10 w-10 flex items-center justify-center rounded-lg bg-slate-700 hover:bg-slate-600 transition-colors" title="Ganti Tema">
+                             <i class="fas fa-sun"></i>
+                        </button>
+                    </div>
+                    <!-- Mobile Menu Button -->
+                    <div class="md:hidden">
+                        <button id="menu-toggle" class="nav-btn h-10 w-10 flex items-center justify-center rounded-lg">
+                            <i class="fas fa-bars"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Off-canvas Menu -->
+    <div id="offcanvas-overlay" class="fixed inset-0 bg-black/50 z-40 hidden"></div>
+    <div id="offcanvas-menu" class="fixed top-0 right-0 h-full w-64 bg-slate-800 shadow-xl p-6 z-50 transform translate-x-full">
+        <h2 class="text-lg font-bold text-slate-300 mb-6">Menu</h2>
+        <nav class="flex flex-col gap-4">
+             <button id="mobile-logout-btn" class="w-full text-left p-3 rounded-lg hover:bg-slate-700 text-slate-300 transition-colors hidden" title="Kunci Ulang">
+                <i class="fas fa-sign-out-alt w-6"></i>
+                <span id="mobile-logout-text">Kunci Ulang</span>
+            </button>
+             <button id="mobile-theme-toggle" class="w-full text-left p-3 rounded-lg hover:bg-slate-700 text-slate-300 transition-colors" title="Ganti Tema">
+                 <i class="fas fa-sun w-6"></i>
+                 <span id="mobile-theme-text">Ganti Tema</span>
+            </button>
+        </nav>
+    </div>
+
+
+    <main class="container mx-auto max-w-4xl px-4 py-8 sm:py-12">
+
+        <!-- Login Section -->
+        <section id="password-section" class="bg-slate-800/50 border border-slate-700 rounded-xl p-6 sm:p-8 mb-8" style="display: none;">
+            <h3 class="text-xl font-bold text-center gradient-text mb-4" id="login-title">Akses Terbatas</h3>
+            <div class="max-w-sm mx-auto">
+                <label for="appPasswordInput" class="form-label" id="password-label">Kata Sandi</label>
+                <div class="flex flex-col sm:flex-row gap-2 mb-3">
+                    <div class="relative flex-grow">
+                        <input type="password" id="appPasswordInput" class="form-input w-full pr-10 text-center sm:text-left" placeholder="Masukkan sandi...">
+                        <button type="button" id="togglePasswordBtn" class="absolute inset-y-0 right-0 px-3 flex items-center text-slate-400 hover:text-slate-200" aria-label="Toggle password visibility">
+                            <i class="fas fa-eye" id="password-eye-icon"></i>
+                        </button>
+                    </div>
+                    <button id="unlockBtn" class="w-full sm:w-auto bg-violet-600 hover:bg-violet-500 text-white font-bold py-2 px-6 rounded-lg transition-colors flex-shrink-0" id="login-button">Masuk</button>
+                </div>
+                 <a id="getPassBtn" href="https://lynk.id/aiyradesign/e39qnxl23nl3" target="_blank" class="block w-full bg-teal-600 hover:bg-teal-500 text-white font-bold py-2 px-6 rounded-lg transition-colors text-center">
+                    <i class="fas fa-shopping-cart mr-2"></i><span id="get-password-btn-text">Dapatkan Sandi GRATIS</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- Generator Fieldset -->
+        <fieldset id="generator-fieldset" disabled>
+            <!-- Hero Section -->
+            <section class="text-center mb-12">
+                <h1 id="hero-title" class="text-4xl sm:text-6xl font-extrabold tracking-tight gradient-text">
+                    Action Figure Prompt Generator
+                </h1>
+                <p id="hero-subtitle" class="mt-4 text-lg text-slate-400 max-w-2xl mx-auto">
+                    Generate Prompt AI untuk Action Figure dengan cepat
+                </p>
+            </section>
+
+            <!-- Content Area -->
+            <div class="space-y-8">
+                <!-- AI Assistant Card -->
+                <section class="bg-slate-800/50 border border-slate-700 rounded-xl p-6 sm:p-8">
+                    <h3 class="text-xl font-bold mb-6 text-center gradient-text">
+                        <i class="fas fa-magic-wand-sparkles mr-2"></i> <span id="ai-assistant-title">AI Assistant</span>
+                    </h3>
+                    <div class="space-y-6">
+                        <div>
+                            <label for="ceritaKarakter" class="form-label"><i class="fas fa-feather-alt w-5 mr-1"></i><span id="story-label">Ceritakan singkat tentang karakter Anda</span></label>
+                            <textarea id="ceritaKarakter" rows="4" class="form-textarea" placeholder="Contoh: Seekor naga es agung yang menjaga puncak gunung beku..."></textarea>
+                        </div>
+                        <div>
+                            <label for="nuansaTemaAi" class="form-label"><i class="fas fa-palette w-5 mr-1"></i><span id="theme-label">Pilih Nuansa Tema</span></label>
+                            <select id="nuansaTemaAi" class="form-select">
+                                <option value="KlasikStudio" selected>Klasik Studio</option>
+                                <option value="Cyberpunk">Cyberpunk</option>
+                                <option value="FantasiMistis">Fantasi Mistis</option>
+                                <option value="PascaApokaliptik">Pasca-Apokaliptik</option>
+                                <option value="Steampunk">Steampunk</option>
+                                <option value="Kosmik">Kosmik Fiksi Ilmiah</option>
+                                <option value="HororGotik">Horor Gotik</option>
+                                <option value="BioLuminescent">Hutan Bio-Luminescent</option>
+                                <option value="MesirKuno">Mesir Kuno Mistis</option>
+                                <option value="KerajaanLangit">Kerajaan di Atas Awan</option>
+                                <option value="PasirPantaiTropis">Pasir Pantai Tropis</option>
+                                <option value="InteriorDojoJepang">Interior Dojo Jepang</option>
+                                <option value="LaboratoriumSciFi">Laboratorium Sci-Fi</option>
+                                <option value="DekKapalBajakLaut">Dek Kapal Bajak Laut</option>
+                                <option value="TamanBungaSakura">Taman Bunga Sakura</option>
+                                <option value="ReruntuhanHutanKuno">Reruntuhan Hutan Kuno</option>
+                                <option value="KotaBawahAir">Kota Bawah Air</option>
+                                <option value="ArenaGladiator">Arena Gladiator</option>
+                                <option value="IstanaEsArktik">Istana Es Arktik</option>
+                                <option value="DuniaPermen">Dunia Permen</option>
+                            </select>
+                        </div>
+                        <div class="text-center">
+                            <button id="aiBtn" class="w-full sm:w-auto inline-flex items-center justify-center px-8 py-3 font-bold text-white rounded-full transition-all duration-300 bg-gradient-to-r from-teal-500 via-purple-500 to-pink-500 hover:from-teal-600 hover:via-purple-600 hover:to-pink-600 hover:shadow-lg hover:shadow-purple-500/20">
+                                <span id="aiBtnTextContainer" class="inline-flex items-center">
+                                    <i class="fas fa-lightbulb mr-3"></i>
+                                    <span id="aiBtnText">Sesuaikan dengan AI</span>
+                                </span>
+                                <span id="aiBtnLoadingContainer" class="hidden items-center">
+                                    <div class="loading-spinner"></div>
+                                    <span id="aiBtnLoadingText" class="ml-3"></span>
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Detail Manual Card -->
+                <section class="bg-slate-800/50 border border-slate-700 rounded-xl p-6 sm:p-8">
+                    <h3 class="text-xl font-bold mb-6 text-center gradient-text">
+                        <i class="fas fa-pencil-alt mr-2"></i> <span id="manual-detail-title">Detail Manual</span>
+                    </h3>
+                    <form id="promptForm" class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div><label for="namaKarakter" class="form-label" id="name-label">Nama Karakter</label><input type="text" id="namaKarakter" class="form-input" placeholder="Contoh: Tomi"></div>
+                            <div><label for="gender" class="form-label" id="gender-label">Gender / Jenis</label><select id="gender" class="form-select"><option value="" selected>Pilih...</option><option value="Pria">Pria</option><option value="Wanita">Wanita</option><option value="Hewan">Hewan</option><option value="Non-biner">Non-biner</option></select></div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div><label for="deskripsiKarakter" class="form-label" id="char-desc-label">Deskripsi Karakter</label><textarea id="deskripsiKarakter" rows="3" class="form-textarea" placeholder="Rambut perak, mata bersinar..."></textarea></div>
+                            <div><label for="deskripsiKostum" class="form-label" id="costume-desc-label">Deskripsi Kostum</label><textarea id="deskripsiKostum" rows="3" class="form-textarea" placeholder="Armor kulit hitam dengan rune..."></textarea></div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div><label for="senjataAtauBenda" class="form-label" id="weapon-label">Senjata / Benda</label><textarea id="senjataAtauBenda" rows="3" class="form-textarea" placeholder="Pedang besar atau memegang buku kuno..."></textarea></div>
+                            <div><label for="deskripsiPose" class="form-label" id="pose-label">Pose dan Ekspresi</label><textarea id="deskripsiPose" rows="3" class="form-textarea" placeholder="Siap tempur, ekspresi fokus..."></textarea></div>
+                        </div>
+                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div><label for="astralMagis" class="form-label" id="creature-label">Hewan/Makhluk</label><textarea id="astralMagis" rows="3" class="form-textarea" placeholder="Contoh: Naga es transparan..."></textarea></div>
+                            <div><label for="lingkungan" class="form-label" id="base-detail-label">Detail Spesifik Alas</label><textarea id="lingkungan" rows="3" class="form-textarea" placeholder="Contoh: reruntuhan kastil, jalanan kota..."></textarea></div>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div><label for="bentukAlas" class="form-label" id="base-shape-label">Bentuk Alas</label><select id="bentukAlas" class="form-select"><option value="Bulat" selected>Bulat</option><option value="Persegi">Persegi</option></select></div>
+                            <div>
+                                <label for="gayaVisual" class="form-label" id="visual-style-label">Gaya Visual</label>
+                                <select id="gayaVisual" class="form-select">
+                                    <option value="4D Hyper Realism" selected>4D Hyper Realism</option>
+                                    <option value="3D Chibi Stylized">3D Chibi Stylized</option>
+                                    <option value="3D Vector Ilustrasi">3D Vector Ilustrasi</option>
+                                    <option value="3D Lego Modern">3D Lego Modern</option>
+                                    <option value="3D Brick Block Toy">3D Brick Block Toy</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div><label for="generateBy" class="form-label" id="generate-by-label">Generate By</label><input type="text" id="generateBy" class="form-input" value="PROMPT BY AIYRA DESIGN"></div>
+                        
+                        <!-- Actions Buttons -->
+                        <div class="pt-6 border-t border-slate-700">
+                            <div class="grid grid-cols-3 gap-3">
+                                <div class="col-span-1">
+                                    <button type="button" id="resetBtn" class="w-full h-full px-4 py-3 bg-red-600 hover:bg-red-500 text-white font-bold rounded-lg transition-colors flex items-center justify-center">
+                                        <i class="fas fa-rotate-left"></i>
+                                        <span id="reset-btn-text" class="hidden sm:inline ml-2">Reset</span>
+                                    </button>
+                                </div>
+                                <div class="col-span-2">
+                                    <button type="button" id="generateBtn" class="w-full h-full bg-violet-600 hover:bg-violet-500 text-white font-bold py-3 px-8 rounded-lg transition-colors flex items-center justify-center">
+                                        <i class="fas fa-cogs mr-2"></i>
+                                        <span id="generate-btn-text">Hasilkan Prompt</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </section>
+
+                <!-- Result Section -->
+                <div id="result-section" class="mt-10 pt-6 border-t border-slate-700 space-y-6" style="display: none;">
+                    <div>
+                        <h3 class="text-lg font-semibold mb-2 text-slate-300" id="result-title-id">Prompt Final (Bahasa Indonesia):</h3>
+                        <div class="relative">
+                            <textarea id="outputPrompt" rows="12" class="form-textarea font-mono text-sm" readonly></textarea>
+                            <button id="copyBtn" class="absolute top-3 right-3 bg-slate-600 hover:bg-slate-500 text-white font-semibold py-2 px-3 rounded-lg text-sm flex items-center justify-center">
+                                <i class="fas fa-copy mr-2"></i><span id="copy-text-id">Salin</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div id="translate-section" class="text-center" style="display: none;">
+                        <button type="button" id="translateBtn" class="w-full sm:w-auto inline-flex items-center justify-center px-8 py-3 font-bold text-white rounded-full transition-all duration-300 bg-gradient-to-r from-green-400 via-cyan-500 to-blue-600 hover:shadow-lg">
+                            <span id="translateBtnTextContainer"><i class="fas fa-language mr-3"></i><span id="translateBtnText">Terjemahkan ke Bahasa Inggris</span></span>
+                            <div id="translateBtnSpinner" class="loading-spinner ml-3 hidden"></div>
+                        </button>
+                    </div>
+                    <div id="english-prompt-section" style="display: none;">
+                        <h3 class="text-lg font-semibold mb-2 text-slate-300" id="result-title-en">Final Prompt (English):</h3>
+                        <div class="relative">
+                            <textarea id="outputPromptEn" rows="12" class="form-textarea font-mono text-sm" readonly></textarea>
+                            <button id="copyBtnEn" class="absolute top-3 right-3 bg-slate-600 hover:bg-slate-500 text-white font-semibold py-2 px-3 rounded-lg text-sm flex items-center justify-center">
+                                <i class="fas fa-copy mr-2"></i><span id="copy-text-en">Copy</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </main>
+    
+    <!-- Modals -->
+    <div id="apiKeyModal" class="modal-overlay">
+        <div class="modal-content p-6 max-h-[90vh] overflow-y-auto">
+            <div class="modal-header flex justify-between items-center mb-6">
+                <h2 class="text-xl font-bold text-white"><i class="fas fa-key mr-2"></i><span id="api-modal-title">Pengaturan API Key</span></h2>
+                <button class="close-modal-btn text-slate-400 hover:text-white text-2xl">&times;</button>
+            </div>
+            <div class="space-y-4">
+                <p class="text-sm text-slate-400" id="api-info-text">Pilih sumber Kunci API yang ingin Anda gunakan.</p>
+                <div class="flex bg-slate-800 p-1 rounded-xl gap-2">
+                    <button id="system-api-tab" class="api-tab w-1/2 p-3 rounded-lg font-semibold transition-all duration-200 text-center">
+                        <span class="block text-sm">System API Key</span>
+                        <span class="text-xs font-normal">Use the built-in key</span>
+                    </button>
+                    <button id="your-api-tab" class="api-tab w-1/2 p-3 rounded-lg font-semibold transition-all duration-200 text-center">
+                        <span class="block text-sm">Your API Key</span>
+                        <span class="text-xs font-normal">Use your personal key</span>
+                    </button>
+                </div>
+
+                <!-- System API Content -->
+                <div id="system-api-content" class="p-4 bg-blue-900/20 border border-blue-500/30 rounded-lg space-y-3">
+                    <p class="text-sm text-blue-200" id="system-api-desc">Aplikasi ini akan menggunakan Kunci API bawaan. Anda tidak perlu melakukan tindakan apa pun.</p>
+                    <div class="p-3 bg-yellow-900/20 border border-yellow-500/30 rounded-md">
+                        <p class="text-xs text-yellow-200" id="system-api-note"><strong class="font-semibold">Catatan:</strong> Kunci ini digunakan bersama dan mungkin memiliki batasan. Untuk pengalaman terbaik, kami sangat menyarankan menggunakan Kunci API Anda sendiri.</p>
+                    </div>
+                </div>
+
+                <!-- User API Content -->
+                <div id="your-api-content" class="hidden space-y-4">
+                     <h3 class="font-semibold text-white" id="your-api-guide-title">Cara mendapatkan API Key:</h3>
+                    <!-- Desktop Guide -->
+                    <div class="hidden md:block">
+                        <ol class="list-decimal list-inside text-slate-400 text-sm space-y-1">
+                            <li>Kunjungi <a href="https://aistudio.google.com/" target="_blank" class="text-teal-300 hover:underline">Google AI Studio</a>.</li>
+                            <li>Masuk dengan akun Google Anda.</li>
+                            <li>Klik tombol <strong class="text-slate-200">Get API key</strong> yang ada di menu sebelah kiri.</li>
+                            <li>Pilih atau buat proyek, lalu klik <strong class="text-slate-200">Create API key</strong>.</li>
+                        </ol>
+                    </div>
+                    <!-- Mobile Guide -->
+                    <div class="md:hidden">
+                        <ol class="list-decimal list-inside text-slate-400 text-sm space-y-1">
+                            <li>Kunjungi <a href="https://aistudio.google.com/" target="_blank" class="text-teal-300 hover:underline">Google AI Studio</a>.</li>
+                            <li>Masuk dengan akun Google Anda.</li>
+                            <li>Ketuk ikon menu (<strong><i class="fas fa-bars"></i></strong>) di pojok kiri atas.</li>
+                            <li>Pilih menu <strong class="text-slate-200">Get API key</strong>.</li>
+                            <li>Pilih atau buat proyek, lalu ketuk <strong class="text-slate-200">Create API key</strong>.</li>
+                        </ol>
+                    </div>
+                    <div>
+                        <label for="api-key-input-modal" class="form-label" id="api-key-label">Your Gemini API Key</label>
+                        <div class="flex items-center gap-2">
+                            <div class="relative flex-grow">
+                                <input type="password" id="api-key-input-modal" class="form-input w-full pr-10" placeholder="Paste your API key here...">
+                                <button type="button" id="toggleApiKeyBtn" class="absolute inset-y-0 right-0 px-3 flex items-center text-slate-400 hover:text-slate-200" aria-label="Toggle API Key visibility">
+                                    <i class="fas fa-eye" id="apiKey-eye-icon"></i>
+                                </button>
+                            </div>
+                            <button type="button" id="delete-api-key-btn" class="p-3 bg-red-600 hover:bg-red-500 text-white rounded-lg transition-colors flex-shrink-0" title="Hapus API Key">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex justify-end gap-3 pt-4">
+                    <button class="close-modal-btn px-4 py-2 bg-slate-600 text-gray-200 rounded-lg hover:bg-slate-500 transition-colors font-semibold" id="cancel-api-btn">Batal</button>
+                    <button id="save-api-choice-btn" class="px-6 py-2 bg-gradient-to-r from-pink-500 to-orange-400 text-white font-semibold rounded-lg hover:opacity-90 transition-opacity transform hover:scale-105">Simpan</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="libraryModal" class="modal-overlay">
+        <div class="modal-content p-6">
+            <div class="modal-header flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold text-white"><i class="fas fa-folder-open mr-2"></i><span id="history-modal-title">Riwayat Cerita</span></h2>
+                <button class="close-modal-btn text-slate-400 hover:text-white text-2xl">&times;</button>
+            </div>
+            <div id="library-list" class="text-slate-300 space-y-2 max-h-[60vh] overflow-y-auto"></div>
+            <div class="mt-6 flex justify-end gap-3">
+                <button id="clear-library-btn" class="px-4 py-2 bg-red-600 hover:bg-red-500 text-white font-semibold rounded-lg" id="clear-history-btn-text">Bersihkan Riwayat</button>
+                <button class="close-modal-btn px-4 py-2 bg-slate-600 hover:bg-slate-500 text-white font-semibold rounded-lg" id="close-btn-text">Tutup</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="confirmation-modal" class="modal-overlay">
+        <div class="modal-content p-8 text-center max-w-sm">
+            <h3 id="confirmation-title" class="text-lg font-bold text-white mb-2"></h3>
+            <p id="confirmation-message" class="text-slate-300 mb-6"></p>
+            <div class="flex justify-center gap-4">
+                <button id="confirm-no-btn" class="px-6 py-2 bg-slate-600 text-white rounded-lg hover:bg-slate-500 font-semibold"></button>
+                <button id="confirm-yes-btn" class="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-500 font-semibold"></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Alert Container -->
+    <div id="custom-alert-overlay" class="custom-alert-overlay">
+        <div class="custom-alert-box">
+            <div id="custom-alert-icon" class="custom-alert-icon"></div>
+            <h4 id="custom-alert-title" class="font-bold text-lg mb-1 text-white"></h4>
+            <p id="custom-alert-message" class="text-sm text-slate-300"></p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Global variable for alert timeout ---
+            let alertTimeout;
+
+            // --- Get All DOM Elements ---
+            const passwordSection = document.getElementById('password-section');
+            const generatorFieldset = document.getElementById('generator-fieldset');
+            const unlockBtn = document.getElementById('unlockBtn');
+            const appPasswordInput = document.getElementById('appPasswordInput');
+            const togglePasswordBtn = document.getElementById('togglePasswordBtn');
+            const passwordEyeIcon = document.getElementById('password-eye-icon');
+            const logoutBtn = document.getElementById('logout-btn');
+            const mobileLogoutBtn = document.getElementById('mobile-logout-btn');
+            
+            const apiKeyModal = document.getElementById('apiKeyModal');
+            const apiKeyModalBtn = document.getElementById('api-key-modal-btn');
+            const libraryModal = document.getElementById('libraryModal');
+            const riwayatBtn = document.getElementById('riwayat-btn');
+            const libraryList = document.getElementById('library-list');
+            const clearLibraryBtn = document.getElementById('clear-library-btn');
+            
+            const resultSection = document.getElementById('result-section');
+            const outputPromptEl = document.getElementById('outputPrompt');
+            const outputPromptEnEl = document.getElementById('outputPromptEn');
+            const aiBtn = document.getElementById('aiBtn');
+            const generateBtn = document.getElementById('generateBtn');
+            const resetBtn = document.getElementById('resetBtn');
+            const copyBtn = document.getElementById('copyBtn');
+            const copyBtnEn = document.getElementById('copyBtnEn');
+            const toggleApiKeyBtn = document.getElementById('toggleApiKeyBtn');
+            const apiKeyEyeIcon = document.getElementById('apiKey-eye-icon');
+            const translateSection = document.getElementById('translate-section');
+            const translateBtn = document.getElementById('translateBtn');
+            const englishPromptSection = document.getElementById('english-prompt-section');
+            const saveApiChoiceBtn = document.getElementById('save-api-choice-btn');
+            const apiKeyInput = document.getElementById('api-key-input-modal');
+            const deleteApiKeyBtn = document.getElementById('delete-api-key-btn');
+            const promptForm = document.getElementById('promptForm');
+            const ceritaKarakterEl = document.getElementById('ceritaKarakter');
+            const themeToggle = document.getElementById('theme-toggle');
+            const mobileThemeToggle = document.getElementById('mobile-theme-toggle');
+            const languageToggle = document.getElementById('language-toggle');
+            const body = document.body;
+            
+            const alertOverlay = document.getElementById('custom-alert-overlay');
+            const alertIcon = document.getElementById('custom-alert-icon');
+            const alertTitle = document.getElementById('custom-alert-title');
+            const alertMessage = document.getElementById('custom-alert-message');
+
+            const confirmationModal = document.getElementById('confirmation-modal');
+            const confirmationTitle = document.getElementById('confirmation-title');
+            const confirmationMessage = document.getElementById('confirmation-message');
+            let confirmYesBtn = document.getElementById('confirm-yes-btn');
+            const confirmNoBtn = document.getElementById('confirm-no-btn');
+
+            const systemApiTab = document.getElementById('system-api-tab');
+            const yourApiTab = document.getElementById('your-api-tab');
+            const systemApiContent = document.getElementById('system-api-content');
+            const yourApiContent = document.getElementById('your-api-content');
+
+            const menuToggle = document.getElementById('menu-toggle');
+            const offcanvasMenu = document.getElementById('offcanvas-menu');
+            const offcanvasOverlay = document.getElementById('offcanvas-overlay');
+
+            const allModals = [apiKeyModal, libraryModal, confirmationModal];
+
+            // --- Function Declarations love --- 
+            const openModal = (modalElement) => { modalElement.classList.add('show'); }
+            const closeModal = (modalElement) => { modalElement.classList.remove('show'); }
+            
+            const showAlert = (type, title, message) => {
+                clearTimeout(alertTimeout); 
+                alertIcon.className = 'custom-alert-icon'; 
+                if (type === 'success') {
+                    alertIcon.classList.add('success');
+                    alertIcon.innerHTML = `<i class="fas fa-check"></i>`;
+                } else if (type === 'info') {
+                    alertIcon.classList.add('info');
+                    alertIcon.innerHTML = `<i class="fas fa-info-circle"></i>`;
+                } else { 
+                    alertIcon.classList.add('error');
+                    alertIcon.innerHTML = `<i class="fas fa-times"></i>`;
+                }
+                alertTitle.textContent = title;
+                alertMessage.textContent = message;
+                alertOverlay.classList.add('show');
+                alertTimeout = setTimeout(() => {
+                    alertOverlay.classList.remove('show');
+                }, 3000); 
+            }
+
+            const showConfirmation = (title, message, yesText, noText, onConfirm) => {
+                confirmationTitle.textContent = title;
+                confirmationMessage.textContent = message;
+                
+                // Re-clone to remove old listeners and ensure we have a fresh button
+                const newYesBtn = confirmYesBtn.cloneNode(true);
+                confirmYesBtn.parentNode.replaceChild(newYesBtn, confirmYesBtn);
+                confirmYesBtn = newYesBtn; // Update the reference
+                
+                confirmYesBtn.textContent = yesText;
+                confirmNoBtn.textContent = noText;
+
+                confirmYesBtn.onclick = () => {
+                    onConfirm();
+                    closeModal(confirmationModal);
+                };
+                
+                confirmNoBtn.onclick = () => closeModal(confirmationModal);
+                openModal(confirmationModal);
+            };
+
+            const fetchAI = async (apiKey, payload) => {
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    console.error("API Error:", errorData);
+                    let errorMessage = errorData.error?.message || 'An unknown error occurred with the AI response.';
+                    if (errorMessage.includes('API key not valid')) {
+                       errorMessage = 'The provided API key is not valid. Please check it and try again.';
+                    } else if (response.status === 429) {
+                       errorMessage = 'The model is currently overloaded. Please try again in a few moments.';
+                    }
+                    throw new Error(errorMessage);
+                }
+                
+                const result = await response.json();
+
+                if (result.candidates && result.candidates.length > 0 && result.candidates[0].content?.parts[0]?.text) {
+                    return result.candidates[0].content.parts[0].text;
+                } else {
+                    console.error("Invalid response structure:", result);
+                    throw new Error('Failed to process data from AI due to an invalid format.');
+                }
+            }
+            
+            const performApiCall = async (payload) => {
+                const apiSource = localStorage.getItem('apiSource') || 'system';
+                const defaultApiKeys = ["AIzaSyDEOYJWSN8UhgjGWGo1oYXTA3bcgtPVTLM".split('').reverse().join('')];
+                const defaultApiKey = defaultApiKeys[0].split('').reverse().join('');
+                const userApiKey = localStorage.getItem('geminiApiKey');
+
+                let apiKeyToUse = (apiSource === 'personal' && userApiKey) ? userApiKey : defaultApiKey;
+                
+                try {
+                    return await fetchAI(apiKeyToUse, payload);
+                } catch (error) {
+                    console.warn(`API call failed with ${apiSource} key. Error:`, error.message);
+                    if (apiSource === 'system' && userApiKey) {
+                        showAlert('info', 'System API Failed', 'Attempting to use your personal API key...');
+                        try {
+                            return await fetchAI(userApiKey, payload);
+                        } catch (userKeyError) {
+                             throw new Error(`Your personal API key also failed. Error: ${userKeyError.message}`);
+                        }
+                    }
+                    throw new Error(`API call failed. ${error.message}. Consider using your own API key via settings.`);
+                }
+            }
+
+            const setActiveTab = (tab) => {
+                [systemApiTab, yourApiTab].forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                const isSystem = tab === systemApiTab;
+                systemApiContent.style.display = isSystem ? 'block' : 'none';
+                yourApiContent.style.display = isSystem ? 'none' : 'block';
+                
+                // Update save button text based on active tab
+                const lang = localStorage.getItem('language') || 'id';
+                if (isSystem) {
+                    saveApiChoiceBtn.textContent = translations[lang].textContent.saveApiSystem;
+                } else {
+                    saveApiChoiceBtn.textContent = translations[lang].textContent.saveApiUser;
+                }
+            }
+
+            const getHistory = () => JSON.parse(localStorage.getItem('storyHistory')) || [];
+            const saveStoryToHistory = (story) => {
+                if (!story || story.trim() === '') return;
+                let history = getHistory();
+                history = history.filter(item => item !== story);
+                history.unshift(story);
+                history = history.slice(0, 20);
+                localStorage.setItem('storyHistory', JSON.stringify(history));
+            }
+            
+            const loadHistory = () => {
+                const history = getHistory();
+                libraryList.innerHTML = '';
+                if (history.length === 0) {
+                    libraryList.innerHTML = `<p>${getCurrentLangData().alerts.emptyHistory}</p>`;
+                    return;
+                }
+                history.forEach((story, index) => {
+                    const item = document.createElement('div');
+                    item.className = 'p-3 border border-slate-700 rounded-lg flex justify-between items-center gap-2';
+                    
+                    const storySpan = document.createElement('span');
+                    storySpan.className = 'story-text flex-grow mr-3 cursor-pointer hover:text-violet-400 transition-colors';
+                    storySpan.textContent = `${story.substring(0, 50)}${story.length > 50 ? '...' : ''}`;
+                    storySpan.title = story;
+                    storySpan.addEventListener('click', () => {
+                        ceritaKarakterEl.value = story;
+                        closeModal(libraryModal);
+                        showAlert('success', getCurrentLangData().alerts.historyLoadedTitle, getCurrentLangData().alerts.historyLoadedMsg);
+                    });
+
+                    const deleteBtn = document.createElement('button');
+                    deleteBtn.className = 'text-red-500 hover:text-red-400 delete-history-btn flex-shrink-0';
+                    deleteBtn.innerHTML = `<i class="fas fa-trash"></i>`;
+                    deleteBtn.addEventListener('click', () => {
+                        let currentHistory = getHistory();
+                        currentHistory.splice(index, 1);
+                        localStorage.setItem('storyHistory', JSON.stringify(currentHistory));
+                        loadHistory();
+                    });
+
+                    item.appendChild(storySpan);
+                    item.appendChild(deleteBtn);
+                    libraryList.appendChild(item);
+                });
+            }
+
+            const applyTheme = (theme) => {
+                body.classList.toggle('light-theme', theme === 'light');
+                const themeIcon = themeToggle.querySelector('i');
+                const mobileThemeIcon = mobileThemeToggle.querySelector('i');
+                themeIcon.className = theme === 'light' ? 'fas fa-moon' : 'fas fa-sun';
+                mobileThemeIcon.className = theme === 'light' ? 'fas fa-moon w-6' : 'fas fa-sun w-6';
+                localStorage.setItem('theme', theme);
+            }
+
+            const grantAccess = () => {
+                passwordSection.style.display = 'none';
+                generatorFieldset.disabled = false;
+                logoutBtn.classList.remove('hidden');
+                mobileLogoutBtn.classList.remove('hidden');
+            }
+            
+            const lockAccess = () => {
+                 const langData = translations[localStorage.getItem('language') || 'id'];
+                 showConfirmation(
+                    langData.textContent.logoutConfirmTitle,
+                    langData.textContent.logoutConfirmMessage,
+                    langData.textContent.confirmYes,
+                    langData.textContent.confirmNo,
+                    () => {
+                        localStorage.removeItem('unlockTimestamp');
+                        location.reload();
+                    }
+                 );
+            }
+
+            const checkAccess = () => {
+                const unlockedTime = localStorage.getItem('unlockTimestamp');
+                if (unlockedTime) {
+                    const oneDay = 24 * 60 * 60 * 1000;
+                    if (new Date().getTime() - unlockedTime < oneDay) {
+                        grantAccess();
+                        return;
+                    } else {
+                        localStorage.removeItem('unlockTimestamp');
+                    }
+                }
+                passwordSection.style.display = 'block';
+                generatorFieldset.disabled = true;
+            }
+            
+            const translations = {
+                en: {
+                    textContent: { "nav-title": "Promptique Generator", "lang-btn-text": "EN", "history-btn-text": "History", "api-btn-text": "API Key", "login-title": "Limited Access", "password-label": "Password", "login-button": "Login", "get-password-btn-text": "Get FREE Password", "hero-title": "Action Figure Prompt Generator", "hero-subtitle": "Quickly generate AI prompts for Action Figures", "ai-assistant-title": "AI Assistant", "story-label": "Briefly describe your character", "theme-label": "Select Theme Nuance", "aiBtnText": "Adjust with AI", "manual-detail-title": "Manual Details", "name-label": "Character Name", "gender-label": "Gender / Type", "char-desc-label": "Character Description", "costume-desc-label": "Costume Description", "weapon-label": "Weapon / Item", "pose-label": "Pose & Expression", "creature-label": "Animal/Creature", "base-detail-label": "Specific Base Details", "base-shape-label": "Base Shape", "visual-style-label": "Visual Style", "generate-by-label": "Generate By", "reset-btn-text": "Reset", "generate-btn-text": "Generate Prompt", "result-title-id": "Final Prompt (Indonesian):", "copy-text-id": "Copy", "translateBtnText": "Translate to English", "result-title-en": "Final Prompt (English):", "copy-text-en": "Copy", "api-modal-title": "API Key Settings", "api-key-label": "Your Gemini API Key", "api-info-text": "Choose the API Key source you want to use.", "cancel-api-btn": "Cancel", "saveApiSystem": "Use System API", "saveApiUser": "Save & Use Your API", "history-modal-title": "Story History", "clear-history-btn-text": "Clear History", "close-btn-text": "Close", "mobile-logout-text": "Relock", "mobile-theme-text": "Change Theme", "logoutConfirmTitle": "Logout Confirmation", "logoutConfirmMessage": "Are you sure you want to log out and relock the application?", "confirmYes": "Yes", "confirmNo": "No" },
+                    titles: { "logout-btn": "Relock", "theme-toggle": "Change Theme" },
+                    placeholders: { "ceritaKarakter": "Example: A majestic ice dragon guarding a frozen mountain peak...", "namaKarakter": "Example: Ignis", "deskripsiKarakter": "Silver hair, glowing eyes...", "deskripsiKostum": "Black leather armor with runes...", "senjataAtauBenda": "Greatsword or holding an ancient tome...", "deskripsiPose": "Ready for battle, focused expression...", "astralMagis": "Example: Transparent ice dragon...", "lingkungan": "Example: castle ruins, city streets...", "appPasswordInput": "Enter password...", "api-key-input-modal": "Paste your API key here..." },
+                    alerts: { loginSuccessTitle: "Login Successful", loginSuccessMessage: "Welcome! You now have full access.", passwordError: "Incorrect password. Please try again.", aiStoryMissing: "Please enter a character story first.", aiSuccess: "AI has filled the details!", aiError: "AI Assistant failed", promptCopied: "Prompt copied to clipboard!", historyCleared: "History has been cleared.", apiSystemSelected: "Now using the System API.", apiUserSaved: "Your API key has been saved and is now in use.", historyLoadedTitle: "History Loaded", historyLoadedMsg: "Character story has been loaded into the form.", emptyHistory: "Your story library is empty.", aiLoadingSystem: "Waiting for System AI to Analyze...", aiLoadingUser: "Waiting for Your AI to Analyze...", apiKeyDeletedTitle: "API Key Deleted", apiKeyDeletedMessage: "Your saved API key has been removed." }
+                },
+                id: {
+                    textContent: { "nav-title": "Promptique Generator", "lang-btn-text": "ID", "history-btn-text": "Riwayat", "api-btn-text": "API Key", "login-title": "Akses Terbatas", "password-label": "Kata Sandi", "login-button": "Masuk", "get-password-btn-text": "Dapatkan Sandi GRATIS", "hero-title": "Action Figure Prompt Generator", "hero-subtitle": "Generate Prompt AI untuk Action Figure dengan cepat", "ai-assistant-title": "AI Assistant", "story-label": "Ceritakan singkat tentang karakter Anda", "theme-label": "Pilih Nuansa Tema", "aiBtnText": "Sesuaikan dengan AI", "manual-detail-title": "Detail Manual", "name-label": "Nama Karakter", "gender-label": "Gender / Jenis", "char-desc-label": "Deskripsi Karakter", "costume-desc-label": "Deskripsi Kostum", "weapon-label": "Senjata / Benda", "pose-label": "Pose dan Ekspresi", "creature-label": "Hewan/Makhluk", "base-detail-label": "Detail Spesifik Alas", "base-shape-label": "Bentuk Alas", "visual-style-label": "Gaya Visual", "generate-by-label": "Generate By", "reset-btn-text": "Reset", "generate-btn-text": "Hasilkan Prompt", "result-title-id": "Prompt Final (Bahasa Indonesia):", "copy-text-id": "Salin", "translateBtnText": "Terjemahkan ke Bahasa Inggris", "result-title-en": "Final Prompt (English):", "copy-text-en": "Copy", "api-modal-title": "Pengaturan API Key", "api-key-label": "API Key Gemini Anda", "api-info-text": "Pilih sumber Kunci API yang ingin Anda gunakan.", "cancel-api-btn": "Batal", "saveApiSystem": "Gunakan API Sistem", "saveApiUser": "Simpan & Gunakan API Anda", "history-modal-title": "Riwayat Cerita", "clear-history-btn-text": "Bersihkan Riwayat", "close-btn-text": "Tutup", "mobile-logout-text": "Kunci Ulang", "mobile-theme-text": "Ganti Tema", "logoutConfirmTitle": "Konfirmasi Keluar", "logoutConfirmMessage": "Apakah Anda yakin ingin keluar dan mengunci ulang aplikasi?", "confirmYes": "Ya", "confirmNo": "Tidak" },
+                    titles: { "logout-btn": "Kunci Ulang", "theme-toggle": "Ganti Tema" },
+                    placeholders: { "ceritaKarakter": "Contoh: Seekor naga es agung yang menjaga puncak gunung beku...", "namaKarakter": "Contoh: Ignis", "deskripsiKarakter": "Rambut perak, mata bersinar...", "deskripsiKostum": "Armor kulit hitam dengan rune...", "senjataAtauBenda": "Pedang besar atau memegang buku kuno...", "deskripsiPose": "Siap tempur, ekspresi fokus...", "astralMagis": "Contoh: Naga es transparan...", "lingkungan": "Contoh: reruntuhan kastil, jalanan kota...", "appPasswordInput": "Masukkan sandi...", "api-key-input-modal": "Masukkan API Key Anda..." },
+                    alerts: { loginSuccessTitle: "Login Berhasil", loginSuccessMessage: "Selamat datang! Anda sekarang memiliki akses penuh.", passwordError: "Kata sandi yang Anda masukkan salah. Silakan coba lagi.", aiStoryMissing: "Silakan masukkan cerita karakter terlebih dahulu.", aiSuccess: "AI telah mengisi detail!", aiError: "Asisten AI gagal", promptCopied: "Prompt berhasil disalin!", historyCleared: "Riwayat telah dibersihkan.", apiSystemSelected: "Kini menggunakan API Sistem.", apiUserSaved: "Kunci API Anda telah disimpan dan kini digunakan.", historyLoadedTitle: "Riwayat Dimuat", historyLoadedMsg: "Cerita karakter telah dimuat ke dalam formulir.", emptyHistory: "Library cerita Anda masih kosong.", aiLoadingSystem: "Tunggu Ai Sistem Menganalisa...", aiLoadingUser: "Tunggu Ai Anda Menganalisa...", apiKeyDeletedTitle: "API Key Dihapus", apiKeyDeletedMessage: "Kunci API Anda yang tersimpan telah dihapus." }
+                }
+            };
+            
+            const getCurrentLangData = () => {
+                const lang = localStorage.getItem('language') || 'id';
+                return translations[lang];
+            }
+
+            const applyLanguage = (lang) => {
+                const langData = translations[lang];
+                if (!langData) return;
+
+                Object.keys(langData.textContent).forEach(key => {
+                    const element = document.getElementById(key);
+                    if (element) element.textContent = langData.textContent[key];
+                });
+                
+                Object.keys(langData.titles).forEach(key => {
+                    const element = document.getElementById(key);
+                    if (element) element.title = langData.titles[key];
+                });
+
+                Object.keys(langData.placeholders).forEach(key => {
+                    const element = document.getElementById(key);
+                    if (element) element.placeholder = langData.placeholders[key];
+                });
+                localStorage.setItem('language', lang);
+                document.documentElement.lang = lang;
+                
+                // Refresh button text on language change
+                const currentApiSource = localStorage.getItem('apiSource') || 'system';
+                setActiveTab(currentApiSource === 'personal' ? yourApiTab : systemApiTab);
+            }
+
+            // --- Event Listeners love---
+            
+            alertOverlay.addEventListener('click', (e) => {
+                if (e.target === alertOverlay) {
+                    clearTimeout(alertTimeout);
+                    alertOverlay.classList.remove('show');
+                }
+            });
+
+            const toggleMenu = () => {
+                const isOpen = offcanvasMenu.classList.toggle('open');
+                offcanvasOverlay.classList.toggle('hidden', !isOpen);
+            };
+
+            menuToggle.addEventListener('click', toggleMenu);
+            offcanvasOverlay.addEventListener('click', toggleMenu);
+
+            togglePasswordBtn.addEventListener('click', () => {
+                const isPassword = appPasswordInput.type === 'password';
+                appPasswordInput.type = isPassword ? 'text' : 'password';
+                passwordEyeIcon.className = `fas ${isPassword ? 'fa-eye-slash' : 'fa-eye'}`;
+            });
+
+            unlockBtn.addEventListener('click', () => {
+                if (appPasswordInput.value === 'prompt.ique.975') {
+                    localStorage.setItem('unlockTimestamp', new Date().getTime());
+                    grantAccess();
+                    const langAlerts = getCurrentLangData().alerts;
+                    showAlert('success', langAlerts.loginSuccessTitle, langAlerts.loginSuccessMessage);
+                } else {
+                    showAlert('error', 'Login Failed', getCurrentLangData().alerts.passwordError);
+                    appPasswordInput.value = '';
+                }
+            });
+            
+            appPasswordInput.addEventListener('keyup', (event) => {
+                if (event.key === 'Enter') unlockBtn.click();
+            });
+
+            [logoutBtn, mobileLogoutBtn].forEach(btn => btn.addEventListener('click', lockAccess));
+            
+            languageToggle.addEventListener('click', () => {
+                let newLang = (localStorage.getItem('language') || 'id') === 'id' ? 'en' : 'id';
+                applyLanguage(newLang);
+            });
+            
+            const handleThemeToggle = () => {
+                let newTheme = (localStorage.getItem('theme') || 'dark') === 'light' ? 'dark' : 'light';
+                applyTheme(newTheme);
+            };
+
+            [themeToggle, mobileThemeToggle].forEach(btn => btn.addEventListener('click', handleThemeToggle));
+            
+            // Modal Listeners
+            apiKeyModalBtn.addEventListener('click', () => openModal(apiKeyModal));
+            riwayatBtn.addEventListener('click', () => {
+                loadHistory();
+                openModal(libraryModal);
+            });
+            allModals.forEach(modal => {
+                modal.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('modal-overlay') || e.target.classList.contains('close-modal-btn') || e.target.closest('.close-modal-btn')) {
+                        closeModal(modal);
+                    }
+                });
+            });
+
+            // API Modal Logic
+            systemApiTab.addEventListener('click', () => setActiveTab(systemApiTab));
+            yourApiTab.addEventListener('click', () => setActiveTab(yourApiTab));
+            toggleApiKeyBtn.addEventListener('click', () => {
+                const isPassword = apiKeyInput.type === 'password';
+                apiKeyInput.type = isPassword ? 'text' : 'password';
+                apiKeyEyeIcon.className = `fas ${isPassword ? 'fa-eye-slash' : 'fa-eye'}`;
+            });
+            deleteApiKeyBtn.addEventListener('click', () => {
+                apiKeyInput.value = '';
+                localStorage.removeItem('geminiApiKey');
+                const langAlerts = getCurrentLangData().alerts;
+                showAlert('success', langAlerts.apiKeyDeletedTitle, langAlerts.apiKeyDeletedMessage);
+            });
+            saveApiChoiceBtn.addEventListener('click', () => {
+                const langAlerts = getCurrentLangData().alerts;
+                const apiSource = yourApiTab.classList.contains('active') ? 'personal' : 'system';
+                localStorage.setItem('apiSource', apiSource);
+
+                if (apiSource === 'personal') {
+                    localStorage.setItem('geminiApiKey', apiKeyInput.value);
+                    showAlert('success', 'Success', langAlerts.apiUserSaved);
+                } else {
+                    showAlert('success', 'Success', langAlerts.apiSystemSelected);
+                }
+                closeModal(apiKeyModal);
+            });
+            
+            // History Modal Logic
+            clearLibraryBtn.addEventListener('click', () => {
+                localStorage.removeItem('storyHistory');
+                loadHistory();
+                showAlert('success', 'Success', getCurrentLangData().alerts.historyCleared);
+            });
+
+            // --- Core Generator Logic ---
+            aiBtn.addEventListener('click', async () => {
+                const userStory = ceritaKarakterEl.value.trim();
+                if (!userStory) {
+                    showAlert('error', 'Error', getCurrentLangData().alerts.aiStoryMissing);
+                    return;
+                }
+
+                const loadingContainer = document.getElementById('aiBtnLoadingContainer');
+                const loadingText = document.getElementById('aiBtnLoadingText');
+                const btnTextContainer = document.getElementById('aiBtnTextContainer');
+                
+                loadingContainer.classList.remove('hidden');
+                loadingContainer.classList.add('inline-flex');
+                btnTextContainer.classList.add('hidden');
+                aiBtn.disabled = true;
+
+                const apiSource = localStorage.getItem('apiSource') || 'system';
+                const userApiKey = localStorage.getItem('geminiApiKey');
+                const langAlerts = getCurrentLangData().alerts;
+                
+                // Updated logic for loading text
+                if (apiSource === 'personal' && userApiKey) {
+                    loadingText.textContent = langAlerts.aiLoadingUser;
+                } else {
+                    loadingText.textContent = langAlerts.aiLoadingSystem;
+                }
+
+
+                const improvedPrompt = `Anda adalah seorang Master Desainer figur aksi AI yang sangat imajinatif dan analitis. Tugas Anda adalah mengambil ide dasar pengguna dan mengubahnya menjadi konsep figur aksi yang **spektakuler** dan **mendalam**. Ikuti aturan dengan **tegas** dan berimprovisasilah secara **kreatif** untuk menciptakan detail yang kaya berdasarkan cerita yang diberikan, dalam format JSON yang ketat.
+
+Berdasarkan cerita pengguna ini: "${userStory}"
+
+Lengkapi **semua** field dalam struktur JSON berikut sesuai aturan yang spesifik:
+
+- **namaKarakter**: (string) Cari nama karakter yang disebut secara eksplisit dalam cerita (contoh: 'Prajurit bernama Aiyra'). Jika nama disebutkan, gunakan nama itu. Jika **TIDAK ADA** nama yang disebutkan, maka **WAJIB** ciptakan satu nama baru yang keren (hanya satu kata nama).
+- **gender**: (string) Analisis cerita untuk menentukan jenis karakter. Pilihannya adalah "Pria", "Wanita", "Hewan", "Non-biner". **ATURAN TEGAS:** Jika cerita jelas menggambarkan manusia pria atau wanita, gunakan pilihan itu. Jika cerita jelas menggambarkan seekor hewan (misal 'serigala', 'naga', 'kucing'), **WAJIB** pilih "Hewan". Jika cerita menggambarkan makhluk non-manusia (robot, monster) atau tidak memberikan petunjuk gender yang jelas, **WAJIB** pilih "Non-biner".
+- **deskripsiKarakter**: (string) Kembangkan penampilan fisik karakter. **ATURAN PENTING:** Jika gender adalah "Hewan", deskripsi **HARUS** fokus pada ciri-ciri hewan (bulu, sisik, cakar, moncong) dan **HINDARI** deskripsi humanoid, kecuali cerita secara spesifik menyebutkan karakter antropomorfik. Untuk gender lain, kembangkan detail (wajah, rambut, mata) yang kaya dan masuk akal sesuai cerita. Jangan menambahkan elemen visual seperti bekas luka atau tato kecuali diminta.
+- **deskripsiKostum**: (string) Rancang kostum/perlengkapan yang **ikonik dan sangat detail**. Jika karakter adalah "Hewan", kostum bisa berupa armor khusus hewan, kalung, atau pelana. Jika tidak ada ide atau tidak disebutkan, isi dengan "Tidak ada deskripsi kostum". Untuk yang lain, kembangkan ide dari cerita dengan material dan tekstur yang rumit. Jangan menambahkan efek energi kecuali diminta.
+- **senjataAtauBenda**: (string) **PERIKSA DENGAN TELITI:** Jika cerita secara eksplisit **menyebutkan** sebuah senjata, item, atau benda yang dipegang karakter, deskripsikan benda itu dengan detail yang **kreatif**. Jika cerita **TIDAK** menyebutkan benda apa pun, **WAJIB** isi field ini dengan "Tidak ada senjata atau benda".
+- **deskripsiPose**: (string) Rancang pose yang **dinamis dan penuh emosi** yang mencerminkan kepribadian dan situasi karakter sesuai cerita.
+- **lingkungan**: (string) Deskripsikan **hanya pemandangan di atas alas figur** itu sendiri. Ciptakan sebuah adegan miniatur yang detail dan nyata yang memperkuat cerita inti karakter. Contoh: 'permukaan tanah retak dari reruntuhan kuil kuno yang ditumbuhi akar pohon'. **PENTING:** Jangan mendeskripsikan latar belakang, siluet, atau elemen apa pun yang berada di luar alas miniatur tersebut.
+- **astralMagis**: (string) **PERIKSA DENGAN TELITI:** Jika cerita secara eksplisit **menyebutkan** seekor hewan, makhluk, atau pendamping magis, deskripsikan makhluk itu secara **fantastis dan tak terduga**. Jika cerita **TIDAK** menyebutkan makhluk apa pun, **WAJIB** isi field ini dengan "Tidak ada hewan atau makhluk pendamping".
+
+Output Anda **HARUS** berupa objek JSON yang valid, tanpa teks atau pemformatan tambahan.`;
+
+                const generationPayload = {
+                    contents: [{ role: "user", parts: [{ text: improvedPrompt }] }],
+                    generationConfig: {
+                        responseMimeType: "application/json",
+                        responseSchema: {
+                            type: "OBJECT",
+                            properties: {
+                                "namaKarakter": { "type": "STRING" },
+                                "gender": { "type": "STRING", "enum": ["Pria", "Wanita", "Hewan", "Non-biner"] },
+                                "deskripsiKarakter": { "type": "STRING" },
+                                "deskripsiKostum": { "type": "STRING" },
+                                "senjataAtauBenda": { "type": "STRING" },
+                                "deskripsiPose": { "type": "STRING" },
+                                "lingkungan": { "type": "STRING" },
+                                "astralMagis": { "type": "STRING" }
+                            },
+                           "required": ["namaKarakter", "gender", "deskripsiKarakter", "deskripsiKostum", "senjataAtauBenda", "deskripsiPose", "lingkungan", "astralMagis"]
+                        }
+                    }
+                };
+
+                try {
+                    const responseText = await performApiCall(generationPayload);
+                    const data = JSON.parse(responseText);
+                    
+                    document.getElementById('namaKarakter').value = data.namaKarakter || '';
+                    document.getElementById('gender').value = data.gender || '';
+                    document.getElementById('deskripsiKarakter').value = data.deskripsiKarakter || '';
+                    document.getElementById('deskripsiKostum').value = data.deskripsiKostum || '';
+                    document.getElementById('senjataAtauBenda').value = data.senjataAtauBenda || '';
+                    document.getElementById('deskripsiPose').value = data.deskripsiPose || '';
+                    document.getElementById('astralMagis').value = data.astralMagis || '';
+                    document.getElementById('lingkungan').value = data.lingkungan || '';
+                    
+                    saveStoryToHistory(userStory);
+                    showAlert('success', 'Success', getCurrentLangData().alerts.aiSuccess);
+
+                } catch (error) {
+                    console.error('AI Assistant Error:', error);
+                    showAlert('error', getCurrentLangData().alerts.aiError, error.message);
+                } finally {
+                    loadingContainer.classList.add('hidden');
+                    loadingContainer.classList.remove('inline-flex');
+                    btnTextContainer.classList.remove('hidden');
+                    aiBtn.disabled = false;
+                }
+            });
+
+            generateBtn.addEventListener('click', () => {
+                const fields = {
+                    gender: document.getElementById('gender').value,
+                    deskripsiKarakter: document.getElementById('deskripsiKarakter').value.trim(),
+                    deskripsiKostum: document.getElementById('deskripsiKostum').value.trim(),
+                    senjataAtauBenda: document.getElementById('senjataAtauBenda').value.trim(),
+                    deskripsiPose: document.getElementById('deskripsiPose').value.trim(),
+                    astralMagis: document.getElementById('astralMagis').value.trim(),
+                    lingkungan: document.getElementById('lingkungan').value.trim(),
+                    namaKarakter: document.getElementById('namaKarakter').value.trim().toUpperCase(),
+                    generateBy: document.getElementById('generateBy').value.trim(),
+                    bentukAlas: document.getElementById('bentukAlas').value,
+                    nuansa: document.getElementById('nuansaTemaAi').value
+                };
+                
+                if (!fields.gender || !fields.deskripsiKarakter || !fields.deskripsiPose || !fields.lingkungan || !fields.namaKarakter || !fields.generateBy) {
+                    showAlert("error", 'Formulir Belum Lengkap', 'Mohon isi semua kolom yang wajib diisi sebelum menghasilkan prompt.');
+                    return;
+                }
+
+                const themeDetails = {
+                    KlasikStudio: { baseStyle: "marmer poles yang bersih dan minimalis", placement: "diletakkan di atas meja putih", scene: "latar belakang kabur berupa ruangan nyaman dan terang, di mana sebuah Koleksi Aksi Figur dalam Etalase dan figur aksi lainnya terlihat diburamkan di latar belakang" },
+                    Cyberpunk: { baseStyle: "panel logam dengan sirkuit terbuka dan kabel fiber optik yang menyala", placement: "ditampilkan di sebuah gang kota cyberpunk yang ramai di malam hari, basah oleh hujan", scene: "papan reklame neon yang menyala terang dan kendaraan terbang melintas di atas" },
+                    FantasiMistis: { baseStyle: "batu kuno yang ditumbuhi lumut bercahaya dan diukir dengan rune sihir", placement: "berada di tengah hutan fantasi yang berkilauan di malam hari", scene: "partikel sihir mengambang di udara dan pohon-pohon raksasa menjulang ke langit berbintang" },
+                    PascaApokaliptik: { baseStyle: "beton yang retak dan logam berkarat yang dilas menjadi satu", placement: "berdiri di atas puing-puing", scene: "pemandangan kota yang hancur saat matahari terbenam, gedung-gedung pencakar langit yang rusak, dan langit berwarna oranye karena debu" },
+                    Steampunk: { baseStyle: "kayu mahoni yang diperkuat dengan lempengan kuningan dan roda gigi yang saling bertautan", placement: "berada di dalam bengkel seorang insinyur steampunk", scene: "dikelilingi oleh cetak biru, mesin yang rumit, dan jendela besar yang memperlihatkan kota industri Victoria" },
+                    Kosmik: { baseStyle: "kristal obsidian yang permukaannya memantulkan gugusan bintang", placement: "melayang di angkasa", scene: "pemandangan luar angkasa yang menakjubkan, menampilkan galaksi spiral, gugusan bintang, dan aurora kosmik yang berwarna-warni" },
+                    HororGotik: { baseStyle: "batu marmer hitam dengan ukiran gargoyle di sudut-sudutnya", placement: "berdiri di interior kastil Drakula yang remang-remang", scene: "jendela kaca patri tinggi, sarang laba-laba, dan bayangan memanjang yang menakutkan" },
+                    BioLuminescent: { baseStyle: "jalinan akar kayu dan jamur yang memancarkan cahaya redup", placement: "berada di dalam gua atau hutan alien di malam hari", scene: "setiap tanaman, serangga, dan aliran air memancarkan cahaya biru, hijau, dan ungu yang lembut" },
+                    MesirKuno: { baseStyle: "batu pasir yang diukir dengan hieroglif para dewa", placement: "berada di interior makam firaun yang megah", scene: "dinding yang dilukis, obor yang menyala, dan tumpukan harta karun emas" },
+                    KerajaanLangit: { baseStyle: "awan padat yang dipahat dan dihiasi dengan kristal kuarsa", placement: "berdiri di balkon sebuah istana di atas awan", scene: "memandang ke lautan awan keemasan saat matahari terbit, dengan kota-kota melayang lainnya di kejauhan" },
+                    PasirPantaiTropis: { baseStyle: "pasir putih halus dengan beberapa kerang dan bintang laut", placement: "berdiri di tepi pantai tropis yang indah", scene: "air laut biru jernih yang membasahi pasir, pohon-pohon palem melambai, dan matahari terbenam di cakrawala" },
+                    InteriorDojoJepang: { baseStyle: "lantai kayu tatami dengan pintu geser shoji", placement: "berada di tengah dojo tradisional Jepang yang tenang", scene: "gulungan kaligrafi di dinding, rak senjata kayu, dan cahaya lembut masuk melalui jendela kertas" },
+                    LaboratoriumSciFi: { baseStyle: "panel lantai heksagonal yang bersinar dengan cahaya biru", placement: "berada di laboratorium fiksi ilmiah yang steril dan canggih", scene: "dipenuhi dengan layar holografik, tabung stasis, dan lengan robotik" },
+                    DekKapalBajakLaut: { baseStyle: "papan kayu lapuk dek kapal dengan tali-temali berserakan", placement: "berdiri di dek kapal bajak laut yang sedang berlayar di laut lepas", scene: "layar terkembang, meriam siap tembak, dan bendera Jolly Roger berkibar di tiang utama" },
+                    TamanBungaSakura: { baseStyle: "batu loncatan yang dikelilingi kelopak bunga sakura merah muda", placement: "berada di taman Jepang saat musim semi, di bawah pohon sakura yang sedang mekar penuh", scene: "lentera batu dan jembatan kayu kecil di atas kolam koi" },
+                    ReruntuhanHutanKuno: { baseStyle: "balok batu candi kuno yang ditumbuhi tanaman merambat", placement: "berada di reruntuhan kota kuno yang tersembunyi jauh di dalam hutan lebat", scene: "sinar matahari menembus kanopi dan kabut tipis menyelimuti tanah" },
+                    KotaBawahAir: { baseStyle: "terumbu karang bercahaya dan reruntuhan Atlantis", placement: "berada di kota bawah laut yang hilang", scene: "bangunan kristal yang megah, ikan-ikan eksotis berenang di antara pilar-pilar kuno, dan cahaya biru dari permukaan laut di atas" },
+                    ArenaGladiator: { baseStyle: "pasir dan batu arena Colosseum", placement: "berdiri di tengah arena gladiator Romawi yang megah", scene: "gerbang besi, dinding tribun yang menjulang tinggi dipenuhi penonton, dan bayangan dari arsitektur kuno" },
+                    IstanaEsArktik: { baseStyle: "es transparan yang diukir dengan pola kepingan salju", placement: "berada di interior istana es yang berkilauan di Kutub Utara", scene: "pilar-pilar es raksasa, singgasana beku, dan aurora borealis menari di langit melalui atap kristal" },
+                    DuniaPermen: { baseStyle: "biskuit wafer yang dilapisi gula warna-warni", placement: "berada di lanskap permen yang fantastis", scene: "sungai cokelat, pohon lolipop, bukit permen karet, dan rumah-rumah jahe di bawah langit pelangi" }
+                };
+                
+                const selectedTheme = themeDetails[fields.nuansa] || themeDetails.KlasikStudio;
+                const baseStyle = selectedTheme.baseStyle;
+                const placement = selectedTheme.placement;
+                const scene = selectedTheme.scene;
+
+                const gayaVisual = document.getElementById('gayaVisual').value;
+                
+                let firstLine;
+                if (gayaVisual === '3D Vector Ilustrasi') {
+                    firstLine = 'Buat Gambar Visual Patung Fantasi bergaya komik 3D vektor modern, sangat detail. Tekankan garis-garis vektor yang bersih dan tajam, bayangan tegas bergaya stylized, highlight reflektif, palet warna kaya dan kontras tinggi, saturasi warna tinggi. Pencahayaan sinematik dramatis dengan depth of field tajam. Anatomi realistis yang proporsional dengan kaki panjang dan pose dinamis, Scale 1:16, Aspect Ratio 2:3, full-body. Efek seperti difoto dengan kamera DSLR mirrorless:';
+                } else if (gayaVisual === '3D Lego Modern') {
+                    firstLine = 'Buat Gambar Visual Patung Fantasi bergaya Lego 3D modern, sangat detail. Tekankan bentuk balok dan sambungan khas Lego yang bersih dan tajam, bayangan tegas bergaya stylized, highlight reflektif, palet warna kaya dan kontras tinggi, saturasi warna tinggi. Anatomi proporsional khas Lego, kepala silinder besar, tangan c-hook, kaki balok pendek, namun tetap dalam pose dinamis full-body. Pencahayaan sinematik dramatis dengan depth of field tajam, Scale 1:16, Aspect Ratio 2:3. Efek visual seperti difoto dengan kamera DSLR mirrorless, menonjolkan detail permukaan plastik Lego yang mengilap dan artistik:';
+                } else if (gayaVisual === '3D Brick Block Toy') {
+                    firstLine = 'Buat Gambar Visual Patung Fantasi dengan gaya 3D Brick Block Toy Style, Stylized Toy-Like, Blocky Construction, Plastic Texture, Bright and Solid Colors, Chunky Proportions, No Realistic Details, Cute and Playful Design, Miniature Scale 1:16, Aspect Ratio 2:3, Toy Photography Style, Studio Lighting, Clean Background, Visible Studs and Joints, Built Entirely from Brick Pieces, Simple Facial Expressions, Clear Outlines, dan Compact, Modular Body Shapes:';
+                }
+                else {
+                    const styleKeywords = gayaVisual === '4D Hyper Realism'
+                        ? '4D Stylized Hyper-Realism, Ultra-Detail, High-Realistic, UHD 8K, Highly Detailed, Hyper Cinematic Lighting, Sharp Depth of Field, High Saturation, Rich Color Palette, Sharp Contrast, Photographed with DSLR Mirrorless Camera, Realistic Proportional Anatomy, Full-body, Scale 1:16, Aspect Ratio 2:3, Long Legs, Balanced Body, HD Focused:'
+                        : '3D Chibi Stylized Action Figure, Disney Pixar Style, Cute, Adorable, Soft Round Shapes, Big Expressive Eyes, Vibrant Colors, Claymation look, High Detail, Studio Lighting, Scale 1:16, Aspect Ratio 2:3, on a detailed miniature base:';
+                    firstLine = `Buat Gambar Visual Patung Fantasi dengan gaya ${styleKeywords}`;
+                }
+                
+                const defaultCostume = 'Tidak ada deskripsi kostum';
+                const defaultWeapon = 'Tidak ada senjata atau benda';
+                const defaultAnimal = 'Tidak ada hewan atau makhluk pendamping';
+
+                let promptLines = [
+                    firstLine,
+                    `\nKarakter: ${fields.gender} ${fields.deskripsiKarakter}`
+                ];
+
+                if (fields.deskripsiKostum && fields.deskripsiKostum !== defaultCostume) {
+                    promptLines.push(`Kostum: ${fields.deskripsiKostum}`);
+                }
+                if (fields.senjataAtauBenda && fields.senjataAtauBenda !== defaultWeapon) {
+                    promptLines.push(`Benda: ${fields.senjataAtauBenda}`);
+                }
+                
+                promptLines.push(`Pose dan Ekspresi: ${fields.deskripsiPose}`);
+
+                if (fields.astralMagis && fields.astralMagis !== defaultAnimal) {
+                    promptLines.push(`Pendamping: ${fields.astralMagis}, pastikan makhluk ini berada sepenuhnya di dalam area alas monumental, meskipun melayang.`);
+                }
+
+                promptLines.push(`\nSemua elemen ini dipasang di atas alas base ${fields.bentukAlas} yang terbuat dari bahan ${baseStyle}, di atasnya menampilkan miniatur detail dari ${fields.lingkungan} Dibuat tanpa efek kabut atau efek energi apapun yang membuat karakter tenggelam dan tidak ada elemen yang keluar dari area base.`);
+                promptLines.push(`\nName Base: "${fields.namaKarakter}" ukuran: Large, Subtitle: “${fields.generateBy}” ukuran: Medium, terukir dalam tipografi bergaya iblis dan timbul.`);
+                const backgroundDescription = `Figur ini ${placement}, dengan Latar Belakang ${scene}. Fokus utama hanya tertuju pada Patung Fantasi Realistis dan alasnya, dengan pencahayaan terang dan lembut. Gaya keseluruhan harus kuat.`;
+                promptLines.push(`\n${backgroundDescription}`);
+                
+                const indonesianPrompt = promptLines.join('\n');
+                outputPromptEl.value = indonesianPrompt;
+                
+                resultSection.style.display = 'block';
+                translateSection.style.display = 'block';
+                englishPromptSection.style.display = 'none';
+                outputPromptEnEl.value = '';
+                resultSection.scrollIntoView({ behavior: 'smooth' });
+                showAlert('success', 'Prompt Dihasilkan', 'Prompt Bahasa Indonesia sudah siap.');
+            });
+
+            resetBtn.addEventListener('click', () => {
+                promptForm.reset();
+                ceritaKarakterEl.value = '';
+                resultSection.style.display = 'none';
+                outputPromptEl.value = '';
+                outputPromptEnEl.value = '';
+            });
+
+            translateBtn.addEventListener('click', async () => {
+                const indonesianPrompt = outputPromptEl.value;
+                if (!indonesianPrompt) return;
+
+                const spinner = document.getElementById('translateBtnSpinner');
+                const btnText = document.getElementById('translateBtnTextContainer');
+                spinner.classList.remove('hidden');
+                btnText.classList.add('hidden');
+                translateBtn.disabled = true;
+
+                const payload = {
+                    contents: [{ parts: [{ text: `Translate the following text to English. Maintain the formatting, technical terms like "--ar 16:9", and the "GENERATED BY" line exactly as they are:\n\n${indonesianPrompt}` }] }]
+                };
+
+                try {
+                    const translatedText = await performApiCall(payload);
+                    outputPromptEnEl.value = translatedText.trim();
+                    englishPromptSection.style.display = 'block';
+                    outputPromptEnEl.style.height = 'auto';
+                    outputPromptEnEl.style.height = (outputPromptEnEl.scrollHeight) + 'px';
+                } catch (error) {
+                    console.error('Translation Error:', error);
+                    showAlert('error', 'Translation Failed', error.message);
+                } finally {
+                    spinner.classList.add('hidden');
+                    btnText.classList.remove('hidden');
+                    translateBtn.disabled = false;
+                }
+            });
+            
+            const copyToClipboard = (elementId, langData) => {
+                const textarea = document.getElementById(elementId);
+                textarea.select();
+                try {
+                    document.execCommand('copy');
+                    showAlert('success', 'Success', langData.promptCopied);
+                } catch (err) {
+                    showAlert('error', 'Error', 'Could not copy text.');
+                }
+                window.getSelection().removeAllRanges();
+            };
+
+            copyBtn.addEventListener('click', () => copyToClipboard('outputPrompt', getCurrentLangData().alerts));
+            copyBtnEn.addEventListener('click', () => copyToClipboard('outputPromptEn', getCurrentLangData().alerts));
+
+            // --- Initial Load ---
+            checkAccess();
+            applyTheme(localStorage.getItem('theme') || 'dark');
+            applyLanguage(localStorage.getItem('language') || 'id');
+
+            const savedApiSource = localStorage.getItem('apiSource') || 'system';
+            apiKeyInput.value = localStorage.getItem('geminiApiKey') || '';
+            setActiveTab(savedApiSource === 'personal' ? yourApiTab : systemApiTab);
+        });
+    </script>
+</body>
+</html>
