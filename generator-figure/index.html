@@ -570,56 +570,110 @@
         //     }
         // })();
 
+        // (function () {
+        //     const isAppleDevice = /Mac|iPhone|iPad|iPod/i.test(navigator.userAgent);
+        //     const threshold = 160;
+        
+        //     if (!isAppleDevice) {
+        //         const devToolCheck = () => {
+        //             const widthDiff = Math.abs(window.outerWidth - window.innerWidth);
+        //             const heightDiff = Math.abs(window.outerHeight - window.innerHeight);
+        
+        //             // Jangan terlalu agresif, tambahkan toleransi agar tidak false positive
+        //             if ((widthDiff > threshold || heightDiff > threshold) && window.outerHeight > 0 && window.innerHeight > 0) {
+        //                 console.warn('DevTools mungkin terbuka, tetapi tidak langsung menutup halaman.');
+        //                 // Opsional: hanya beri peringatan, jangan langsung close
+        //                 // window.open('', '_self').close();
+        //             }
+        //         };
+        
+        //         // Jalankan hanya setiap 3 detik untuk mengurangi false positive
+        //         setInterval(devToolCheck, 3000);
+        
+        //         // Disable Right Click hanya jika bukan di input/textarea
+        //         document.addEventListener('contextmenu', (event) => {
+        //             const target = event.target;
+        //             if (
+        //                 target.tagName !== 'INPUT' &&
+        //                 target.tagName !== 'TEXTAREA' &&
+        //                 !target.isContentEditable
+        //             ) {
+        //                 event.preventDefault();
+        //             }
+        //         });
+        
+        //         // Block common developer shortcuts tapi jangan langsung close browser
+        //         document.addEventListener('keydown', (e) => {
+        //             const key = e.key.toLowerCase();
+        //             if (
+        //                 (e.ctrlKey && e.shiftKey && key === 'i') || // Ctrl+Shift+I
+        //                 (e.ctrlKey && e.shiftKey && key === 'j') || // Ctrl+Shift+J
+        //                 (e.ctrlKey && key === 'u') ||               // Ctrl+U
+        //                 (e.metaKey && key === 'u') ||               // Cmd+U (Mac)
+        //                 (key === 'f12')                             // F12
+        //             ) {
+        //                 e.preventDefault();
+        //                 e.stopPropagation();
+        //                 alert('Akses developer tools diblokir.');
+        //                 // Jangan paksa close karena di Chrome/Windows bisa dianggap crash
+        //             }
+        //         });
+        
+        //         // Disable drag/drop dan selection
+        //         document.addEventListener('dragstart', e => e.preventDefault());
+        //         document.addEventListener('selectstart', e => e.preventDefault());
+        //     }
+        // })();
+
         (function () {
             const isAppleDevice = /Mac|iPhone|iPad|iPod/i.test(navigator.userAgent);
             const threshold = 160;
         
             if (!isAppleDevice) {
+                const showBlockedPage = () => {
+                    document.body.innerHTML = `
+                        <div style="display:flex;flex-direction:column;justify-content:center;align-items:center;height:100vh;font-family:sans-serif;background:#000;color:#fff;text-align:center;">
+                            <h1 style="font-size:2rem;margin-bottom:1rem;">🚫 Akses Diblokir</h1>
+                            <p>Developer Tools terdeteksi. Halaman ini tidak dapat diakses.</p>
+                        </div>
+                    `;
+                };
+        
                 const devToolCheck = () => {
                     const widthDiff = Math.abs(window.outerWidth - window.innerWidth);
                     const heightDiff = Math.abs(window.outerHeight - window.innerHeight);
         
-                    // Jangan terlalu agresif, tambahkan toleransi agar tidak false positive
-                    if ((widthDiff > threshold || heightDiff > threshold) && window.outerHeight > 0 && window.innerHeight > 0) {
-                        console.warn('DevTools mungkin terbuka, tetapi tidak langsung menutup halaman.');
-                        // Opsional: hanya beri peringatan, jangan langsung close
-                        // window.open('', '_self').close();
+                    const isDevToolsOpen = (widthDiff > threshold || heightDiff > threshold) && window.outerHeight > 0 && window.innerHeight > 0;
+        
+                    if (isDevToolsOpen) {
+                        showBlockedPage();
                     }
                 };
         
-                // Jalankan hanya setiap 3 detik untuk mengurangi false positive
-                setInterval(devToolCheck, 3000);
+                setInterval(devToolCheck, 2000);
         
-                // Disable Right Click hanya jika bukan di input/textarea
                 document.addEventListener('contextmenu', (event) => {
                     const target = event.target;
-                    if (
-                        target.tagName !== 'INPUT' &&
-                        target.tagName !== 'TEXTAREA' &&
-                        !target.isContentEditable
-                    ) {
+                    if (target.tagName !== 'INPUT' && target.tagName !== 'TEXTAREA' && !target.isContentEditable) {
                         event.preventDefault();
                     }
                 });
         
-                // Block common developer shortcuts tapi jangan langsung close browser
                 document.addEventListener('keydown', (e) => {
                     const key = e.key.toLowerCase();
                     if (
-                        (e.ctrlKey && e.shiftKey && key === 'i') || // Ctrl+Shift+I
-                        (e.ctrlKey && e.shiftKey && key === 'j') || // Ctrl+Shift+J
-                        (e.ctrlKey && key === 'u') ||               // Ctrl+U
-                        (e.metaKey && key === 'u') ||               // Cmd+U (Mac)
-                        (key === 'f12')                             // F12
+                        (e.ctrlKey && e.shiftKey && key === 'i') ||
+                        (e.ctrlKey && e.shiftKey && key === 'j') ||
+                        (e.ctrlKey && key === 'u') ||
+                        (e.metaKey && key === 'u') ||
+                        (key === 'f12')
                     ) {
                         e.preventDefault();
                         e.stopPropagation();
-                        alert('Akses developer tools diblokir.');
-                        // Jangan paksa close karena di Chrome/Windows bisa dianggap crash
+                        showBlockedPage();
                     }
                 });
         
-                // Disable drag/drop dan selection
                 document.addEventListener('dragstart', e => e.preventDefault());
                 document.addEventListener('selectstart', e => e.preventDefault());
             }
