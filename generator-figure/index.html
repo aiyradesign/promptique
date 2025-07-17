@@ -519,25 +519,78 @@
         //     event.preventDefault();
         // });
 
+        // (function () {
+        //     const isAppleDevice = /Mac|iPhone|iPad|iPod/i.test(navigator.userAgent);
+        //     const threshold = 160;
+        
+        //     if (!isAppleDevice) {
+        //         const devToolCheck = () => {
+        //             if (
+        //                 window.outerWidth - window.innerWidth > threshold ||
+        //                 window.outerHeight - window.innerHeight > threshold
+        //             ) {
+        //                 if (window.outerHeight > 0 && window.innerHeight > 0) {
+        //                     window.open('', '_self').close();
+        //                 }
+        //             }
+        //         };
+        
+        //         setInterval(devToolCheck, 1000);
+        
+        //         // Disable Right Click for non-input elements
+        //         document.addEventListener('contextmenu', (event) => {
+        //             const target = event.target;
+        //             if (
+        //                 target.tagName !== 'INPUT' &&
+        //                 target.tagName !== 'TEXTAREA' &&
+        //                 !target.isContentEditable
+        //             ) {
+        //                 event.preventDefault();
+        //             }
+        //         });
+        
+        //         // Block common developer shortcuts
+        //         document.addEventListener('keydown', (e) => {
+        //             if (
+        //                 (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'i') || // Ctrl+Shift+I
+        //                 (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'j') || // Ctrl+Shift+J
+        //                 (e.ctrlKey && e.key.toLowerCase() === 'u') ||              // Ctrl+U
+        //                 (e.metaKey && e.key.toLowerCase() === 'u') ||              // Cmd+U (Mac)
+        //                 (e.key === 'F12')                                           // F12
+        //             ) {
+        //                 e.preventDefault();
+        //                 e.stopPropagation();
+        //                 window.open('', '_self').close();
+        //             }
+        //         });
+        
+        //         // Disable drag/drop and selection to prevent copying
+        //         document.addEventListener('dragstart', e => e.preventDefault());
+        //         document.addEventListener('selectstart', e => e.preventDefault());
+        //     }
+        // })();
+
         (function () {
             const isAppleDevice = /Mac|iPhone|iPad|iPod/i.test(navigator.userAgent);
             const threshold = 160;
         
             if (!isAppleDevice) {
                 const devToolCheck = () => {
-                    if (
-                        window.outerWidth - window.innerWidth > threshold ||
-                        window.outerHeight - window.innerHeight > threshold
-                    ) {
-                        if (window.outerHeight > 0 && window.innerHeight > 0) {
-                            window.open('', '_self').close();
-                        }
+                    const widthDiff = Math.abs(window.outerWidth - window.innerWidth);
+                    const heightDiff = Math.abs(window.outerHeight - window.innerHeight);
+        
+                    // Jangan terlalu agresif, tambahkan toleransi agar tidak false positive
+                    if ((widthDiff > threshold || heightDiff > threshold) && window.outerHeight > 0 && window.innerHeight > 0) {
+                        console.warn('DevTools mungkin terbuka, tetapi tidak langsung menutup halaman.');
+                        // Opsional: hanya beri peringatan, jangan langsung close
+                        // window.open('', '_self').close();
                     }
                 };
         
-                setInterval(devToolCheck, 1000);
+                // Jalankan hanya setiap 3 detik untuk mengurangi false positive
+                setInterval(devToolCheck, 3000);
         
-                // Disable Right Click for non-input elements
+                // Disable Right Click hanya jika bukan di input/textarea
                 document.addEventListener('contextmenu', (event) => {
                     const target = event.target;
                     if (
@@ -549,22 +602,24 @@
                     }
                 });
         
-                // Block common developer shortcuts
+                // Block common developer shortcuts tapi jangan langsung close browser
                 document.addEventListener('keydown', (e) => {
+                    const key = e.key.toLowerCase();
                     if (
-                        (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'i') || // Ctrl+Shift+I
-                        (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'j') || // Ctrl+Shift+J
-                        (e.ctrlKey && e.key.toLowerCase() === 'u') ||              // Ctrl+U
-                        (e.metaKey && e.key.toLowerCase() === 'u') ||              // Cmd+U (Mac)
-                        (e.key === 'F12')                                           // F12
+                        (e.ctrlKey && e.shiftKey && key === 'i') || // Ctrl+Shift+I
+                        (e.ctrlKey && e.shiftKey && key === 'j') || // Ctrl+Shift+J
+                        (e.ctrlKey && key === 'u') ||               // Ctrl+U
+                        (e.metaKey && key === 'u') ||               // Cmd+U (Mac)
+                        (key === 'f12')                             // F12
                     ) {
                         e.preventDefault();
                         e.stopPropagation();
-                        window.open('', '_self').close();
+                        alert('Akses developer tools diblokir.');
+                        // Jangan paksa close karena di Chrome/Windows bisa dianggap crash
                     }
                 });
         
-                // Disable drag/drop and selection to prevent copying
+                // Disable drag/drop dan selection
                 document.addEventListener('dragstart', e => e.preventDefault());
                 document.addEventListener('selectstart', e => e.preventDefault());
             }
