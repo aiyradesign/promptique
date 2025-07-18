@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Prompt Generator – Cyberpunk Edition | prompt.ique</title>
-    <meta name="description" content="Buat prompt AI untuk desain action figure dengan gaya visual Cyberpunk yang imersif.">
+    <title>Prompt Generator – Classic Studio | prompt.ique</title>
+    <meta name="description" content="Buat prompt AI untuk desain action figure dengan gaya visual studio klasik yang elegan.">
     
-    <meta property="og:title" content="Promptique | AI Prompt Generator Cyberpunk Edition">
-    <meta property="og:description" content="Buat prompt AI untuk desain action figure keren dengan tema cyberpunk. Siap digunakan di ChatGPT, Midjourney, dan AI Studio.">
-    <meta property="og:image" content="https://promptique.my.id/generator-figure/action_poster_cyberpunk.png">
+    <meta property="og:title" content="Promptique | AI Prompt Generator Classic Studio">
+    <meta property="og:description" content="Buat prompt AI untuk desain action figure keren dengan tema studio klasik. Siap digunakan di ChatGPT, Midjourney, dan AI Studio.">
+    <meta property="og:image" content="https://promptique.my.id/generator-figure/action_poster_classic.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:url" content="https://promptique.my.id/generator-figure">
@@ -535,13 +535,13 @@
                     <div class="space-y-6">
                         <div>
                             <label for="ceritaKarakter" class="form-label"><i class="fas fa-feather-alt w-5 mr-1"></i><span id="story-label">Ceritakan singkat tentang karakter Anda</span></label>
-                            <textarea id="ceritaKarakter" rows="4" class="form-textarea" placeholder="Contoh: Seorang pemburu bayaran di kota neon yang dihujani asam..."></textarea>
+                            <textarea id="ceritaKarakter" rows="4" class="form-textarea" placeholder="Contoh: Seorang ksatria dengan zirah perak yang menjaga kastil kuno..."></textarea>
                         </div>
                         <div>
                             <label for="nuansaTemaAi" class="form-label"><i class="fas fa-palette w-5 mr-1"></i><span id="theme-label">Pilih Nuansa Tema</span></label>
                             <select id="nuansaTemaAi" class="form-select">
-                                <option value="KlasikStudio">Klasik Studio</option>
-                                <option value="Cyberpunk" selected>Cyberpunk</option>
+                                <option value="KlasikStudio" selected>Klasik Studio</option>
+                                <option value="Cyberpunk">Cyberpunk</option>
                                 <option value="FantasiMistis">Fantasi Mistis</option>
                                 <option value="PascaApokaliptik">Pasca-Apokaliptik</option>
                                 <option value="Steampunk">Steampunk</option>
@@ -584,20 +584,20 @@
                     </h3>
                     <form id="promptForm" class="space-y-6">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div><label for="namaKarakter" class="form-label" id="name-label">Nama Karakter</label><input type="text" id="namaKarakter" class="form-input" placeholder="Contoh: RAX"></div>
+                            <div><label for="namaKarakter" class="form-label" id="name-label">Nama Karakter</label><input type="text" id="namaKarakter" class="form-input" placeholder="Contoh: Arthur"></div>
                             <div><label for="gender" class="form-label" id="gender-label">Gender / Jenis</label><select id="gender" class="form-select"><option value="" selected>Pilih...</option><option value="Pria">Pria</option><option value="Wanita">Wanita</option><option value="Hewan">Hewan</option><option value="Non-biner">Non-biner</option></select></div>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div><label for="deskripsiKarakter" class="form-label" id="char-desc-label">Deskripsi Karakter</label><textarea id="deskripsiKarakter" rows="3" class="form-textarea" placeholder="Mata sibernetik, rambut implan..."></textarea></div>
-                            <div><label for="deskripsiKostum" class="form-label" id="costume-desc-label">Deskripsi Kostum</label><textarea id="deskripsiKostum" rows="3" class="form-textarea" placeholder="Jaket kulit dengan kabel neon..."></textarea></div>
+                            <div><label for="deskripsiKarakter" class="form-label" id="char-desc-label">Deskripsi Karakter</label><textarea id="deskripsiKarakter" rows="3" class="form-textarea" placeholder="Rambut pirang, mata biru, wajah tegas..."></textarea></div>
+                            <div><label for="deskripsiKostum" class="form-label" id="costume-desc-label">Deskripsi Kostum</label><textarea id="deskripsiKostum" rows="3" class="form-textarea" placeholder="Zirah perak berkilauan dengan jubah merah..."></textarea></div>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div><label for="senjataAtauBenda" class="form-label" id="weapon-label">Senjata / Benda</label><textarea id="senjataAtauBenda" rows="3" class="form-textarea" placeholder="Pistol plasma atau data chip..."></textarea></div>
-                            <div><label for="deskripsiPose" class="form-label" id="pose-label">Pose dan Ekspresi</label><textarea id="deskripsiPose" rows="3" class="form-textarea" placeholder="Menodongkan senjata, ekspresi dingin..."></textarea></div>
+                            <div><label for="senjataAtauBenda" class="form-label" id="weapon-label">Senjata / Benda</label><textarea id="senjataAtauBenda" rows="3" class="form-textarea" placeholder="Pedang Excalibur yang tertancap di batu..."></textarea></div>
+                            <div><label for="deskripsiPose" class="form-label" id="pose-label">Pose dan Ekspresi</label><textarea id="deskripsiPose" rows="3" class="form-textarea" placeholder="Berdiri gagah dengan tangan di gagang pedang..."></textarea></div>
                         </div>
                          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div><label for="astralMagis" class="form-label" id="creature-label">Hewan/Makhluk</label><textarea id="astralMagis" rows="3" class="form-textarea" placeholder="Contoh: Drone pengintai holografik..."></textarea></div>
-                            <div><label for="lingkungan" class="form-label" id="base-detail-label">Detail Spesifik Alas</label><textarea id="lingkungan" rows="3" class="form-textarea" placeholder="Contoh: trotoar basah dengan pantulan neon..."></textarea></div>
+                            <div><label for="astralMagis" class="form-label" id="creature-label">Hewan/Makhluk</label><textarea id="astralMagis" rows="3" class="form-textarea" placeholder="Seekor griffin emas di sampingnya..."></textarea></div>
+                            <div><label for="lingkungan" class="form-label" id="base-detail-label">Detail Spesifik Alas</label><textarea id="lingkungan" rows="3" class="form-textarea" placeholder="Reruntuhan kastil dengan pilar-pilar batu..."></textarea></div>
                         </div>
                         
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -781,248 +781,246 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            (function () {
+                const isAppleDevice = /Mac|iPhone|iPad|iPod/i.test(navigator.userAgent);
+                const threshold = 350; // lebih tinggi agar tidak false positive
+
+                const showBlockedPage = () => {
+                    document.body.innerHTML = `
+                        <div id="cyberpunk-access-denied-wrapper" style="height: 100vh;">
+                            <style>
+                                /* --- CSS Variables for easy theming --- */
+                                :root {
+                                    --background-color: #010409;
+                                    --primary-neon: #ff00c1;
+                                    --secondary-neon: #00e5ff;
+                                    --text-color: #e6f1ff;
+                                    --scanline-color: rgba(0, 229, 255, 0.1);
+                                    --glitch-primary: #ff00c1;
+                                    --glitch-secondary: #00e5ff;
+                                }
+
+                                /* --- Base Styles for the Wrapper DIV --- */
+                                #cyberpunk-access-denied-wrapper {
+                                    background-color: var(--background-color);
+                                    color: var(--text-color);
+                                    font-family: 'Share Tech Mono', monospace;
+                                    display: flex;
+                                    justify-content: center;
+                                    align-items: center;
+                                    height: 100%; /* Atur ke 100vh jika ingin memenuhi seluruh layar */
+                                    width: 100%;
+                                    margin: 0;
+                                    overflow: hidden;
+                                    text-align: center;
+                                    padding: 2rem;
+                                    box-sizing: border-box;
+                                    position: relative; /* Diperlukan untuk pseudo-element ::after */
+                                    /* Add a subtle grid pattern */
+                                    background-image: 
+                                        linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                                        linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+                                    background-size: 30px 30px;
+                                }
+
+                                /* --- Scanline Animation --- */
+                                #cyberpunk-access-denied-wrapper::after {
+                                    content: ' ';
+                                    display: block;
+                                    position: absolute;
+                                    top: 0;
+                                    left: 0;
+                                    width: 100%;
+                                    height: 100%;
+                                    background: repeating-linear-gradient(
+                                        0deg,
+                                        var(--scanline-color),
+                                        var(--scanline-color) 1px,
+                                        transparent 1px,
+                                        transparent 4px
+                                    );
+                                    animation: scanline 10s linear infinite;
+                                    pointer-events: none;
+                                    opacity: 0.5;
+                                }
+
+                                @keyframes scanline {
+                                    0% { background-position: 0 0; }
+                                    100% { background-position: 0 100vh; }
+                                }
+
+                                /* --- Main Content Container --- */
+                                #cyberpunk-access-denied-wrapper .container {
+                                    position: relative;
+                                    z-index: 1;
+                                    border: 2px solid var(--secondary-neon);
+                                    padding: 2rem 3rem;
+                                    background: rgba(1, 4, 9, 0.8);
+                                    box-shadow: 
+                                        0 0 10px var(--secondary-neon),
+                                        inset 0 0 10px var(--secondary-neon);
+                                    border-radius: 8px;
+                                    max-width: 700px;
+                                }
+
+                                /* --- Glitch Effect on Heading --- */
+                                #cyberpunk-access-denied-wrapper .glitch-container {
+                                    position: relative;
+                                }
+
+                                #cyberpunk-access-denied-wrapper .glitch {
+                                    font-family: 'Orbitron', sans-serif;
+                                    font-size: clamp(2rem, 8vw, 4rem);
+                                    font-weight: 700;
+                                    text-transform: uppercase;
+                                    position: relative;
+                                    color: var(--text-color);
+                                    text-shadow: 0 0 5px var(--primary-neon), 0 0 10px var(--primary-neon);
+                                    animation: glitch-skew 1s infinite linear alternate-reverse;
+                                }
+
+                                #cyberpunk-access-denied-wrapper .glitch::before,
+                                #cyberpunk-access-denied-wrapper .glitch::after {
+                                    content: attr(data-text);
+                                    position: absolute;
+                                    top: 0;
+                                    left: 0;
+                                    width: 100%;
+                                    height: 100%;
+                                    background: transparent; /* Dibuat transparan agar tidak menutupi teks utama */
+                                    overflow: hidden;
+                                }
+
+                                #cyberpunk-access-denied-wrapper .glitch::before {
+                                    left: 2px;
+                                    text-shadow: -2px 0 var(--glitch-primary);
+                                    animation: glitch-anim-1 2s infinite linear alternate-reverse;
+                                }
+
+                                #cyberpunk-access-denied-wrapper .glitch::after {
+                                    left: -2px;
+                                    text-shadow: -2px 0 var(--glitch-secondary), 2px 2px var(--glitch-primary);
+                                    animation: glitch-anim-2 3s infinite linear alternate-reverse;
+                                }
+
+                                /* --- Glitch Keyframes --- */
+                                @keyframes glitch-anim-1 {
+                                    0% { clip-path: inset(5% 0 90% 0); }
+                                    20% { clip-path: inset(70% 0 15% 0); }
+                                    40% { clip-path: inset(45% 0 45% 0); }
+                                    60% { clip-path: inset(10% 0 85% 0); }
+                                    80% { clip-path: inset(90% 0 5% 0); }
+                                    100% { clip-path: inset(60% 0 30% 0); }
+                                }
+
+                                @keyframes glitch-anim-2 {
+                                    0% { clip-path: inset(80% 0 10% 0); }
+                                    25% { clip-path: inset(5% 0 70% 0); }
+                                    50% { clip-path: inset(75% 0 5% 0); }
+                                    75% { clip-path: inset(40% 0 50% 0); }
+                                    100% { clip-path: inset(95% 0 2% 0); }
+                                }
+                                
+                                @keyframes glitch-skew {
+                                0% { transform: skew(0deg); }
+                                5% { transform: skew(1deg); }
+                                10% { transform: skew(-0.5deg); }
+                                100% { transform: skew(0deg); }
+                                }
+
+                                /* --- Paragraph and Message Styles --- */
+                                #cyberpunk-access-denied-wrapper .message {
+                                    font-size: clamp(1rem, 2.5vw, 1.2rem);
+                                    margin-top: 1.5rem;
+                                    color: var(--text-color);
+                                    line-height: 1.6;
+                                    text-shadow: 0 0 3px var(--secondary-neon);
+                                }
+                                
+                                #cyberpunk-access-denied-wrapper .message span {
+                                    color: var(--primary-neon);
+                                    font-weight: bold;
+                                }
+
+                                /* --- Corner Brackets for decoration --- */
+                                #cyberpunk-access-denied-wrapper .corner {
+                                    position: absolute;
+                                    width: 20px;
+                                    height: 20px;
+                                    border-color: var(--primary-neon);
+                                    border-style: solid;
+                                    box-shadow: 0 0 5px var(--primary-neon);
+                                }
+                                #cyberpunk-access-denied-wrapper .top-left { top: -5px; left: -5px; border-width: 3px 0 0 3px; }
+                                #cyberpunk-access-denied-wrapper .top-right { top: -5px; right: -5px; border-width: 3px 3px 0 0; }
+                                #cyberpunk-access-denied-wrapper .bottom-left { bottom: -5px; left: -5px; border-width: 0 0 3px 3px; }
+                                #cyberpunk-access-denied-wrapper .bottom-right { bottom: -5px; right: -5px; border-width: 0 3px 3px 0; }
+                            </style>
+
+                            <div class="container">
+                                <!-- Decorative corners -->
+                                <div class="corner top-left"></div>
+                                <div class="corner top-right"></div>
+                                <div class="corner bottom-left"></div>
+                                <div class="corner bottom-right"></div>
+
+                                <!-- Main content -->
+                                <div class="glitch-container">
+                                    <h1 class="glitch" data-text="AKSES DITOLAK">AKSES DITOLAK</h1>
+                                </div>
+                                <p class="message">
+                                    ANOMALI TERDETEKSI: <span>[DEV_TOOLS_INTERFACE::ACTIVE]</span>.
+                                    <br>
+                                    Protokol keamanan sistem telah memutus koneksi untuk melindungi integritas data. Nonaktifkan antarmuka developer dan mulai ulang sesi.
+                                </p>
+                            </div>
+                        </div>
+                    `; // gunakan HTML yang sama seperti versi sebelumnya
+                };
+
+                const devToolCheck = () => {
+                    const widthDiff = Math.abs(window.outerWidth - window.innerWidth);
+                    const heightDiff = Math.abs(window.outerHeight - window.innerHeight);
+
+                    const isDevToolsOpen = (widthDiff > threshold || heightDiff > threshold) && window.outerHeight > 0 && window.innerHeight > 0;
+
+                    if (isDevToolsOpen) {
+                        showBlockedPage();
+                    }
+                };
+
+                // Kurangi frekuensi pengecekan untuk Apple agar tidak false positive dan crash
+                const checkInterval = isAppleDevice ? 5000 : 2000;
+                setInterval(devToolCheck, checkInterval);
+
+                document.addEventListener('contextmenu', (event) => {
+                    const target = event.target;
+                    if (target.tagName !== 'INPUT' && target.tagName !== 'TEXTAREA' && !target.isContentEditable) {
+                        event.preventDefault();
+                    }
+                });
+
+                document.addEventListener('keydown', (e) => {
+                    const key = e.key.toLowerCase();
+                    if (
+                        (e.ctrlKey && e.shiftKey && key === 'i') ||
+                        (e.ctrlKey && e.shiftKey && key === 'j') ||
+                        (e.ctrlKey && key === 'u') ||
+                        (e.metaKey && key === 'u') ||
+                        (key === 'f12')
+                    ) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        showBlockedPage();
+                    }
+                });
+
+                document.addEventListener('dragstart', e => e.preventDefault());
+                document.addEventListener('selectstart', e => e.preventDefault());
+            })();
 
             // --- Global variable for alert timeout ---
             let alertTimeout;
-
-            (function () {
-                const isAppleDevice = /iPhone|iPad|iPod/i.test(navigator.userAgent);
-                // SECURITY FIX: Increased threshold to prevent false positives in preview environments.
-                const threshold = 300; 
-            
-                if (!isAppleDevice) {
-                    const showBlockedPage = () => {
-                        document.body.innerHTML = `
-                            <div id="cyberpunk-access-denied-wrapper" style="height: 100vh;">
-                                <style>
-                                    /* --- CSS Variables for easy theming --- */
-                                    :root {
-                                        --background-color: #010409;
-                                        --primary-neon: #ff00c1;
-                                        --secondary-neon: #00e5ff;
-                                        --text-color: #e6f1ff;
-                                        --scanline-color: rgba(0, 229, 255, 0.1);
-                                        --glitch-primary: #ff00c1;
-                                        --glitch-secondary: #00e5ff;
-                                    }
-
-                                    /* --- Base Styles for the Wrapper DIV --- */
-                                    #cyberpunk-access-denied-wrapper {
-                                        background-color: var(--background-color);
-                                        color: var(--text-color);
-                                        font-family: 'Share Tech Mono', monospace;
-                                        display: flex;
-                                        justify-content: center;
-                                        align-items: center;
-                                        height: 100%; /* Atur ke 100vh jika ingin memenuhi seluruh layar */
-                                        width: 100%;
-                                        margin: 0;
-                                        overflow: hidden;
-                                        text-align: center;
-                                        padding: 2rem;
-                                        box-sizing: border-box;
-                                        position: relative; /* Diperlukan untuk pseudo-element ::after */
-                                        /* Add a subtle grid pattern */
-                                        background-image: 
-                                            linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-                                            linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-                                        background-size: 30px 30px;
-                                    }
-
-                                    /* --- Scanline Animation --- */
-                                    #cyberpunk-access-denied-wrapper::after {
-                                        content: ' ';
-                                        display: block;
-                                        position: absolute;
-                                        top: 0;
-                                        left: 0;
-                                        width: 100%;
-                                        height: 100%;
-                                        background: repeating-linear-gradient(
-                                            0deg,
-                                            var(--scanline-color),
-                                            var(--scanline-color) 1px,
-                                            transparent 1px,
-                                            transparent 4px
-                                        );
-                                        animation: scanline 10s linear infinite;
-                                        pointer-events: none;
-                                        opacity: 0.5;
-                                    }
-
-                                    @keyframes scanline {
-                                        0% { background-position: 0 0; }
-                                        100% { background-position: 0 100vh; }
-                                    }
-
-                                    /* --- Main Content Container --- */
-                                    #cyberpunk-access-denied-wrapper .container {
-                                        position: relative;
-                                        z-index: 1;
-                                        border: 2px solid var(--secondary-neon);
-                                        padding: 2rem 3rem;
-                                        background: rgba(1, 4, 9, 0.8);
-                                        box-shadow: 
-                                            0 0 10px var(--secondary-neon),
-                                            inset 0 0 10px var(--secondary-neon);
-                                        border-radius: 8px;
-                                        max-width: 700px;
-                                    }
-
-                                    /* --- Glitch Effect on Heading --- */
-                                    #cyberpunk-access-denied-wrapper .glitch-container {
-                                        position: relative;
-                                    }
-
-                                    #cyberpunk-access-denied-wrapper .glitch {
-                                        font-family: 'Orbitron', sans-serif;
-                                        font-size: clamp(2rem, 8vw, 4rem);
-                                        font-weight: 700;
-                                        text-transform: uppercase;
-                                        position: relative;
-                                        color: var(--text-color);
-                                        text-shadow: 0 0 5px var(--primary-neon), 0 0 10px var(--primary-neon);
-                                        animation: glitch-skew 1s infinite linear alternate-reverse;
-                                    }
-
-                                    #cyberpunk-access-denied-wrapper .glitch::before,
-                                    #cyberpunk-access-denied-wrapper .glitch::after {
-                                        content: attr(data-text);
-                                        position: absolute;
-                                        top: 0;
-                                        left: 0;
-                                        width: 100%;
-                                        height: 100%;
-                                        background: transparent; /* Dibuat transparan agar tidak menutupi teks utama */
-                                        overflow: hidden;
-                                    }
-
-                                    #cyberpunk-access-denied-wrapper .glitch::before {
-                                        left: 2px;
-                                        text-shadow: -2px 0 var(--glitch-primary);
-                                        animation: glitch-anim-1 2s infinite linear alternate-reverse;
-                                    }
-
-                                    #cyberpunk-access-denied-wrapper .glitch::after {
-                                        left: -2px;
-                                        text-shadow: -2px 0 var(--glitch-secondary), 2px 2px var(--glitch-primary);
-                                        animation: glitch-anim-2 3s infinite linear alternate-reverse;
-                                    }
-
-                                    /* --- Glitch Keyframes --- */
-                                    @keyframes glitch-anim-1 {
-                                        0% { clip-path: inset(5% 0 90% 0); }
-                                        20% { clip-path: inset(70% 0 15% 0); }
-                                        40% { clip-path: inset(45% 0 45% 0); }
-                                        60% { clip-path: inset(10% 0 85% 0); }
-                                        80% { clip-path: inset(90% 0 5% 0); }
-                                        100% { clip-path: inset(60% 0 30% 0); }
-                                    }
-
-                                    @keyframes glitch-anim-2 {
-                                        0% { clip-path: inset(80% 0 10% 0); }
-                                        25% { clip-path: inset(5% 0 70% 0); }
-                                        50% { clip-path: inset(75% 0 5% 0); }
-                                        75% { clip-path: inset(40% 0 50% 0); }
-                                        100% { clip-path: inset(95% 0 2% 0); }
-                                    }
-                                    
-                                    @keyframes glitch-skew {
-                                    0% { transform: skew(0deg); }
-                                    5% { transform: skew(1deg); }
-                                    10% { transform: skew(-0.5deg); }
-                                    100% { transform: skew(0deg); }
-                                    }
-
-                                    /* --- Paragraph and Message Styles --- */
-                                    #cyberpunk-access-denied-wrapper .message {
-                                        font-size: clamp(1rem, 2.5vw, 1.2rem);
-                                        margin-top: 1.5rem;
-                                        color: var(--text-color);
-                                        line-height: 1.6;
-                                        text-shadow: 0 0 3px var(--secondary-neon);
-                                    }
-                                    
-                                    #cyberpunk-access-denied-wrapper .message span {
-                                        color: var(--primary-neon);
-                                        font-weight: bold;
-                                    }
-
-                                    /* --- Corner Brackets for decoration --- */
-                                    #cyberpunk-access-denied-wrapper .corner {
-                                        position: absolute;
-                                        width: 20px;
-                                        height: 20px;
-                                        border-color: var(--primary-neon);
-                                        border-style: solid;
-                                        box-shadow: 0 0 5px var(--primary-neon);
-                                    }
-                                    #cyberpunk-access-denied-wrapper .top-left { top: -5px; left: -5px; border-width: 3px 0 0 3px; }
-                                    #cyberpunk-access-denied-wrapper .top-right { top: -5px; right: -5px; border-width: 3px 3px 0 0; }
-                                    #cyberpunk-access-denied-wrapper .bottom-left { bottom: -5px; left: -5px; border-width: 0 0 3px 3px; }
-                                    #cyberpunk-access-denied-wrapper .bottom-right { bottom: -5px; right: -5px; border-width: 0 3px 3px 0; }
-                                </style>
-
-                                <div class="container">
-                                    <!-- Decorative corners -->
-                                    <div class="corner top-left"></div>
-                                    <div class="corner top-right"></div>
-                                    <div class="corner bottom-left"></div>
-                                    <div class="corner bottom-right"></div>
-
-                                    <!-- Main content -->
-                                    <div class="glitch-container">
-                                        <h1 class="glitch" data-text="AKSES DITOLAK">AKSES DITOLAK</h1>
-                                    </div>
-                                    <p class="message">
-                                        ANOMALI TERDETEKSI: <span>[DEV_TOOLS_INTERFACE::ACTIVE]</span>.
-                                        <br>
-                                        Protokol keamanan sistem telah memutus koneksi untuk melindungi integritas data. Nonaktifkan antarmuka developer dan mulai ulang sesi.
-                                    </p>
-                                </div>
-                            </div>
-                        `;
-                    };
-            
-                    const devToolCheck = () => {
-                        const widthDiff = Math.abs(window.outerWidth - window.innerWidth);
-                        const heightDiff = Math.abs(window.outerHeight - window.innerHeight);
-            
-                        const isDevToolsOpen = (widthDiff > threshold || heightDiff > threshold) && window.outerHeight > 0 && window.innerHeight > 0;
-            
-                        if (isDevToolsOpen) {
-                            showBlockedPage();
-                        }
-                    };
-            
-                    setInterval(devToolCheck, 2000);
-            
-                    document.addEventListener('contextmenu', (event) => {
-                        const target = event.target;
-                        if (target.tagName !== 'INPUT' && target.tagName !== 'TEXTAREA' && !target.isContentEditable) {
-                            event.preventDefault();
-                        }
-                    });
-            
-                    document.addEventListener('keydown', (e) => {
-                        const key = e.key.toLowerCase();
-                        if (
-                            (e.ctrlKey && e.shiftKey && key === 'i') ||
-                            (e.ctrlKey && e.shiftKey && key === 'j') ||
-                            (e.ctrlKey && key === 'u') ||
-                            (e.metaKey && key === 'u') ||
-                            (key === 'f12')
-                        ) {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            showBlockedPage();
-                        }
-                    });
-            
-                    document.addEventListener('dragstart', e => e.preventDefault());
-                    document.addEventListener('selectstart', e => e.preventDefault());
-                }
-            })();
 
             // --- Get All DOM Elements ---
             const body = document.body;
@@ -1307,7 +1305,7 @@
                         "api-select-your-title": "Use Your Personal API", "api-select-your-subtitle": "Enter your own Gemini API key"
                     },
                     titles: { "logout-btn": "Relock", "theme-toggle": "Change Theme" },
-                    placeholders: { "ceritaKarakter": "Example: A bounty hunter in a neon, acid-rain-drenched city...", "namaKarakter": "Example: RAX", "deskripsiKarakter": "Cybernetic eye, implanted hair...", "deskripsiKostum": "Leather jacket with neon wiring...", "senjataAtauBenda": "Plasma pistol or data chip...", "deskripsiPose": "Aiming weapon, cold expression...", "astralMagis": "Example: Holographic recon drone...", "lingkungan": "Example: wet pavement with neon reflections...", "appPasswordInput": "ENTER CODE...", "api-key-input-modal": "Paste your API key here..." },
+                    placeholders: { "ceritaKarakter": "Example: A knight in silver armor guarding an ancient castle...", "namaKarakter": "Example: Arthur", "deskripsiKarakter": "Blond hair, blue eyes, determined face...", "deskripsiKostum": "Shining silver armor with a red cape...", "senjataAtauBenda": "The sword Excalibur stuck in a stone...", "deskripsiPose": "Standing proudly with a hand on the sword's hilt...", "astralMagis": "A golden griffin by his side...", "lingkungan": "Castle ruins with stone pillars...", "appPasswordInput": "ENTER CODE...", "api-key-input-modal": "Paste your API key here..." },
                     alerts: { loginSuccessTitle: "Access Granted", loginSuccessMessage: "Welcome, operator. You now have full access.", passwordError: "Access Denied. Incorrect code.", aiStoryMissing: "Character data input required.", aiSuccess: "AI has augmented the details!", aiError: "AI Assistant malfunction", promptCopied: "Prompt copied to clipboard!", historyCleared: "History has been purged.", apiSystemSelected: "Now using System API.", apiUserSaved: "Your personal API key is now active.", historyLoadedTitle: "Data Loaded", historyLoadedMsg: "Character data loaded from archive.", emptyHistory: "Archive is empty.", aiLoadingSystem: "System AI analyzing...", aiLoadingUser: "Your AI analyzing...", apiKeyDeletedTitle: "API Key Deleted", apiKeyDeletedMessage: "Your saved API key has been removed." }
                 },
                 id: {
@@ -1330,7 +1328,7 @@
                         "api-select-your-title": "Gunakan API Pribadi Anda", "api-select-your-subtitle": "Masukkan kunci API Gemini Anda sendiri"
                     },
                     titles: { "logout-btn": "Kunci Ulang", "theme-toggle": "Ganti Tema" },
-                    placeholders: { "ceritaKarakter": "Contoh: Seorang pemburu bayaran di kota neon yang dihujani asam...", "namaKarakter": "Contoh: RAX", "deskripsiKarakter": "Mata sibernetik, rambut implan...", "deskripsiKostum": "Jaket kulit dengan kabel neon...", "senjataAtauBenda": "Pistol plasma atau data chip...", "deskripsiPose": "Menodongkan senjata, ekspresi dingin...", "astralMagis": "Contoh: Drone pengintai holografik...", "lingkungan": "Contoh: trotoar basah dengan pantulan neon...", "appPasswordInput": "MASUKKAN KODE...", "api-key-input-modal": "Masukkan API Key Anda..." },
+                    placeholders: { "ceritaKarakter": "Contoh: Seorang ksatria dengan zirah perak yang menjaga kastil kuno...", "namaKarakter": "Contoh: Arthur", "deskripsiKarakter": "Rambut pirang, mata biru, wajah tegas...", "deskripsiKostum": "Zirah perak berkilauan dengan jubah merah...", "senjataAtauBenda": "Pedang Excalibur yang tertancap di batu...", "deskripsiPose": "Berdiri gagah dengan tangan di gagang pedang...", "astralMagis": "Seekor griffin emas di sampingnya...", "lingkungan": "Reruntuhan kastil dengan pilar-pilar batu...", "appPasswordInput": "MASUKKAN KODE...", "api-key-input-modal": "Masukkan API Key Anda..." },
                     alerts: { loginSuccessTitle: "Akses Diberikan", loginSuccessMessage: "Selamat datang, operator. Anda sekarang memiliki akses penuh.", passwordError: "Akses Ditolak. Kode salah.", aiStoryMissing: "Silakan masukkan cerita karakter terlebih dahulu.", aiSuccess: "AI telah mengisi detail!", aiError: "Asisten AI gagal", promptCopied: "Prompt berhasil disalin!", historyCleared: "Riwayat telah dibersihkan.", apiSystemSelected: "Kini menggunakan API Sistem.", apiUserSaved: "Kunci API Anda telah disimpan dan kini digunakan.", historyLoadedTitle: "Data Dimuat", historyLoadedMsg: "Cerita karakter telah dimuat dari arsip.", emptyHistory: "Arsip kosong.", aiLoadingSystem: "AI Sistem sedang menganalisa...", aiLoadingUser: "AI Anda sedang menganalisa...", apiKeyDeletedTitle: "API Key Dihapus", apiKeyDeletedMessage: "Kunci API Anda yang tersimpan telah dihapus." }
                 }
             };
@@ -1621,7 +1619,7 @@ Output Anda **HARUS** berupa objek JSON yang valid, tanpa teks atau pemformatan 
                     DuniaPermen: { baseStyle: "biskuit wafer yang dilapisi gula warna-warni", placement: "berada di lanskap permen yang fantastis", scene: "sungai cokelat, pohon lolipop, bukit permen karet, dan rumah-rumah jahe di bawah langit pelangi" }
                 };
                 
-                const selectedTheme = themeDetails[fields.nuansa] || themeDetails.KlasikStudio;
+                const selectedTheme = themeDetails[fields.nuansa] || themeDetails.Cyberpunk;
                 const baseStyle = selectedTheme.baseStyle;
                 const placement = selectedTheme.placement;
                 const scene = selectedTheme.scene;
@@ -1743,7 +1741,7 @@ Output Anda **HARUS** berupa objek JSON yang valid, tanpa teks atau pemformatan 
             apiKeyInput.value = localStorage.getItem('geminiApiKey') || '';
             updateApiSelectionUI(savedApiSource);
             
-            // Set default theme to Klasic Studio
+            // Set default theme to Cyberpunk
             document.getElementById('nuansaTemaAi').value = 'KlasikStudio';
         });
     </script>
