@@ -1,0 +1,5 @@
+{
+  "name": "Promptique Prompt Generator",
+  "description": "Generate detailed prompts for AI video generation from a simple idea.",
+  "requestFramePermissions": []
+}
