@@ -1,1 +1,250 @@
-tes
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PROMPTIQUE GENERATOR VEO By Aiyra Design</title>
+    
+    <script type="importmap">
+      {
+        "imports": {
+          "@google/genai": "https://esm.sh/@google/genai@^1.4.0"
+        }
+      }
+    </script>
+
+    <!-- External Libraries -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Exo+2:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- App Stylesheet -->
+    <link rel="stylesheet" href="./index.css">
+<link rel="stylesheet" href="./index.css">
+</head>
+<body class="antialiased">
+
+    <div id="app-container">
+        <!-- Navbar -->
+        <header class="bg-[var(--theme-panel-bg)]/80 backdrop-blur-sm shadow-sm sticky top-0 z-40 border-b border-[var(--theme-border)] transition-colors duration-500">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-16">
+                    <div class="flex-shrink-0">
+                        <h1 class="text-xl md:text-2xl font-extrabold tracking-tight gradient-text">
+                            PROMPTIQUE
+                        </h1>
+                    </div>
+                    <div class="flex items-center space-x-1">
+                        <!-- Desktop Buttons -->
+                        <div class="hidden md:flex items-center space-x-2">
+                            <button data-ui-key-title="langTitle" id="lang-btn-desktop" class="btn btn-neutral h-10 px-3">
+                                <span class="font-bold text-sm">ID</span>
+                            </button>
+                            <button data-ui-key-title="historyTitle" id="history-btn-desktop" class="btn btn-neutral h-10 px-3">
+                                <i class="fas fa-history fa-fw text-lg"></i>
+                                <span data-ui-key="historyTitle" class="text-sm font-semibold">Riwayat</span>
+                            </button>
+                            <button data-ui-key-title="apiKeyTitle" id="api-key-btn-desktop" class="btn btn-neutral h-10 px-3">
+                                <i class="fas fa-key fa-fw text-lg"></i>
+                                <span data-ui-key="apiKeyTitle" class="text-sm font-semibold">Kunci API</span>
+                            </button>
+                            <button data-ui-key-title="themeTitle" id="theme-btn-desktop" class="btn btn-neutral w-10 h-10 px-0">
+                                <i class="fas fa-moon fa-fw text-lg"></i>
+                            </button>
+                            <button data-ui-key-title="logoutButton" id="logout-btn-desktop" class="btn btn-neutral w-10 h-10 px-0">
+                                <i class="fas fa-sign-out-alt fa-fw text-lg"></i>
+                            </button>
+                        </div>
+                        <!-- Mobile Buttons -->
+                        <div class="md:hidden flex items-center space-x-1">
+                             <button title="Ganti Bahasa" id="lang-btn-mobile-icon" class="btn btn-neutral w-10 h-10 px-0">
+                                <span class="font-bold text-sm">ID</span>
+                            </button>
+                            <button title="Riwayat" id="history-btn-mobile-icon" class="btn btn-neutral w-10 h-10 px-0">
+                                <i class="fas fa-history fa-fw text-lg"></i>
+                            </button>
+                             <button title="Kunci API" id="api-key-btn-mobile-icon" class="btn btn-neutral w-10 h-10 px-0">
+                                <i class="fas fa-key fa-fw text-lg"></i>
+                            </button>
+                            <button id="hamburger-btn" class="btn btn-neutral w-10 h-10 px-0">
+                                <i class="fas fa-bars fa-fw text-lg"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="container mx-auto p-4 sm:p-6 lg:p-8">
+            <div class="text-center mb-12 animate__animated animate__fadeInDown animate__faster">
+                <h2 data-ui-key="mainTitle" class="text-3xl md:text-4xl font-bold tracking-tight gradient-text">Buat Prompt Video Profesional</h2>
+                <p data-ui-key="mainSubtitle" class="mt-3 max-w-2xl mx-auto text-lg text-[var(--theme-text-secondary)]">Isi ide Anda, biarkan AI menyusun detailnya, dan dapatkan prompt yang siap pakai untuk VEO atau generator video AI lainnya.</p>
+            </div>
+
+            <div class="max-w-4xl mx-auto">
+                <!-- Login Card -->
+                <section id="login-card" class="card p-6 sm:p-8 text-center animate__animated animate__fadeInUp animate__faster">
+                    <h3 data-ui-key="loginWelcome" class="text-2xl font-bold gradient-text">Selamat Datang! Silakan Login.</h3>
+                    <p class="text-[var(--theme-text-secondary)] mt-2 mb-8" data-ui-key="loginSubtitle">Masukkan kata sandi untuk melanjutkan.</p>
+                    <form id="login-form" class="max-w-xs mx-auto">
+                        <div class="space-y-4">
+                            <div class="relative">
+                                <label for="password" class="sr-only">Password</label>
+                                <input type="password" id="password" class="form-input text-center pr-10" data-ui-key-placeholder="passwordPlaceholder">
+                                <i id="toggle-password" class="fas fa-eye absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer text-[var(--theme-text-secondary)] hover:text-[var(--theme-text-primary)]"></i>
+                            </div>
+                            <button type="submit" class="w-full btn btn-primary py-3 px-6">
+                                <span data-ui-key="loginButton">Login</span>
+                            </button>
+                        </div>
+                    </form>
+                </section>
+
+                <!-- Generator Content (Initially Hidden) -->
+                <div id="generator-content" class="hidden space-y-10">
+                    <!-- Step 1: Ide Pokok -->
+                    <section id="step-1" class="card p-6 sm:p-8 animate__animated animate__fadeInUp animate__faster">
+                        <div>
+                            <p class="text-sm font-bold tracking-wider uppercase text-[var(--theme-accent-2)]" data-ui-key="stepLabel">Langkah 1</p>
+                            <h3 data-ui-key="step1Title" class="text-2xl font-bold gradient-text">Ide Pokok & Pengaturan Video</h3>
+                        </div>
+                        <p data-ui-key="step1Subtitle" class="text-[var(--theme-text-secondary)] mt-2 mb-8">Mulailah dengan ide dasar, pengaturan umum, dan jumlah adegan.</p>
+                        <div class="space-y-6">
+                            <div>
+                                <label for="story-idea" class="form-label" data-ui-key="storyIdeaLabel">Ide Cerita</label>
+                                <textarea id="story-idea" rows="4" class="form-textarea" data-ui-key-placeholder="storyIdeaPlaceholder"></textarea>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                                <div>
+                                    <label for="videoType" class="form-label" data-ui-key="videoTypeLabel">Jenis Video</label>
+                                    <select id="videoType" class="form-select"></select>
+                                </div>
+                                <div>
+                                    <label for="visualStyle" class="form-label" data-ui-key="visualStyleLabel">Gaya Visual</label>
+                                    <select id="visualStyle" class="form-select"></select>
+                                </div>
+                                <div>
+                                    <label for="scene-count" class="form-label" data-ui-key="sceneCountLabel">Jumlah Adegan</label>
+                                    <select id="scene-count" class="form-select"></select>
+                                </div>
+                            </div>
+                            <button id="ai-director-btn" class="w-full btn btn-primary mt-6 py-3 px-8">
+                                <span id="ai-btn-text" class="flex items-center justify-center gap-2">
+                                    <i class="fas fa-user-astronaut"></i>
+                                    <span data-ui-key="generateButton">Sutradara AI</span>
+                                </span>
+                                <span id="ai-btn-loader" class="hidden"></span>
+                            </button>
+                        </div>
+                    </section>
+
+                    <!-- Step 2: Storyboard Container -->
+                    <div id="storyboard-container" class="space-y-10">
+                        <!-- Dynamic storyboard will be injected here -->
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Off-canvas Menu -->
+    <div id="offcanvas-menu" class="fixed inset-0 z-50 hidden">
+        <!-- Backdrop -->
+        <div id="offcanvas-backdrop" class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
+        <!-- Menu Panel -->
+        <div id="offcanvas-menu-panel" class="absolute top-0 right-0 h-full w-4/5 max-w-xs bg-[var(--theme-panel-bg)] shadow-xl">
+            <div class="p-4 flex flex-col h-full">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-lg font-bold gradient-text" data-ui-key="mobileMenuTitle">Menu</h3>
+                    <button id="offcanvas-close-btn" class="btn btn-neutral w-10 h-10 px-0">
+                        <i class="fas fa-times fa-fw text-lg"></i>
+                    </button>
+                </div>
+                <div class="space-y-2">
+                    <button id="theme-btn-mobile" class="btn btn-neutral w-full justify-start p-3">
+                        <i class="fas fa-moon fa-fw text-lg w-6 text-center"></i>
+                        <span data-ui-key="themeTitle">Ganti Tema</span>
+                    </button>
+                    <button id="logout-btn-mobile-menu" class="btn btn-neutral w-full justify-start p-3">
+                        <i class="fas fa-sign-out-alt fa-fw text-lg w-6 text-center"></i>
+                        <span data-ui-key="logoutButton">Logout</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div id="history-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+        <div class="card p-6 w-full max-w-lg transform transition-all flex flex-col animate__animated animate__faster" style="height: 80vh; max-height: 500px;">
+            <div class="flex justify-between items-center mb-4 pb-4 border-b border-[var(--theme-border)]">
+                <h3 class="text-2xl font-bold gradient-text"><i class="fas fa-history mr-2"></i><span data-ui-key="historyModalTitle">Riwayat Prompt</span></h3>
+                <button class="close-modal-btn text-[var(--theme-text-secondary)] hover:text-[var(--theme-accent-2)] text-2xl">&times;</button>
+            </div>
+            <div id="history-content" class="flex-grow overflow-y-auto space-y-2 pr-2"></div>
+            <div class="mt-4 pt-4 border-t border-[var(--theme-border)] flex justify-end">
+                <button id="clear-history-btn" class="btn btn-danger py-2 px-4"><i class="fas fa-trash mr-2"></i><span data-ui-key="clearHistoryButton">Bersihkan Riwayat</span></button>
+            </div>
+        </div>
+    </div>
+
+    <div id="api-key-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+        <div class="card p-8 w-full max-w-md transform transition-all animate__animated animate__faster">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-bold gradient-text"><i class="fas fa-key mr-2"></i><span data-ui-key="apiKeyModalTitle">Kelola API Key Gemini</span></h3>
+                <button class="close-modal-btn text-[var(--theme-text-secondary)] hover:text-[var(--theme-accent-2)] text-2xl">&times;</button>
+            </div>
+            <div class="space-y-6">
+                <div class="border border-[var(--theme-border)] rounded-lg p-4 bg-[var(--theme-bg)]">
+                    <h4 data-ui-key="defaultApiTitle" class="font-semibold text-lg text-[var(--theme-accent-2)]">API Sistem Default</h4>
+                    <p data-ui-key="defaultApiDesc" class="text-[var(--theme-text-secondary)] text-sm mt-1">Menggunakan API yang disediakan sistem dengan batasan penggunaan harian. Cocok untuk coba-coba.</p>
+                </div>
+                <div class="border border-[var(--theme-border)] rounded-lg p-4">
+                    <h4 data-ui-key="personalApiTitle" class="font-semibold text-lg text-[var(--theme-accent-2)]">API Pribadi</h4>
+                    <p data-ui-key="personalApiDesc" class="text-[var(--theme-text-secondary)] text-sm mt-1 mb-3">Masukkan API Key Gemini Anda untuk penggunaan tanpa batas. Key Anda disimpan aman di browser.</p>
+                    <input type="password" id="api-key-input" class="form-input" data-ui-key-placeholder="apiKeyPlaceholder">
+                    <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer" class="text-sm text-[var(--theme-accent-3)] hover:underline mt-2 inline-block"><span data-ui-key="getApiKeyLink">Bagaimana cara mendapatkan API Key?</span> <i class="fas fa-external-link-alt text-xs ml-1"></i></a>
+                </div>
+                <div class="flex gap-4">
+                    <button id="save-api-key-btn" class="w-full btn btn-primary py-2 px-4"><span data-ui-key="saveButton">Simpan</span></button>
+                    <button id="delete-api-key-btn" class="w-full btn btn-danger py-2 px-4"><span data-ui-key="deleteButton">Hapus</span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="alert-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+        <div id="alert-modal-content" class="card p-8 w-full max-w-md transform transition-all text-center animate__animated animate__faster">
+            <div id="alert-icon-container" class="w-16 h-16 rounded-full mx-auto flex items-center justify-center mb-4">
+                <i id="alert-icon" class="fas text-4xl text-white"></i>
+            </div>
+            <h3 id="alert-title" class="text-2xl font-bold text-[var(--theme-text-primary)] mb-2"></h3>
+            <p id="alert-message" class="text-[var(--theme-text-secondary)]"></p>
+            <button id="alert-close-btn" class="btn mt-6 w-full"></button>
+        </div>
+    </div>
+
+    <div id="confirmation-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+        <div id="confirmation-modal-content" class="card p-8 w-full max-w-md transform transition-all text-center animate__animated animate__faster">
+            <div class="w-16 h-16 rounded-full mx-auto flex items-center justify-center mb-4 bg-[var(--theme-accent-3)]">
+                <i class="fas fa-exclamation-triangle text-4xl text-[var(--theme-bg)]"></i>
+            </div>
+            <h3 id="confirmation-title" class="text-2xl font-bold text-[var(--theme-text-primary)] mb-2"></h3>
+            <p id="confirmation-message" class="text-[var(--theme-text-secondary)]"></p>
+            <div class="flex gap-4 mt-6">
+                <button id="confirm-yes-btn" class="w-full btn btn-danger"></button>
+                <button id="confirm-no-btn" class="w-full btn btn-neutral"></button>
+            </div>
+        </div>
+    </div>
+
+<script type="module" src="./index.tsx"></script>
+</body>
+</html>
