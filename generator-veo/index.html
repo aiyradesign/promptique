@@ -24,36 +24,41 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
     
     <!-- App Stylesheet -->
     <style>
+        html {
+            scroll-behavior: smooth;
+        }
         /* --- THEME VARIABLES --- */
         :root {
-            /* Pastel Minimalist (Dark) */
+            /* Pastel Dark Theme */
             --theme-font-primary: 'Inter', sans-serif;
             --theme-font-accent: 'Inter', sans-serif;
-            --theme-bg: #1e293b; /* Dark Slate */
-            --theme-panel-bg: #293548; /* Lighter Slate */
-            --theme-border: #3b4c60;
-            --theme-text-primary: #e2e8f0;
-            --theme-text-secondary: #94a3b8;
-            --theme-accent-1: #818cf8; /* Soft Lavender */
-            --theme-accent-2: #7dd3fc; /* Soft Sky Blue */
-            --theme-accent-3: #fcd34d; /* Soft Yellow */
-            --theme-error: #f87171; /* Soft Red */
-            --theme-success: #4ade80; /* Soft Green */
+            --theme-bg: #2a3045; /* Dark Slate Blue */
+            --theme-panel-bg: #374151; /* Dark Gray Blue */
+            --theme-border: #4a5568;
+            --theme-text-primary: #f0f2f5;
+            --theme-text-secondary: #a0aec0;
+            --theme-accent-1: #c084fc; /* Lavender */
+            --theme-accent-2: #6ee7b7; /* Mint */
+            --theme-accent-3: #fcd34d; /* Amber */
+            --theme-error: #fca5a5;
+            --theme-success: #86efac;
         }
 
         body.light-theme {
-            /* Pastel Minimalist (Light) */
-            --theme-bg: #f8fafc; /* Almost White */
+            /* Pastel Minimalist (Light) Theme */
+            --theme-font-primary: 'Inter', sans-serif;
+            --theme-font-accent: 'Inter', sans-serif;
+            --theme-bg: #fdf8f6; /* Peachy White */
             --theme-panel-bg: #ffffff;
             --theme-border: #e2e8f0;
-            --theme-text-primary: #1e293b;
-            --theme-text-secondary: #64748b;
-            --theme-accent-1: #6366f1; /* Indigo */
-            --theme-accent-2: #38bdf8; /* Bright Sky Blue */
+            --theme-text-primary: #2d3748;
+            --theme-text-secondary: #718096;
+            --theme-accent-1: #a855f7; /* A bit more saturated purple for primary actions */
+            --theme-accent-2: #10b981; /* Teal */
             --theme-accent-3: #f59e0b; /* Amber */
             --theme-error: #ef4444;
             --theme-success: #22c55e;
@@ -69,8 +74,8 @@
 
         .gradient-text {
             font-family: var(--theme-font-accent);
-            font-weight: 800;
-            background: linear-gradient(90deg, var(--theme-accent-2), var(--theme-accent-1));
+            font-weight: 900;
+            background: linear-gradient(90deg, var(--theme-accent-2), var(--theme-accent-1), var(--theme-accent-3));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -79,7 +84,7 @@
         .form-label {
             display: block; margin-bottom: 0.5rem; font-weight: 500;
             color: var(--theme-text-secondary);
-            font-size: 0.8rem; letter-spacing: 0.5px;
+            text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px;
             transition: color 0.3s;
         }
 
@@ -87,14 +92,13 @@
             width: 100%;
             background-color: var(--theme-panel-bg);
             border: 1px solid var(--theme-border);
-            border-radius: 10px;
+            border-radius: 8px;
             padding: 0.75rem 1rem;
             color: var(--theme-text-primary);
             transition: all 0.3s ease;
-            box-shadow: inset 0 1px 2px 0 rgb(0 0 0 / 0.05);
         }
-        body:not(.light-theme) .form-input, body:not(.light-theme) .form-textarea, body:not(.light-theme) .form-select {
-            background-color: color-mix(in srgb, var(--theme-bg) 70%, white);
+        body.light-theme .form-input, body.light-theme .form-textarea, body.light-theme .form-select {
+            background-color: var(--theme-bg);
         }
 
         .form-input:focus, .form-textarea:focus, .form-select:focus {
@@ -121,50 +125,50 @@
             border: 1px solid var(--theme-border);
             border-radius: 16px;
             transition: all 0.5s;
-            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.07);
+            box-shadow: 0 4px 14px 0 rgba(0,0,0,0.05);
         }
         body:not(.light-theme) .card {
-             box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.2);
+            box-shadow: 0 4px 14px 0 rgba(0,0,0,0.15);
         }
 
         .btn {
-            border-radius: 10px;
+            border-radius: 8px;
             transition: all 0.3s ease;
+            text-transform: uppercase;
             font-family: var(--theme-font-accent);
-            font-weight: 600;
+            font-weight: 700;
+            letter-spacing: 1px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 0.5rem;
             border: 1px solid transparent;
-            padding: 0.6rem 1.2rem;
-            box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-        }
-        .btn:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
         }
 
         .btn-primary { background-color: var(--theme-accent-1); color: #fff; border-color: var(--theme-accent-1); }
-        .btn-primary:hover:not(:disabled) { background-color: color-mix(in srgb, var(--theme-accent-1) 90%, black); }
+        .btn-primary:hover:not(:disabled) { background-color: color-mix(in srgb, var(--theme-accent-1) 85%, black); transform: translateY(-2px); box-shadow: 0 4px 8px color-mix(in srgb, var(--theme-accent-1) 30%, transparent); }
 
-        .btn-secondary { color: var(--theme-accent-2); border-color: var(--theme-accent-2); background-color: transparent; }
-        .btn-secondary:hover:not(:disabled) { background-color: color-mix(in srgb, var(--theme-accent-2) 15%, transparent); }
-        
-        .btn-danger { color: var(--theme-error); border-color: var(--theme-error); background-color: transparent; }
+        .btn-secondary { color: var(--theme-accent-2); border-color: var(--theme-accent-2); }
+        .btn-secondary:hover:not(:disabled) { background-color: color-mix(in srgb, var(--theme-accent-2) 15%, transparent); transform: translateY(-2px); }
+
+        .btn-danger { color: var(--theme-error); border-color: var(--theme-error); }
         .btn-danger:hover:not(:disabled) { background-color: color-mix(in srgb, var(--theme-error) 10%, transparent); }
 
-        .btn-neutral { color: var(--theme-text-secondary); border-color: var(--theme-border); background-color: transparent; }
+        .btn-neutral { color: var(--theme-text-secondary); border-color: var(--theme-border); }
         .btn-neutral:hover:not(:disabled) { background-color: color-mix(in srgb, var(--theme-text-secondary) 10%, transparent); border-color: var(--theme-text-secondary); color: var(--theme-text-primary); }
 
-        .btn-accent { color: var(--theme-accent-3); border-color: var(--theme-accent-3); background-color: transparent; }
+        .btn-accent { color: var(--theme-accent-3); border-color: var(--theme-accent-3); }
         .btn-accent:hover:not(:disabled) { background-color: color-mix(in srgb, var(--theme-accent-3) 15%, transparent); }
 
-        .btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1); }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
         .loader { width: 18px; height: 18px; border: 2px solid currentColor; border-bottom-color: transparent; border-radius: 50%; display: inline-block; box-sizing: border-box; animation: rotation 1s linear infinite; }
         .loader-xs { width: 14px; height: 14px; border: 2px solid currentColor; border-bottom-color: transparent; border-radius: 50%; display: inline-block; box-sizing: border-box; animation: rotation 1s linear infinite; }
         @keyframes rotation { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        #history-content {
+            scroll-behavior: smooth;
+        }
 
         /* --- PROMPT TABS & ACCORDION --- */
         .prompt-tabs {
@@ -184,6 +188,8 @@
             font-weight: 600;
             font-size: 0.9rem;
             font-family: var(--theme-font-primary);
+            text-transform: none;
+            letter-spacing: normal;
         }
 
         .tab-btn:hover {
@@ -195,6 +201,11 @@
             border-bottom-color: var(--theme-accent-1);
         }
         
+        #json-accordion-container .tab-btn.active {
+            color: var(--theme-accent-3);
+            border-bottom-color: var(--theme-accent-3);
+        }
+
         .accordion-content {
             max-height: 0;
             overflow: hidden;
@@ -206,6 +217,10 @@
             max-height: 1000px; /* Large enough for content */
             padding: 1.5rem;
         }
+        .accordion-content.json-accordion-content.open {
+            padding: 0;
+            max-height: 1000px;
+        }
 
         /* --- OFF-CANVAS MENU --- */
         #offcanvas-menu:not(.open) {
@@ -215,7 +230,6 @@
         #offcanvas-menu-panel {
             transform: translateX(100%);
             transition: transform 0.3s ease-in-out;
-            background-color: var(--theme-bg);
         }
 
         #offcanvas-menu.open #offcanvas-menu-panel {
@@ -230,11 +244,6 @@
         #offcanvas-menu.open #offcanvas-backdrop {
             opacity: 1;
         }
-
-        .api-source-option {
-            border: 2px solid var(--theme-border);
-        }
-
     </style>
 </head>
 <body class="antialiased">
@@ -368,15 +377,31 @@
                             </div>
                             <p data-ui-key="step3Subtitle" class="text-[var(--theme-text-secondary)] mt-2 mb-8">Tinjau hasil, lalu hasilkan semua prompt video dengan sekali klik.</p>
                             <div class="space-y-6">
-                                <button id="generate-all-prompts-btn" class="w-full btn btn-primary py-3 px-8">
-                                     <span id="gen-all-btn-text" class="flex items-center justify-center gap-2">
-                                        <i class="fas fa-wand-magic-sparkles"></i>
-                                        <span data-ui-key="generateAllPromptsButton">Hasilkan Semua Prompt</span>
-                                    </span>
-                                    <span id="gen-all-btn-loader" class="hidden"></span>
-                                </button>
-                                <div id="final-prompts-container" class="space-y-4 pt-6 mt-6 border-t border-[var(--theme-border)]">
-                                    <!-- Final prompts will be rendered here -->
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <button id="generate-all-prompts-btn" class="w-full btn btn-primary py-3 px-8">
+                                        <span id="gen-all-btn-text" class="flex items-center justify-center gap-2">
+                                            <i class="fas fa-wand-magic-sparkles"></i>
+                                            <span data-ui-key="generateAllPromptsButton">Hasilkan Semua Prompt</span>
+                                        </span>
+                                        <span id="gen-all-btn-loader" class="hidden"></span>
+                                    </button>
+                                    <button id="generate-json-btn" class="w-full btn btn-accent py-3 px-8">
+                                        <span id="gen-json-btn-text" class="flex items-center justify-center gap-2">
+                                            <i class="fas fa-file-code"></i>
+                                            <span data-ui-key="generateAllPromptsJsonButton">Hasilkan Prompt (JSON)</span>
+                                        </span>
+                                        <span id="gen-json-btn-loader" class="hidden"></span>
+                                    </button>
+                                </div>
+                                <div id="final-results-area" class="hidden pt-6 mt-6 border-t border-[var(--theme-border)]">
+                                    <!-- View 1: JSON Accordion Output -->
+                                    <div id="json-accordion-container" class="hidden space-y-4">
+                                        <!-- JSON accordion will be rendered here -->
+                                    </div>
+                                    <!-- View 2: Detailed Accordion Output -->
+                                    <div id="final-prompts-container" class="space-y-4">
+                                        <!-- Final prompts will be rendered here -->
+                                    </div>
                                 </div>
                             </div>
                         </section>
@@ -392,7 +417,7 @@
         <!-- Backdrop -->
         <div id="offcanvas-backdrop" class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
         <!-- Menu Panel -->
-        <div id="offcanvas-menu-panel" class="absolute top-0 right-0 h-full w-4/5 max-w-xs shadow-xl">
+        <div id="offcanvas-menu-panel" class="absolute top-0 right-0 h-full w-4/5 max-w-xs bg-[var(--theme-panel-bg)] shadow-xl">
             <div class="p-4 flex flex-col h-full">
                 <div class="flex justify-between items-center mb-6">
                     <h3 class="text-lg font-bold gradient-text" data-ui-key="mobileMenuTitle">Menu</h3>
@@ -415,76 +440,76 @@
     </div>
 
     <!-- Modals -->
-    <div id="history-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
-        <div class="card p-6 w-full max-w-lg transform transition-all flex flex-col animate__animated animate__faster" style="height: 80vh; max-height: 500px;">
-            <div class="flex justify-between items-center mb-4 pb-4 border-b border-[var(--theme-border)]">
+    <div id="history-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden items-start justify-center p-4">
+        <div class="card p-6 w-full max-w-lg transform transition-all flex flex-col animate__animated animate__faster max-h-[90vh]">
+            <div class="flex-shrink-0 flex justify-between items-center mb-4 pb-4 border-b border-[var(--theme-border)]">
                 <h3 class="text-2xl font-bold gradient-text"><i class="fas fa-history mr-2"></i><span data-ui-key="historyModalTitle">Riwayat Prompt</span></h3>
                 <button class="close-modal-btn text-[var(--theme-text-secondary)] hover:text-[var(--theme-accent-2)] text-2xl">&times;</button>
             </div>
             <div id="history-content" class="flex-grow overflow-y-auto space-y-2 pr-2"></div>
-            <div class="mt-4 pt-4 border-t border-[var(--theme-border)] flex justify-end">
+            <div class="flex-shrink-0 mt-4 pt-4 border-t border-[var(--theme-border)] flex justify-end">
                 <button id="clear-history-btn" class="btn btn-danger py-2 px-4"><i class="fas fa-trash mr-2"></i><span data-ui-key="clearHistoryButton">Bersihkan Riwayat</span></button>
             </div>
         </div>
     </div>
 
-    <div id="api-key-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
-        <div class="card p-6 sm:p-8 w-full max-w-lg transform transition-all animate__animated animate__faster">
-            <div class="flex justify-between items-center mb-6">
+    <div id="api-key-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden items-start justify-center p-4">
+        <div class="card p-6 sm:p-8 w-full max-w-lg transform transition-all animate__animated animate__faster flex flex-col max-h-[90vh]">
+            <div class="flex-shrink-0 flex justify-between items-center mb-6">
                 <h3 class="text-2xl font-bold gradient-text"><i class="fas fa-key mr-2"></i><span data-ui-key="apiKeySettingsTitle"></span></h3>
                 <button class="close-modal-btn text-[var(--theme-text-secondary)] hover:text-[var(--theme-accent-2)] text-2xl">&times;</button>
             </div>
-            <p class="text-[var(--theme-text-secondary)] mb-6" data-ui-key="chooseApiKeySource"></p>
-            
-            <div class="space-y-4">
-                <!-- System API Option -->
-                <div id="api-source-system" class="api-source-option rounded-lg p-4 cursor-pointer transition-all">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="font-bold text-[var(--theme-text-primary)]" data-ui-key="useSystemApi"></p>
-                            <p class="text-sm text-[var(--theme-text-secondary)]" data-ui-key="useSystemApiDesc"></p>
+            <div class="flex-grow overflow-y-auto -mr-4 pr-4 sm:-mr-6 sm:pr-6">
+                <p class="text-[var(--theme-text-secondary)] mb-6" data-ui-key="chooseApiKeySource"></p>
+                <div class="space-y-4">
+                    <!-- System API Option -->
+                    <div id="api-source-system" class="api-source-option border-2 rounded-lg p-4 cursor-pointer transition-all">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="font-bold text-[var(--theme-text-primary)]" data-ui-key="useSystemApi"></p>
+                                <p class="text-sm text-[var(--theme-text-secondary)]" data-ui-key="useSystemApiDesc"></p>
+                            </div>
+                            <i class="fas fa-check-circle text-xl"></i>
                         </div>
-                        <i class="fas fa-check-circle text-xl"></i>
                     </div>
-                </div>
 
-                <!-- Personal API Option -->
-                <div id="api-source-personal" class="api-source-option rounded-lg p-4 cursor-pointer transition-all">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="font-bold text-[var(--theme-text-primary)]" data-ui-key="usePersonalApi"></p>
-                            <p class="text-sm text-[var(--theme-text-secondary)]" data-ui-key="usePersonalApiDesc"></p>
-                        </div>
-                        <i class="far fa-circle text-xl"></i>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Personal API Details (hidden by default) -->
-            <div id="personal-api-details" class="mt-6 space-y-6 hidden">
-                <div>
-                    <h4 class="font-bold text-[var(--theme-text-primary)] mb-2" data-ui-key="howToGetKey"></h4>
-                    <ol id="api-key-instructions-desktop" class="list-decimal list-inside text-sm text-[var(--theme-text-secondary)] space-y-1"></ol>
-                    <ol id="api-key-instructions-mobile" class="list-decimal list-inside text-sm text-[var(--theme-text-secondary)] space-y-1 hidden"></ol>
-                </div>
-                <div>
-                    <label for="api-key-input" class="form-label uppercase text-xs" data-ui-key="yourApiKeyLabel"></label>
-                    <div class="relative">
-                        <input type="password" id="api-key-input" class="form-input pr-24">
-                        <div class="absolute inset-y-0 right-0 flex items-center pr-2 space-x-1">
-                             <button id="toggle-api-key-visibility" class="btn btn-neutral w-8 h-8 p-0"><i class="fas fa-eye"></i></button>
-                            <button id="delete-api-key-btn" class="btn btn-danger w-8 h-8 p-0"><i class="fas fa-trash"></i></button>
+                    <!-- Personal API Option -->
+                    <div id="api-source-personal" class="api-source-option border-2 rounded-lg p-4 cursor-pointer transition-all">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="font-bold text-[var(--theme-text-primary)]" data-ui-key="usePersonalApi"></p>
+                                <p class="text-sm text-[var(--theme-text-secondary)]" data-ui-key="usePersonalApiDesc"></p>
+                            </div>
+                            <i class="far fa-circle text-xl"></i>
                         </div>
                     </div>
                 </div>
-            </div>
-            
-            <!-- System API Note (visible by default) -->
-            <div id="system-api-note" class="mt-6 p-4 bg-blue-500/10 border-l-4 border-[var(--theme-accent-2)] text-[var(--theme-accent-2)] rounded-r-lg">
-                <p class="text-sm" data-ui-key="apiKeyNote"></p>
-            </div>
 
-            <div class="flex gap-4 mt-8">
+                <!-- Personal API Details (hidden by default) -->
+                <div id="personal-api-details" class="mt-6 space-y-6 hidden">
+                    <div>
+                        <h4 class="font-bold text-[var(--theme-text-primary)] mb-2" data-ui-key="howToGetKey"></h4>
+                        <ol id="api-key-instructions-desktop" class="list-decimal list-inside text-sm text-[var(--theme-text-secondary)] space-y-1"></ol>
+                        <ol id="api-key-instructions-mobile" class="list-decimal list-inside text-sm text-[var(--theme-text-secondary)] space-y-1 hidden"></ol>
+                    </div>
+                    <div>
+                        <label for="api-key-input" class="form-label uppercase text-xs" data-ui-key="yourApiKeyLabel"></label>
+                        <div class="relative">
+                            <input type="password" id="api-key-input" class="form-input pr-24">
+                            <div class="absolute inset-y-0 right-0 flex items-center pr-2 space-x-1">
+                                 <button id="toggle-api-key-visibility" class="btn btn-neutral w-8 h-8 p-0"><i class="fas fa-eye"></i></button>
+                                <button id="delete-api-key-btn" class="btn btn-danger w-8 h-8 p-0"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- System API Note (visible by default) -->
+                <div id="system-api-note" class="mt-6 p-4 bg-blue-500/10 border-l-4 border-blue-400 text-blue-300 rounded-r-lg">
+                    <p class="text-sm" data-ui-key="apiKeyNote"></p>
+                </div>
+            </div>
+            <div class="flex-shrink-0 flex gap-4 mt-8 pt-6 border-t border-[var(--theme-border)]">
                 <button id="api-modal-cancel-btn" class="w-full btn btn-neutral py-2 px-4" data-ui-key="cancelButton"></button>
                 <button id="api-modal-save-btn" class="w-full btn btn-primary py-2 px-4" data-ui-key="saveButton"></button>
             </div>
@@ -493,26 +518,34 @@
 
 
     <div id="alert-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
-        <div id="alert-modal-content" class="card p-8 w-full max-w-md transform transition-all text-center animate__animated animate__faster">
-            <div id="alert-icon-container" class="w-16 h-16 rounded-full mx-auto flex items-center justify-center mb-4">
-                <i id="alert-icon" class="fas text-4xl text-white"></i>
+        <div id="alert-modal-content" class="card p-8 w-full max-w-md transform transition-all text-center animate__animated animate__faster flex flex-col max-h-[90vh]">
+            <div class="flex-grow overflow-y-auto">
+                <div id="alert-icon-container" class="w-16 h-16 rounded-full mx-auto flex items-center justify-center mb-4">
+                    <i id="alert-icon" class="fas text-4xl text-white"></i>
+                </div>
+                <h3 id="alert-title" class="text-2xl font-bold text-[var(--theme-text-primary)] mb-2"></h3>
+                <p id="alert-message" class="text-[var(--theme-text-secondary)]"></p>
             </div>
-            <h3 id="alert-title" class="text-2xl font-bold text-[var(--theme-text-primary)] mb-2"></h3>
-            <p id="alert-message" class="text-[var(--theme-text-secondary)]"></p>
-            <button id="alert-close-btn" class="btn mt-6 w-full"></button>
+            <div class="flex-shrink-0 mt-6">
+                <button id="alert-close-btn" class="btn w-full"></button>
+            </div>
         </div>
     </div>
 
     <div id="confirmation-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
-        <div id="confirmation-modal-content" class="card p-8 w-full max-w-md transform transition-all text-center animate__animated animate__faster">
-            <div class="w-16 h-16 rounded-full mx-auto flex items-center justify-center mb-4 bg-[var(--theme-accent-3)]">
-                <i class="fas fa-exclamation-triangle text-4xl text-[var(--theme-bg)]"></i>
+        <div id="confirmation-modal-content" class="card p-8 w-full max-w-md transform transition-all text-center animate__animated animate__faster flex flex-col max-h-[90vh]">
+            <div class="flex-grow overflow-y-auto">
+                <div class="w-16 h-16 rounded-full mx-auto flex items-center justify-center mb-4 bg-[var(--theme-accent-3)]">
+                    <i class="fas fa-exclamation-triangle text-4xl text-[var(--theme-bg)]"></i>
+                </div>
+                <h3 id="confirmation-title" class="text-2xl font-bold text-[var(--theme-text-primary)] mb-2"></h3>
+                <p id="confirmation-message" class="text-[var(--theme-text-secondary)]"></p>
             </div>
-            <h3 id="confirmation-title" class="text-2xl font-bold text-[var(--theme-text-primary)] mb-2"></h3>
-            <p id="confirmation-message" class="text-[var(--theme-text-secondary)]"></p>
-            <div class="flex gap-4 mt-6">
-                <button id="confirm-yes-btn" class="w-full btn btn-danger"></button>
-                <button id="confirm-no-btn" class="w-full btn btn-neutral"></button>
+            <div class="flex-shrink-0 mt-6">
+                <div class="flex gap-4">
+                    <button id="confirm-yes-btn" class="w-full btn btn-danger"></button>
+                    <button id="confirm-no-btn" class="w-full btn btn-neutral"></button>
+                </div>
             </div>
         </div>
     </div>
@@ -569,6 +602,9 @@
                     visualStyleLabel: "Gaya Visual",
                     generateButton: "Sutradara AI",
                     generateAllPromptsButton: "Hasilkan Semua Prompt",
+                    generateAllPromptsJsonButton: "Hasilkan Prompt (JSON)",
+                    copyJsonButton: "Salin JSON",
+                    jsonOutputPlaceholder: "Output JSON akan muncul di sini...",
                     keyCharactersLabel: "Karakter & Objek Kunci",
                     editButton: "Ubah",
                     saveButton: "Simpan & Perbarui",
@@ -634,6 +670,7 @@
                     alertGenerated: "Detail cerita berhasil dibuat oleh AI!",
                     promptGenerationProgress: (current, total) => `Membuat prompt untuk Adegan ${current}/${total}...`,
                     allPromptsGenerated: (count, total) => `Semua prompt untuk ${count} dari ${total} adegan berhasil dibuat!`,
+                    allPromptsJsonGenerated: "Output JSON berhasil dibuat!",
                     alertSuccessTitle: "Berhasil",
                     alertErrorTitle: "Terjadi Kesalahan",
                     alertInfoTitle: "Informasi",
@@ -656,6 +693,7 @@
                     visualDescriptionLabel: "Visual",
                     cameraDescriptionLabel: "Kamera",
                     audioDescriptionLabel: "Audio",
+                    personalApiLimitReached: "Batas API pribadi Anda tercapai. Proses diselesaikan menggunakan API sistem."
                 },
                 en: {
                     langTitle: "Change Language",
@@ -678,6 +716,9 @@
                     visualStyleLabel: "Visual Style",
                     generateButton: "AI Director",
                     generateAllPromptsButton: "Generate All Prompts",
+                    generateAllPromptsJsonButton: "Generate Prompts (JSON)",
+                    copyJsonButton: "Copy JSON",
+                    jsonOutputPlaceholder: "JSON output will appear here...",
                     keyCharactersLabel: "Key Characters & Objects",
                     editButton: "Edit",
                     saveButton: "Save & Update",
@@ -743,6 +784,7 @@
                     alertGenerated: "Story details generated successfully by AI!",
                     promptGenerationProgress: (current, total) => `Generating prompt for Scene ${current}/${total}...`,
                     allPromptsGenerated: (count, total) => `All prompts for ${count} of ${total} scenes generated successfully!`,
+                    allPromptsJsonGenerated: "JSON output created successfully!",
                     alertSuccessTitle: "Success",
                     alertErrorTitle: "An Error Occurred",
                     alertInfoTitle: "Information",
@@ -765,6 +807,7 @@
                     visualDescriptionLabel: "Visual",
                     cameraDescriptionLabel: "Kamera",
                     audioDescriptionLabel: "Audio",
+                    personalApiLimitReached: "Your personal API limit was reached. The process was completed using the system API."
                 }
             };
 
@@ -797,7 +840,10 @@
                 storyboardContainer: document.getElementById('storyboard-container'),
                 finalPromptStepContainer: document.getElementById('final-prompt-step-container'),
                 generateAllPromptsBtn: document.getElementById('generate-all-prompts-btn'),
+                generateJsonBtn: document.getElementById('generate-json-btn'),
+                finalResultsArea: document.getElementById('final-results-area'),
                 finalPromptsContainer: document.getElementById('final-prompts-container'),
+                jsonAccordionContainer: document.getElementById('json-accordion-container'),
                 hamburgerBtn: document.getElementById('hamburger-btn'),
                 offcanvasMenu: document.getElementById('offcanvas-menu'),
                 offcanvasBackdrop: document.getElementById('offcanvas-backdrop'),
@@ -857,9 +903,9 @@
             
             const showAlert = (message, type = 'info') => {
                 const typeMap = {
-                    success: { titleKey: 'alertSuccessTitle', icon: 'fa-check-circle', color: 'bg-[var(--theme-success)]', btn: 'btn-primary' },
+                    success: { titleKey: 'alertSuccessTitle', icon: 'fa-check-circle', color: 'bg-[var(--theme-success)]', btn: 'btn-secondary' },
                     error: { titleKey: 'alertErrorTitle', icon: 'fa-times-circle', color: 'bg-[var(--theme-error)]', btn: 'btn-danger' },
-                    info: { titleKey: 'alertInfoTitle', icon: 'fa-info-circle', color: 'bg-[var(--theme-accent-2)]', btn: 'btn-secondary' }
+                    info: { titleKey: 'alertInfoTitle', icon: 'fa-info-circle', color: 'bg-[var(--theme-accent-2)]', btn: 'btn-primary' }
                 };
                 const config = typeMap[type];
 
@@ -869,7 +915,7 @@
                 document.getElementById('alert-icon').className = `fas text-4xl text-white ${config.icon}`;
                 const closeBtn = document.getElementById('alert-close-btn');
                 closeBtn.textContent = getUIText('alertCloseButton');
-                closeBtn.className = `btn mt-6 w-full ${config.btn}`;
+                closeBtn.className = `btn w-full ${config.btn}`;
                 
                 openModal(DOMElements.alertModal);
             };
@@ -910,7 +956,7 @@
                     DOMElements.themeBtnMobile.querySelector('i').className = 'fas fa-moon fa-fw text-lg w-6 text-center';
                 }
                 
-                const accentColor = getComputedStyle(document.documentElement).getPropertyValue('--theme-text-secondary').trim();
+                const accentColor = getComputedStyle(document.documentElement).getPropertyValue('--theme-accent-2').trim();
                 const encodedColor = encodeURIComponent(accentColor);
                 document.querySelectorAll('.form-select').forEach(el => {
                     el.style.backgroundImage = `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='${encodedColor}' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e")`;
@@ -983,8 +1029,9 @@
                 }
             };
 
-            async function callGeminiAPI(params) {
-                const apiKeyToUse = AppState.apiKeySource === 'personal' ? AppState.personalApiKey : SYSTEM_API_KEY;
+            async function callGeminiAPI(params, onFallback = () => {}) {
+                let apiKeyToUse = (AppState.apiKeySource === 'personal' && AppState.personalApiKey) ? AppState.personalApiKey : SYSTEM_API_KEY;
+                let isUsingPersonalKey = AppState.apiKeySource === 'personal' && !!AppState.personalApiKey;
 
                 if (!apiKeyToUse) {
                     showAlert(getUIText('apiKeyNote'), 'error');
@@ -992,30 +1039,69 @@
                     return null;
                 }
 
-                const ai = new GoogleGenAI({ apiKey: apiKeyToUse });
+                const MAX_RETRIES = 3;
+                let attempt = 0;
 
-                try {
-                    const response = await ai.models.generateContent(params);
-                    if (params.config?.responseMimeType === 'application/json') {
-                        const text = response.text.trim();
-                        const jsonMatch = text.match(/```json\s*([\s\S]*?)\s*```|({[\s\S]*})/);
-                        if (jsonMatch) {
+                while (attempt < MAX_RETRIES) {
+                    try {
+                        const ai = new GoogleGenAI({ apiKey: apiKeyToUse });
+                        const response = await ai.models.generateContent(params);
+
+                        if (params.config?.responseMimeType === 'application/json') {
+                            const text = response.text.trim();
+                            const jsonMatch = text.match(/```json\s*([\s\S]*?)\s*```|({[\s\S]*})/);
+                            if (jsonMatch) {
+                                try {
+                                    return JSON.parse(jsonMatch[1] || jsonMatch[2]);
+                                } catch (e) { /* ignore and try parsing the whole text */ }
+                            }
                             try {
-                                return JSON.parse(jsonMatch[1] || jsonMatch[2]);
-                            } catch(e) { /* ignore and try parsing the whole text */ }
+                                return JSON.parse(text);
+                            } catch (e) {
+                                console.error("AI did not return valid JSON, but was expected to.", text);
+                                throw new Error("AI did not return valid JSON content.");
+                            }
                         }
-                        try {
-                             return JSON.parse(text);
-                        } catch (e) {
-                            throw new Error("AI did not return valid JSON content.");
+                        return response.text;
+                    } catch (e) {
+                        const errorMessage = e.toString();
+                        console.error(`Error calling Gemini API (attempt ${attempt + 1} with ${isUsingPersonalKey ? 'personal' : 'system'} key):`, errorMessage);
+                        
+                        const isRateLimit = errorMessage.includes('429');
+                        const isAuthError = errorMessage.includes('400') || errorMessage.includes('403');
+
+                        // Check for fallback condition: personal key failed with a specific error
+                        if (isUsingPersonalKey && (isRateLimit || isAuthError)) {
+                            console.log("Personal API key failed. Falling back to system API.");
+                            apiKeyToUse = SYSTEM_API_KEY;
+                            isUsingPersonalKey = false;
+                            attempt = 0; // Reset retries for the system key
+                            onFallback('system'); // Fire the callback to update UI
+                            // Yield to the browser's event loop to allow the UI to repaint before the next API call.
+                            await new Promise(resolve => setTimeout(resolve, 10));
+                            continue; // Retry immediately with the system key
+                        }
+
+                        // Standard retry logic with exponential backoff for the current key
+                        if (attempt < MAX_RETRIES - 1) {
+                            const delay = Math.pow(2, attempt) * 1000 + Math.random() * 1000;
+                            console.log(`Retrying with same key in ${delay.toFixed(0)}ms...`);
+                            await new Promise(resolve => setTimeout(resolve, delay));
+                            attempt++;
+                        } else {
+                            // Max retries reached for the current key (or it's a non-retryable error)
+                            let userMessage = getUIText('promptGenerationFailed');
+                            if (isRateLimit) {
+                                userMessage = 'Failed to call the Gemini API, quota exceeded: you have reached the daily limit of requests for this model. Please select a different model, or try again tomorrow.';
+                            } else if (errorMessage.includes('valid JSON')) {
+                                userMessage = 'The AI returned an invalid response. Please try again.';
+                            }
+                            showAlert(userMessage, 'error');
+                            return null;
                         }
                     }
-                    return response.text;
-                } catch(e) {
-                    console.error("Error calling Gemini API:", e);
-                    showAlert(`Failed to contact AI: ${e.message}`, 'error');
-                    return null;
                 }
+                return null; // Should not be reached
             }
 
             const renderStoryboard = () => {
@@ -1060,7 +1146,7 @@
                         <div id="scenes-list" class="space-y-6">
                              ${scenes.map((scene, index) => `
                                 <div id="scene-card-${index}" class="border border-[var(--theme-border)] rounded-lg p-4">
-                                    <div class="flex justify-between items-start mb-4 flex-wrap">
+                                    <div class="flex justify-between items-start flex-wrap">
                                         <div class="w-full md:w-auto">
                                             <h4 class="text-xl font-bold text-[var(--theme-accent-2)]">${getUIText('sceneLabel')} ${scene.scene_number}</h4>
                                             <p class="text-sm text-[var(--theme-text-secondary)]">${scene.duration_seconds} ${getUIText('secondsUnit')}</p>
@@ -1092,7 +1178,8 @@
 
                 DOMElements.finalPromptStepContainer.classList.remove('hidden');
                 DOMElements.generateAllPromptsBtn.disabled = false;
-                DOMElements.finalPromptsContainer.innerHTML = ''; // Clear previous results on new storyboard
+                DOMElements.generateJsonBtn.disabled = false;
+                DOMElements.finalResultsArea.classList.add('hidden');
             };
             
             const renderFinalPrompts = () => {
@@ -1184,7 +1271,7 @@
 
                     if (typeof entry === 'object' && entry.date) {
                         const deleteButton = document.createElement('button');
-                        deleteButton.className = 'flex-shrink-0 text-[var(--theme-text-secondary)] hover:text-[var(--theme-error)]';
+                        deleteButton.className = 'flex-shrink-0 text-[var(--theme-text-secondary)] hover:text-[var(--theme-error)] transition-opacity';
                         deleteButton.title = getUIText('deleteButton');
                         deleteButton.innerHTML = '<i class="fas fa-trash fa-sm"></i>';
                         deleteButton.onclick = (e) => {
@@ -1253,12 +1340,22 @@
                 const btnText = btn.querySelector('#ai-btn-text');
                 const loaderSpan = btn.querySelector('#ai-btn-loader');
                 btnText.classList.add('hidden');
-                const loaderText = AppState.apiKeySource === 'personal' ? getUIText('loaderUserAI') : getUIText('loaderSystemAI');
-                loaderSpan.innerHTML = `<div class="flex items-center gap-2"><span class="loader"></span><span>${loaderText}</span></div>`;
+                
+                const usePersonalAI = AppState.apiKeySource === 'personal' && AppState.personalApiKey;
+                const loaderText = usePersonalAI ? getUIText('loaderUserAI') : getUIText('loaderSystemAI');
+                loaderSpan.innerHTML = `<div class="flex items-center justify-center gap-2"><span class="loader"></span><span>${loaderText}</span></div>`;
                 loaderSpan.classList.remove('hidden');
 
                 DOMElements.storyboardContainer.innerHTML = '';
                 DOMElements.finalPromptStepContainer.classList.add('hidden');
+                DOMElements.finalResultsArea.classList.add('hidden');
+
+                const onFallback = (newSource) => {
+                    if (newSource === 'system') {
+                        const systemLoaderText = getUIText('loaderSystemAI');
+                        loaderSpan.innerHTML = `<div class="flex items-center justify-center gap-2"><span class="loader"></span><span>${systemLoaderText}</span></div>`;
+                    }
+                };
 
                 const storyIdea = DOMElements.storyIdea.value.trim();
                 const videoTypeText = DOMElements.videoType.options[DOMElements.videoType.selectedIndex].text;
@@ -1266,7 +1363,7 @@
                 const sceneCount = DOMElements.sceneCount.value;
                 
                 const validationSystemInstruction = "Analyze the following user input. Determine if it is a coherent story idea or just gibberish/random characters. Respond with only 'valid' or 'incoherent'.";
-                const validationResponse = await callGeminiAPI({ model: 'gemini-2.5-flash', contents: `Is this a coherent idea? "${storyIdea}"`, config: { systemInstruction: validationSystemInstruction }});
+                const validationResponse = await callGeminiAPI({ model: 'gemini-2.5-flash', contents: `Is this a coherent idea? "${storyIdea}"`, config: { systemInstruction: validationSystemInstruction }}, onFallback);
 
                 if (validationResponse && validationResponse.toLowerCase().includes('incoherent')) {
                     showAlert(getUIText('alertIdeaIncoherent'), 'error');
@@ -1290,7 +1387,10 @@
                     required: ["key_characters", "scenes"]
                 };
 
-                const generatedStoryboard = await callGeminiAPI({ model: 'gemini-2.5-flash', contents: userPrompt, config: { systemInstruction, responseMimeType: 'application/json', responseSchema: schema }});
+                const generatedStoryboard = await callGeminiAPI(
+                    { model: 'gemini-2.5-flash', contents: userPrompt, config: { systemInstruction, responseMimeType: 'application/json', responseSchema: schema }},
+                    onFallback
+                );
 
                 if (generatedStoryboard && generatedStoryboard.scenes) {
                     const processedScenes = generatedStoryboard.scenes.map(scene => ({ ...scene, duration_seconds: 8, visual_description: { id: scene.visual_description, en: null }, camera_shot: { id: scene.camera_shot, en: null }, audio_description: { id: scene.audio_description, en: null }, currentLang: 'id' }));
@@ -1310,7 +1410,7 @@
                 loaderSpan.classList.add('hidden');
             };
             
-            const regenerateStoryboardFromCharacters = async () => {
+            const regenerateStoryboardFromCharacters = async (onFallback) => {
                 const storyIdea = DOMElements.storyIdea.value.trim();
                 const videoTypeText = DOMElements.videoType.options[DOMElements.videoType.selectedIndex].text;
                 const visualStyleText = DOMElements.visualStyle.options[DOMElements.visualStyle.selectedIndex].text;
@@ -1329,7 +1429,10 @@
                     required: ["scenes"]
                 };
 
-                const newStoryboard = await callGeminiAPI({ model: 'gemini-2.5-flash', contents: userPrompt, config: { systemInstruction, responseMimeType: 'application/json', responseSchema: schema }});
+                const newStoryboard = await callGeminiAPI(
+                    { model: 'gemini-2.5-flash', contents: userPrompt, config: { systemInstruction, responseMimeType: 'application/json', responseSchema: schema }},
+                    onFallback
+                );
 
                 if (newStoryboard && newStoryboard.scenes) {
                     const processedScenes = newStoryboard.scenes.map(scene => ({ ...scene, duration_seconds: 8, visual_description: { id: scene.visual_description, en: null }, camera_shot: { id: scene.camera_shot, en: null }, audio_description: { id: scene.audio_description, en: null }, currentLang: 'id' }));
@@ -1343,7 +1446,7 @@
                 }
             };
 
-            const translateScene = async (sceneIndex, targetLang) => {
+            const translateScene = async (sceneIndex, targetLang, onFallback) => {
                 const scene = AppState.storyboardData.scenes[sceneIndex];
                 const sourceLang = targetLang === 'en' ? 'id' : 'en';
                 const visual = scene.visual_description[sourceLang] || scene.visual_description[targetLang === 'en' ? 'id' : 'en'];
@@ -1352,17 +1455,20 @@
                 const contentToTranslate = { visual_description: visual, camera_shot: camera, audio_description: audio };
                 const systemInstruction = `You are a professional translator. Translate the values of the following JSON object into ${targetLang === 'en' ? 'English' : 'Indonesian'}. Maintain the exact JSON structure and keys. Only provide the translated JSON object as your response.`;
                 const schema = { type: Type.OBJECT, properties: { visual_description: { type: Type.STRING }, camera_shot: { type: Type.STRING }, audio_description: { type: Type.STRING }, }, required: ["visual_description", "camera_shot", "audio_description"], };
-                return await callGeminiAPI({ model: 'gemini-2.5-flash', contents: JSON.stringify(contentToTranslate), config: { systemInstruction, responseMimeType: 'application/json', responseSchema: schema } });
+                return await callGeminiAPI(
+                    { model: 'gemini-2.5-flash', contents: JSON.stringify(contentToTranslate), config: { systemInstruction, responseMimeType: 'application/json', responseSchema: schema }},
+                    onFallback
+                );
             };
 
-            const generatePromptForScene = async (sceneIndex) => {
+            const generatePromptForScene = async (sceneIndex, onFallback) => {
                 const scene = AppState.storyboardData.scenes[sceneIndex];
                 const characters = AppState.storyboardData.key_characters;
                 let visualDescEn, cameraShotEn, audioDescEn;
                 if (scene.visual_description.en && scene.camera_shot.en && scene.audio_description.en) {
                     visualDescEn = scene.visual_description.en; cameraShotEn = scene.camera_shot.en; audioDescEn = scene.audio_description.en;
                 } else {
-                    const translatedContent = await translateScene(sceneIndex, 'en');
+                    const translatedContent = await translateScene(sceneIndex, 'en', onFallback);
                     if (translatedContent) {
                         scene.visual_description.en = translatedContent.visual_description;
                         scene.camera_shot.en = translatedContent.camera_shot;
@@ -1377,7 +1483,10 @@
                 let userPrompt = characters && characters.length > 0 ? `Here are the key characters/objects for this story. Their descriptions are the source of truth: ${characters.map(c => `- ${c.identifier}: ${c.description}`).join('\n')}\n\n` : "";
                 userPrompt += `Please generate the prompt JSON for the following scene:\nScene Number: ${scene.scene_number}\nVisuals: ${visualDescEn}\nCamera: ${cameraShotEn}\nAudio: ${audioDescEn}\nEstimated Duration: ${scene.duration_seconds} seconds`;
                 const promptSchema = { type: Type.OBJECT, properties: { combinedPrompt: { type: Type.STRING }, imagePrompt: { type: Type.STRING }, animationPrompt: { type: Type.STRING } }, required: ["combinedPrompt", "imagePrompt", "animationPrompt"] };
-                const generatedPrompts = await callGeminiAPI({ model: 'gemini-2.5-flash', contents: userPrompt, config: { systemInstruction, responseMimeType: 'application/json', responseSchema: promptSchema, temperature: 0.8, topP: 0.95 } });
+                const generatedPrompts = await callGeminiAPI(
+                    { model: 'gemini-2.5-flash', contents: userPrompt, config: { systemInstruction, responseMimeType: 'application/json', responseSchema: promptSchema, temperature: 0.8, topP: 0.95 } },
+                    onFallback
+                );
                 if (generatedPrompts) {
                     AppState.storyboardData.scenes[sceneIndex].generatedPrompts = generatedPrompts;
                     return true;
@@ -1385,30 +1494,136 @@
                 return false;
             };
 
-            const handleGenerateAllPrompts = async () => {
-                const btn = DOMElements.generateAllPromptsBtn;
+            const ensureAllPromptsAreGenerated = async (btn) => {
+                const btnText = btn.querySelector('span:not(.hidden)');
+                const loaderSpan = btn.querySelector('span.hidden');
+                
                 btn.disabled = true;
-                const btnText = btn.querySelector('#gen-all-btn-text');
-                const loaderSpan = btn.querySelector('#gen-all-btn-loader');
+                DOMElements.generateAllPromptsBtn.disabled = true;
+                DOMElements.generateJsonBtn.disabled = true;
+
                 btnText.classList.add('hidden');
                 loaderSpan.classList.remove('hidden');
 
-                const scenesToProcess = AppState.storyboardData.scenes;
-                let successCount = 0;
+                let fallbackOccurred = false;
+                const onFallback = () => { fallbackOccurred = true; };
+
+                const scenesToProcess = AppState.storyboardData.scenes
+                    .map((scene, index) => ({ scene, index }))
+                    .filter(item => !item.scene.generatedPrompts);
+
+                let successCount = AppState.storyboardData.scenes.length - scenesToProcess.length;
 
                 for (let i = 0; i < scenesToProcess.length; i++) {
-                    const loaderText = getUIText('promptGenerationProgress', i + 1, scenesToProcess.length);
-                    loaderSpan.innerHTML = `<div class="flex items-center gap-2"><span class="loader"></span><span>${loaderText}</span></div>`;
-                    const success = await generatePromptForScene(i);
-                    if (success) successCount++;
+                    const item = scenesToProcess[i];
+                    const overallIndex = item.index;
+                    const loaderTextContent = getUIText('promptGenerationProgress', successCount + 1, AppState.storyboardData.scenes.length);
+                    loaderSpan.innerHTML = `<div class="flex items-center justify-center gap-2"><span class="loader"></span><span>${loaderTextContent}</span></div>`;
+                    
+                    const success = await generatePromptForScene(overallIndex, onFallback);
+                    if (success) {
+                        successCount++;
+                    }
+
+                    if (i < scenesToProcess.length - 1) {
+                        await new Promise(resolve => setTimeout(resolve, 500)); // Delay
+                    }
                 }
-
-                renderFinalPrompts();
-                showAlert(getUIText('allPromptsGenerated', successCount, scenesToProcess.length), 'success');
-
+                
                 btn.disabled = false;
+                DOMElements.generateAllPromptsBtn.disabled = false;
+                DOMElements.generateJsonBtn.disabled = false;
                 btnText.classList.remove('hidden');
                 loaderSpan.classList.add('hidden');
+
+                if (fallbackOccurred) {
+                    setTimeout(() => showAlert(getUIText('personalApiLimitReached'), 'info'), 500);
+                }
+
+                return AppState.storyboardData.scenes.every(s => s.generatedPrompts);
+            };
+
+            const handleGenerateAccordionView = async () => {
+                const success = await ensureAllPromptsAreGenerated(DOMElements.generateAllPromptsBtn);
+                if (success) {
+                    const sceneCount = AppState.storyboardData.scenes.length;
+                    renderFinalPrompts();
+                    DOMElements.finalResultsArea.classList.remove('hidden');
+                    DOMElements.jsonAccordionContainer.classList.add('hidden');
+                    DOMElements.finalPromptsContainer.classList.remove('hidden');
+                    showAlert(getUIText('allPromptsGenerated', sceneCount, sceneCount), 'success');
+                }
+            };
+            
+            const handleGenerateJsonView = async () => {
+                const success = await ensureAllPromptsAreGenerated(DOMElements.generateJsonBtn);
+                if (success) {
+                    const container = DOMElements.jsonAccordionContainer;
+                    container.innerHTML = ''; // Clear previous content
+
+                    AppState.storyboardData.scenes.forEach((scene, index) => {
+                        if (!scene.generatedPrompts) return;
+
+                        // Create separate JSON objects for each part
+                        const combinedJson = JSON.stringify({ combinedPrompt: scene.generatedPrompts.combinedPrompt }, null, 2);
+                        const imageJson = JSON.stringify({ imagePrompt: scene.generatedPrompts.imagePrompt }, null, 2);
+                        const animationJson = JSON.stringify({ animationPrompt: scene.generatedPrompts.animationPrompt }, null, 2);
+
+                        // Create unique IDs for textareas
+                        const combinedTextareaId = `json-textarea-combined-${index}`;
+                        const imageTextareaId = `json-textarea-image-${index}`;
+                        const animationTextareaId = `json-textarea-animation-${index}`;
+                        
+                        const accordionItemHtml = `
+                            <div class="border border-[var(--theme-border)] rounded-lg overflow-hidden">
+                                <button class="accordion-toggle flex justify-between items-center w-full p-4 bg-[var(--theme-panel-bg)] hover:bg-[var(--theme-border)]/20 transition-colors">
+                                    <span class="font-bold text-lg text-[var(--theme-accent-3)]">${getUIText('sceneLabel')} ${scene.scene_number}</span>
+                                    <i class="fas fa-chevron-down transition-transform"></i>
+                                </button>
+                                <div class="accordion-content json-accordion-content bg-[var(--theme-bg)]">
+                                    <div class="prompt-tabs border-b border-[var(--theme-border)] px-4 pt-2">
+                                        <button class="tab-btn json-tab-btn active" data-tab-target="tab-json-combined-${index}">${getUIText('combinedPromptTab')}</button>
+                                        <button class="tab-btn json-tab-btn" data-tab-target="tab-json-image-motion-${index}">${getUIText('imageMotionPromptTab')}</button>
+                                    </div>
+                                    <div class="tab-content-container p-4">
+                                        <div id="tab-json-combined-${index}" class="tab-content-json space-y-4">
+                                            <p class="text-sm text-[var(--theme-text-secondary)]">${getUIText('combinedPromptDescription')}</p>
+                                            <div>
+                                                <textarea id="${combinedTextareaId}" readonly class="form-textarea font-mono text-xs h-32">${combinedJson}</textarea>
+                                                <button class="btn btn-primary copy-json-scene-btn text-sm py-2 px-4 w-full mt-2" data-copy-target-id="${combinedTextareaId}">
+                                                    <i class="fas fa-copy"></i><span>${getUIText('copyCombinedPrompt', scene.scene_number)}</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div id="tab-json-image-motion-${index}" class="tab-content-json hidden space-y-6">
+                                            <p class="text-sm text-[var(--theme-text-secondary)]">${getUIText('imageMotionPromptDescription')}</p>
+                                            <div class="space-y-2">
+                                                <label class="form-label !mb-1 text-sm">${getUIText('imagePromptStepLabel')}</label>
+                                                <textarea id="${imageTextareaId}" readonly class="form-textarea font-mono text-xs h-24">${imageJson}</textarea>
+                                                <button class="btn btn-secondary copy-json-scene-btn text-xs py-1 px-3" data-copy-target-id="${imageTextareaId}">
+                                                    <i class="fas fa-copy"></i><span>${getUIText('copyImagePrompt')}</span>
+                                                </button>
+                                            </div>
+                                            <div class="space-y-2">
+                                                <label class="form-label !mb-1 text-sm">${getUIText('animationPromptStepLabel')}</label>
+                                                <textarea id="${animationTextareaId}" readonly class="form-textarea font-mono text-xs h-24">${animationJson}</textarea>
+                                                <button class="btn btn-secondary copy-json-scene-btn text-xs py-1 px-3" data-copy-target-id="${animationTextareaId}">
+                                                    <i class="fas fa-copy"></i><span>${getUIText('copyAnimationPrompt')}</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                        container.insertAdjacentHTML('beforeend', accordionItemHtml);
+                    });
+                    
+                    DOMElements.finalResultsArea.classList.remove('hidden');
+                    DOMElements.finalPromptsContainer.classList.add('hidden');
+                    DOMElements.jsonAccordionContainer.classList.remove('hidden');
+                    showAlert(getUIText('allPromptsJsonGenerated'), 'success');
+                }
             };
 
             const handleStoryboardClick = async (e) => {
@@ -1442,6 +1657,7 @@
                         }
 
                         AppState.storyboardData.key_characters = updatedCharacters;
+                        // Silently fallback on this action
                         const success = await regenerateStoryboardFromCharacters();
 
                         if (success) {
@@ -1485,6 +1701,7 @@
                     if (scene.visual_description[targetLang]) {
                         scene.currentLang = targetLang;
                     } else {
+                        // Silently fallback on this action
                         const translated = await translateScene(sceneIndex, targetLang);
                         if (translated) {
                             scene.visual_description[targetLang] = translated.visual_description;
@@ -1540,32 +1757,45 @@
                 const target = e.target.closest('button');
                 if (!target) return;
 
-                const sceneIndexAttr = target.dataset.sceneIndex;
-                if (!sceneIndexAttr) return;
-                const sceneIndex = parseInt(sceneIndexAttr, 10);
-
                 if (target.classList.contains('accordion-toggle')) {
                     const content = target.nextElementSibling;
                     const icon = target.querySelector('i');
                     const isOpen = content.classList.contains('open');
                     
-                    document.querySelectorAll('.accordion-content.open').forEach(openContent => {
-                        openContent.classList.remove('open');
-                        openContent.previousElementSibling.querySelector('i').classList.remove('rotate-180');
+                    document.querySelectorAll('#final-prompts-container .accordion-content.open').forEach(openContent => {
+                        if (openContent !== content) {
+                           openContent.classList.remove('open');
+                           openContent.previousElementSibling.querySelector('i').classList.remove('rotate-180');
+                        }
                     });
                     
                     if (!isOpen) {
                         content.classList.add('open');
                         icon.classList.add('rotate-180');
+                    } else {
+                        content.classList.remove('open');
+                        icon.classList.remove('rotate-180');
                     }
+                    return;
                 }
+                
+                const sceneIndexAttr = target.dataset.sceneIndex;
+                if (!sceneIndexAttr) return;
+                const sceneIndex = parseInt(sceneIndexAttr, 10);
                 
                 if (target.classList.contains('tab-btn')) {
                     const tabContainer = target.closest('.accordion-content');
                     const targetContentId = target.dataset.tabTarget;
+                    
                     tabContainer.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+                    target.classList.add('active');
+                    
                     tabContainer.querySelectorAll('.tab-content').forEach(content => content.classList.add('hidden'));
-                    target.getElementById(targetContentId).classList.remove('hidden');
+                    
+                    const contentToShow = tabContainer.getRootNode().getElementById(targetContentId);
+                    if (contentToShow) {
+                        contentToShow.classList.remove('hidden');
+                    }
                 }
                 
                 if (target.classList.contains('copy-prompt-btn')) {
@@ -1573,6 +1803,61 @@
                     const textToCopy = AppState.storyboardData.scenes[sceneIndex].generatedPrompts[promptType];
                     if (textToCopy) {
                         navigator.clipboard.writeText(textToCopy)
+                            .then(() => showAlert(getUIText('alertSceneCopied'), 'success'))
+                            .catch(() => showAlert(getUIText('alertCopyFailed'), 'error'));
+                    }
+                }
+            };
+            
+            const handleJsonAccordionClick = (e) => {
+                const target = e.target.closest('button');
+                if (!target) return;
+
+                // Handle accordion toggle
+                if (target.classList.contains('accordion-toggle')) {
+                    const content = target.nextElementSibling;
+                    const icon = target.querySelector('i');
+                    const isOpen = content.classList.contains('open');
+
+                    const parentContainer = target.closest('#json-accordion-container');
+                    parentContainer.querySelectorAll('.accordion-content.open').forEach(openContent => {
+                        if (openContent !== content) {
+                           openContent.classList.remove('open');
+                           openContent.previousElementSibling.querySelector('i').classList.remove('rotate-180');
+                        }
+                    });
+
+                    if (!isOpen) {
+                        content.classList.add('open');
+                        icon.classList.add('rotate-180');
+                    } else {
+                        content.classList.remove('open');
+                        icon.classList.remove('rotate-180');
+                    }
+                    return;
+                }
+                
+                // Handle tab switching
+                if (target.classList.contains('json-tab-btn')) {
+                    const tabContainer = target.closest('.prompt-tabs');
+                    const contentContainer = tabContainer.nextElementSibling;
+                    const targetContentId = target.dataset.tabTarget;
+
+                    tabContainer.querySelectorAll('.json-tab-btn').forEach(btn => btn.classList.remove('active'));
+                    target.classList.add('active');
+
+                    contentContainer.querySelectorAll('.tab-content-json').forEach(content => content.classList.add('hidden'));
+                    const targetContent = document.getElementById(targetContentId);
+                    if(targetContent) targetContent.classList.remove('hidden');
+                    return;
+                }
+
+                // Handle copy button click
+                if (target.classList.contains('copy-json-scene-btn')) {
+                    const textareaId = target.dataset.copyTargetId;
+                    const textarea = document.getElementById(textareaId);
+                    if (textarea && textarea.value) {
+                        navigator.clipboard.writeText(textarea.value)
                             .then(() => showAlert(getUIText('alertSceneCopied'), 'success'))
                             .catch(() => showAlert(getUIText('alertCopyFailed'), 'error'));
                     }
@@ -1672,8 +1957,10 @@
                 DOMElements.loginForm.addEventListener('submit', handleLogin);
                 DOMElements.aiDirectorBtn.addEventListener('click', handleAIDirector);
                 DOMElements.storyboardContainer.addEventListener('click', handleStoryboardClick);
-                DOMElements.generateAllPromptsBtn.addEventListener('click', handleGenerateAllPrompts);
+                DOMElements.generateAllPromptsBtn.addEventListener('click', handleGenerateAccordionView);
+                DOMElements.generateJsonBtn.addEventListener('click', handleGenerateJsonView);
                 DOMElements.finalPromptsContainer.addEventListener('click', handleFinalPromptsClick);
+                DOMElements.jsonAccordionContainer.addEventListener('click', handleJsonAccordionClick);
                 
                 DOMElements.hamburgerBtn.addEventListener('click', openOffCanvas);
                 DOMElements.offcanvasBackdrop.addEventListener('click', closeOffCanvas);
