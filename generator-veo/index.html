@@ -1228,7 +1228,7 @@
             // --- EVENT HANDLERS ---
             const handleLogin = (e) => {
                 e.preventDefault();
-                if (DOMElements.passwordInput.value === '1') {
+                if (DOMElements.passwordInput.value === '147') {
                     const now = new Date().getTime();
                     const session = { loggedIn: true, timestamp: now };
                     sessionStorage.setItem('promptique_session', JSON.stringify(session));
