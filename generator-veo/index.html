@@ -15,1014 +15,1872 @@
     <meta property="og:type" content="website">
     
     <link rel="icon" href="../icon.png" type="image/png" />
-
-    <!-- Tailwind CSS & Font Awesome -->
+    
+    <!-- External Libraries -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
+    <!-- App Stylesheet -->
     <style>
+        /* --- THEME VARIABLES --- */
+        :root {
+            /* Pastel Minimalist (Dark) */
+            --theme-font-primary: 'Inter', sans-serif;
+            --theme-font-accent: 'Inter', sans-serif;
+            --theme-bg: #1e293b; /* Dark Slate */
+            --theme-panel-bg: #293548; /* Lighter Slate */
+            --theme-border: #3b4c60;
+            --theme-text-primary: #e2e8f0;
+            --theme-text-secondary: #94a3b8;
+            --theme-accent-1: #818cf8; /* Soft Lavender */
+            --theme-accent-2: #7dd3fc; /* Soft Sky Blue */
+            --theme-accent-3: #fcd34d; /* Soft Yellow */
+            --theme-error: #f87171; /* Soft Red */
+            --theme-success: #4ade80; /* Soft Green */
+        }
+
+        body.light-theme {
+            /* Pastel Minimalist (Light) */
+            --theme-bg: #f8fafc; /* Almost White */
+            --theme-panel-bg: #ffffff;
+            --theme-border: #e2e8f0;
+            --theme-text-primary: #1e293b;
+            --theme-text-secondary: #64748b;
+            --theme-accent-1: #6366f1; /* Indigo */
+            --theme-accent-2: #38bdf8; /* Bright Sky Blue */
+            --theme-accent-3: #f59e0b; /* Amber */
+            --theme-error: #ef4444;
+            --theme-success: #22c55e;
+        }
+
         body {
-            font-family: 'Inter', sans-serif;
-            transition: background-color 0.3s, color 0.3s;
-        }
-        .gradient-text {
-            background: linear-gradient(to right, #5eead4, #a78bfa, #f472b6);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            background-clip: text; text-fill-color: transparent;
-        }
-        .form-section {
-            border-radius: 0.75rem; /* rounded-xl */
-            padding: 1.5rem; /* p-6 */
+            font-family: var(--theme-font-primary);
+            background-color: var(--theme-bg);
+            color: var(--theme-text-primary);
             position: relative;
-            overflow: hidden;
-            transition: all 0.3s ease;
-            border-width: 1px; /* Ensure border is always present */
+            transition: background-color 0.5s, color 0.5s;
         }
-        @media (min-width: 640px) { .form-section { padding: 2rem; } }
+
+        .gradient-text {
+            font-family: var(--theme-font-accent);
+            font-weight: 800;
+            background: linear-gradient(90deg, var(--theme-accent-2), var(--theme-accent-1));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
         .form-label {
-            display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;
-            font-weight: 500;
+            display: block; margin-bottom: 0.5rem; font-weight: 500;
+            color: var(--theme-text-secondary);
+            font-size: 0.8rem; letter-spacing: 0.5px;
+            transition: color 0.3s;
         }
-        .form-label .fa-solid { width: 16px; text-align: center; }
+
         .form-input, .form-textarea, .form-select {
-            width: 100%; border-radius: 0.5rem; padding: 0.75rem 1rem; transition: all 0.2s;
-            border-width: 1px;
+            width: 100%;
+            background-color: var(--theme-panel-bg);
+            border: 1px solid var(--theme-border);
+            border-radius: 10px;
+            padding: 0.75rem 1rem;
+            color: var(--theme-text-primary);
+            transition: all 0.3s ease;
+            box-shadow: inset 0 1px 2px 0 rgb(0 0 0 / 0.05);
         }
+        body:not(.light-theme) .form-input, body:not(.light-theme) .form-textarea, body:not(.light-theme) .form-select {
+            background-color: color-mix(in srgb, var(--theme-bg) 70%, white);
+        }
+
         .form-input:focus, .form-textarea:focus, .form-select:focus {
-            border-color: #c084fc; /* A brighter purple/pink */
-            box-shadow: 0 0 0 3px rgba(192, 132, 252, 0.4);
+            border-color: var(--theme-accent-1);
+            box-shadow: 0 0 0 3px color-mix(in srgb, var(--theme-accent-1) 20%, transparent);
             outline: none;
         }
-        .form-input:disabled {
-            cursor: not-allowed;
+
+        .form-textarea.invalid-json {
+            border-color: var(--theme-error);
+            box-shadow: 0 0 0 3px color-mix(in srgb, var(--theme-error) 20%, transparent);
         }
+
         .form-select {
-            background-position: right 0.5rem center; background-repeat: no-repeat; background-size: 1.5em 1.5em;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 0.5rem center;
+            background-repeat: no-repeat;
+            background-size: 1.5em 1.5em;
             -webkit-appearance: none; -moz-appearance: none; appearance: none;
         }
-        .loading-spinner {
-            border: 3px solid rgba(255, 255, 255, 0.2); width: 20px; height: 20px;
-            border-radius: 50%; border-left-color: white;
-            animation: spin 1s linear infinite;
+
+        .card {
+            background-color: var(--theme-panel-bg);
+            border: 1px solid var(--theme-border);
+            border-radius: 16px;
+            transition: all 0.5s;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.07);
         }
-        @keyframes spin { to { transform: rotate(360deg); } }
+        body:not(.light-theme) .card {
+             box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.2);
+        }
+
+        .btn {
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            font-family: var(--theme-font-accent);
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            border: 1px solid transparent;
+            padding: 0.6rem 1.2rem;
+            box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+        }
+        .btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+
+        .btn-primary { background-color: var(--theme-accent-1); color: #fff; border-color: var(--theme-accent-1); }
+        .btn-primary:hover:not(:disabled) { background-color: color-mix(in srgb, var(--theme-accent-1) 90%, black); }
+
+        .btn-secondary { color: var(--theme-accent-2); border-color: var(--theme-accent-2); background-color: transparent; }
+        .btn-secondary:hover:not(:disabled) { background-color: color-mix(in srgb, var(--theme-accent-2) 15%, transparent); }
         
-        .modal-overlay { transition: opacity 0.3s ease; }
-        .modal-content { transition: transform 0.3s ease; }
+        .btn-danger { color: var(--theme-error); border-color: var(--theme-error); background-color: transparent; }
+        .btn-danger:hover:not(:disabled) { background-color: color-mix(in srgb, var(--theme-error) 10%, transparent); }
+
+        .btn-neutral { color: var(--theme-text-secondary); border-color: var(--theme-border); background-color: transparent; }
+        .btn-neutral:hover:not(:disabled) { background-color: color-mix(in srgb, var(--theme-text-secondary) 10%, transparent); border-color: var(--theme-text-secondary); color: var(--theme-text-primary); }
+
+        .btn-accent { color: var(--theme-accent-3); border-color: var(--theme-accent-3); background-color: transparent; }
+        .btn-accent:hover:not(:disabled) { background-color: color-mix(in srgb, var(--theme-accent-3) 15%, transparent); }
+
+        .btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1); }
+
+        .loader { width: 18px; height: 18px; border: 2px solid currentColor; border-bottom-color: transparent; border-radius: 50%; display: inline-block; box-sizing: border-box; animation: rotation 1s linear infinite; }
+        .loader-xs { width: 14px; height: 14px; border: 2px solid currentColor; border-bottom-color: transparent; border-radius: 50%; display: inline-block; box-sizing: border-box; animation: rotation 1s linear infinite; }
+        @keyframes rotation { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* --- PROMPT TABS & ACCORDION --- */
+        .prompt-tabs {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            background-color: transparent;
+            border: none;
+            color: var(--theme-text-secondary);
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s ease-in-out;
+            font-weight: 600;
+            font-size: 0.9rem;
+            font-family: var(--theme-font-primary);
+        }
+
+        .tab-btn:hover {
+            color: var(--theme-text-primary);
+        }
+
+        .tab-btn.active {
+            color: var(--theme-accent-1);
+            border-bottom-color: var(--theme-accent-1);
+        }
         
-        fieldset:disabled {
-            opacity: 0.5;
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out, padding 0.5s ease-in-out;
+            padding: 0 1.5rem;
+        }
+        
+        .accordion-content.open {
+            max-height: 1000px; /* Large enough for content */
+            padding: 1.5rem;
+        }
+
+        /* --- OFF-CANVAS MENU --- */
+        #offcanvas-menu:not(.open) {
             pointer-events: none;
         }
-        
-        /* Light Theme */
-        body.light-theme { background-color: #f8fafc; color: #1e293b; }
-        body.light-theme .form-section, body.light-theme .modal-content, body.light-theme .custom-alert-box { background-color: #ffffff; border-color: #e2e8f0; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05); }
-        body.light-theme .form-section { border-color: #cbd5e1; } /* More visible border */
-        body.light-theme .form-label { color: #334155; }
-        body.light-theme .form-label .fa-solid { color: #64748b; }
-        body.light-theme .form-input, body.light-theme .form-textarea, body.light-theme .form-select { background-color: #f8fafc; border-color: #9ca3af; color: #1e293b; } /* More visible border */
-        body.light-theme .form-input:disabled { background-color: #e2e8f0; }
-        body.light-theme .form-input::placeholder, body.light-theme .form-textarea::placeholder { color: #94a3b8; }
-        body.light-theme .form-input:focus, body.light-theme .form-textarea:focus, body.light-theme .form-select:focus { border-color: #a78bfa; box-shadow: 0 0 0 2px rgba(167, 139, 250, 0.3); outline: none;}
-        body.light-theme .text-slate-100 { color: #0f172a; }
-        body.light-theme .text-slate-200 { color: #1e293b; }
-        body.light-theme .text-slate-300 { color: #334155; }
-        body.light-theme .text-slate-400 { color: #475569; }
-        body.light-theme .border-slate-700 { border-color: #e2e8f0; }
-        body.light-theme .floating-btn { background-color: white; color: #1e293b; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); }
-        body.light-theme .form-select { background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%2364748b' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e"); }
-        body.light-theme .btn-secondary-theme { background-color: #e2e8f0; color: #334155; }
-        body.light-theme .btn-secondary-theme:hover { background-color: #cbd5e1; }
 
-        /* Dark Theme */
-        body.dark-theme { background-color: #0f172a; color: #e2e8f0; }
-        body.dark-theme .form-section, body.dark-theme .modal-content, body.dark-theme .custom-alert-box { background-color: #1e293b; border-color: #475569; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); }
-        body.dark-theme .form-label { color: #94a3b8; }
-        body.dark-theme .form-label .fa-solid { color: #64748b; }
-        body.dark-theme .form-input, body.dark-theme .form-textarea, body.dark-theme .form-select { background-color: #1e293b; border-color: #64748b; color: #f1f5f9; } /* More visible border */
-        body.dark-theme .form-input:disabled { background-color: #334155; opacity: 0.7; }
-        body.dark-theme .form-input::placeholder, body.dark-theme .form-textarea::placeholder { color: #64748b; }
-        body.dark-theme .form-input:focus, body.dark-theme .form-textarea:focus, body.dark-theme .form-select:focus { border-color: #a78bfa; box-shadow: 0 0 0 2px rgba(167, 139, 250, 0.3); outline: none;}
-        body.dark-theme .text-slate-100 { color: #f8fafc; }
-        body.dark-theme .text-slate-300 { color: #cbd5e1; }
-        body.dark-theme .text-slate-400 { color: #94a3b8; }
-        body.dark-theme .floating-btn { background-color: #334155; color: #cbd5e1; }
-        body.dark-theme .form-select { background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%2394a3b8' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e"); }
-        body.dark-theme .btn-secondary-theme { background-color: #475569; color: #f1f5f9; }
-        body.dark-theme .btn-secondary-theme:hover { background-color: #64748b; }
-        
-        /* Custom Alert */
-        .custom-alert-overlay { position: fixed; inset: 0; background-color: rgba(15, 23, 42, 0.6); backdrop-filter: blur(5px); display: flex; align-items: center; justify-content: center; padding: 1rem; z-index: 110; }
-        .custom-alert-box { width: 100%; max-width: 400px; padding: 2rem; text-align: center; box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1); }
-        .custom-alert-icon { width: 4rem; height: 4rem; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 1rem; font-size: 2rem; }
-        .custom-alert-icon.success { background-color: rgba(45, 212, 191, 0.1); color: #5eead4; }
-        .custom-alert-icon.error { background-color: rgba(244, 63, 94, 0.1); color: #fb7185; }
+        #offcanvas-menu-panel {
+            transform: translateX(100%);
+            transition: transform 0.3s ease-in-out;
+            background-color: var(--theme-bg);
+        }
+
+        #offcanvas-menu.open #offcanvas-menu-panel {
+            transform: translateX(0);
+        }
+
+        #offcanvas-backdrop {
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        #offcanvas-menu.open #offcanvas-backdrop {
+            opacity: 1;
+        }
+
+        .api-source-option {
+            border: 2px solid var(--theme-border);
+        }
+
     </style>
 </head>
 <body class="antialiased">
 
-    <!-- Floating Buttons -->
-    <div class="fixed top-4 right-4 z-50 flex flex-col gap-3">
-        <button id="theme-toggle" class="floating-btn h-12 w-12 flex items-center justify-center rounded-full border border-slate-700 shadow-lg" title="Ganti Tema">
-            <i class="fas fa-sun"></i>
-        </button>
-        <button id="history-btn" class="floating-btn h-12 w-12 flex items-center justify-center rounded-full border border-slate-700 shadow-lg" title="Riwayat Cerita">
-            <i class="fas fa-history"></i>
-        </button>
-    </div>
-    
-    <!-- API Guide Modal -->
-    <div id="guide-modal" class="modal-overlay fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm hidden">
-        <div class="modal-content max-w-lg w-full rounded-xl">
-            <div class="flex items-center justify-between p-5 border-b border-slate-700">
-                <h3 class="text-xl font-bold text-slate-100 flex items-center gap-3"><i class="fas fa-key gradient-text"></i>Panduan Mendapatkan API Key</h3>
-                <button class="close-modal-btn text-slate-400 hover:text-white transition-colors"><i class="fa-solid fa-xmark fa-lg"></i></button>
-            </div>
-            <div class="p-6 space-y-6 max-h-[70vh] overflow-y-auto">
-                <!-- Desktop Guide -->
-                <div class="hidden md:block text-slate-300 space-y-6">
-                    <div class="flex items-start gap-4"><div class="text-violet-400 text-2xl w-8 text-center pt-1"><i class="fas fa-desktop"></i></div><div><h3 class="font-bold text-lg text-slate-100">Langkah 1: Buka AI Studio & Dapatkan Kunci</h3><p class="text-slate-400">Di komputer Anda, buka <a href="https://aistudio.google.com/app/apikey" target="_blank" class="text-teal-300 hover:underline font-semibold">Google AI Studio</a>. Pada menu di sebelah kiri, klik <strong class="text-white">"Get API key"</strong>.</p></div></div>
-                    <div class="flex items-start gap-4"><div class="text-violet-400 text-2xl w-8 text-center pt-1"><i class="fas fa-plus-square"></i></div><div><h3 class="font-bold text-lg text-slate-100">Langkah 2: Buat Kunci di Proyek Baru</h3><p class="text-slate-400">Anda akan diarahkan ke halaman Google AI for Developers. Klik tombol <strong class="text-white">"Create API key in new project"</strong>.</p></div></div>
-                    <div class="flex items-start gap-4"><div class="text-violet-400 text-2xl w-8 text-center pt-1"><i class="fas fa-copy"></i></div><div><h3 class="font-bold text-lg text-slate-100">Langkah 3: Salin Kunci Anda</h3><p class="text-slate-400">Sebuah jendela akan muncul menampilkan Kunci API baru Anda. Klik ikon salin <i class="fas fa-copy"></i> di sebelahnya untuk menyimpannya ke clipboard.</p></div></div>
-                    <div class="flex items-start gap-4"><div class="text-violet-400 text-2xl w-8 text-center pt-1"><i class="fas fa-paste"></i></div><div><h3 class="font-bold text-lg text-slate-100">Langkah 4: Tempel & Simpan di Aplikasi</h3><p class="text-slate-400">Kembali ke aplikasi ini, tempelkan kunci yang sudah disalin ke dalam kolom yang tersedia dan klik tombol <strong class="text-white">"Simpan"</strong>.</p></div></div>
-                </div>
-                <!-- Mobile Guide -->
-                <div class="block md:hidden text-slate-300 space-y-6">
-                     <div class="flex items-start gap-4"><div class="text-violet-400 text-2xl w-8 text-center pt-1"><i class="fas fa-mobile-alt"></i></div><div><h3 class="font-bold text-lg text-slate-100">Langkah 1: Buka Menu</h3><p class="text-slate-400">Di ponsel Anda, buka <a href="https://aistudio.google.com/app/apikey" target="_blank" class="text-teal-300 hover:underline font-semibold">Google AI Studio</a>. Ketuk ikon menu <i class="fas fa-bars"></i> di pojok kiri atas.</p></div></div>
-                    <div class="flex items-start gap-4"><div class="text-violet-400 text-2xl w-8 text-center pt-1"><i class="fas fa-key"></i></div><div><h3 class="font-bold text-lg text-slate-100">Langkah 2: Pilih "Get API key"</h3><p class="text-slate-400">Dari menu yang muncul, ketuk pada pilihan <strong class="text-white">"Get API key"</strong>.</p></div></div>
-                    <div class="flex items-start gap-4"><div class="text-violet-400 text-2xl w-8 text-center pt-1"><i class="fas fa-plus-square"></i></div><div><h3 class="font-bold text-lg text-slate-100">Langkah 3: Buat Kunci Baru</h3><p class="text-slate-400">Di halaman berikutnya, ketuk tombol <strong class="text-white">"Create API key in new project"</strong>.</p></div></div>
-                    <div class="flex items-start gap-4"><div class="text-violet-400 text-2xl w-8 text-center pt-1"><i class="fas fa-copy"></i></div><div><h3 class="font-bold text-lg text-slate-100">Langkah 4: Salin Kunci Anda</h3><p class="text-slate-400">Kunci API baru Anda akan ditampilkan. Ketuk ikon salin <i class="fas fa-copy"></i> di sebelahnya.</p></div></div>
-                    <div class="flex items-start gap-4"><div class="text-violet-400 text-2xl w-8 text-center pt-1"><i class="fas fa-paste"></i></div><div><h3 class="font-bold text-lg text-slate-100">Langkah 5: Tempel & Simpan</h3><p class="text-slate-400">Kembali ke aplikasi ini, tempelkan kunci Anda di kolom yang tersedia dan klik tombol <strong class="text-white">"Simpan"</strong>.</p></div></div>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- History Modal -->
-    <div id="history-modal" class="modal-overlay fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm hidden">
-        <div class="modal-content max-w-lg w-full rounded-xl">
-            <div class="flex items-center justify-between p-5 border-b border-slate-700">
-                <h3 class="text-xl font-bold text-slate-100 flex items-center gap-3"><i class="fas fa-history gradient-text"></i>Riwayat Cerita</h3>
-                <button class="close-modal-btn text-slate-400 hover:text-white transition-colors"><i class="fa-solid fa-xmark fa-lg"></i></button>
-            </div>
-            <div id="history-list" class="p-6 space-y-3 max-h-[60vh] overflow-y-auto">
-                <!-- History items will be populated here -->
-            </div>
-            <div class="p-5 border-t border-slate-700">
-                <button id="clear-history-btn" class="w-full bg-red-600 hover:bg-red-500 text-white font-semibold py-2 px-4 rounded-lg flex items-center justify-center gap-2">
-                    <i class="fas fa-trash-alt"></i> Hapus Semua Riwayat
-                </button>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Delete Confirmation Modal -->
-    <div id="delete-confirm-modal" class="modal-overlay fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm hidden">
-        <div class="modal-content max-w-sm w-full rounded-xl">
-            <div class="p-6 text-center">
-                <i class="fas fa-exclamation-triangle text-4xl text-amber-400 mb-4"></i>
-                <h3 class="text-lg font-bold text-slate-100">Konfirmasi Hapus</h3>
-                <p class="text-sm text-slate-400 mt-2 mb-6">Apakah Anda yakin ingin menghapus API Key yang tersimpan?</p>
-                <div class="flex justify-center gap-4">
-                    <button id="cancel-delete-btn" class="btn-secondary-theme px-6 py-2 rounded-lg font-semibold">Batal</button>
-                    <button id="confirm-delete-btn" class="bg-red-600 hover:bg-red-500 text-white px-6 py-2 rounded-lg font-semibold">Ya, Hapus</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Logout Confirmation Modal -->
-    <div id="logout-confirm-modal" class="modal-overlay fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm hidden">
-        <div class="modal-content max-w-sm w-full rounded-xl">
-            <div class="p-6 text-center">
-                <i class="fas fa-sign-out-alt text-4xl text-amber-400 mb-4"></i>
-                <h3 class="text-lg font-bold text-slate-100">Konfirmasi Keluar</h3>
-                <p class="text-sm text-slate-400 mt-2 mb-6">Apakah Anda yakin ingin keluar dan mengunci aplikasi?</p>
-                <div class="flex justify-center gap-4">
-                    <button id="cancel-logout-btn" class="btn-secondary-theme px-6 py-2 rounded-lg font-semibold">Batal</button>
-                    <button id="confirm-logout-btn" class="bg-red-600 hover:bg-red-500 text-white px-6 py-2 rounded-lg font-semibold">Ya, Keluar</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-    <!-- Main Content -->
-    <div class="container mx-auto max-w-4xl px-4 py-8 sm:py-12">
-        <header class="text-center mb-10">
-            <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight gradient-text">
-                PROMPT GENERATOR VEO
-            </h1>
-             <p class="text-lg text-slate-400 mt-3">
-                BY AIYRA DESIGN | PROMPT.IQUE
-            </p>
-        </header>
-
-        <main class="space-y-8">
-            <!-- Auth Section -->
-            <section id="auth-section" class="form-section">
-                <div id="login-form">
-                    <h3 class="text-xl font-bold text-center gradient-text mb-4">Akses Diperlukan</h3>
-                    <div class="max-w-sm mx-auto">
-                        <label for="password-input" class="form-label justify-center">Kata Sandi</label>
-                        <div class="relative flex items-center">
-                            <input type="password" id="password-input" class="form-input w-full pr-10" placeholder="Masukkan sandi...">
-                            <button type="button" id="toggle-password-btn" class="absolute inset-y-0 right-0 px-3 flex items-center text-slate-400 hover:text-slate-200">
-                                <i class="fas fa-eye" id="password-eye-icon"></i>
+    <div id="app-container">
+        <!-- Navbar -->
+        <header class="bg-[var(--theme-panel-bg)]/80 backdrop-blur-sm shadow-sm sticky top-0 z-40 border-b border-[var(--theme-border)] transition-colors duration-500">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-16">
+                    <div class="flex-shrink-0">
+                        <h1 class="text-xl md:text-2xl font-extrabold tracking-tight gradient-text">
+                            PROMPTIQUE
+                        </h1>
+                    </div>
+                    <div class="flex items-center space-x-1">
+                        <!-- Desktop Buttons -->
+                        <div class="hidden md:flex items-center space-x-2">
+                            <button data-ui-key-title="langTitle" id="lang-btn-desktop" class="btn btn-neutral h-10 px-3">
+                                <span class="font-bold text-sm">ID</span>
+                            </button>
+                            <button data-ui-key-title="historyTitle" id="history-btn-desktop" class="btn btn-neutral h-10 px-3">
+                                <i class="fas fa-history fa-fw text-lg"></i>
+                                <span data-ui-key="historyTitle" class="text-sm font-semibold">Riwayat</span>
+                            </button>
+                            <button data-ui-key-title="apiKeyTitle" id="api-key-btn-desktop" class="btn btn-neutral h-10 px-3">
+                                <i class="fas fa-key fa-fw text-lg"></i>
+                                <span data-ui-key="apiKeyTitle" class="text-sm font-semibold">Kunci API</span>
+                            </button>
+                            <button data-ui-key-title="themeTitle" id="theme-btn-desktop" class="btn btn-neutral w-10 h-10 px-0">
+                                <i class="fas fa-moon fa-fw text-lg"></i>
+                            </button>
+                            <button data-ui-key-title="logoutButton" id="logout-btn-desktop" class="btn btn-neutral w-10 h-10 px-0 hidden">
+                                <i class="fas fa-sign-out-alt fa-fw text-lg"></i>
                             </button>
                         </div>
-                        <button id="login-btn" class="mt-4 w-full bg-violet-600 hover:bg-violet-500 text-white font-bold py-2 px-6 rounded-lg transition-colors">Masuk</button>
-                    </div>
-                </div>
-                <div id="logout-area" class="hidden">
-                    <div class="flex flex-col sm:flex-row justify-between items-center gap-3">
-                        <p class="text-lg font-semibold text-teal-400">Selamat datang!</p>
-                        <button id="logout-btn" class="w-full sm:w-auto px-4 py-2 bg-red-600 hover:bg-red-500 text-white font-semibold rounded-lg flex items-center justify-center">
-                            <i class="fas fa-sign-out-alt mr-2"></i>Keluar
-                        </button>
-                    </div>
-                </div>
-            </section>
-            
-            <fieldset id="generator-fieldset" disabled class="space-y-8">
-                <!-- API & Initial Concept Section -->
-                <section class="form-section">
-                    <h2 class="text-xl font-bold mb-6 text-center gradient-text"><i class="fas fa-key mr-2"></i>Langkah 1: Konsep & Pengaturan AI</h2>
-                    <div class="mb-6 pb-6 border-b border-slate-700">
-                        <label for="api-key-input" class="form-label"><i class="fa-solid fa-lock"></i>API Key Google AI</label>
-                        <div class="flex flex-wrap gap-2 mb-3">
-                            <button type="button" id="guide-btn" class="btn-secondary-theme flex-grow sm:flex-grow-0 px-4 py-2 font-semibold rounded-lg flex items-center justify-center flex-shrink-0"><i class="fas fa-book mr-2"></i>Panduan</button>
-                            <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer" class="btn-secondary-theme flex-grow sm:flex-grow-0 px-4 py-2 font-semibold rounded-lg flex items-center justify-center flex-shrink-0">
-                                <i class="fas fa-external-link-alt mr-2"></i>Dapatkan Key
-                            </a>
+                        <!-- Mobile Buttons -->
+                        <div class="md:hidden flex items-center space-x-1">
+                             <button title="Ganti Bahasa" id="lang-btn-mobile-icon" class="btn btn-neutral w-10 h-10 px-0">
+                                <span class="font-bold text-sm">ID</span>
+                            </button>
+                            <button title="Riwayat" id="history-btn-mobile-icon" class="btn btn-neutral w-10 h-10 px-0">
+                                <i class="fas fa-history fa-fw text-lg"></i>
+                            </button>
+                             <button title="Kunci API" id="api-key-btn-mobile-icon" class="btn btn-neutral w-10 h-10 px-0">
+                                <i class="fas fa-key fa-fw text-lg"></i>
+                            </button>
+                            <button id="hamburger-btn" class="btn btn-neutral w-10 h-10 px-0">
+                                <i class="fas fa-bars fa-fw text-lg"></i>
+                            </button>
                         </div>
-                        <div class="flex flex-col sm:flex-row gap-2">
-                            <input type="password" id="api-key-input" class="form-input flex-grow" placeholder="Masukkan API Key Anda...">
-                            <div class="flex gap-2 w-full sm:w-auto flex-shrink-0">
-                                <button type="button" id="delete-api-key-button" class="flex-1 sm:w-auto justify-center px-4 py-2 bg-red-600 hover:bg-red-500 text-white font-semibold rounded-lg flex items-center"><i class="fas fa-trash-alt mr-2"></i>Hapus</button>
-                                <button type="button" id="save-api-key-button" class="flex-1 sm:w-auto justify-center px-4 py-2 bg-violet-600 hover:bg-violet-500 text-white font-semibold rounded-lg flex items-center"><i class="fas fa-save mr-2"></i>Simpan</button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="container mx-auto p-4 sm:p-6 lg:p-8">
+            <div class="text-center mb-12 animate__animated animate__fadeInDown animate__faster">
+                <h2 data-ui-key="mainTitle" class="text-3xl md:text-4xl font-bold tracking-tight gradient-text">Buat Prompt Video Profesional</h2>
+                <p data-ui-key="mainSubtitle" class="mt-3 max-w-2xl mx-auto text-lg text-[var(--theme-text-secondary)]">Isi ide Anda, biarkan AI menyusun detailnya, dan dapatkan prompt yang siap pakai untuk VEO atau generator video AI lainnya.</p>
+            </div>
+
+            <div class="max-w-4xl mx-auto">
+                <!-- Login Card -->
+                <section id="login-card" class="card p-6 sm:p-8 text-center animate__animated animate__fadeInUp animate__faster">
+                    <h3 data-ui-key="loginWelcome" class="text-2xl font-bold gradient-text">Selamat Datang! Silakan Login.</h3>
+                    <p class="text-[var(--theme-text-secondary)] mt-2 mb-8" data-ui-key="loginSubtitle">Masukkan kata sandi untuk melanjutkan.</p>
+                    <form id="login-form" class="max-w-xs mx-auto">
+                        <div class="space-y-4">
+                            <div class="relative">
+                                <label for="password" class="sr-only">Password</label>
+                                <input type="password" id="password" class="form-input text-center pr-10" data-ui-key-placeholder="passwordPlaceholder">
+                                <i id="toggle-password" class="fas fa-eye absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer text-[var(--theme-text-secondary)] hover:text-[var(--theme-text-primary)]"></i>
                             </div>
+                            <button type="submit" class="w-full btn btn-primary py-3 px-6">
+                                <span data-ui-key="loginButton">Login</span>
+                            </button>
                         </div>
-                        <div id="api-status-indicator" class="mt-3 flex items-center gap-2 text-sm">
-                            <span id="api-status-dot" class="w-3 h-3 rounded-full"></span>
-                            <span id="api-status-text"></span>
-                        </div>
-                    </div>
-                    <div class="space-y-4">
-                        <!-- Story Writing Guide -->
-                        <div class="p-4 border border-slate-700 rounded-lg bg-slate-800/5">
-                            <h4 class="font-semibold text-slate-200 mb-2 flex items-center gap-2"><i class="fas fa-info-circle text-violet-400"></i>Panduan Menulis Cerita</h4>
-                            <ul class="list-disc list-inside text-slate-400 text-sm space-y-1">
-                                <li><strong>Sebutkan Subjek:</strong> Siapa atau apa tokoh utamanya? (contoh: "seorang ksatria tua", "robot pengantar barang")</li>
-                                <li><strong>Jelaskan Aksi:</strong> Apa yang sedang terjadi? (contoh: "berjalan di tengah hujan badai", "terbang melintasi kota")</li>
-                                <li><strong>Gambarkan Latar:</strong> Di mana adegan ini berlangsung? (contoh: "di hutan ajaib saat fajar", "di stasiun luar angkasa")</li>
-                            </ul>
-                        </div>
-                        <div>
-                            <label for="video-story" class="form-label"><i class="fas fa-feather-alt"></i>Ceritakan singkat ide video Anda</label>
-                            <textarea id="video-story" class="form-textarea" rows="4" placeholder="Contoh: Seorang ksatria tua berjalan sendirian di tengah hujan badai di sebuah hutan ajaib saat fajar..."></textarea>
-                        </div>
-                        <div>
-                            <label for="style" class="form-label"><i class="fa-solid fa-palette"></i>Pilih Gaya Visual</label>
-                            <select id="style" class="form-select"></select>
-                        </div>
-                        <button type="button" id="ai-generate-btn" class="w-full inline-flex items-center justify-center px-8 py-3 font-bold text-white rounded-full transition-all duration-300 bg-gradient-to-r from-teal-500 via-purple-500 to-pink-500 hover:shadow-lg hover:shadow-purple-500/20">
-                           <span id="ai-btn-text"><i class="fas fa-lightbulb mr-3"></i>Kembangkan Ide dengan AI</span>
-                           <div class="loading-spinner ml-3 hidden"></div>
-                        </button>
-                    </div>
+                    </form>
                 </section>
 
-                <!-- Detailed Form Section (Initially Hidden) -->
-                <form id="detailed-form" class="space-y-8 hidden">
-                    <section class="form-section">
-                        <h2 class="text-xl font-bold mb-6 text-center gradient-text"><i class="fas fa-pencil-alt mr-2"></i>Langkah 2: Sesuaikan Hasil AI</h2>
+                <!-- Generator Content (Initially Hidden) -->
+                <div id="generator-content" class="hidden space-y-10">
+                    <!-- Step 1: Ide Pokok -->
+                    <section id="step-1" class="card p-6 sm:p-8 animate__animated animate__fadeInUp animate__faster">
+                        <div>
+                            <p class="text-sm font-bold tracking-wider uppercase text-[var(--theme-accent-2)]" data-ui-key="step1Label"></p>
+                            <h3 data-ui-key="step1Title" class="text-2xl font-bold gradient-text">Ide Pokok & Pengaturan Video</h3>
+                        </div>
+                        <p data-ui-key="step1Subtitle" class="text-[var(--theme-text-secondary)] mt-2 mb-8">Mulailah dengan ide dasar, pengaturan umum, dan jumlah adegan.</p>
                         <div class="space-y-6">
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div><label for="subject" class="form-label"><i class="fa-solid fa-user-astronaut"></i>Subjek Utama</label><input type="text" id="subject" class="form-input" placeholder="Diisi oleh AI..."></div>
-                                <div><label for="action" class="form-label"><i class="fa-solid fa-person-running"></i>Aksi / Kegiatan</label><input type="text" id="action" class="form-input" placeholder="Diisi oleh AI..."></div>
+                            <div>
+                                <label for="story-idea" class="form-label" data-ui-key="storyIdeaLabel">Ide Cerita</label>
+                                <textarea id="story-idea" rows="4" class="form-textarea" data-ui-key-placeholder="storyIdeaPlaceholder"></textarea>
                             </div>
-                            <div><label for="setting" class="form-label"><i class="fa-solid fa-mountain-sun"></i>Latar / Lingkungan</label><input type="text" id="setting" class="form-input" placeholder="Diisi oleh AI..."></div>
-                            <div><label for="lighting" class="form-label"><i class="fa-solid fa-sun"></i>Pencahayaan</label><select id="lighting" class="form-select"></select></div>
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                <div><label for="camera-angle" class="form-label"><i class="fa-solid fa-camera-retro"></i>Sudut Kamera</label><select id="camera-angle" class="form-select"></select></div>
-                                <div><label for="camera-shot" class="form-label"><i class="fa-solid fa-expand"></i>Jenis Bidikan</label><select id="camera-shot" class="form-select"></select></div>
-                                <div><label for="camera-movement" class="form-label"><i class="fa-solid fa-video"></i>Gerakan Kamera</label><select id="camera-movement" class="form-select"></select></div>
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                                <div>
+                                    <label for="videoType" class="form-label" data-ui-key="videoTypeLabel">Jenis Video</label>
+                                    <select id="videoType" class="form-select"></select>
+                                </div>
+                                <div>
+                                    <label for="visualStyle" class="form-label" data-ui-key="visualStyleLabel">Gaya Visual</label>
+                                    <select id="visualStyle" class="form-select"></select>
+                                </div>
+                                <div>
+                                    <label for="scene-count" class="form-label" data-ui-key="sceneCountLabel">Jumlah Adegan</label>
+                                    <select id="scene-count" class="form-select"></select>
+                                </div>
                             </div>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div><label for="duration" class="form-label"><i class="fa-solid fa-clock"></i>Durasi</label><input type="text" id="duration" class="form-input" value="8 Detik" disabled></div>
-                                <div><label for="extra-details" class="form-label"><i class="fa-solid fa-wand-magic-sparkles"></i>Detail Tambahan & Efek</label><input type="text" id="extra-details" class="form-input" placeholder="Diisi oleh AI..."></div>
-                            </div>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div><label for="sound-effects" class="form-label"><i class="fa-solid fa-volume-high"></i>Efek Suara Latar</label><textarea id="sound-effects" class="form-textarea" rows="2" placeholder="Diisi oleh AI..."></textarea></div>
-                                <div><label for="character-speech" class="form-label"><i class="fa-solid fa-comments"></i>Ucapan Karakter</label><textarea id="character-speech" class="form-textarea" rows="2" placeholder="Diisi oleh AI..."></textarea></div>
-                            </div>
-                            <div><label for="negative-prompt" class="form-label"><i class="fa-solid fa-ban"></i>Prompt Negatif (Opsional)</label><input type="text" id="negative-prompt" class="form-input" placeholder="Diisi oleh AI..."></div>
+                            <button id="ai-director-btn" class="w-full btn btn-primary mt-6 py-3 px-8">
+                                <span id="ai-btn-text" class="flex items-center justify-center gap-2">
+                                    <i class="fas fa-user-astronaut"></i>
+                                    <span data-ui-key="generateButton">Sutradara AI</span>
+                                </span>
+                                <span id="ai-btn-loader" class="hidden"></span>
+                            </button>
                         </div>
                     </section>
-                    
-                    <!-- Action Buttons -->
-                    <section class="flex flex-col sm:flex-row gap-4">
-                        <button type="reset" class="btn-secondary-theme w-full sm:w-auto px-6 py-3 font-bold rounded-lg transition-colors"><i class="fas fa-rotate-left mr-2"></i>Reset</button>
-                        <button type="submit" class="w-full sm:flex-grow bg-violet-600 hover:bg-violet-500 text-white font-bold py-3 px-8 rounded-lg transition-colors"><i class="fas fa-cogs mr-2"></i>Hasilkan Prompt Final</button>
-                    </section>
-                </form>
-                
-                <!-- Result Section -->
-                <section id="result-section" class="mt-10 pt-6 border-t border-slate-700 hidden">
-                    <!-- Veo Guide -->
-                    <div class="mb-6 p-4 border border-slate-700 rounded-lg bg-slate-800/5">
-                        <h4 class="font-semibold text-slate-200 mb-2 flex items-center gap-2"><i class="fas fa-video text-teal-400"></i>Panduan Veo</h4>
-                        <ul class="list-disc list-inside text-slate-400 text-sm space-y-1">
-                            <li>Buka <a href="https://gemini.google.com/" target="_blank" class="text-teal-300 hover:underline font-semibold">Gemini</a> (sebelumnya Bard).</li>
-                            <li>Pastikan Anda memiliki akses ke model Veo (mungkin memerlukan langganan Gemini Advanced).</li>
-                            <li>Salin prompt Bahasa Inggris dari hasil di bawah.</li>
-                            <li>Tempel (paste) prompt tersebut ke dalam kolom chat Gemini.</li>
-                            <li>Kirim prompt dan tunggu Gemini menghasilkan video Anda.</li>
-                        </ul>
+
+                    <!-- Step 2: Storyboard Container -->
+                    <div id="storyboard-container" class="space-y-10">
+                        <!-- Dynamic storyboard will be injected here -->
                     </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <!-- Indonesian Prompt -->
-                        <div>
-                            <h3 class="text-lg font-semibold mb-2 text-slate-300">Prompt Bahasa Indonesia</h3>
-                            <div class="relative">
-                                <textarea id="outputPrompt-id" rows="10" class="form-textarea font-mono text-sm"></textarea>
-                                <button id="translate-btn" class="absolute top-3 right-3 btn-secondary-theme font-semibold py-2 px-3 rounded-lg text-sm flex items-center justify-center" title="Simpan & Terjemahkan">
-                                    <i class="fas fa-language"></i>
-                                </button>
+
+                    <!-- Step 3: Final Prompts Container -->
+                    <div id="final-prompt-step-container" class="hidden space-y-10">
+                        <section id="step-3" class="card p-6 sm:p-8 animate__animated animate__fadeInUp animate__faster">
+                            <div>
+                                <p class="text-sm font-bold tracking-wider uppercase text-[var(--theme-accent-2)]" data-ui-key="step3Label"></p>
+                                <h3 data-ui-key="step3Title" class="text-2xl font-bold gradient-text">Prompt Final</h3>
                             </div>
-                        </div>
-                        <!-- English Prompt -->
-                        <div>
-                            <h3 class="text-lg font-semibold mb-2 text-slate-300">Prompt Bahasa Inggris (Final)</h3>
-                            <div class="relative">
-                                <textarea id="outputPrompt-en" rows="10" class="form-textarea font-mono text-sm" readonly></textarea>
-                                <button id="copy-en-btn" class="absolute top-3 right-3 btn-secondary-theme font-semibold py-2 px-3 rounded-lg text-sm flex items-center justify-center" title="Salin Prompt Inggris">
-                                    <i class="fas fa-copy"></i>
+                            <p data-ui-key="step3Subtitle" class="text-[var(--theme-text-secondary)] mt-2 mb-8">Tinjau hasil, lalu hasilkan semua prompt video dengan sekali klik.</p>
+                            <div class="space-y-6">
+                                <button id="generate-all-prompts-btn" class="w-full btn btn-primary py-3 px-8">
+                                     <span id="gen-all-btn-text" class="flex items-center justify-center gap-2">
+                                        <i class="fas fa-wand-magic-sparkles"></i>
+                                        <span data-ui-key="generateAllPromptsButton">Hasilkan Semua Prompt</span>
+                                    </span>
+                                    <span id="gen-all-btn-loader" class="hidden"></span>
                                 </button>
+                                <div id="final-prompts-container" class="space-y-4 pt-6 mt-6 border-t border-[var(--theme-border)]">
+                                    <!-- Final prompts will be rendered here -->
+                                </div>
                             </div>
-                        </div>
+                        </section>
                     </div>
-                </section>
-            </fieldset>
+
+                </div>
+            </div>
         </main>
     </div>
-    
-    <!-- Custom Alert Container -->
-    <div id="alert-placeholder" class="fixed top-5 right-5 z-[110] w-full max-w-sm space-y-3"></div>
 
-    <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        // --- Security: Dev Tools Check & Right-Click ---
-        // const devToolCheck = () => {
-        //     const threshold = 160;
-        //     if (window.outerWidth - window.innerWidth > threshold || window.outerHeight - window.innerHeight > threshold) {
-        //         document.body.innerHTML = '<div style="position:fixed;top:0;left:0;width:100%;height:100%;background:#0f172a;color:white;display:flex;justify-content:center;align-items:center;font-family:sans-serif;font-size:2rem;">Akses tidak diizinkan.</div>';
-        //         setTimeout(() => { window.location.href = "about:blank"; }, 1000);
-        //     }
-        // };
-        // setInterval(devToolCheck, 1000);
+    <!-- Off-canvas Menu -->
+    <div id="offcanvas-menu" class="fixed inset-0 z-50 hidden">
+        <!-- Backdrop -->
+        <div id="offcanvas-backdrop" class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
+        <!-- Menu Panel -->
+        <div id="offcanvas-menu-panel" class="absolute top-0 right-0 h-full w-4/5 max-w-xs shadow-xl">
+            <div class="p-4 flex flex-col h-full">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-lg font-bold gradient-text" data-ui-key="mobileMenuTitle">Menu</h3>
+                    <button id="offcanvas-close-btn" class="btn btn-neutral w-10 h-10 px-0">
+                        <i class="fas fa-times fa-fw text-lg"></i>
+                    </button>
+                </div>
+                <div class="space-y-2">
+                    <button id="theme-btn-mobile" class="btn btn-neutral w-full justify-start p-3">
+                        <i class="fas fa-moon fa-fw text-lg w-6 text-center"></i>
+                        <span data-ui-key="themeTitle">Ganti Tema</span>
+                    </button>
+                    <button id="logout-btn-mobile-menu" class="btn btn-neutral w-full justify-start p-3 hidden">
+                        <i class="fas fa-sign-out-alt fa-fw text-lg w-6 text-center"></i>
+                        <span data-ui-key="logoutButton">Logout</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        // document.addEventListener('contextmenu', (event) => {
-        //     const target = event.target;
-        //     if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA') {
-        //         return; 
-        //     }
-        //     event.preventDefault();
-        // });
+    <!-- Modals -->
+    <div id="history-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+        <div class="card p-6 w-full max-w-lg transform transition-all flex flex-col animate__animated animate__faster" style="height: 80vh; max-height: 500px;">
+            <div class="flex justify-between items-center mb-4 pb-4 border-b border-[var(--theme-border)]">
+                <h3 class="text-2xl font-bold gradient-text"><i class="fas fa-history mr-2"></i><span data-ui-key="historyModalTitle">Riwayat Prompt</span></h3>
+                <button class="close-modal-btn text-[var(--theme-text-secondary)] hover:text-[var(--theme-accent-2)] text-2xl">&times;</button>
+            </div>
+            <div id="history-content" class="flex-grow overflow-y-auto space-y-2 pr-2"></div>
+            <div class="mt-4 pt-4 border-t border-[var(--theme-border)] flex justify-end">
+                <button id="clear-history-btn" class="btn btn-danger py-2 px-4"><i class="fas fa-trash mr-2"></i><span data-ui-key="clearHistoryButton">Bersihkan Riwayat</span></button>
+            </div>
+        </div>
+    </div>
 
-        (function () {
-            const isAppleDevice = /Mac|iPhone|iPad|iPod/i.test(navigator.userAgent);
-            const threshold = 160;
-        
-            if (!isAppleDevice) {
-                const devToolCheck = () => {
-                    if (
-                        window.outerWidth - window.innerWidth > threshold ||
-                        window.outerHeight - window.innerHeight > threshold
-                    ) {
-                        if (window.outerHeight > 0 && window.innerHeight > 0) {
-                            window.open('', '_self').close();
+    <div id="api-key-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+        <div class="card p-6 sm:p-8 w-full max-w-lg transform transition-all animate__animated animate__faster">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-bold gradient-text"><i class="fas fa-key mr-2"></i><span data-ui-key="apiKeySettingsTitle"></span></h3>
+                <button class="close-modal-btn text-[var(--theme-text-secondary)] hover:text-[var(--theme-accent-2)] text-2xl">&times;</button>
+            </div>
+            <p class="text-[var(--theme-text-secondary)] mb-6" data-ui-key="chooseApiKeySource"></p>
+            
+            <div class="space-y-4">
+                <!-- System API Option -->
+                <div id="api-source-system" class="api-source-option rounded-lg p-4 cursor-pointer transition-all">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="font-bold text-[var(--theme-text-primary)]" data-ui-key="useSystemApi"></p>
+                            <p class="text-sm text-[var(--theme-text-secondary)]" data-ui-key="useSystemApiDesc"></p>
+                        </div>
+                        <i class="fas fa-check-circle text-xl"></i>
+                    </div>
+                </div>
+
+                <!-- Personal API Option -->
+                <div id="api-source-personal" class="api-source-option rounded-lg p-4 cursor-pointer transition-all">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="font-bold text-[var(--theme-text-primary)]" data-ui-key="usePersonalApi"></p>
+                            <p class="text-sm text-[var(--theme-text-secondary)]" data-ui-key="usePersonalApiDesc"></p>
+                        </div>
+                        <i class="far fa-circle text-xl"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Personal API Details (hidden by default) -->
+            <div id="personal-api-details" class="mt-6 space-y-6 hidden">
+                <div>
+                    <h4 class="font-bold text-[var(--theme-text-primary)] mb-2" data-ui-key="howToGetKey"></h4>
+                    <ol id="api-key-instructions-desktop" class="list-decimal list-inside text-sm text-[var(--theme-text-secondary)] space-y-1"></ol>
+                    <ol id="api-key-instructions-mobile" class="list-decimal list-inside text-sm text-[var(--theme-text-secondary)] space-y-1 hidden"></ol>
+                </div>
+                <div>
+                    <label for="api-key-input" class="form-label uppercase text-xs" data-ui-key="yourApiKeyLabel"></label>
+                    <div class="relative">
+                        <input type="password" id="api-key-input" class="form-input pr-24">
+                        <div class="absolute inset-y-0 right-0 flex items-center pr-2 space-x-1">
+                             <button id="toggle-api-key-visibility" class="btn btn-neutral w-8 h-8 p-0"><i class="fas fa-eye"></i></button>
+                            <button id="delete-api-key-btn" class="btn btn-danger w-8 h-8 p-0"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- System API Note (visible by default) -->
+            <div id="system-api-note" class="mt-6 p-4 bg-blue-500/10 border-l-4 border-[var(--theme-accent-2)] text-[var(--theme-accent-2)] rounded-r-lg">
+                <p class="text-sm" data-ui-key="apiKeyNote"></p>
+            </div>
+
+            <div class="flex gap-4 mt-8">
+                <button id="api-modal-cancel-btn" class="w-full btn btn-neutral py-2 px-4" data-ui-key="cancelButton"></button>
+                <button id="api-modal-save-btn" class="w-full btn btn-primary py-2 px-4" data-ui-key="saveButton"></button>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="alert-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+        <div id="alert-modal-content" class="card p-8 w-full max-w-md transform transition-all text-center animate__animated animate__faster">
+            <div id="alert-icon-container" class="w-16 h-16 rounded-full mx-auto flex items-center justify-center mb-4">
+                <i id="alert-icon" class="fas text-4xl text-white"></i>
+            </div>
+            <h3 id="alert-title" class="text-2xl font-bold text-[var(--theme-text-primary)] mb-2"></h3>
+            <p id="alert-message" class="text-[var(--theme-text-secondary)]"></p>
+            <button id="alert-close-btn" class="btn mt-6 w-full"></button>
+        </div>
+    </div>
+
+    <div id="confirmation-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+        <div id="confirmation-modal-content" class="card p-8 w-full max-w-md transform transition-all text-center animate__animated animate__faster">
+            <div class="w-16 h-16 rounded-full mx-auto flex items-center justify-center mb-4 bg-[var(--theme-accent-3)]">
+                <i class="fas fa-exclamation-triangle text-4xl text-[var(--theme-bg)]"></i>
+            </div>
+            <h3 id="confirmation-title" class="text-2xl font-bold text-[var(--theme-text-primary)] mb-2"></h3>
+            <p id="confirmation-message" class="text-[var(--theme-text-secondary)]"></p>
+            <div class="flex gap-4 mt-6">
+                <button id="confirm-yes-btn" class="w-full btn btn-danger"></button>
+                <button id="confirm-no-btn" class="w-full btn btn-neutral"></button>
+            </div>
+        </div>
+    </div>
+
+    <script type="importmap">
+      {
+        "imports": {
+          "@google/genai": "https://esm.sh/@google/genai@^1.4.0"
+        }
+      }
+    </script>
+    <script type="module">
+        /* tslint:disable */
+        /**
+         * @license
+         * Copyright 2025 Google LLC
+         * SPDX-License-Identifier: Apache-2.0
+         */
+        import { GoogleGenAI, Type } from "@google/genai";
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- GEMINI API SETUP ---
+            const SYSTEM_API_KEY = 'AIzaSyCPw9hFQQ2fnNARCFev29--Pq3l6C5MyRA';
+
+            // --- CONFIGURATION & STATE ---
+            const AppState = {
+                currentLang: 'id',
+                currentTheme: 'dark',
+                storyboardData: null,
+                isLoggedIn: false,
+                personalApiKey: null,
+                apiKeySource: 'system', // 'system' or 'personal'
+            };
+
+            const UI_STRINGS = {
+                id: {
+                    langTitle: "Ganti Bahasa",
+                    themeTitle: "Ganti Tema",
+                    mainTitle: "Buat Prompt Video Profesional",
+                    mainSubtitle: "Isi ide Anda, biarkan AI menyusun detailnya, dan dapatkan prompt yang siap pakai untuk VEO atau generator video AI lainnya.",
+                    step1Label: "Langkah 1",
+                    step2Label: "Langkah 2",
+                    step3Label: "Langkah 3",
+                    step1Title: "Ide Pokok & Pengaturan Video",
+                    step1Subtitle: "Mulailah dengan ide dasar, pengaturan umum, dan jumlah adegan.",
+                    step2Title: "Detail Cerita & Karakter",
+                    step2Subtitle: "Tinjau dan ubah detail yang dihasilkan AI agar sesuai dengan visi Anda.",
+                    step3Title: "Prompt Final",
+                    step3Subtitle: "Tinjau hasil, lalu hasilkan semua prompt video dengan sekali klik.",
+                    storyIdeaLabel: "Ide Cerita",
+                    storyIdeaPlaceholder: "Contoh: Seekor kucing astronot menemukan planet yang terbuat dari benang wol.",
+                    sceneCountLabel: "Jumlah Adegan",
+                    videoTypeLabel: "Jenis Video",
+                    visualStyleLabel: "Gaya Visual",
+                    generateButton: "Sutradara AI",
+                    generateAllPromptsButton: "Hasilkan Semua Prompt",
+                    keyCharactersLabel: "Karakter & Objek Kunci",
+                    editButton: "Ubah",
+                    saveButton: "Simpan & Perbarui",
+                    sceneLabel: "Adegan",
+                    combinedPromptTab: "Prompt Gabungan",
+                    imageMotionPromptTab: "Gambar + Gerakan",
+                    combinedPromptDescription: "Prompt lengkap untuk generasi Teks-ke-Video.",
+                    imageMotionPromptDescription: "Hasilkan gambar dulu, lalu gunakan prompt kedua untuk menganimasikannya.",
+                    imagePromptStepLabel: "Langkah 1: Prompt Gambar",
+                    animationPromptStepLabel: "Langkah 2: Prompt Gerakan & Audio",
+                    copyCombinedPrompt: (sceneNumber) => `Salin Prompt Adegan ${sceneNumber}`,
+                    copyImagePrompt: "Salin Prompt Gambar",
+                    copyAnimationPrompt: "Salin Prompt Gerakan & Audio",
+                    copyButton: "Salin",
+                    historyTitle: "Riwayat",
+                    apiKeyTitle: "Kunci API",
+                    logoutButton: "Keluar",
+                    historyModalTitle: "Riwayat Ide Cerita",
+                    clearHistoryButton: "Bersihkan Riwayat",
+                    // New API Modal Strings
+                    apiKeySettingsTitle: "Pengaturan API Key",
+                    chooseApiKeySource: "Pilih sumber Kunci API yang ingin Anda gunakan.",
+                    useSystemApi: "Gunakan API Sistem",
+                    useSystemApiDesc: "Menggunakan kunci bawaan (ada batasan)",
+                    usePersonalApi: "Gunakan API Pribadi Anda",
+                    usePersonalApiDesc: "Masukkan kunci API Gemini Anda sendiri",
+                    howToGetKey: "Cara mendapatkan API Key:",
+                    apiKeyInstructionsDesktop: [
+                        "Kunjungi <a href='https://aistudio.google.com/' target='_blank' class='text-[var(--theme-accent-3)] hover:underline'>Google AI Studio</a>.",
+                        "Masuk dengan akun Google Anda.",
+                        "Klik tombol <strong>Get API key</strong> yang ada di menu sebelah kiri.",
+                        "Pilih atau buat proyek, lalu klik <strong>Create API key</strong>."
+                    ],
+                    apiKeyInstructionsMobile: [
+                        "Kunjungi <a href='https://aistudio.google.com/' target='_blank' class='text-[var(--theme-accent-3)] hover:underline'>Google AI Studio</a>.",
+                        "Masuk dengan akun Google Anda.",
+                        "Ketuk ikon menu (&#9776;) di pojok kiri atas.",
+                        "Pilih menu <strong>Get API key</strong>.",
+                        "Pilih atau buat proyek, lalu ketuk <strong>Create API key</strong>."
+                    ],
+                    yourApiKeyLabel: "API KEY GEMINI ANDA",
+                    apiKeyNote: "Catatan: Kunci ini digunakan bersama dan mungkin memiliki batasan. Untuk pengalaman terbaik, kami sangat menyarankan menggunakan Kunci API Anda sendiri.",
+                    apiKeyPlaceholder: "Masukkan API Key Anda...",
+                    cancelButton: "Batal",
+                    deleteButton: "Hapus",
+                    alertApiSettingsSaved: "Pengaturan API berhasil disimpan!",
+                    alertApiKeyEmpty: "Input API Key tidak boleh kosong.",
+                    alertSceneSaved: "Adegan berhasil diperbarui. Silakan hasilkan ulang prompt jika perlu.",
+                    alertCharactersUpdatedSuccess: "Detail cerita berhasil dibuat ulang dengan karakter baru!",
+                    alertCharactersUpdateFailed: "Gagal memperbarui detail cerita. Silakan coba lagi.",
+                    alertCharacterFieldsEmpty: "Judul dan deskripsi karakter tidak boleh kosong.",
+                    alertHistoryCleared: "Riwayat berhasil dibersihkan.",
+                    alertHistoryEmpty: "Tidak ada riwayat untuk ditampilkan.",
+                    alertSceneCopied: "Prompt berhasil disalin!",
+                    alertCopyFailed: "Gagal menyalin prompt.",
+                    alertIdeaEmpty: "Mohon isi Ide Cerita terlebih dahulu.",
+                    alertVideoTypeEmpty: "Mohon pilih Jenis Video.",
+                    alertVisualStyleEmpty: "Mohon pilih Gaya Visual.",
+                    alertSceneCountEmpty: "Mohon pilih Jumlah Adegan.",
+                    alertIdeaIncoherent: "Ide cerita tidak jelas atau tidak dapat dipahami. Mohon berikan ide yang lebih spesifik.",
+                    loaderSystemAI: "Ai Sistem Menganalisa...",
+                    loaderUserAI: "Ai Anda sedang Menganalisa...",
+                    alertGenerated: "Detail cerita berhasil dibuat oleh AI!",
+                    promptGenerationProgress: (current, total) => `Membuat prompt untuk Adegan ${current}/${total}...`,
+                    allPromptsGenerated: (count, total) => `Semua prompt untuk ${count} dari ${total} adegan berhasil dibuat!`,
+                    alertSuccessTitle: "Berhasil",
+                    alertErrorTitle: "Terjadi Kesalahan",
+                    alertInfoTitle: "Informasi",
+                    alertCloseButton: "Tutup",
+                    confirmLogoutTitle: "Konfirmasi Logout",
+                    confirmLogoutMessage: "Apakah Anda yakin ingin keluar?",
+                    confirmYes: "Ya, Keluar",
+                    confirmNo: "Tidak",
+                    alertLoggedOut: "Anda telah berhasil logout.",
+                    loginWelcome: "Selamat Datang! Silakan Login.",
+                    loginSubtitle: "Masukkan kata sandi untuk melanjutkan.",
+                    passwordPlaceholder: "Masukkan Kata Sandi",
+                    loginButton: "Login",
+                    loginFailed: "Kata sandi salah!",
+                    alertTranslationError: "Gagal menerjemahkan adegan.",
+                    promptGenerationFailed: "Gagal membuat prompt.",
+                    alertSceneTranslated: "Adegan berhasil diterjemahkan.",
+                    mobileMenuTitle: "Menu",
+                    secondsUnit: "detik",
+                    visualDescriptionLabel: "Visual",
+                    cameraDescriptionLabel: "Kamera",
+                    audioDescriptionLabel: "Audio",
+                },
+                en: {
+                    langTitle: "Change Language",
+                    themeTitle: "Change Theme",
+                    mainTitle: "Create Professional Video Prompts",
+                    mainSubtitle: "Enter your idea, let the AI handle the details, and get ready-to-use prompts for VEO or other AI video generators.",
+                    step1Label: "Step 1",
+                    step2Label: "Step 2",
+                    step3Label: "Step 3",
+                    step1Title: "Core Idea & Video Settings",
+                    step1Subtitle: "Start with the basic idea, general settings, and number of scenes.",
+                    step2Title: "Story Details & Characters",
+                    step2Subtitle: "Review and edit the AI-generated details to match your vision.",
+                    step3Title: "Final Prompts",
+                    step3Subtitle: "Review the results, then generate all video prompts with one click.",
+                    storyIdeaLabel: "Story Idea",
+                    storyIdeaPlaceholder: "e.g., An astronaut cat discovers a planet made of yarn.",
+                    sceneCountLabel: "Number of Scenes",
+                    videoTypeLabel: "Video Type",
+                    visualStyleLabel: "Visual Style",
+                    generateButton: "AI Director",
+                    generateAllPromptsButton: "Generate All Prompts",
+                    keyCharactersLabel: "Key Characters & Objects",
+                    editButton: "Edit",
+                    saveButton: "Save & Update",
+                    sceneLabel: "Scene",
+                    combinedPromptTab: "Combined Prompt",
+                    imageMotionPromptTab: "Image + Motion",
+                    combinedPromptDescription: "A complete prompt for Text-to-Video generation.",
+                    imageMotionPromptDescription: "Generate the image first, then use the second prompt to animate it.",
+                    imagePromptStepLabel: "Step 1: Image Prompt",
+                    animationPromptStepLabel: "Step 2: Motion & Audio Prompt",
+                    copyCombinedPrompt: (sceneNumber) => `Copy Scene ${sceneNumber} Prompt`,
+                    copyImagePrompt: "Copy Image Prompt",
+                    copyAnimationPrompt: "Copy Motion & Audio Prompt",
+                    copyButton: "Copy",
+                    historyTitle: "History",
+                    apiKeyTitle: "API Key",
+                    logoutButton: "Logout",
+                    historyModalTitle: "Story Idea History",
+                    clearHistoryButton: "Clear History",
+                    // New API Modal Strings
+                    apiKeySettingsTitle: "API Key Settings",
+                    chooseApiKeySource: "Choose the API Key source you want to use.",
+                    useSystemApi: "Use System API",
+                    useSystemApiDesc: "Use the built-in key (with limitations)",
+                    usePersonalApi: "Use Your Personal API",
+                    usePersonalApiDesc: "Enter your own Gemini API key",
+                    howToGetKey: "How to get an API Key:",
+                    apiKeyInstructionsDesktop: [
+                        "Visit <a href='https://aistudio.google.com/' target='_blank' class='text-[var(--theme-accent-3)] hover:underline'>Google AI Studio</a>.",
+                        "Sign in with your Google account.",
+                        "Click the <strong>Get API key</strong> button in the left menu.",
+                        "Select or create a project, then click <strong>Create API key</strong>."
+                    ],
+                    apiKeyInstructionsMobile: [
+                        "Visit <a href='https://aistudio.google.com/' target='_blank' class='text-[var(--theme-accent-3)] hover:underline'>Google AI Studio</a>.",
+                        "Sign in with your Google account.",
+                        "Tap the menu icon (&#9776;) in the top-left corner.",
+                        "Select the <strong>Get API key</strong> menu.",
+                        "Select or create a project, then tap <strong>Create API key</strong>."
+                    ],
+                    yourApiKeyLabel: "YOUR GEMINI API KEY",
+                    apiKeyNote: "Note: This key is shared and may have limitations. For the best experience, we highly recommend using your own API Key.",
+                    apiKeyPlaceholder: "Enter your API Key here...",
+                    cancelButton: "Cancel",
+                    deleteButton: "Delete",
+                    alertApiSettingsSaved: "API settings saved successfully!",
+                    alertApiKeyEmpty: "API Key input cannot be empty.",
+                    alertSceneSaved: "Scene updated successfully. Please regenerate prompts if needed.",
+                    alertCharactersUpdatedSuccess: "Story details regenerated successfully with new characters!",
+                    alertCharactersUpdateFailed: "Failed to update story details.",
+                    alertCharacterFieldsEmpty: "Character title and description cannot be empty.",
+                    alertHistoryCleared: "History cleared successfully.",
+                    alertHistoryEmpty: "No history to display.",
+                    alertSceneCopied: "Prompt copied successfully!",
+                    alertCopyFailed: "Failed to copy prompt.",
+                    alertIdeaEmpty: "Please fill in the Story Idea first.",
+                    alertVideoTypeEmpty: "Please select a Video Type.",
+                    alertVisualStyleEmpty: "Please select a Visual Style.",
+                    alertSceneCountEmpty: "Please select the Number of Scenes.",
+                    alertIdeaIncoherent: "The story idea is unclear or nonsensical. Please provide a more specific idea.",
+                    loaderSystemAI: "System AI Analyzing...",
+                    loaderUserAI: "Your AI is Analyzing...",
+                    alertGenerated: "Story details generated successfully by AI!",
+                    promptGenerationProgress: (current, total) => `Generating prompt for Scene ${current}/${total}...`,
+                    allPromptsGenerated: (count, total) => `All prompts for ${count} of ${total} scenes generated successfully!`,
+                    alertSuccessTitle: "Success",
+                    alertErrorTitle: "An Error Occurred",
+                    alertInfoTitle: "Information",
+                    alertCloseButton: "Close",
+                    confirmLogoutTitle: "Logout Confirmation",
+                    confirmLogoutMessage: "Are you sure you want to log out?",
+                    confirmYes: "Yes, Logout",
+                    confirmNo: "No",
+                    alertLoggedOut: "You have been successfully logged out.",
+                    loginWelcome: "Welcome! Please Login.",
+                    loginSubtitle: "Enter the password to continue.",
+                    passwordPlaceholder: "Enter Password",
+                    loginButton: "Login",
+                    loginFailed: "Incorrect password!",
+                    alertTranslationError: "Failed to translate scene.",
+                    promptGenerationFailed: "Failed to generate prompt.",
+                    alertSceneTranslated: "Scene translated successfully.",
+                    mobileMenuTitle: "Menu",
+                    secondsUnit: "seconds",
+                    visualDescriptionLabel: "Visual",
+                    cameraDescriptionLabel: "Kamera",
+                    audioDescriptionLabel: "Audio",
+                }
+            };
+
+            const DROPDOWN_OPTIONS = {
+                id: {
+                    videoType: [ { value: 'videoType.none', text: 'Pilih Jenis Video' }, { value: 'videoType.productAd', text: 'Iklan Produk' }, { value: 'videoType.shortFilm', text: 'Film Pendek' }, { value: 'videoType.cinematicReels', text: 'Reels Sinematik' }, { value: 'videoType.storytelling', text: 'Bercerita' }, { value: 'videoType.explainer', text: 'Penjelasan / Edukasi' }, { value: 'videoType.trailer', text: 'Trailer / Teaser' }, { value: 'videoType.podcast', text: 'Podcast' }, { value: 'videoType.vlog', text: 'Vlog / Pribadi' }, { value: 'videoType.romantic', text: 'Cerita Romantis' } ],
+                    visualStyle: [ { value: 'visualStyle.none', text: 'Pilih Gaya Visual' }, { value: 'visualStyle.cinematic', text: 'Sinematik' }, { value: 'visualStyle.magical', text: 'Magis / Fantasi' }, { value: 'visualStyle.action', text: 'Aksi' }, { value: 'visualStyle.futuristic', text: 'Futuristik / Fiksi Ilmiah' }, { value: 'visualStyle.realistic', text: 'Realistis' }, { value: 'visualStyle.retro', text: 'Retro / Vintage' }, { value: 'visualStyle.warm', text: 'Hangat & Lembut' }, { value: 'visualStyle.gritty', text: 'Kasar / Gelap' }, { value: 'visualStyle.dreamlike', text: 'Seperti Mimpi' } ],
+                    sceneCount: [ { value: '0', text: 'Pilih Adegan' }, { value: '1', text: '1 Adegan' }, { value: '2', text: '2 Adegan' }, { value: '3', text: '3 Adegan' } ]
+                },
+                en: {
+                    videoType: [ { value: 'videoType.none', text: 'Select Video Type' }, { value: 'videoType.productAd', text: 'Product Ad' }, { value: 'videoType.shortFilm', text: 'Short Film' }, { value: 'videoType.cinematicReels', text: 'Cinematic Reels' }, { value: 'videoType.storytelling', text: 'Storytelling' }, { value: 'videoType.explainer', text: 'Explainer / Education' }, { value: 'videoType.trailer', text: 'Trailer / Teaser' }, { value: 'videoType.podcast', text: 'Podcast' }, { value: 'videoType.vlog', text: 'Vlog / Personal' }, { value: 'videoType.romantic', text: 'Romantic Story' } ],
+                    visualStyle: [ { value: 'visualStyle.none', text: 'Select Visual Style' }, { value: 'visualStyle.cinematic', text: 'Cinematic' }, { value: 'visualStyle.magical', text: 'Magical / Fantasy' }, { value: 'visualStyle.action', text: 'Action' }, { value: 'visualStyle.futuristic', text: 'Futuristic / Sci-Fi' }, { value: 'visualStyle.realistic', text: 'Realistic' }, { value: 'visualStyle.retro', text: 'Retro / Vintage' }, { value: 'visualStyle.warm', text: 'Warm & Soft' }, { value: 'visualStyle.gritty', text: 'Gritty / Dark' }, { value: 'visualStyle.dreamlike', text: 'Dreamlike' } ],
+                    sceneCount: [ { value: '0', text: 'Select Scenes' }, { value: '1', text: '1 Scene' }, { value: '2', text: '2 Scenes' }, { value: '3', text: '3 Scenes' } ]
+                }
+            };
+
+            // --- DOM Selectors ---
+            const DOMElements = {
+                body: document.body,
+                loginCard: document.getElementById('login-card'),
+                generatorContent: document.getElementById('generator-content'),
+                loginForm: document.getElementById('login-form'),
+                passwordInput: document.getElementById('password'),
+                togglePassword: document.getElementById('toggle-password'),
+                storyIdea: document.getElementById('story-idea'),
+                videoType: document.getElementById('videoType'),
+                visualStyle: document.getElementById('visualStyle'),
+                sceneCount: document.getElementById('scene-count'),
+                aiDirectorBtn: document.getElementById('ai-director-btn'),
+                storyboardContainer: document.getElementById('storyboard-container'),
+                finalPromptStepContainer: document.getElementById('final-prompt-step-container'),
+                generateAllPromptsBtn: document.getElementById('generate-all-prompts-btn'),
+                finalPromptsContainer: document.getElementById('final-prompts-container'),
+                hamburgerBtn: document.getElementById('hamburger-btn'),
+                offcanvasMenu: document.getElementById('offcanvas-menu'),
+                offcanvasBackdrop: document.getElementById('offcanvas-backdrop'),
+                offcanvasCloseBtn: document.getElementById('offcanvas-close-btn'),
+                historyModal: document.getElementById('history-modal'),
+                apiKeyModal: document.getElementById('api-key-modal'),
+                alertModal: document.getElementById('alert-modal'),
+                confirmationModal: document.getElementById('confirmation-modal'),
+                allModals: document.querySelectorAll('.fixed.inset-0'),
+                themeBtnDesktop: document.getElementById('theme-btn-desktop'),
+                themeBtnMobile: document.getElementById('theme-btn-mobile'),
+                langBtnDesktop: document.getElementById('lang-btn-desktop'),
+                langBtnMobileIcon: document.getElementById('lang-btn-mobile-icon'),
+                historyBtnMobileIcon: document.getElementById('history-btn-mobile-icon'),
+                apiKeyBtnDesktop: document.getElementById('api-key-btn-desktop'),
+                apiKeyBtnMobileIcon: document.getElementById('api-key-btn-mobile-icon'),
+                logoutBtnDesktop: document.getElementById('logout-btn-desktop'),
+                logoutBtnMobileMenu: document.getElementById('logout-btn-mobile-menu'),
+                // API Modal Elements
+                apiSourceSystem: document.getElementById('api-source-system'),
+                apiSourcePersonal: document.getElementById('api-source-personal'),
+                personalApiDetails: document.getElementById('personal-api-details'),
+                systemApiNote: document.getElementById('system-api-note'),
+                apiKeyInput: document.getElementById('api-key-input'),
+                toggleApiKeyVisibility: document.getElementById('toggle-api-key-visibility'),
+                deleteApiKeyBtn: document.getElementById('delete-api-key-btn'),
+                apiModalSaveBtn: document.getElementById('api-modal-save-btn'),
+                apiModalCancelBtn: document.getElementById('api-modal-cancel-btn'),
+                apiKeyInstructionsDesktop: document.getElementById('api-key-instructions-desktop'),
+                apiKeyInstructionsMobile: document.getElementById('api-key-instructions-mobile'),
+            };
+
+            // --- UTILITY & HELPER FUNCTIONS ---
+            const getUIText = (key, ...args) => {
+                const translation = UI_STRINGS[AppState.currentLang][key];
+                return typeof translation === 'function' ? translation(...args) : translation;
+            };
+            
+            const openModal = (modal) => {
+                const content = modal.querySelector('.card, .panel');
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+                content?.classList.remove('animate__zoomOut', 'animate__fadeOut');
+                content?.classList.add('animate__zoomIn', 'animate__faster');
+            };
+
+            const closeModal = (modal) => {
+                const content = modal.querySelector('.card, .panel');
+                content?.classList.remove('animate__zoomIn');
+                content?.classList.add('animate__zoomOut', 'animate__faster');
+                const handleAnimationEnd = () => {
+                    modal.classList.add('hidden');
+                    content?.removeEventListener('animationend', handleAnimationEnd);
+                };
+                content?.addEventListener('animationend', handleAnimationEnd);
+            };
+            
+            const showAlert = (message, type = 'info') => {
+                const typeMap = {
+                    success: { titleKey: 'alertSuccessTitle', icon: 'fa-check-circle', color: 'bg-[var(--theme-success)]', btn: 'btn-primary' },
+                    error: { titleKey: 'alertErrorTitle', icon: 'fa-times-circle', color: 'bg-[var(--theme-error)]', btn: 'btn-danger' },
+                    info: { titleKey: 'alertInfoTitle', icon: 'fa-info-circle', color: 'bg-[var(--theme-accent-2)]', btn: 'btn-secondary' }
+                };
+                const config = typeMap[type];
+
+                document.getElementById('alert-title').textContent = getUIText(config.titleKey);
+                document.getElementById('alert-message').textContent = message;
+                document.getElementById('alert-icon-container').className = `w-16 h-16 rounded-full mx-auto flex items-center justify-center mb-4 ${config.color}`;
+                document.getElementById('alert-icon').className = `fas text-4xl text-white ${config.icon}`;
+                const closeBtn = document.getElementById('alert-close-btn');
+                closeBtn.textContent = getUIText('alertCloseButton');
+                closeBtn.className = `btn mt-6 w-full ${config.btn}`;
+                
+                openModal(DOMElements.alertModal);
+            };
+            
+            const showConfirmation = (titleKey, messageKey, onConfirm) => {
+                document.getElementById('confirmation-title').textContent = getUIText(titleKey);
+                document.getElementById('confirmation-message').textContent = getUIText(messageKey);
+                const yesBtn = document.getElementById('confirm-yes-btn');
+                const noBtn = document.getElementById('confirm-no-btn');
+                
+                yesBtn.textContent = getUIText('confirmYes');
+                noBtn.textContent = getUIText('confirmNo');
+
+                const newYesBtn = yesBtn.cloneNode(true);
+                yesBtn.parentNode.replaceChild(newYesBtn, yesBtn);
+                newYesBtn.onclick = () => {
+                    onConfirm();
+                    closeModal(DOMElements.confirmationModal);
+                };
+                openModal(DOMElements.confirmationModal);
+            };
+
+            // --- CORE APPLICATION LOGIC ---
+            const applyTheme = (theme) => {
+                AppState.currentTheme = theme;
+                localStorage.setItem('promptique_theme', theme);
+                
+                const sunIcon = '<i class="fas fa-sun fa-fw text-lg"></i>';
+                const moonIcon = '<i class="fas fa-moon fa-fw text-lg"></i>';
+
+                if (theme === 'light') {
+                    DOMElements.body.classList.add('light-theme');
+                    DOMElements.themeBtnDesktop.innerHTML = sunIcon;
+                    DOMElements.themeBtnMobile.querySelector('i').className = 'fas fa-sun fa-fw text-lg w-6 text-center';
+                } else {
+                    DOMElements.body.classList.remove('light-theme');
+                    DOMElements.themeBtnDesktop.innerHTML = moonIcon;
+                    DOMElements.themeBtnMobile.querySelector('i').className = 'fas fa-moon fa-fw text-lg w-6 text-center';
+                }
+                
+                const accentColor = getComputedStyle(document.documentElement).getPropertyValue('--theme-text-secondary').trim();
+                const encodedColor = encodeURIComponent(accentColor);
+                document.querySelectorAll('.form-select').forEach(el => {
+                    el.style.backgroundImage = `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='${encodedColor}' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e")`;
+                });
+            };
+            
+            const updateUI = () => {
+                const lang = AppState.currentLang;
+                document.documentElement.lang = lang;
+                
+                document.querySelectorAll('[data-ui-key]').forEach(el => {
+                    const key = el.dataset.uiKey;
+                    if (UI_STRINGS[lang][key]) {
+                        // Check if it's an array for instructions
+                        if (Array.isArray(UI_STRINGS[lang][key])) {
+                            el.innerHTML = UI_STRINGS[lang][key].map(item => `<li>${item}</li>`).join('');
+                        } else {
+                            el.textContent = getUIText(key);
                         }
                     }
-                };
-        
-                setInterval(devToolCheck, 1000);
-        
-                // Disable Right Click for non-input elements
-                document.addEventListener('contextmenu', (event) => {
-                    const target = event.target;
-                    if (
-                        target.tagName !== 'INPUT' &&
-                        target.tagName !== 'TEXTAREA' &&
-                        !target.isContentEditable
-                    ) {
-                        event.preventDefault();
+                });
+                
+                document.querySelectorAll('[data-ui-key-placeholder]').forEach(el => {
+                    const key = el.dataset.uiKeyPlaceholder;
+                    if (UI_STRINGS[lang][key]) el.placeholder = getUIText(key);
+                });
+
+                document.querySelectorAll('[data-ui-key-title]').forEach(el => {
+                    const key = el.dataset.uiKeyTitle;
+                    if(UI_STRINGS[lang][key]) el.title = getUIText(key);
+                });
+                
+                DOMElements.langBtnDesktop.querySelector('span').textContent = lang.toUpperCase();
+                DOMElements.langBtnMobileIcon.querySelector('span').textContent = lang.toUpperCase();
+
+                ['videoType', 'visualStyle', 'sceneCount'].forEach(id => {
+                    const select = DOMElements[id];
+                    if (select) {
+                        const currentVal = select.value;
+                        select.innerHTML = DROPDOWN_OPTIONS[lang][id]
+                            .map(opt => `<option value="${opt.value}">${opt.text}</option>`)
+                            .join('');
+                        if (currentVal) select.value = currentVal;
                     }
                 });
-        
-                // Block common developer shortcuts
-                document.addEventListener('keydown', (e) => {
-                    if (
-                        (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'i') || // Ctrl+Shift+I
-                        (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'j') || // Ctrl+Shift+J
-                        (e.ctrlKey && e.key.toLowerCase() === 'u') ||              // Ctrl+U
-                        (e.metaKey && e.key.toLowerCase() === 'u') ||              // Cmd+U (Mac)
-                        (e.key === 'F12')                                           // F12
-                    ) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        window.open('', '_self').close();
-                    }
-                });
-        
-                // Disable drag/drop and selection to prevent copying
-                document.addEventListener('dragstart', e => e.preventDefault());
-                document.addEventListener('selectstart', e => e.preventDefault());
-            }
-        })();
 
-        // --- DOM ELEMENTS ---
-        const generatorFieldset = document.getElementById('generator-fieldset');
-        const authSection = document.getElementById('auth-section');
-        const loginForm = document.getElementById('login-form');
-        const logoutArea = document.getElementById('logout-area');
-        const passwordInput = document.getElementById('password-input');
-        const togglePasswordBtn = document.getElementById('toggle-password-btn');
-        const passwordEyeIcon = document.getElementById('password-eye-icon');
-        const loginBtn = document.getElementById('login-btn');
-        const logoutBtn = document.getElementById('logout-btn');
-        const logoutConfirmModal = document.getElementById('logout-confirm-modal');
-        const confirmLogoutBtn = document.getElementById('confirm-logout-btn');
-        const cancelLogoutBtn = document.getElementById('cancel-logout-btn');
+                // Update API instructions based on language
+                const instructionsDesktop = getUIText('apiKeyInstructionsDesktop');
+                DOMElements.apiKeyInstructionsDesktop.innerHTML = instructionsDesktop.map(item => `<li>${item}</li>`).join('');
+                const instructionsMobile = getUIText('apiKeyInstructionsMobile');
+                DOMElements.apiKeyInstructionsMobile.innerHTML = instructionsMobile.map(item => `<li>${item}</li>`).join('');
 
-        const detailedForm = document.getElementById('detailed-form');
-        const aiButton = document.getElementById('ai-generate-btn');
-        const outputPromptIdEl = document.getElementById('outputPrompt-id');
-        const outputPromptEnEl = document.getElementById('outputPrompt-en');
-        const translateBtn = document.getElementById('translate-btn');
-        const copyEnBtn = document.getElementById('copy-en-btn');
-        const resultSection = document.getElementById('result-section');
-        
-        // Modal elements
-        const guideModal = document.getElementById('guide-modal');
-        const guideBtn = document.getElementById('guide-btn');
-        const deleteConfirmModal = document.getElementById('delete-confirm-modal');
-        const confirmDeleteBtn = document.getElementById('confirm-delete-btn');
-        const cancelDeleteBtn = document.getElementById('cancel-delete-btn');
-        const historyBtn = document.getElementById('history-btn');
-        const historyModal = document.getElementById('history-modal');
-        const historyList = document.getElementById('history-list');
-        const clearHistoryBtn = document.getElementById('clear-history-btn');
-        
-        const apiKeyInput = document.getElementById('api-key-input');
-        const saveApiKeyButton = document.getElementById('save-api-key-button');
-        const deleteApiKeyButton = document.getElementById('delete-api-key-button');
-        const apiStatusDot = document.getElementById('api-status-dot');
-        const apiStatusText = document.getElementById('api-status-text');
+                renderStoryboard();
+                renderFinalPrompts();
+            };
 
-        // Theme toggle
-        const themeToggleBtn = document.getElementById('theme-toggle');
-        const body = document.body;
-
-        // --- SELECT OPTIONS ---
-        const cameraAngleOptions = { "":"-- Pilih Sudut --", "eye-level shot":"Eye-level", "low-angle shot":"Low-angle", "high-angle shot":"High-angle", "dutch angle":"Dutch angle", "bird's-eye view":"Bird's-eye view", "worm's-eye view": "Worm's-eye view" };
-        const cameraShotOptions = { "":"-- Pilih Bidikan --", "extreme close-up":"Extreme Close-up", "close-up":"Close-up", "medium shot":"Medium shot", "long shot":"Long shot", "wide shot":"Wide shot", "establishing shot": "Establishing shot" };
-        const cameraMovementOptions = { "":"-- Pilih Gerakan --", "static shot":"Static", "panning shot":"Panning", "tilting shot":"Tilting", "dolly zoom":"Dolly zoom", "tracking shot":"Tracking", "handheld":"Handheld", "drone footage":"Drone footage" };
-        const styleOptions = { "":"-- Pilih Gaya --", "Realistic": "Realistic", "Cinematic": "Cinematic", "Anime": "Anime", "3D Animation": "3D Animation", "Pixar Style": "Pixar Style", "Claymation": "Claymation", "Stop Motion": "Stop Motion", "Documentary": "Documentary", "Vintage Film": "Vintage Film", "Noir Film": "Noir Film", "Cyberpunk": "Cyberpunk", "Steampunk": "Steampunk", "Fantasy Art": "Fantasy Art", "Watercolor": "Watercolor", "Pixel Art": "Pixel Art" };
-        const lightingOptions = { "":"-- Pilih Pencahayaan --", "Golden Hour": "Golden Hour", "Blue Hour": "Blue Hour", "Volumetric Lighting": "Volumetric Lighting", "Dramatic Lighting": "Dramatic Lighting", "Cinematic Lighting": "Cinematic Lighting", "Studio Lighting": "Studio Lighting", "Neon Lighting": "Neon Lighting", "Soft Lighting": "Soft Lighting", "Backlight": "Backlight", "Rim Lighting": "Rim Lighting", "High-Key Lighting": "High-Key Lighting", "Low-Key Lighting": "Low-Key Lighting" };
-
-        // --- FUNCTIONS ---
-        const populateSelect = (selectId, options) => {
-            const select = document.getElementById(selectId);
-            select.innerHTML = '';
-            for (const [value, text] of Object.entries(options)) {
-                const option = document.createElement('option');
-                option.value = value;
-                option.textContent = text;
-                select.appendChild(option);
-            }
-        };
-        
-        const closeAlert = (alertEl) => {
-            if (!alertEl || !document.body.contains(alertEl)) return;
-            clearTimeout(alertEl.autoCloseTimer);
-            alertEl.classList.add('opacity-0');
-            alertEl.querySelector('.custom-alert-box').classList.add('scale-95');
-            setTimeout(() => alertEl.remove(), 300);
-        };
-
-        const showAlert = (type, title, message, details = '') => {
-            const alertEl = document.createElement('div');
-            alertEl.className = `custom-alert-overlay flex transition-opacity duration-300 opacity-0`;
-            let detailHtml = details ? `<pre class="mt-2 text-xs text-left bg-black/20 p-2 rounded-md whitespace-pre-wrap">${details}</pre>` : '';
-            alertEl.innerHTML = `
-                <div class="custom-alert-box rounded-xl border border-slate-700 transform transition-transform duration-300 scale-95">
-                    <div class="custom-alert-icon ${type}">${type === 'success' ? '<i class="fas fa-check"></i>' : '<i class="fas fa-times"></i>'}</div>
-                    <h4 class="font-bold text-lg mb-1 text-slate-100">${title}</h4>
-                    <p class="text-sm text-slate-300">${message}</p>
-                    ${detailHtml}
-                </div>
-            `;
-            
-            alertEl.addEventListener('click', (e) => {
-                if (e.target === alertEl) {
-                    closeAlert(alertEl);
+            const setLoginState = (loggedIn) => {
+                AppState.isLoggedIn = loggedIn;
+                if (loggedIn) {
+                    DOMElements.loginCard.classList.add('hidden');
+                    DOMElements.generatorContent.classList.remove('hidden');
+                    DOMElements.logoutBtnDesktop.classList.remove('hidden');
+                    DOMElements.logoutBtnMobileMenu.classList.remove('hidden');
+                } else {
+                    DOMElements.loginCard.classList.remove('hidden');
+                    DOMElements.generatorContent.classList.add('hidden');
+                    sessionStorage.removeItem('promptique_session');
+                    DOMElements.logoutBtnDesktop.classList.add('hidden');
+                    DOMElements.logoutBtnMobileMenu.classList.add('hidden');
                 }
-            });
+            };
 
-            document.body.appendChild(alertEl);
+            async function callGeminiAPI(params) {
+                const apiKeyToUse = AppState.apiKeySource === 'personal' ? AppState.personalApiKey : SYSTEM_API_KEY;
+
+                if (!apiKeyToUse) {
+                    showAlert(getUIText('apiKeyNote'), 'error');
+                    resetAndOpenApiKeyModal();
+                    return null;
+                }
+
+                const ai = new GoogleGenAI({ apiKey: apiKeyToUse });
+
+                try {
+                    const response = await ai.models.generateContent(params);
+                    if (params.config?.responseMimeType === 'application/json') {
+                        const text = response.text.trim();
+                        const jsonMatch = text.match(/```json\s*([\s\S]*?)\s*```|({[\s\S]*})/);
+                        if (jsonMatch) {
+                            try {
+                                return JSON.parse(jsonMatch[1] || jsonMatch[2]);
+                            } catch(e) { /* ignore and try parsing the whole text */ }
+                        }
+                        try {
+                             return JSON.parse(text);
+                        } catch (e) {
+                            throw new Error("AI did not return valid JSON content.");
+                        }
+                    }
+                    return response.text;
+                } catch(e) {
+                    console.error("Error calling Gemini API:", e);
+                    showAlert(`Failed to contact AI: ${e.message}`, 'error');
+                    return null;
+                }
+            }
+
+            const renderStoryboard = () => {
+                const container = DOMElements.storyboardContainer;
+                container.innerHTML = '';
+                if (!AppState.storyboardData) return;
+
+                const { key_characters, scenes } = AppState.storyboardData;
+
+                const storyboardHtml = `
+                    <section id="step-2" class="card p-6 sm:p-8 animate__animated animate__fadeInUp animate__faster">
+                        <div>
+                            <p class="text-sm font-bold tracking-wider uppercase text-[var(--theme-accent-2)]" data-ui-key="step2Label"></p>
+                            <h3 data-ui-key="step2Title" class="text-2xl font-bold gradient-text"></h3>
+                        </div>
+                        <p data-ui-key="step2Subtitle" class="text-[var(--theme-text-secondary)] mt-2 mb-8"></p>
+                        
+                        <!-- Key Characters -->
+                        ${key_characters && key_characters.length > 0 ? `
+                            <div id="key-characters-section" class="mb-8">
+                                <div class="flex justify-between items-center mb-4">
+                                    <h4 class="flex items-center text-xl font-bold gradient-text">
+                                        <i class="fas fa-users mr-3"></i>
+                                        <span data-ui-key="keyCharactersLabel">${getUIText('keyCharactersLabel')}</span>
+                                    </h4>
+                                    <button id="edit-characters-btn" class="btn btn-secondary text-sm py-1 px-3">
+                                        <i class="fas fa-pencil-alt"></i><span>${getUIText('editButton')}</span>
+                                    </button>
+                                </div>
+                                <div id="key-characters-content" class="space-y-4">
+                                    ${key_characters.map((char, index) => `
+                                        <div class="key-character-item border border-transparent p-2 rounded-lg" data-char-index="${index}">
+                                            <p class="identifier-text font-semibold text-[var(--theme-text-primary)]">${char.identifier}</p>
+                                            <p class="description-text text-sm text-[var(--theme-text-secondary)]">${char.description}</p>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        ` : ''}
+
+                        <!-- Scenes -->
+                        <div id="scenes-list" class="space-y-6">
+                             ${scenes.map((scene, index) => `
+                                <div id="scene-card-${index}" class="border border-[var(--theme-border)] rounded-lg p-4">
+                                    <div class="flex justify-between items-start mb-4 flex-wrap">
+                                        <div class="w-full md:w-auto">
+                                            <h4 class="text-xl font-bold text-[var(--theme-accent-2)]">${getUIText('sceneLabel')} ${scene.scene_number}</h4>
+                                            <p class="text-sm text-[var(--theme-text-secondary)]">${scene.duration_seconds} ${getUIText('secondsUnit')}</p>
+                                        </div>
+                                        <div class="w-full md:w-auto flex items-center gap-2 mt-4 md:mt-0">
+                                            <button class="btn btn-neutral lang-toggle-btn text-sm py-1 px-3" data-scene-index="${index}">
+                                                <span class="font-bold">${scene.currentLang === 'id' ? 'EN' : 'ID'}</span>
+                                            </button>
+                                            <button class="btn btn-secondary edit-scene-btn text-sm py-1 px-3" data-scene-index="${index}">
+                                                <i class="fas fa-pencil-alt"></i><span>${getUIText('editButton')}</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="scene-description-content space-y-2 text-sm">
+                                        <p data-desc-type="visual"><strong class="font-semibold text-[var(--theme-text-primary)]">${getUIText('visualDescriptionLabel')}:</strong> <span class="text-[var(--theme-text-secondary)]">${scene.visual_description[scene.currentLang]}</span></p>
+                                        <p data-desc-type="camera"><strong class="font-semibold text-[var(--theme-text-primary)]">${getUIText('cameraDescriptionLabel')}:</strong> <span class="text-[var(--theme-text-secondary)]">${scene.camera_shot[scene.currentLang]}</span></p>
+                                        <p data-desc-type="audio"><strong class="font-semibold text-[var(--theme-text-primary)]">${getUIText('audioDescriptionLabel')}:</strong> <span class="text-[var(--theme-text-secondary)]">${scene.audio_description[scene.currentLang]}</span></p>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </section>
+                `;
+                container.innerHTML = storyboardHtml;
+                // Manually re-translate the static parts of the new section
+                container.querySelector('[data-ui-key="step2Label"]').textContent = getUIText('step2Label');
+                container.querySelector('[data-ui-key="step2Title"]').textContent = getUIText('step2Title');
+                container.querySelector('[data-ui-key="step2Subtitle"]').textContent = getUIText('step2Subtitle');
+
+                DOMElements.finalPromptStepContainer.classList.remove('hidden');
+                DOMElements.generateAllPromptsBtn.disabled = false;
+                DOMElements.finalPromptsContainer.innerHTML = ''; // Clear previous results on new storyboard
+            };
             
-            setTimeout(() => {
-                alertEl.classList.remove('opacity-0');
-                alertEl.querySelector('.custom-alert-box').classList.remove('scale-95');
-            }, 10);
+            const renderFinalPrompts = () => {
+                const container = DOMElements.finalPromptsContainer;
+                container.innerHTML = '';
+                if (!AppState.storyboardData) return;
 
-            alertEl.autoCloseTimer = setTimeout(() => {
-                closeAlert(alertEl);
-            }, 6000);
-        };
+                let hasAnyPrompts = AppState.storyboardData.scenes.some(s => s.generatedPrompts);
+                if (!hasAnyPrompts) {
+                    container.innerHTML = '';
+                    return;
+                }
 
-        const populateForm = (data) => {
-            document.getElementById('subject').value = data.subject || '';
-            document.getElementById('action').value = data.action || '';
-            document.getElementById('setting').value = data.setting || '';
-            // document.getElementById('style').value = data.style || ''; // Removed as style is now user-defined
-            document.getElementById('lighting').value = data.lighting || '';
-            document.getElementById('extra-details').value = data.extraDetails || '';
-            document.getElementById('negative-prompt').value = data.negativePrompt || '';
-            document.getElementById('sound-effects').value = data.soundEffects || '';
-            document.getElementById('character-speech').value = data.characterSpeech || '';
-            document.getElementById('camera-angle').value = data.cameraAngle || '';
-            document.getElementById('camera-shot').value = data.cameraShot || '';
-            document.getElementById('camera-movement').value = data.cameraMovement || '';
-            detailedForm.classList.remove('hidden');
-            detailedForm.scrollIntoView({ behavior: 'smooth' });
-        };
+                AppState.storyboardData.scenes.forEach((scene, index) => {
+                    if (!scene.generatedPrompts) return;
 
-        // --- API Key Management ---
-        const openModal = (modal) => modal.classList.remove('hidden');
-        const closeModal = (modal) => modal.classList.add('hidden');
+                    const prompts = scene.generatedPrompts;
+                    const sceneResultHtml = `
+                    <div class="border border-[var(--theme-border)] rounded-lg overflow-hidden">
+                        <button class="accordion-toggle flex justify-between items-center w-full p-4 bg-[var(--theme-panel-bg)] hover:bg-[var(--theme-border)]/20 transition-colors" data-scene-index="${index}">
+                            <span class="font-bold text-lg text-[var(--theme-accent-2)]">${getUIText('sceneLabel')} ${scene.scene_number}</span>
+                            <i class="fas fa-chevron-down transition-transform"></i>
+                        </button>
+                        <div class="accordion-content bg-[var(--theme-bg)]">
+                            <div class="prompt-tabs border-b border-[var(--theme-border)]">
+                                <button class="tab-btn active" data-tab-target="tab-final-combined-${index}" data-scene-index="${index}">${getUIText('combinedPromptTab')}</button>
+                                <button class="tab-btn" data-tab-target="tab-final-image-motion-${index}" data-scene-index="${index}">${getUIText('imageMotionPromptTab')}</button>
+                            </div>
+                            <div class="tab-content-container mt-4">
+                                <div id="tab-final-combined-${index}" class="tab-content space-y-4">
+                                    <p class="text-sm text-[var(--theme-text-secondary)]">${getUIText('combinedPromptDescription')}</p>
+                                    <div>
+                                        <textarea class="form-textarea text-xs h-32" readonly>${prompts.combinedPrompt}</textarea>
+                                        <button class="btn btn-primary copy-prompt-btn text-sm py-2 px-4 w-full mt-2" data-prompt-type="combinedPrompt" data-scene-index="${index}">
+                                            <i class="fas fa-copy"></i><span>${getUIText('copyCombinedPrompt', scene.scene_number)}</span>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div id="tab-final-image-motion-${index}" class="tab-content hidden space-y-6">
+                                    <p class="text-sm text-[var(--theme-text-secondary)]">${getUIText('imageMotionPromptDescription')}</p>
+                                    <div class="space-y-2">
+                                        <label class="form-label !mb-1 text-sm">${getUIText('imagePromptStepLabel')}</label>
+                                        <textarea class="form-textarea text-xs h-24" readonly>${prompts.imagePrompt}</textarea>
+                                        <button class="btn btn-secondary copy-prompt-btn text-xs py-1 px-3" data-prompt-type="imagePrompt" data-scene-index="${index}">
+                                            <i class="fas fa-copy"></i><span>${getUIText('copyImagePrompt')}</span>
+                                        </button>
+                                    </div>
+                                    <div class="space-y-2">
+                                        <label class="form-label !mb-1 text-sm">${getUIText('animationPromptStepLabel')}</label>
+                                        <textarea class="form-textarea text-xs h-24" readonly>${prompts.animationPrompt}</textarea>
+                                        <button class="btn btn-secondary copy-prompt-btn text-xs py-1 px-3" data-prompt-type="animationPrompt" data-scene-index="${index}">
+                                            <i class="fas fa-copy"></i><span>${getUIText('copyAnimationPrompt')}</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    `;
+                    container.insertAdjacentHTML('beforeend', sceneResultHtml);
+                });
+            };
 
-        const updateApiStatus = (status, message) => {
-            apiStatusDot.className = 'w-3 h-3 rounded-full'; // Reset
-            apiStatusText.className = 'text-sm';
-            switch(status) {
-                case 'active':
-                    apiStatusDot.classList.add('bg-green-500');
-                    apiStatusText.classList.add('text-green-400');
-                    break;
-                case 'inactive':
-                    apiStatusDot.classList.add('bg-rose-500');
-                    apiStatusText.classList.add('text-rose-400');
-                    break;
-                default: // checking or unknown
-                    apiStatusDot.classList.add('bg-slate-500');
-                    apiStatusText.classList.add('text-slate-400');
-            }
-            apiStatusText.textContent = `Status: ${message}`;
-        };
+            const getHistory = () => JSON.parse(localStorage.getItem('promptique_history')) || [];
+            const saveHistory = (history) => localStorage.setItem('promptique_history', JSON.stringify(history));
+            
+            const renderHistory = () => {
+                const history = getHistory();
+                const contentEl = document.getElementById('history-content');
+                contentEl.innerHTML = '';
+                if (history.length === 0) {
+                    contentEl.innerHTML = `<div class="text-center text-[var(--theme-text-secondary)] py-10"><i class="fas fa-box-open fa-3x mb-4"></i><p>${getUIText('alertHistoryEmpty')}</p></div>`;
+                    return;
+                }
+                history.reverse().forEach(entry => {
+                    const idea = (typeof entry === 'object' && entry.idea) ? entry.idea : entry;
+                    
+                    const historyItemContainer = document.createElement('div');
+                    historyItemContainer.className = 'group flex items-center justify-between w-full text-left p-3 rounded-lg hover:bg-[var(--theme-border)]/20 transition-colors duration-200';
 
-        const checkApiKey = async (key) => {
-            if (!key) {
-                updateApiStatus('inactive', 'Tidak ada API Key');
-                return false;
-            }
-            updateApiStatus('checking', 'Memvalidasi...');
-            const validationUrl = `https://generativelanguage.googleapis.com/v1beta/models?key=${key}`;
-            try {
-                const response = await fetch(validationUrl);
-                if (response.ok) {
-                    updateApiStatus('active', 'Aktif dan Valid');
+                    const ideaButton = document.createElement('button');
+                    ideaButton.className = 'flex-grow text-left truncate pr-2';
+                    ideaButton.textContent = idea;
+                    ideaButton.onclick = () => {
+                        DOMElements.storyIdea.value = idea;
+                        closeModal(DOMElements.historyModal);
+                    };
+                    historyItemContainer.appendChild(ideaButton);
+
+                    if (typeof entry === 'object' && entry.date) {
+                        const deleteButton = document.createElement('button');
+                        deleteButton.className = 'flex-shrink-0 text-[var(--theme-text-secondary)] hover:text-[var(--theme-error)]';
+                        deleteButton.title = getUIText('deleteButton');
+                        deleteButton.innerHTML = '<i class="fas fa-trash fa-sm"></i>';
+                        deleteButton.onclick = (e) => {
+                            e.stopPropagation();
+                            const currentHistory = getHistory();
+                            const newHistory = currentHistory.filter(item => item.date !== entry.date);
+                            saveHistory(newHistory);
+                            renderHistory();
+                        };
+                        historyItemContainer.appendChild(deleteButton);
+                    }
+                    contentEl.appendChild(historyItemContainer);
+                });
+            };
+
+            const openOffCanvas = () => {
+                const menu = DOMElements.offcanvasMenu;
+                if (!menu) return;
+                menu.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+                setTimeout(() => {
+                    menu.classList.add('open');
+                }, 10);
+            };
+
+            const closeOffCanvas = () => {
+                const menu = DOMElements.offcanvasMenu;
+                if (!menu) return;
+                menu.classList.remove('open');
+                document.body.style.overflow = '';
+                const panel = menu.querySelector('#offcanvas-menu-panel');
+                if (!panel) return;
+
+                const onTransitionEnd = () => {
+                    menu.classList.add('hidden');
+                    panel.removeEventListener('transitionend', onTransitionEnd);
+                };
+                panel.addEventListener('transitionend', onTransitionEnd);
+            };
+
+            // --- EVENT HANDLERS ---
+            const handleLogin = (e) => {
+                e.preventDefault();
+                if (DOMElements.passwordInput.value === '1') {
+                    const now = new Date().getTime();
+                    const session = { loggedIn: true, timestamp: now };
+                    sessionStorage.setItem('promptique_session', JSON.stringify(session));
+                    setLoginState(true);
+                } else {
+                    showAlert(getUIText('loginFailed'), 'error');
+                }
+            };
+
+            const handleLogout = () => { showConfirmation('confirmLogoutTitle', 'confirmLogoutMessage', () => { setLoginState(false); showAlert(getUIText('alertLoggedOut'), 'success'); }); };
+            const handleLanguageToggle = () => { AppState.currentLang = AppState.currentLang === 'id' ? 'en' : 'id'; localStorage.setItem('promptique_lang', AppState.currentLang); updateUI(); };
+            const handleThemeToggle = () => { applyTheme(AppState.currentTheme === 'dark' ? 'light' : 'dark'); };
+
+            const handleAIDirector = async () => {
+                if (!DOMElements.storyIdea.value.trim()) { showAlert(getUIText('alertIdeaEmpty'), 'error'); return; }
+                if (DOMElements.videoType.value === 'videoType.none') { showAlert(getUIText('alertVideoTypeEmpty'), 'error'); return; }
+                if (DOMElements.visualStyle.value === 'visualStyle.none') { showAlert(getUIText('alertVisualStyleEmpty'), 'error'); return; }
+                if (DOMElements.sceneCount.value === '0') { showAlert(getUIText('alertSceneCountEmpty'), 'error'); return; }
+
+                const btn = DOMElements.aiDirectorBtn;
+                btn.disabled = true;
+                const btnText = btn.querySelector('#ai-btn-text');
+                const loaderSpan = btn.querySelector('#ai-btn-loader');
+                btnText.classList.add('hidden');
+                const loaderText = AppState.apiKeySource === 'personal' ? getUIText('loaderUserAI') : getUIText('loaderSystemAI');
+                loaderSpan.innerHTML = `<div class="flex items-center gap-2"><span class="loader"></span><span>${loaderText}</span></div>`;
+                loaderSpan.classList.remove('hidden');
+
+                DOMElements.storyboardContainer.innerHTML = '';
+                DOMElements.finalPromptStepContainer.classList.add('hidden');
+
+                const storyIdea = DOMElements.storyIdea.value.trim();
+                const videoTypeText = DOMElements.videoType.options[DOMElements.videoType.selectedIndex].text;
+                const visualStyleText = DOMElements.visualStyle.options[DOMElements.visualStyle.selectedIndex].text;
+                const sceneCount = DOMElements.sceneCount.value;
+                
+                const validationSystemInstruction = "Analyze the following user input. Determine if it is a coherent story idea or just gibberish/random characters. Respond with only 'valid' or 'incoherent'.";
+                const validationResponse = await callGeminiAPI({ model: 'gemini-2.5-flash', contents: `Is this a coherent idea? "${storyIdea}"`, config: { systemInstruction: validationSystemInstruction }});
+
+                if (validationResponse && validationResponse.toLowerCase().includes('incoherent')) {
+                    showAlert(getUIText('alertIdeaIncoherent'), 'error');
+                    btn.disabled = false;
+                    btnText.classList.remove('hidden');
+                    loaderSpan.classList.add('hidden');
+                    return;
+                }
+
+                const systemInstruction = "You are a professional storyboard artist and scriptwriter. Your task is to take a user's video concept and create a detailed plan. Each scene you describe is intended to be exactly 8 seconds long, so tailor the complexity of the action, camera movement, and details accordingly.\nFirst, carefully analyze the user's concept to identify the main recurring characters, subjects, or key objects and provide a detailed, consistent physical description for each to ensure visual consistency. If no clear recurring characters exist, this can be empty.\nSecond, break down the narrative into a specific number of connected scenes based on the user's request. Ensure the scenes flow logically if more than one is requested. Consider the user's requested video type and visual style. IMPORTANT: You must generate all descriptions (for both key_characters and scenes) in Indonesian.";
+                let userPrompt = `Video Concept: "${storyIdea}"\nNumber of Scenes: ${sceneCount}`;
+                if (videoTypeText && videoTypeText !== 'Pilih Jenis Video' && videoTypeText !== 'Select Video Type') userPrompt += `\nVideo Type: ${videoTypeText}`;
+                if (visualStyleText && visualStyleText !== 'Pilih Gaya Visual' && visualStyleText !== 'Select Visual Style') userPrompt += `\nVisual Style: ${visualStyleText}`;
+                
+                const schema = {
+                    type: Type.OBJECT,
+                    properties: {
+                        key_characters: { type: Type.ARRAY, description: "List of main recurring characters, subjects, or key objects.", items: { type: Type.OBJECT, properties: { identifier: { type: Type.STRING, description: "A short, memorable name like 'The Detective' or 'The Antique Locket'." }, description: { type: Type.STRING, description: "A detailed, consistent physical description for visual consistency." } }, required: ["identifier", "description"] } },
+                        scenes: { type: Type.ARRAY, description: "A scene-by-scene storyboard.", items: { type: Type.OBJECT, properties: { scene_number: { type: Type.INTEGER, description: "The sequential number of the scene." }, visual_description: { type: Type.STRING, description: "A detailed description of the visuals in the scene, fitting an 8-second duration. Must refer to characters/objects using their 'identifier'." }, camera_shot: { type: Type.STRING, description: "Description of the camera shot, angle, and movement for an 8-second scene." }, audio_description: { type: Type.STRING, description: "Description of the audio for an 8-second scene, including music, sound effects, and dialogue." } }, required: ["scene_number", "visual_description", "camera_shot", "audio_description"] } }
+                    },
+                    required: ["key_characters", "scenes"]
+                };
+
+                const generatedStoryboard = await callGeminiAPI({ model: 'gemini-2.5-flash', contents: userPrompt, config: { systemInstruction, responseMimeType: 'application/json', responseSchema: schema }});
+
+                if (generatedStoryboard && generatedStoryboard.scenes) {
+                    const processedScenes = generatedStoryboard.scenes.map(scene => ({ ...scene, duration_seconds: 8, visual_description: { id: scene.visual_description, en: null }, camera_shot: { id: scene.camera_shot, en: null }, audio_description: { id: scene.audio_description, en: null }, currentLang: 'id' }));
+                    AppState.storyboardData = { ...generatedStoryboard, scenes: processedScenes };
+                    renderStoryboard();
+                    const history = getHistory();
+                    if(!history.some(item => (typeof item === 'string' && item === storyIdea) || (typeof item === 'object' && item.idea === storyIdea))){
+                        const newHistory = [{idea: storyIdea, date: new Date().toISOString()}, ...history];
+                        saveHistory(newHistory.slice(0, 20));
+                    }
+                    showAlert(getUIText('alertGenerated'), 'success');
+                    DOMElements.storyboardContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+
+                btn.disabled = false;
+                btnText.classList.remove('hidden');
+                loaderSpan.classList.add('hidden');
+            };
+            
+            const regenerateStoryboardFromCharacters = async () => {
+                const storyIdea = DOMElements.storyIdea.value.trim();
+                const videoTypeText = DOMElements.videoType.options[DOMElements.videoType.selectedIndex].text;
+                const visualStyleText = DOMElements.visualStyle.options[DOMElements.visualStyle.selectedIndex].text;
+                const sceneCount = DOMElements.sceneCount.value;
+                const updatedCharacters = AppState.storyboardData.key_characters;
+
+                const systemInstruction = "You are a professional storyboard artist revising a storyboard. Your task is to regenerate scenes based on the user's original concept, but you MUST strictly adhere to the new 'key_characters' list provided. This list is the absolute source of truth. Ignore any conflicting character descriptions from the original idea. Each scene must be 8 seconds long. IMPORTANT: Generate all scene descriptions in Indonesian. The 'key_characters' list is for your reference only and should NOT be in the final JSON output.";
+
+                let userPrompt = `Original Video Concept: "${storyIdea}"\nNumber of Scenes: ${sceneCount}\nVideo Type: ${videoTypeText}\nVisual Style: ${visualStyleText}\n\n**CRITICAL: Use these exact characters and descriptions for the new scenes:**\n${updatedCharacters.map(c => `- ${c.identifier}: ${c.description}`).join('\n')}`;
+
+                const schema = {
+                    type: Type.OBJECT,
+                    properties: {
+                        scenes: { type: Type.ARRAY, description: "A scene-by-scene storyboard, regenerated based on the updated characters.", items: { type: Type.OBJECT, properties: { scene_number: { type: Type.INTEGER }, visual_description: { type: Type.STRING }, camera_shot: { type: Type.STRING }, audio_description: { type: Type.STRING } }, required: ["scene_number", "visual_description", "camera_shot", "audio_description"] } }
+                    },
+                    required: ["scenes"]
+                };
+
+                const newStoryboard = await callGeminiAPI({ model: 'gemini-2.5-flash', contents: userPrompt, config: { systemInstruction, responseMimeType: 'application/json', responseSchema: schema }});
+
+                if (newStoryboard && newStoryboard.scenes) {
+                    const processedScenes = newStoryboard.scenes.map(scene => ({ ...scene, duration_seconds: 8, visual_description: { id: scene.visual_description, en: null }, camera_shot: { id: scene.camera_shot, en: null }, audio_description: { id: scene.audio_description, en: null }, currentLang: 'id' }));
+                    AppState.storyboardData.scenes = processedScenes;
+                    renderStoryboard();
+                    renderFinalPrompts();
                     return true;
                 } else {
-                    updateApiStatus('inactive', 'API Key Tidak Valid');
+                    console.error("Failed to regenerate storyboard:", newStoryboard);
                     return false;
                 }
-            } catch (error) {
-                updateApiStatus('inactive', 'Gagal memvalidasi');
+            };
+
+            const translateScene = async (sceneIndex, targetLang) => {
+                const scene = AppState.storyboardData.scenes[sceneIndex];
+                const sourceLang = targetLang === 'en' ? 'id' : 'en';
+                const visual = scene.visual_description[sourceLang] || scene.visual_description[targetLang === 'en' ? 'id' : 'en'];
+                const camera = scene.camera_shot[sourceLang] || scene.camera_shot[targetLang === 'en' ? 'id' : 'en'];
+                const audio = scene.audio_description[sourceLang] || scene.audio_description[targetLang === 'en' ? 'id' : 'en'];
+                const contentToTranslate = { visual_description: visual, camera_shot: camera, audio_description: audio };
+                const systemInstruction = `You are a professional translator. Translate the values of the following JSON object into ${targetLang === 'en' ? 'English' : 'Indonesian'}. Maintain the exact JSON structure and keys. Only provide the translated JSON object as your response.`;
+                const schema = { type: Type.OBJECT, properties: { visual_description: { type: Type.STRING }, camera_shot: { type: Type.STRING }, audio_description: { type: Type.STRING }, }, required: ["visual_description", "camera_shot", "audio_description"], };
+                return await callGeminiAPI({ model: 'gemini-2.5-flash', contents: JSON.stringify(contentToTranslate), config: { systemInstruction, responseMimeType: 'application/json', responseSchema: schema } });
+            };
+
+            const generatePromptForScene = async (sceneIndex) => {
+                const scene = AppState.storyboardData.scenes[sceneIndex];
+                const characters = AppState.storyboardData.key_characters;
+                let visualDescEn, cameraShotEn, audioDescEn;
+                if (scene.visual_description.en && scene.camera_shot.en && scene.audio_description.en) {
+                    visualDescEn = scene.visual_description.en; cameraShotEn = scene.camera_shot.en; audioDescEn = scene.audio_description.en;
+                } else {
+                    const translatedContent = await translateScene(sceneIndex, 'en');
+                    if (translatedContent) {
+                        scene.visual_description.en = translatedContent.visual_description;
+                        scene.camera_shot.en = translatedContent.camera_shot;
+                        scene.audio_description.en = translatedContent.audio_description;
+                        visualDescEn = translatedContent.visual_description; cameraShotEn = translatedContent.camera_shot; audioDescEn = translatedContent.audio_description;
+                    } else {
+                        showAlert(`${getUIText('alertTranslationError')} ${getUIText('promptGenerationFailed')}`, 'error');
+                        return false;
+                    }
+                }
+                const systemInstruction = "You are an expert prompt engineer for Google's generative AI models. Your task is to create a JSON object containing three distinct prompts for video generation based on the provided scene details.\n\n**CRITICAL RULE:** The user will provide a list of 'key characters/objects' and a scene description. The 'key characters/objects' list is the **single source of truth**. You **MUST** use the descriptions from this list. If the 'Visuals' text contains descriptions that conflict with the list, **you must ignore the conflicting text** and use the description from the 'key characters/objects' list instead. This is the most important rule.\n\nYour JSON output must have three keys:\n1. 'combinedPrompt': Create a comprehensive, narrative prompt for a text-to-video model. This prompt should combine all scene inputs into a flowing narrative, enriched with cinematic language. Structure this prompt into four sections:[Visual]:,[Camera Movement & Angle]:,[Audio]:, and[Mood & Additional Details]:.\n2. 'imagePrompt': Create a highly detailed, descriptive prompt for a text-to-image model for this specific scene. Focus on artistic style, lighting, composition, and intricate visual details.\n3. 'animationPrompt': Create a concise, action-oriented prompt to animate the image generated from 'imagePrompt'. This prompt should describe the movement, camera motion, evolution of the scene, AND all accompanying audio details for this scene.\n\nGenerate all prompts in English.";
+                let userPrompt = characters && characters.length > 0 ? `Here are the key characters/objects for this story. Their descriptions are the source of truth: ${characters.map(c => `- ${c.identifier}: ${c.description}`).join('\n')}\n\n` : "";
+                userPrompt += `Please generate the prompt JSON for the following scene:\nScene Number: ${scene.scene_number}\nVisuals: ${visualDescEn}\nCamera: ${cameraShotEn}\nAudio: ${audioDescEn}\nEstimated Duration: ${scene.duration_seconds} seconds`;
+                const promptSchema = { type: Type.OBJECT, properties: { combinedPrompt: { type: Type.STRING }, imagePrompt: { type: Type.STRING }, animationPrompt: { type: Type.STRING } }, required: ["combinedPrompt", "imagePrompt", "animationPrompt"] };
+                const generatedPrompts = await callGeminiAPI({ model: 'gemini-2.5-flash', contents: userPrompt, config: { systemInstruction, responseMimeType: 'application/json', responseSchema: promptSchema, temperature: 0.8, topP: 0.95 } });
+                if (generatedPrompts) {
+                    AppState.storyboardData.scenes[sceneIndex].generatedPrompts = generatedPrompts;
+                    return true;
+                }
                 return false;
-            }
-        };
-        
-        saveApiKeyButton.addEventListener('click', async () => {
-            const key = apiKeyInput.value.trim();
-            if (!key) {
-                showAlert('error', 'Input Kosong', 'Harap masukkan API Key.');
-                return;
-            }
-            const isValid = await checkApiKey(key);
-            if (isValid) {
-                localStorage.setItem('geminiApiKey', key);
-                showAlert('success', 'Berhasil', 'API Key berhasil disimpan dan divalidasi!');
-            } else {
-                showAlert('error', 'Gagal', 'API Key yang Anda masukkan tidak valid.');
-            }
-        });
+            };
 
-        deleteApiKeyButton.addEventListener('click', () => {
-            if (localStorage.getItem('geminiApiKey')) {
-                openModal(deleteConfirmModal);
-            } else {
-                showAlert('error', 'Tidak Ada Kunci', 'Tidak ada API Key yang bisa dihapus.');
-            }
-        });
-        
-        confirmDeleteBtn.addEventListener('click', () => {
-            localStorage.removeItem('geminiApiKey');
-            apiKeyInput.value = '';
-            updateApiStatus('inactive', 'Tidak ada API Key');
-            showAlert('success', 'Berhasil', 'API Key berhasil dihapus.');
-            closeModal(deleteConfirmModal);
-        });
+            const handleGenerateAllPrompts = async () => {
+                const btn = DOMElements.generateAllPromptsBtn;
+                btn.disabled = true;
+                const btnText = btn.querySelector('#gen-all-btn-text');
+                const loaderSpan = btn.querySelector('#gen-all-btn-loader');
+                btnText.classList.add('hidden');
+                loaderSpan.classList.remove('hidden');
 
-        cancelDeleteBtn.addEventListener('click', () => closeModal(deleteConfirmModal));
-        deleteConfirmModal.addEventListener('click', (e) => {
-             if (e.target === deleteConfirmModal) closeModal(deleteConfirmModal);
-        });
+                const scenesToProcess = AppState.storyboardData.scenes;
+                let successCount = 0;
 
-        // --- Main Gemini Call ---
-        const generateWithGemini = async (story, visualStyle) => {
-            const apiKey = localStorage.getItem('geminiApiKey');
-            if (!apiKey) {
-                showAlert("error", "API Key Diperlukan", "Harap masukkan dan simpan API Key Anda terlebih dahulu.");
-                return;
-            }
+                for (let i = 0; i < scenesToProcess.length; i++) {
+                    const loaderText = getUIText('promptGenerationProgress', i + 1, scenesToProcess.length);
+                    loaderSpan.innerHTML = `<div class="flex items-center gap-2"><span class="loader"></span><span>${loaderText}</span></div>`;
+                    const success = await generatePromptForScene(i);
+                    if (success) successCount++;
+                }
 
-            const aiBtnText = document.getElementById('ai-btn-text');
-            const spinner = aiButton.querySelector('.loading-spinner');
-            aiBtnText.textContent = 'Memproses...';
-            spinner.classList.remove('hidden');
-            aiButton.disabled = true;
+                renderFinalPrompts();
+                showAlert(getUIText('allPromptsGenerated', successCount, scenesToProcess.length), 'success');
 
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
-            const prompt = `Anda adalah seorang sutradara film dan ahli prompt engineering untuk AI video seperti Google Veo. Tugas Anda adalah mengambil ide cerita dan gaya visual dari pengguna, lalu mengembangkannya menjadi komponen prompt yang kaya, detail, dan sinematik.
+                btn.disabled = false;
+                btnText.classList.remove('hidden');
+                loaderSpan.classList.add('hidden');
+            };
 
-PENTING: Karena ini adalah untuk video, adegan yang Anda hasilkan HARUS memiliki pergerakan. Deskripsikan gerakan karakter, lingkungan, atau kamera. Jangan membuat gambar statis.
+            const handleStoryboardClick = async (e) => {
+                const target = e.target.closest('button');
+                if (!target) return;
 
-Ide Cerita Pengguna: "${story}"
-Gaya Visual Pilihan: "${visualStyle}"
+                if (target.id === 'edit-characters-btn') {
+                    const isEditing = target.dataset.editing === 'true';
+                    const contentDiv = document.getElementById('key-characters-content');
+                    
+                    if (isEditing) { // SAVE & REGENERATE LOGIC
+                        target.disabled = true;
+                        target.innerHTML = `<span class="loader-xs"></span><span>${getUIText('saveButton')}</span>`;
 
-Berdasarkan informasi di atas, isi semua kolom dalam skema JSON berikut secara kreatif. Pikirkan seperti sutradara: pencahayaan dan pergerakan kamera apa yang paling cocok? Detail spesifik apa yang akan membuat adegan ini tak terlupakan?
+                        const updatedCharacters = [];
+                        let allValid = true;
+                        contentDiv.querySelectorAll('.key-character-item').forEach(item => {
+                            const newIdentifier = item.querySelector('input.form-input').value.trim();
+                            const newDescription = item.querySelector('textarea.form-textarea').value.trim();
+                            if (!newIdentifier || !newDescription) {
+                                allValid = false;
+                            }
+                            updatedCharacters.push({ identifier: newIdentifier, description: newDescription });
+                        });
 
-- **subject**: Deskripsikan karakter/subjek utama.
-- **action**: Rincikan aksi sinematik spesifik yang mereka lakukan, pastikan ada gerakan.
-- **setting**: Gambarkan lingkungan dengan detail yang kaya.
-- **lighting**: Jelaskan pencahayaan dengan istilah sinematik.
-- **extraDetails**: Tambahkan efek atau elemen nyata yang spesifik.
-- **soundEffects**: Deskripsikan suara latar/musik yang sesuai.
-- **characterSpeech**: Dialog atau ucapan singkat. Jika tidak ada, biarkan kosong.
-- **negativePrompt**: Sarankan istilah untuk dihindari.
-- **cameraAngle**: Pilih sudut kamera yang paling pas.
-- **cameraShot**: Pilih jenis bidikan.
-- **cameraMovement**: Sarankan gerakan kamera yang dinamis.
+                        if (!allValid) {
+                            showAlert(getUIText('alertCharacterFieldsEmpty'), 'error');
+                            target.disabled = false;
+                            target.innerHTML = `<i class="fas fa-save"></i><span>${getUIText('saveButton')}</span>`;
+                            return;
+                        }
 
-Output HANYA berupa objek JSON yang valid, tanpa teks tambahan. Semua nilai string harus dalam Bahasa Indonesia. Anda TIDAK perlu lagi menentukan "style" karena sudah diberikan.`;
+                        AppState.storyboardData.key_characters = updatedCharacters;
+                        const success = await regenerateStoryboardFromCharacters();
 
-            const payload = {
-                contents: [{ role: "user", parts: [{ text: prompt }] }],
-                generationConfig: {
-                    responseMimeType: "application/json",
-                    responseSchema: {
-                        type: "OBJECT",
-                        properties: {
-                            "subject": { "type": "STRING" }, 
-                            "action": { "type": "STRING" }, 
-                            "setting": { "type": "STRING" },
-                            "lighting": { "type": "STRING", "enum": Object.keys(lightingOptions).filter(k => k) }, 
-                            "extraDetails": { "type": "STRING" },
-                            "soundEffects": { "type": "STRING" }, 
-                            "characterSpeech": { "type": "STRING" },
-                            "negativePrompt": { "type": "STRING" },
-                            "cameraAngle": { "type": "STRING", "enum": Object.keys(cameraAngleOptions).filter(k => k) },
-                            "cameraShot": { "type": "STRING", "enum": Object.keys(cameraShotOptions).filter(k => k) },
-                            "cameraMovement": { "type": "STRING", "enum": Object.keys(cameraMovementOptions).filter(k => k) }
-                        },
-                        required: ["subject", "action", "setting", "lighting", "extraDetails", "cameraAngle", "cameraShot", "cameraMovement", "negativePrompt", "soundEffects", "characterSpeech"]
+                        if (success) {
+                            showAlert(getUIText('alertCharactersUpdatedSuccess'), 'success');
+                        } else {
+                            showAlert(getUIText('alertCharactersUpdateFailed'), 'error');
+                            renderStoryboard(); // Re-render to restore original state on failure
+                        }
+                    } else { // ENTER EDIT MODE LOGIC
+                        contentDiv.querySelectorAll('.key-character-item').forEach(item => {
+                            const titleP = item.querySelector('.identifier-text');
+                            const titleInput = document.createElement('input');
+                            titleInput.type = 'text';
+                            titleInput.className = 'form-input text-sm w-full mb-2 font-semibold';
+                            titleInput.value = titleP.textContent;
+                            titleP.replaceWith(titleInput);
+                            
+                            const descP = item.querySelector('.description-text');
+                            const descTextarea = document.createElement('textarea');
+                            descTextarea.className = 'form-textarea text-sm w-full';
+                            descTextarea.rows = 3;
+                            descTextarea.value = descP.textContent;
+                            descP.replaceWith(descTextarea);
+                        });
+                        target.dataset.editing = 'true';
+                        target.innerHTML = `<i class="fas fa-save"></i><span>${getUIText('saveButton')}</span>`;
+                    }
+                    return;
+                }
+
+
+                const sceneIndexAttr = target.dataset.sceneIndex;
+                if (!sceneIndexAttr) return;
+                const sceneIndex = parseInt(sceneIndexAttr, 10);
+                
+                if (target.classList.contains('lang-toggle-btn')) {
+                    target.disabled = true;
+                    target.innerHTML = `<span class="loader-xs"></span>`;
+                    const scene = AppState.storyboardData.scenes[sceneIndex];
+                    const targetLang = scene.currentLang === 'id' ? 'en' : 'id';
+                    if (scene.visual_description[targetLang]) {
+                        scene.currentLang = targetLang;
+                    } else {
+                        const translated = await translateScene(sceneIndex, targetLang);
+                        if (translated) {
+                            scene.visual_description[targetLang] = translated.visual_description;
+                            scene.camera_shot[targetLang] = translated.camera_shot;
+                            scene.audio_description[targetLang] = translated.audio_description;
+                            scene.currentLang = targetLang;
+                            showAlert(getUIText('alertSceneTranslated'), 'success');
+                        } else {
+                            showAlert(getUIText('alertTranslationError'), 'error');
+                        }
+                    }
+                    renderStoryboard();
+                    return;
+                }
+
+                if (target.classList.contains('edit-scene-btn')) {
+                    const sceneCard = document.getElementById(`scene-card-${sceneIndex}`);
+                    const contentDiv = sceneCard.querySelector('.scene-description-content');
+                    const isEditing = target.dataset.editing === 'true';
+                    const scene = AppState.storyboardData.scenes[sceneIndex];
+                    const currentLang = scene.currentLang;
+
+                    if (isEditing) {
+                        scene.visual_description[currentLang] = contentDiv.querySelector('[data-desc-type="visual"] textarea').value;
+                        scene.camera_shot[currentLang] = contentDiv.querySelector('[data-desc-type="camera"] textarea').value;
+                        scene.audio_description[currentLang] = contentDiv.querySelector('[data-desc-type="audio"] textarea').value;
+                        const otherLang = currentLang === 'id' ? 'en' : 'id';
+                        scene.visual_description[otherLang] = null;
+                        scene.camera_shot[otherLang] = null;
+                        scene.audio_description[otherLang] = null;
+                        if (scene.generatedPrompts) delete scene.generatedPrompts;
+                        renderStoryboard(); 
+                        renderFinalPrompts();
+                        showAlert(getUIText('alertSceneSaved'), 'success');
+                    } else {
+                        contentDiv.querySelectorAll('p[data-desc-type]').forEach(p => {
+                            const span = p.querySelector('span');
+                            const textarea = document.createElement('textarea');
+                            textarea.className = 'form-textarea text-sm w-full';
+                            textarea.rows = 3;
+                            textarea.value = span.textContent;
+                            span.replaceWith(textarea);
+                        });
+                        target.dataset.editing = 'true';
+                        target.innerHTML = `<i class="fas fa-save"></i><span>${getUIText('saveButton')}</span>`;
+                        sceneCard.querySelector('.lang-toggle-btn').classList.add('hidden');
+                    }
+                    return;
+                }
+            };
+            
+            const handleFinalPromptsClick = (e) => {
+                const target = e.target.closest('button');
+                if (!target) return;
+
+                const sceneIndexAttr = target.dataset.sceneIndex;
+                if (!sceneIndexAttr) return;
+                const sceneIndex = parseInt(sceneIndexAttr, 10);
+
+                if (target.classList.contains('accordion-toggle')) {
+                    const content = target.nextElementSibling;
+                    const icon = target.querySelector('i');
+                    const isOpen = content.classList.contains('open');
+                    
+                    document.querySelectorAll('.accordion-content.open').forEach(openContent => {
+                        openContent.classList.remove('open');
+                        openContent.previousElementSibling.querySelector('i').classList.remove('rotate-180');
+                    });
+                    
+                    if (!isOpen) {
+                        content.classList.add('open');
+                        icon.classList.add('rotate-180');
+                    }
+                }
+                
+                if (target.classList.contains('tab-btn')) {
+                    const tabContainer = target.closest('.accordion-content');
+                    const targetContentId = target.dataset.tabTarget;
+                    tabContainer.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+                    tabContainer.querySelectorAll('.tab-content').forEach(content => content.classList.add('hidden'));
+                    target.getElementById(targetContentId).classList.remove('hidden');
+                }
+                
+                if (target.classList.contains('copy-prompt-btn')) {
+                    const promptType = target.dataset.promptType;
+                    const textToCopy = AppState.storyboardData.scenes[sceneIndex].generatedPrompts[promptType];
+                    if (textToCopy) {
+                        navigator.clipboard.writeText(textToCopy)
+                            .then(() => showAlert(getUIText('alertSceneCopied'), 'success'))
+                            .catch(() => showAlert(getUIText('alertCopyFailed'), 'error'));
                     }
                 }
             };
 
-            try {
-                const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-                if (!response.ok) {
-                    const errorData = await response.json().catch(() => ({ error: { message: 'Gagal membaca respons error dari server.' } }));
-                    const errorMessage = errorData.error?.message || `API Error: ${response.status}`;
-                    throw new Error(errorMessage);
-                }
-                const result = await response.json();
-                if (result.candidates && result.candidates[0].content && result.candidates[0].content.parts) {
-                    const parsedJson = JSON.parse(result.candidates[0].content.parts[0].text);
-                    populateForm(parsedJson);
-                    showAlert('success', 'Analisis Selesai', 'AI telah mengisi detail video untuk Anda.');
-                    saveStoryToHistory(story);
-                } else { throw new Error("Struktur respons API tidak valid."); }
-            } catch (error) {
-                showAlert('error', 'Gagal Terhubung', 'Gagal menghubungi AI. Pesan dari server:', error.message);
-            } finally {
-                aiBtnText.innerHTML = `<i class="fas fa-lightbulb mr-3"></i>Kembangkan Ide dengan AI`;
-                spinner.classList.add('hidden');
-                aiButton.disabled = false;
-            }
-        };
-        
-        const translatePrompt = async (textToTranslate) => {
-            const apiKey = localStorage.getItem('geminiApiKey');
-            if (!apiKey) {
-                showAlert("error", "API Key Diperlukan", "Harap masukkan dan simpan API Key Anda untuk menerjemahkan.");
-                return;
-            }
-            
-            const originalIcon = translateBtn.innerHTML;
-            translateBtn.innerHTML = `<div class="loading-spinner h-4 w-4"></div>`;
-            translateBtn.disabled = true;
-
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
-            const prompt = `Translate the following Indonesian text to English. The text is a prompt for a text-to-video AI, so maintain the descriptive and cinematic tone. IMPORTANT EXCEPTION: Find the part of the text that starts with "saying:". Do NOT translate the text inside the quotes that follows it. Keep the quoted dialogue in its original Indonesian language. For example, if the input is 'saying: "Aku di sini"', the output should be 'saying: "Aku di sini"'. Text: "${textToTranslate}"`;
-            const payload = { contents: [{ parts: [{ text: prompt }] }] };
-
-            try {
-                const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-                if (!response.ok) {
-                    const errorData = await response.json().catch(() => ({ error: { message: 'Gagal membaca respons error dari server.' } }));
-                    throw new Error(errorData.error?.message || `API Error: ${response.status}`);
-                }
-                const result = await response.json();
-                if (result.candidates && result.candidates[0].content && result.candidates[0].content.parts) {
-                    outputPromptEnEl.value = result.candidates[0].content.parts[0].text;
-                    showAlert('success', 'Berhasil', 'Prompt telah diterjemahkan ke Bahasa Inggris.');
-                } else { throw new Error("Struktur respons terjemahan tidak valid."); }
-            } catch (error) {
-                showAlert('error', 'Gagal Menerjemahkan', error.message);
-            } finally {
-                translateBtn.innerHTML = originalIcon;
-                translateBtn.disabled = false;
-            }
-        };
-
-
-        // --- EVENT LISTENERS ---
-        guideBtn.addEventListener('click', () => openModal(guideModal));
-        guideModal.addEventListener('click', (e) => {
-            if (e.target === guideModal || e.target.closest('.close-modal-btn')) {
-                closeModal(guideModal);
-            }
-        });
-        
-        historyBtn.addEventListener('click', () => {
-            renderHistory();
-            openModal(historyModal);
-        });
-        historyModal.addEventListener('click', (e) => {
-            if (e.target === historyModal || e.target.closest('.close-modal-btn')) {
-                closeModal(historyModal);
-            }
-        });
-
-        aiButton.addEventListener('click', () => {
-            const story = document.getElementById('video-story').value.trim();
-            const visualStyle = document.getElementById('style').value;
-            if (!story) {
-                showAlert("error", "Cerita Dibutuhkan", "Harap isi kolom cerita sebelum menggunakan AI.");
-                return;
-            }
-            if (!visualStyle) {
-                showAlert("error", "Gaya Visual Dibutuhkan", "Harap pilih gaya visual sebelum menggunakan AI.");
-                return;
-            }
-            generateWithGemini(story, visualStyle);
-        });
-
-        detailedForm.addEventListener('submit', async (event) => {
-            event.preventDefault();
-            const fields = ['subject', 'action', 'setting', 'lighting', 'camera-angle', 'camera-shot', 'camera-movement', 'extra-details', 'sound-effects', 'character-speech', 'negative-prompt'];
-            const values = fields.map(id => document.getElementById(id).value.trim());
-            const styleValue = document.getElementById('style').value; // Get style from Step 1
-            
-            let promptParts = [];
-            let scene = [values[0], values[1], values[2] ? `dengan latar ${values[2]}` : ''].filter(Boolean);
-            if (scene.length > 0) promptParts.push(scene.join(' '));
-            
-            if (styleValue && styleOptions[styleValue]) promptParts.push(`gaya visual: ${styleOptions[styleValue]}`);
-            if (values[3] && lightingOptions[values[3]]) promptParts.push(`pencahayaan: ${lightingOptions[values[3]]}`);
-            if (values[4] && cameraAngleOptions[values[4]]) promptParts.push(`sudut kamera: ${cameraAngleOptions[values[4]]}`);
-            if (values[5] && cameraShotOptions[values[5]]) promptParts.push(`jenis bidikan: ${cameraShotOptions[values[5]]}`);
-            if (values[6] && cameraMovementOptions[values[6]]) promptParts.push(`gerakan kamera: ${cameraMovementOptions[values[6]]}`);
-            if (values[7]) promptParts.push(`detail tambahan: ${values[7]}`);
-            if (values[8]) promptParts.push(`efek suara: ${values[8]}`);
-            if (values[9]) promptParts.push(`saying: "${values[9]}"`);
-
-            let finalIndonesianPrompt = promptParts.join(', ');
-
-            if (values[10]) { // Index is now 10 for negative prompt
-                finalIndonesianPrompt += ` --no ${values[10]}`;
-            }
-            
-            outputPromptIdEl.value = finalIndonesianPrompt;
-            resultSection.classList.remove('hidden');
-            resultSection.scrollIntoView({ behavior: 'smooth' });
-            
-            // Automatically translate after generating
-            await translatePrompt(finalIndonesianPrompt);
-        });
-
-        detailedForm.addEventListener('reset', () => {
-            detailedForm.reset();
-            // Note: The style dropdown in Step 1 is not part of this form, so it won't be reset, which is intended.
-            resultSection.classList.add('hidden');
-            showAlert('success', 'Form Direset', 'Semua isian pada form ini telah dikosongkan.');
-        });
-
-        translateBtn.addEventListener('click', () => {
-            const indonesianPrompt = outputPromptIdEl.value.trim();
-            if (!indonesianPrompt) {
-                showAlert('error', 'Prompt Kosong', 'Tidak ada teks untuk diterjemahkan.');
-                return;
-            }
-            translatePrompt(indonesianPrompt);
-        });
-
-        const copyToClipboard = (text, buttonId) => {
-            if (!text) {
-                showAlert('error', 'Prompt Kosong', 'Tidak ada teks untuk disalin.');
-                return;
-            }
-            
-            const textArea = document.createElement("textarea");
-            textArea.value = text;
-            textArea.style.position = "fixed";
-            textArea.style.top = "-9999px";
-            textArea.style.left = "-9999px";
-            document.body.appendChild(textArea);
-            textArea.focus();
-            textArea.select();
-
-            try {
-                const successful = document.execCommand('copy');
-                if (successful) {
-                    showAlert('success', 'Berhasil Disalin', 'Prompt telah disalin ke clipboard.');
-                    const btn = document.getElementById(buttonId);
-                    const icon = btn.querySelector('i');
-                    const originalIconClass = icon.className;
-                    icon.className = 'fas fa-check';
-                    setTimeout(() => { icon.className = originalIconClass; }, 2000);
+            const checkLoginSession = () => {
+                const sessionString = sessionStorage.getItem('promptique_session');
+                if (!sessionString) { setLoginState(false); return; }
+                const session = JSON.parse(sessionString);
+                const now = new Date().getTime();
+                if (now - session.timestamp > 24 * 60 * 60 * 1000) { // 24-hour session
+                    sessionStorage.removeItem('promptique_session');
+                    setLoginState(false);
                 } else {
-                     showAlert('error', 'Gagal Menyalin', 'Browser Anda mungkin tidak mendukung fitur ini.');
+                    setLoginState(true);
                 }
-            } catch (err) {
-                 showAlert('error', 'Gagal Menyalin', 'Terjadi kesalahan teknis.');
-            }
-            document.body.removeChild(textArea);
-        };
-        
-        copyEnBtn.addEventListener('click', () => copyToClipboard(outputPromptEnEl.value, 'copy-en-btn'));
+            };
 
-        // --- Theme Toggle Logic ---
-        const applyTheme = (theme) => {
-            body.className = theme === 'light' ? 'light-theme' : 'dark-theme';
-            themeToggleBtn.innerHTML = theme === 'light' ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
-            localStorage.setItem('theme', theme);
-        };
-        themeToggleBtn.addEventListener('click', () => {
-            const newTheme = body.classList.contains('light-theme') ? 'dark' : 'light';
-            applyTheme(newTheme);
+            // --- API MODAL LOGIC (REFACTORED) ---
+            let modalApiKeySource;
+
+            const renderApiModalState = (source) => {
+                const { apiSourceSystem, apiSourcePersonal, personalApiDetails, systemApiNote } = DOMElements;
+                const isSystem = source === 'system';
+
+                // Update selection visuals
+                apiSourceSystem.style.borderColor = isSystem ? 'var(--theme-accent-2)' : 'var(--theme-border)';
+                apiSourceSystem.querySelector('i').className = isSystem ? 'fas fa-check-circle text-xl text-[var(--theme-accent-2)]' : 'far fa-circle text-xl text-[var(--theme-text-secondary)]';
+
+                apiSourcePersonal.style.borderColor = !isSystem ? 'var(--theme-accent-2)' : 'var(--theme-border)';
+                apiSourcePersonal.querySelector('i').className = !isSystem ? 'fas fa-check-circle text-xl text-[var(--theme-accent-2)]' : 'far fa-circle text-xl text-[var(--theme-text-secondary)]';
+
+                // Toggle content visibility
+                personalApiDetails.classList.toggle('hidden', isSystem);
+                systemApiNote.classList.toggle('hidden', !isSystem);
+
+                // Toggle instructions based on device (using screen width for reliability)
+                const isMobile = window.matchMedia('(max-width: 768px)').matches;
+                DOMElements.apiKeyInstructionsDesktop.classList.toggle('hidden', isMobile);
+                DOMElements.apiKeyInstructionsMobile.classList.toggle('hidden', !isMobile);
+            };
+
+            const resetAndOpenApiKeyModal = () => {
+                modalApiKeySource = AppState.apiKeySource;
+                DOMElements.apiKeyInput.value = AppState.personalApiKey || '';
+                renderApiModalState(modalApiKeySource);
+                openModal(DOMElements.apiKeyModal);
+            };
+
+            const initApiKeyModalListeners = () => {
+                DOMElements.apiSourceSystem.addEventListener('click', () => {
+                    modalApiKeySource = 'system';
+                    renderApiModalState(modalApiKeySource);
+                });
+
+                DOMElements.apiSourcePersonal.addEventListener('click', () => {
+                    modalApiKeySource = 'personal';
+                    renderApiModalState(modalApiKeySource);
+                });
+
+                DOMElements.apiModalSaveBtn.addEventListener('click', () => {
+                    if (modalApiKeySource === 'personal' && !DOMElements.apiKeyInput.value.trim()) {
+                        showAlert(getUIText('alertApiKeyEmpty'), 'error');
+                        return;
+                    }
+                    
+                    AppState.apiKeySource = modalApiKeySource;
+                    localStorage.setItem('promptique_api_source', modalApiKeySource);
+
+                    const personalKey = DOMElements.apiKeyInput.value.trim();
+                    AppState.personalApiKey = personalKey;
+                    localStorage.setItem('promptique_api_key', personalKey);
+                    
+                    showAlert(getUIText('alertApiSettingsSaved'), 'success');
+                    closeModal(DOMElements.apiKeyModal);
+                });
+
+                DOMElements.apiModalCancelBtn.addEventListener('click', () => {
+                    closeModal(DOMElements.apiKeyModal);
+                });
+
+                DOMElements.toggleApiKeyVisibility.addEventListener('click', () => {
+                    const isPassword = DOMElements.apiKeyInput.type === 'password';
+                    DOMElements.apiKeyInput.type = isPassword ? 'text' : 'password';
+                    DOMElements.toggleApiKeyVisibility.querySelector('i').className = `fas ${isPassword ? 'fa-eye-slash' : 'fa-eye'}`;
+                });
+                
+                DOMElements.deleteApiKeyBtn.addEventListener('click', () => {
+                    DOMElements.apiKeyInput.value = '';
+                });
+            };
+
+
+            // --- INITIALIZATION ---
+            const init = () => {
+                DOMElements.loginForm.addEventListener('submit', handleLogin);
+                DOMElements.aiDirectorBtn.addEventListener('click', handleAIDirector);
+                DOMElements.storyboardContainer.addEventListener('click', handleStoryboardClick);
+                DOMElements.generateAllPromptsBtn.addEventListener('click', handleGenerateAllPrompts);
+                DOMElements.finalPromptsContainer.addEventListener('click', handleFinalPromptsClick);
+                
+                DOMElements.hamburgerBtn.addEventListener('click', openOffCanvas);
+                DOMElements.offcanvasBackdrop.addEventListener('click', closeOffCanvas);
+                DOMElements.offcanvasCloseBtn.addEventListener('click', closeOffCanvas);
+                
+                DOMElements.langBtnDesktop.addEventListener('click', handleLanguageToggle);
+                DOMElements.langBtnMobileIcon.addEventListener('click', handleLanguageToggle);
+                
+                DOMElements.themeBtnDesktop.addEventListener('click', handleThemeToggle);
+                DOMElements.themeBtnMobile.addEventListener('click', () => { handleThemeToggle(); closeOffCanvas(); });
+                
+                DOMElements.togglePassword.addEventListener('click', () => {
+                    const isPassword = DOMElements.passwordInput.type === 'password';
+                    DOMElements.passwordInput.type = isPassword ? 'text' : 'password';
+                    DOMElements.togglePassword.className = `fas ${isPassword ? 'fa-eye-slash' : 'fa-eye'} absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer text-[var(--theme-text-secondary)] hover:text-[var(--theme-text-primary)]`;
+                });
+
+                document.getElementById('history-btn-desktop').addEventListener('click', () => { renderHistory(); openModal(DOMElements.historyModal); });
+                DOMElements.historyBtnMobileIcon.addEventListener('click', () => { renderHistory(); openModal(DOMElements.historyModal); closeOffCanvas(); });
+                
+                // Use the new reset and open function for the API modal triggers
+                DOMElements.apiKeyBtnDesktop.addEventListener('click', resetAndOpenApiKeyModal);
+                DOMElements.apiKeyBtnMobileIcon.addEventListener('click', () => { resetAndOpenApiKeyModal(); closeOffCanvas(); });
+                
+                DOMElements.logoutBtnDesktop.addEventListener('click', handleLogout);
+                DOMElements.logoutBtnMobileMenu.addEventListener('click', () => { handleLogout(); closeOffCanvas(); });
+
+                DOMElements.allModals.forEach(modal => {
+                    modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(modal); });
+                    modal.querySelector('.close-modal-btn')?.addEventListener('click', () => closeModal(modal));
+                });
+                document.getElementById('alert-close-btn').addEventListener('click', () => closeModal(DOMElements.alertModal));
+                document.getElementById('confirm-no-btn').addEventListener('click', () => closeModal(DOMElements.confirmationModal));
+
+                document.getElementById('clear-history-btn').addEventListener('click', () => { saveHistory([]); renderHistory(); showAlert(getUIText('alertHistoryCleared'), 'info'); });
+                
+                initApiKeyModalListeners();
+
+                // Load initial state
+                AppState.currentLang = (localStorage.getItem('promptique_lang') || 'id');
+                AppState.apiKeySource = localStorage.getItem('promptique_api_source') || 'system';
+                AppState.personalApiKey = localStorage.getItem('promptique_api_key');
+                DOMElements.apiKeyInput.value = AppState.personalApiKey || '';
+                
+                const savedTheme = (localStorage.getItem('promptique_theme') || 'dark');
+                applyTheme(savedTheme);
+                checkLoginSession();
+                updateUI();
+            };
+
+            init();
         });
 
-        // --- Auth Logic ---
-        const grantAccess = () => {
-            loginForm.classList.add('hidden');
-            logoutArea.classList.remove('hidden');
-            generatorFieldset.disabled = false;
-        };
+        (function () {
+                const isAppleDevice = /Mac|iPhone|iPad|iPod/i.test(navigator.userAgent);
+                const baseThreshold = 350;
+                const appleThreshold = 800; // toleransi lebih besar untuk Apple agar tidak false positive
+                const threshold = isAppleDevice ? appleThreshold : baseThreshold;
+            
+                            const showBlockedPage = () => {
+                document.body.innerHTML = `
+                    <div id="pastel-minimalist-wrapper" style="height: 100vh; width: 100%;">
+                    <!-- 
+                    To use this component, you need to import the 'Poppins' font. 
+                    Add this to the <head> of your HTML document:
+                    <link rel="preconnect" href="https://fonts.googleapis.com">
+                    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+                    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+                    -->
+                    <style>
+                        /* --- CSS Variables for easy theming --- */
+                        :root {
+                            --pastel-bg: #E6E7ED;
+                            --text-color-dark: #707070;
+                            --text-color-light: #A9A9A9;
+                            --accent-color: #B8C6E3;
+                            --shadow-light: rgba(255, 255, 255, 0.7);
+                            --shadow-dark: #D1D9E6;
+                        }
 
-        const lockAccess = () => {
-            logoutArea.classList.add('hidden');
-            loginForm.classList.remove('hidden');
-            generatorFieldset.disabled = true;
-            sessionStorage.removeItem('isLoggedIn');
-        };
+                        /* --- Base Styles for the Wrapper DIV --- */
+                        #pastel-minimalist-wrapper {
+                            background-color: var(--pastel-bg);
+                            color: var(--text-color-dark);
+                            font-family: 'Poppins', sans-serif;
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            height: 100%;
+                            width: 100%;
+                            margin: 0;
+                            padding: 2rem;
+                            box-sizing: border-box;
+                            text-align: center;
+                        }
 
-        loginBtn.addEventListener('click', () => {
-            if (passwordInput.value === 'prompt.ique.852') {
-                sessionStorage.setItem('isLoggedIn', 'true');
-                grantAccess();
-                showAlert('success', 'Berhasil Masuk', 'Selamat datang! Aplikasi siap digunakan.');
-            } else {
-                showAlert('error', 'Gagal Masuk', 'Kata sandi yang Anda masukkan salah.');
-            }
-        });
-        
-        passwordInput.addEventListener('keyup', (e) => {
-            if (e.key === 'Enter') loginBtn.click();
-        });
+                        /* --- Main Content Container (Soft UI / Neumorphism) --- */
+                        #pastel-minimalist-wrapper .soft-ui-container {
+                            position: relative;
+                            z-index: 1;
+                            padding: clamp(2rem, 6vw, 4rem);
+                            background: var(--pastel-bg);
+                            border-radius: 40px;
+                            box-shadow: 
+                                8px 8px 16px var(--shadow-dark),
+                                -8px -8px 16px var(--shadow-light);
+                            max-width: 600px;
+                            width: 100%;
+                        }
+                        
+                        /* --- Heading Style --- */
+                        #pastel-minimalist-wrapper .title {
+                            font-size: clamp(2.5rem, 8vw, 4rem);
+                            font-weight: 700;
+                            color: var(--text-color-dark);
+                            margin-bottom: 1rem;
+                            /* A subtle shadow to lift the text slightly */
+                            text-shadow: 1px 1px 2px var(--shadow-light);
+                        }
 
-        togglePasswordBtn.addEventListener('click', () => {
-            const isPassword = passwordInput.type === 'password';
-            passwordInput.type = isPassword ? 'text' : 'password';
-            passwordEyeIcon.className = isPassword ? 'fas fa-eye-slash' : 'fas fa-eye';
-        });
+                        /* --- Paragraph and Message Styles --- */
+                        #pastel-minimalist-wrapper .message {
+                            font-size: clamp(1rem, 2.5vw, 1.1rem);
+                            color: var(--text-color-light);
+                            line-height: 1.7;
+                            margin-top: 1.5rem;
+                        }
+                        
+                        #pastel-minimalist-wrapper .message span {
+                            color: var(--accent-color);
+                            font-weight: 600;
+                        }
 
-        logoutBtn.addEventListener('click', () => openModal(logoutConfirmModal));
-        confirmLogoutBtn.addEventListener('click', () => {
-            lockAccess();
-            closeModal(logoutConfirmModal);
-            showAlert('success', 'Berhasil Keluar', 'Aplikasi telah dikunci kembali.');
-        });
-        cancelLogoutBtn.addEventListener('click', () => closeModal(logoutConfirmModal));
-        logoutConfirmModal.addEventListener('click', (e) => {
-            if (e.target === logoutConfirmModal) closeModal(logoutConfirmModal);
-        });
-        
-        // --- History Logic ---
-        const getHistory = () => JSON.parse(localStorage.getItem('veoStoryHistory') || '[]');
-        const saveStoryToHistory = (story) => {
-            let history = getHistory();
-            if (!history.includes(story)) {
-                history.unshift(story);
-                history = history.slice(0, 20); // Keep last 20
-                localStorage.setItem('veoStoryHistory', JSON.stringify(history));
-            }
-        };
+                    </style>
 
-        const renderHistory = () => {
-            const history = getHistory();
-            historyList.innerHTML = '';
-            if (history.length === 0) {
-                historyList.innerHTML = '<p class="text-center text-slate-500">Riwayat cerita Anda masih kosong.</p>';
-                return;
-            }
-            history.forEach((story, index) => {
-                const item = document.createElement('div');
-                item.className = 'p-3 rounded-lg flex justify-between items-center bg-slate-800/50';
-                item.innerHTML = `
-                    <p class="text-sm text-slate-300 truncate mr-4">${story}</p>
-                    <div class="flex-shrink-0 flex gap-2">
-                        <button class="load-history-btn btn-secondary-theme p-2 rounded-md leading-none" data-index="${index}" title="Muat Cerita"><i class="fas fa-upload"></i></button>
-                        <button class="delete-history-btn bg-red-600/80 hover:bg-red-600 p-2 rounded-md leading-none" data-index="${index}" title="Hapus"><i class="fas fa-trash"></i></button>
+                    <div class="soft-ui-container">
+                        <!-- Main content -->
+                        <h1 class="title">AKSES DITOLAK</h1>
+                        <p class="message">
+                            ANOMALI TERDETEKSI: <span>[DEV_TOOLS_INTERFACE::ACTIVE]</span>.
+                            <br>
+                            Protokol keamanan sistem telah memutus koneksi untuk melindungi integritas data. Nonaktifkan antarmuka developer dan mulai ulang sesi.
+                        </p>
                     </div>
-                `;
-                historyList.appendChild(item);
+                </div>
+
+                `; // sama seperti sebelumnya
+            };
+        
+            // Deteksi tambahan: console.log timing trick
+            let devtoolsDetected = false;
+            const detectConsoleOpen = () => {
+                const start = performance.now();
+                console.log('%c', 'color:transparent;');
+                const time = performance.now() - start;
+                if (time > 100) {
+                    devtoolsDetected = true;
+                    showBlockedPage();
+                }
+            };
+        
+            const devToolCheck = () => {
+                const widthDiff = Math.abs(window.outerWidth - window.innerWidth);
+                const heightDiff = Math.abs(window.outerHeight - window.innerHeight);
+        
+                const isDevToolsBySize = (widthDiff > threshold || heightDiff > threshold) &&
+                                         window.outerHeight > 0 && window.innerHeight > 0;
+        
+                if (isDevToolsBySize) {
+                    // untuk Apple, jangan langsung blokir, cek lagi pakai metode console.log
+                    if (isAppleDevice) {
+                        detectConsoleOpen();
+                    } else {
+                        showBlockedPage();
+                    }
+                }
+            };
+        
+            // Apple device dicek lebih jarang
+            const checkInterval = isAppleDevice ? 8000 : 2000;
+            setInterval(devToolCheck, checkInterval);
+        
+            document.addEventListener('contextmenu', (event) => {
+                const target = event.target;
+                if (!['INPUT', 'TEXTAREA'].includes(target.tagName) && !target.isContentEditable) {
+                    event.preventDefault();
+                }
             });
-        };
-
-        historyList.addEventListener('click', (e) => {
-            const button = e.target.closest('button');
-            if (!button) return;
-
-            const index = button.dataset.index;
-            let history = getHistory();
-
-            if (button.classList.contains('load-history-btn')) {
-                document.getElementById('video-story').value = history[index];
-                showAlert('success', 'Berhasil', 'Cerita dari riwayat telah dimuat.');
-                closeModal(historyModal);
-            } else if (button.classList.contains('delete-history-btn')) {
-                history.splice(index, 1);
-                localStorage.setItem('veoStoryHistory', JSON.stringify(history));
-                renderHistory();
-            }
-        });
         
-        clearHistoryBtn.addEventListener('click', () => {
-            if(confirm('Apakah Anda yakin ingin menghapus semua riwayat cerita?')) {
-                localStorage.removeItem('veoStoryHistory');
-                renderHistory();
-                showAlert('success', 'Berhasil', 'Semua riwayat telah dihapus.');
-            }
-        });
-
-
-        // --- Initial Load ---
-        populateSelect('camera-angle', cameraAngleOptions);
-        populateSelect('camera-shot', cameraShotOptions);
-        populateSelect('camera-movement', cameraMovementOptions);
-        populateSelect('style', styleOptions);
-        populateSelect('lighting', lightingOptions);
+            document.addEventListener('keydown', (e) => {
+                const key = e.key.toLowerCase();
+                if (
+                    (e.ctrlKey && e.shiftKey && key === 'i') ||
+                    (e.ctrlKey && e.shiftKey && key === 'j') ||
+                    (e.ctrlKey && key === 'u') ||
+                    (e.metaKey && key === 'u') ||
+                    (key === 'f12')
+                ) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    showBlockedPage();
+                }
+            });
         
-        if (sessionStorage.getItem('isLoggedIn') === 'true') {
-            grantAccess();
-        } else {
-            lockAccess();
-        }
-        
-        const savedKey = localStorage.getItem('geminiApiKey');
-        if (savedKey) {
-            apiKeyInput.value = savedKey;
-            checkApiKey(savedKey);
-        } else {
-            updateApiStatus('inactive', 'Tidak ada API Key');
-        }
-        
-        const savedTheme = localStorage.getItem('theme') || 'dark';
-        applyTheme(savedTheme);
-    });
+            document.addEventListener('dragstart', e => e.preventDefault());
+            document.addEventListener('selectstart', e => e.preventDefault());
+        })();
     </script>
 </body>
 </html>
-
