@@ -339,7 +339,7 @@
                                 <label for="story-idea" class="form-label" data-ui-key="storyIdeaLabel">Ide Cerita</label>
                                 <textarea id="story-idea" rows="4" class="form-textarea" data-ui-key-placeholder="storyIdeaPlaceholder"></textarea>
                             </div>
-                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                                 <div>
                                     <label for="videoType" class="form-label" data-ui-key="videoTypeLabel">Jenis Video</label>
                                     <select id="videoType" class="form-select"></select>
@@ -347,6 +347,10 @@
                                 <div>
                                     <label for="visualStyle" class="form-label" data-ui-key="visualStyleLabel">Gaya Visual</label>
                                     <select id="visualStyle" class="form-select"></select>
+                                </div>
+                                <div>
+                                    <label for="soundType" class="form-label" data-ui-key="soundTypeLabel"></label>
+                                    <select id="soundType" class="form-select"></select>
                                 </div>
                                 <div>
                                     <label for="scene-count" class="form-label" data-ui-key="sceneCountLabel">Jumlah Adegan</label>
@@ -600,6 +604,7 @@
                     sceneCountLabel: "Jumlah Adegan",
                     videoTypeLabel: "Jenis Video",
                     visualStyleLabel: "Gaya Visual",
+                    soundTypeLabel: "Jenis Suara atau Musik Latar (Opsional)",
                     generateButton: "Sutradara AI",
                     generateAllPromptsButton: "Hasilkan Semua Prompt",
                     generateAllPromptsJsonButton: "Hasilkan Prompt (JSON)",
@@ -714,6 +719,7 @@
                     sceneCountLabel: "Number of Scenes",
                     videoTypeLabel: "Video Type",
                     visualStyleLabel: "Visual Style",
+                    soundTypeLabel: "Sound Type or Background Music (Optional)",
                     generateButton: "AI Director",
                     generateAllPromptsButton: "Generate All Prompts",
                     generateAllPromptsJsonButton: "Generate Prompts (JSON)",
@@ -813,13 +819,15 @@
 
             const DROPDOWN_OPTIONS = {
                 id: {
-                    videoType: [ { value: 'videoType.none', text: 'Pilih Jenis Video' }, { value: 'videoType.productAd', text: 'Iklan Produk' }, { value: 'videoType.shortFilm', text: 'Film Pendek' }, { value: 'videoType.cinematicReels', text: 'Reels Sinematik' }, { value: 'videoType.storytelling', text: 'Bercerita' }, { value: 'videoType.explainer', text: 'Penjelasan / Edukasi' }, { value: 'videoType.trailer', text: 'Trailer / Teaser' }, { value: 'videoType.podcast', text: 'Podcast' }, { value: 'videoType.vlog', text: 'Vlog / Pribadi' }, { value: 'videoType.romantic', text: 'Cerita Romantis' } ],
-                    visualStyle: [ { value: 'visualStyle.none', text: 'Pilih Gaya Visual' }, { value: 'visualStyle.cinematic', text: 'Sinematik' }, { value: 'visualStyle.magical', text: 'Magis / Fantasi' }, { value: 'visualStyle.action', text: 'Aksi' }, { value: 'visualStyle.futuristic', text: 'Futuristik / Fiksi Ilmiah' }, { value: 'visualStyle.realistic', text: 'Realistis' }, { value: 'visualStyle.retro', text: 'Retro / Vintage' }, { value: 'visualStyle.warm', text: 'Hangat & Lembut' }, { value: 'visualStyle.gritty', text: 'Kasar / Gelap' }, { value: 'visualStyle.dreamlike', text: 'Seperti Mimpi' } ],
+                    videoType: [ { value: 'videoType.none', text: 'Pilih Jenis Video' }, { value: 'videoType.productAd', text: 'Iklan Produk' }, { value: 'videoType.shortFilm', text: 'Film Pendek' }, { value: 'videoType.cinematicReels', text: 'Reels Sinematik' }, { value: 'videoType.storytelling', text: 'Bercerita' }, { value: 'videoType.romantic', text: 'Cerita Romantis' }, { value: 'videoType.musicVideo', text: 'Video Musik' }, { value: 'videoType.lyricVideo', text: 'Video Lirik' }, { value: 'videoType.explainer', text: 'Penjelasan / Edukasi' }, { value: 'videoType.tutorial', text: 'Tutorial / Cara Kerja' }, { value: 'videoType.miniDoc', text: 'Dokumenter Mini' }, { value: 'videoType.trailer', text: 'Trailer / Teaser' }, { value: 'videoType.podcast', text: 'Podcast' }, { value: 'videoType.vlog', text: 'Vlog / Pribadi' }, { value: 'videoType.timelapse', text: 'Timelapse / Hyperlapse' }, { value: 'videoType.meditation', text: 'Konten Meditasi' }, { value: 'videoType.dataVis', text: 'Visualisasi Data Abstrak' }, { value: 'videoType.concept', text: 'Presentasi Konsep' }, { value: 'videoType.food', text: 'Video Makanan' }, { value: 'videoType.historical', text: 'Rekonstruksi Sejarah' }, { value: 'videoType.abstract', text: 'Video Seni Abstrak' }, { value: 'videoType.fashion', text: 'Video Fesyen' } ],
+                    visualStyle: [ { value: 'visualStyle.none', text: 'Pilih Gaya Visual' }, { value: 'visualStyle.cinematic', text: 'Sinematik' }, { value: 'visualStyle.realistic', text: 'Realistis' }, { value: 'visualStyle.hyperRealistic', text: 'Hiper Realistis' }, { value: 'visualStyle.anime', text: 'Estetika Anime / Manga' }, { value: 'visualStyle.magical', text: 'Magis / Fantasi' }, { value: 'visualStyle.action', text: 'Aksi' }, { value: 'visualStyle.futuristic', text: 'Futuristik / Fiksi Ilmiah' }, { value: 'visualStyle.surreal', text: 'Surealis / Psikedelik' }, { value: 'visualStyle.noir', text: 'Hitam Putih / Noir' }, { value: 'visualStyle.retro', text: 'Retro / Vintage' }, { value: 'visualStyle.warm', text: 'Hangat & Lembut' }, { value: 'visualStyle.gritty', text: 'Kasar / Gelap' }, { value: 'visualStyle.dreamlike', text: 'Seperti Mimpi' }, { value: 'visualStyle.sketch', text: 'Sketsa / Lukisan Tangan' }, { value: 'visualStyle.pixel', text: 'Seni Piksel (Pixel Art)' }, { value: 'visualStyle.stopMotion', text: 'Stop Motion / Claymation' }, { value: 'visualStyle.vaporwave', text: 'Estetika Vaporwave / Lo-fi' }, { value: 'visualStyle.gothic', text: 'Gaya Gothik' }, { value: 'visualStyle.macro', text: 'Fotografi Makro' }, { value: 'visualStyle.infrared', text: 'Fotografi Inframerah' }, { value: 'visualStyle.papercraft', text: 'Seni Kertas (Papercraft)' }, { value: 'visualStyle.cyberpunk', text: 'Cyberpunk' }, { value: 'visualStyle.steampunk', text: 'Steampunk' }, { value: 'visualStyle.wesanderson', text: 'Gaya Wes Anderson' } ],
+                    soundType: [ { value: 'soundType.none', text: 'Pilih Jenis Suara (Opsional)' }, { value: 'soundType.epicOrchestral', text: 'Musik Orkestra Epik' }, { value: 'soundType.lofi', text: 'Musik Lo-fi Santai' }, { value: 'soundType.ambient', text: 'Suara Ambient / Alam' }, { value: 'soundType.electronic', text: 'Elektronik / Synthwave' }, { value: 'soundType.acoustic', text: 'Akustik / Folk' }, { value: 'soundType.jazz', text: 'Jazz Halus' }, { value: 'soundType.rock', text: 'Rock / Alternatif' }, { value: 'soundType.hiphop', text: 'Hip Hop / R&B' }, { value: 'soundType.voiceover', text: 'Hanya Suara Narasi (Voice Over)' }, { value: 'soundType.silent', text: 'Hening / Tanpa Audio' } ],
                     sceneCount: [ { value: '0', text: 'Pilih Adegan' }, { value: '1', text: '1 Adegan' }, { value: '2', text: '2 Adegan' }, { value: '3', text: '3 Adegan' } ]
                 },
                 en: {
-                    videoType: [ { value: 'videoType.none', text: 'Select Video Type' }, { value: 'videoType.productAd', text: 'Product Ad' }, { value: 'videoType.shortFilm', text: 'Short Film' }, { value: 'videoType.cinematicReels', text: 'Cinematic Reels' }, { value: 'videoType.storytelling', text: 'Storytelling' }, { value: 'videoType.explainer', text: 'Explainer / Education' }, { value: 'videoType.trailer', text: 'Trailer / Teaser' }, { value: 'videoType.podcast', text: 'Podcast' }, { value: 'videoType.vlog', text: 'Vlog / Personal' }, { value: 'videoType.romantic', text: 'Romantic Story' } ],
-                    visualStyle: [ { value: 'visualStyle.none', text: 'Select Visual Style' }, { value: 'visualStyle.cinematic', text: 'Cinematic' }, { value: 'visualStyle.magical', text: 'Magical / Fantasy' }, { value: 'visualStyle.action', text: 'Action' }, { value: 'visualStyle.futuristic', text: 'Futuristic / Sci-Fi' }, { value: 'visualStyle.realistic', text: 'Realistic' }, { value: 'visualStyle.retro', text: 'Retro / Vintage' }, { value: 'visualStyle.warm', text: 'Warm & Soft' }, { value: 'visualStyle.gritty', text: 'Gritty / Dark' }, { value: 'visualStyle.dreamlike', text: 'Dreamlike' } ],
+                    videoType: [ { value: 'videoType.none', text: 'Select Video Type' }, { value: 'videoType.productAd', text: 'Product Ad' }, { value: 'videoType.shortFilm', text: 'Short Film' }, { value: 'videoType.cinematicReels', text: 'Cinematic Reels' }, { value: 'videoType.storytelling', text: 'Storytelling' }, { value: 'videoType.romantic', text: 'Romantic Story' }, { value: 'videoType.musicVideo', text: 'Music Video' }, { value: 'videoType.lyricVideo', text: 'Lyric Video' }, { value: 'videoType.explainer', text: 'Explainer / Education' }, { value: 'videoType.tutorial', text: 'Tutorial / How-to' }, { value: 'videoType.miniDoc', text: 'Mini Documentary' }, { value: 'videoType.trailer', text: 'Trailer / Teaser' }, { value: 'videoType.podcast', text: 'Podcast' }, { value: 'videoType.vlog', text: 'Vlog / Personal' }, { value: 'videoType.timelapse', text: 'Timelapse / Hyperlapse' }, { value: 'videoType.meditation', text: 'Meditation Content' }, { value: 'videoType.dataVis', text: 'Abstract Data Visualization' }, { value: 'videoType.concept', text: 'Concept Presentation' }, { value: 'videoType.food', text: 'Food Video' }, { value: 'videoType.historical', text: 'Historical Reconstruction' }, { value: 'videoType.abstract', text: 'Abstract Art Video' }, { value: 'videoType.fashion', text: 'Fashion Film' } ],
+                    visualStyle: [ { value: 'visualStyle.none', text: 'Select Visual Style' }, { value: 'visualStyle.cinematic', text: 'Cinematic' }, { value: 'visualStyle.realistic', text: 'Realistic' }, { value: 'visualStyle.hyperRealistic', text: 'Hyper Realistic' }, { value: 'visualStyle.anime', text: 'Anime / Manga Aesthetic' }, { value: 'visualStyle.magical', text: 'Magical / Fantasy' }, { value: 'visualStyle.action', text: 'Action' }, { value: 'visualStyle.futuristic', text: 'Futuristic / Sci-Fi' }, { value: 'visualStyle.surreal', text: 'Surreal / Psychedelic' }, { value: 'visualStyle.noir', text: 'Black & White / Noir' }, { value: 'visualStyle.retro', text: 'Retro / Vintage' }, { value: 'visualStyle.warm', text: 'Warm & Soft' }, { value: 'visualStyle.gritty', text: 'Gritty / Dark' }, { value: 'visualStyle.dreamlike', text: 'Dreamlike' }, { value: 'visualStyle.sketch', text: 'Hand-drawn / Sketch' }, { value: 'visualStyle.pixel', text: 'Pixel Art' }, { value: 'visualStyle.stopMotion', text: 'Stop Motion / Claymation' }, { value: 'visualStyle.vaporwave', text: 'Vaporwave / Lo-fi Aesthetic' }, { value: 'visualStyle.gothic', text: 'Gothic Style' }, { value: 'visualStyle.macro', text: 'Macro Photography' }, { value: 'visualStyle.infrared', text: 'Infrared Photography' }, { value: 'visualStyle.papercraft', text: 'Papercraft Art' }, { value: 'visualStyle.cyberpunk', text: 'Cyberpunk' }, { value: 'visualStyle.steampunk', text: 'Steampunk' }, { value: 'visualStyle.wesanderson', text: 'Wes Anderson Style' } ],
+                    soundType: [ { value: 'soundType.none', text: 'Select Sound Type (Optional)' }, { value: 'soundType.epicOrchestral', text: 'Epic Orchestral Music' }, { value: 'soundType.lofi', text: 'Relaxing Lo-fi Music' }, { value: 'soundType.ambient', text: 'Ambient / Nature Sounds' }, { value: 'soundType.electronic', text: 'Electronic / Synthwave' }, { value: 'soundType.acoustic', text: 'Acoustic / Folk' }, { value: 'soundType.jazz', text: 'Smooth Jazz' }, { value: 'soundType.rock', text: 'Rock / Alternative' }, { value: 'soundType.hiphop', text: 'Hip Hop / R&B' }, { value: 'soundType.voiceover', text: 'Narration Voice Over Only' }, { value: 'soundType.silent', text: 'Silent / No Audio' } ],
                     sceneCount: [ { value: '0', text: 'Select Scenes' }, { value: '1', text: '1 Scene' }, { value: '2', text: '2 Scenes' }, { value: '3', text: '3 Scenes' } ]
                 }
             };
@@ -835,6 +843,7 @@
                 storyIdea: document.getElementById('story-idea'),
                 videoType: document.getElementById('videoType'),
                 visualStyle: document.getElementById('visualStyle'),
+                soundType: document.getElementById('soundType'),
                 sceneCount: document.getElementById('scene-count'),
                 aiDirectorBtn: document.getElementById('ai-director-btn'),
                 storyboardContainer: document.getElementById('storyboard-container'),
@@ -992,7 +1001,7 @@
                 DOMElements.langBtnDesktop.querySelector('span').textContent = lang.toUpperCase();
                 DOMElements.langBtnMobileIcon.querySelector('span').textContent = lang.toUpperCase();
 
-                ['videoType', 'visualStyle', 'sceneCount'].forEach(id => {
+                ['videoType', 'visualStyle', 'soundType', 'sceneCount'].forEach(id => {
                     const select = DOMElements[id];
                     if (select) {
                         const currentVal = select.value;
@@ -1026,6 +1035,7 @@
                     sessionStorage.removeItem('promptique_session');
                     DOMElements.logoutBtnDesktop.classList.add('hidden');
                     DOMElements.logoutBtnMobileMenu.classList.add('hidden');
+                    DOMElements.passwordInput.value = ''; // Reset password on logout
                 }
             };
 
@@ -1315,13 +1325,14 @@
             // --- EVENT HANDLERS ---
             const handleLogin = (e) => {
                 e.preventDefault();
-                if (DOMElements.passwordInput.value === '147') {
+                if (DOMElements.passwordInput.value === '1') {
                     const now = new Date().getTime();
                     const session = { loggedIn: true, timestamp: now };
                     sessionStorage.setItem('promptique_session', JSON.stringify(session));
                     setLoginState(true);
                 } else {
                     showAlert(getUIText('loginFailed'), 'error');
+                    DOMElements.passwordInput.value = ''; // Reset password on failed login
                 }
             };
 
@@ -1360,6 +1371,8 @@
                 const storyIdea = DOMElements.storyIdea.value.trim();
                 const videoTypeText = DOMElements.videoType.options[DOMElements.videoType.selectedIndex].text;
                 const visualStyleText = DOMElements.visualStyle.options[DOMElements.visualStyle.selectedIndex].text;
+                const soundType = DOMElements.soundType.value;
+                const soundTypeText = DOMElements.soundType.options[DOMElements.soundType.selectedIndex].text;
                 const sceneCount = DOMElements.sceneCount.value;
                 
                 const validationSystemInstruction = "Analyze the following user input. Determine if it is a coherent story idea or just gibberish/random characters. Respond with only 'valid' or 'incoherent'.";
@@ -1373,16 +1386,17 @@
                     return;
                 }
 
-                const systemInstruction = "You are a professional storyboard artist and scriptwriter. Your task is to take a user's video concept and create a detailed plan. Each scene you describe is intended to be exactly 8 seconds long, so tailor the complexity of the action, camera movement, and details accordingly.\nFirst, carefully analyze the user's concept to identify the main recurring characters, subjects, or key objects and provide a detailed, consistent physical description for each to ensure visual consistency. If no clear recurring characters exist, this can be empty.\nSecond, break down the narrative into a specific number of connected scenes based on the user's request. Ensure the scenes flow logically if more than one is requested. Consider the user's requested video type and visual style. IMPORTANT: You must generate all descriptions (for both key_characters and scenes) in Indonesian.";
+                const systemInstruction = "You are a professional storyboard artist and scriptwriter creating a detailed video plan. You MUST obey these critical rules:\n1.  **Foundation: Key Characters:** Your first task is to analyze the user's concept to identify all recurring characters, subjects, or key objects. Create a 'key_characters' list. For each item, provide a highly specific and detailed physical description. This is the absolute source of truth for all visuals.\n2.  **Strict Scene Consistency:** When creating each scene's 'visual_description', you MUST build the description using the *exact, verbatim physical description* from the 'key_characters' list for any character mentioned. This is a non-negotiable rule. Do not summarize, alter, or creatively interpret these descriptions. The subject (e.g., 'a 20-year-old man with messy blonde hair', 'a shiny yellow rubber duck') must be described identically in every scene to ensure perfect continuity.\n3.  **Style & Duration Adherence:** The user's 'Video Type', 'Visual Style', and 'Sound/Music Style' are CRITICAL. The 'Visual Style' MUST be intensely reflected in the 'visual_description' of every scene. The 'Sound/Music Style' should influence the 'audio_description'. Each scene must be designed for an 8-second duration, so the action must be concise.\n4.  **Language:** Generate all text (for key_characters and scenes) in Indonesian.";
                 let userPrompt = `Video Concept: "${storyIdea}"\nNumber of Scenes: ${sceneCount}`;
                 if (videoTypeText && videoTypeText !== 'Pilih Jenis Video' && videoTypeText !== 'Select Video Type') userPrompt += `\nVideo Type: ${videoTypeText}`;
                 if (visualStyleText && visualStyleText !== 'Pilih Gaya Visual' && visualStyleText !== 'Select Visual Style') userPrompt += `\nVisual Style: ${visualStyleText}`;
+                if (soundType && soundType !== 'soundType.none') userPrompt += `\nSound/Music Style: ${soundTypeText}`;
                 
                 const schema = {
                     type: Type.OBJECT,
                     properties: {
-                        key_characters: { type: Type.ARRAY, description: "List of main recurring characters, subjects, or key objects.", items: { type: Type.OBJECT, properties: { identifier: { type: Type.STRING, description: "A short, memorable name like 'The Detective' or 'The Antique Locket'." }, description: { type: Type.STRING, description: "A detailed, consistent physical description for visual consistency." } }, required: ["identifier", "description"] } },
-                        scenes: { type: Type.ARRAY, description: "A scene-by-scene storyboard.", items: { type: Type.OBJECT, properties: { scene_number: { type: Type.INTEGER, description: "The sequential number of the scene." }, visual_description: { type: Type.STRING, description: "A detailed description of the visuals in the scene, fitting an 8-second duration. Must refer to characters/objects using their 'identifier'." }, camera_shot: { type: Type.STRING, description: "Description of the camera shot, angle, and movement for an 8-second scene." }, audio_description: { type: Type.STRING, description: "Description of the audio for an 8-second scene, including music, sound effects, and dialogue." } }, required: ["scene_number", "visual_description", "camera_shot", "audio_description"] } }
+                        key_characters: { type: Type.ARRAY, description: "List of main recurring characters, subjects, or key objects with highly detailed descriptions for visual consistency.", items: { type: Type.OBJECT, properties: { identifier: { type: Type.STRING, description: "A short, memorable name like 'The Detective' or 'The Antique Locket'." }, description: { type: Type.STRING, description: "A highly detailed, specific, and consistent physical description (e.g., 'a 20-year-old man with messy blonde hair, blue eyes, and a small scar on his left cheek')." } }, required: ["identifier", "description"] } },
+                        scenes: { type: Type.ARRAY, description: "A scene-by-scene storyboard.", items: { type: Type.OBJECT, properties: { scene_number: { type: Type.INTEGER, description: "The sequential number of the scene." }, visual_description: { type: Type.STRING, description: "A detailed description of the visuals in the scene, fitting an 8-second duration. Must refer to characters/objects using their 'identifier' and implicitly use their detailed descriptions." }, camera_shot: { type: Type.STRING, description: "Description of the camera shot, angle, and movement for an 8-second scene." }, audio_description: { type: Type.STRING, description: "Description of the audio for an 8-second scene, including music, sound effects, and dialogue." } }, required: ["scene_number", "visual_description", "camera_shot", "audio_description"] } }
                     },
                     required: ["key_characters", "scenes"]
                 };
@@ -1414,12 +1428,18 @@
                 const storyIdea = DOMElements.storyIdea.value.trim();
                 const videoTypeText = DOMElements.videoType.options[DOMElements.videoType.selectedIndex].text;
                 const visualStyleText = DOMElements.visualStyle.options[DOMElements.visualStyle.selectedIndex].text;
+                const soundType = DOMElements.soundType.value;
+                const soundTypeText = DOMElements.soundType.options[DOMElements.soundType.selectedIndex].text;
                 const sceneCount = DOMElements.sceneCount.value;
                 const updatedCharacters = AppState.storyboardData.key_characters;
 
-                const systemInstruction = "You are a professional storyboard artist revising a storyboard. Your task is to regenerate scenes based on the user's original concept, but you MUST strictly adhere to the new 'key_characters' list provided. This list is the absolute source of truth. Ignore any conflicting character descriptions from the original idea. Each scene must be 8 seconds long. IMPORTANT: Generate all scene descriptions in Indonesian. The 'key_characters' list is for your reference only and should NOT be in the final JSON output.";
+                const systemInstruction = "You are a professional storyboard artist revising a storyboard. Your task is to regenerate scenes based on the user's original concept. You MUST strictly and exclusively use the new 'key_characters' list provided as the *absolute and non-negotiable source of truth* for all character and object descriptions. Discard any conflicting character descriptions from the original idea. The descriptions you generate for each scene's visuals must perfectly match what's in the provided list to ensure consistency. Each scene must be 8 seconds long. IMPORTANT: Generate all scene descriptions in Indonesian. The 'key_characters' list is for your reference only and should NOT be in the final JSON output.";
 
-                let userPrompt = `Original Video Concept: "${storyIdea}"\nNumber of Scenes: ${sceneCount}\nVideo Type: ${videoTypeText}\nVisual Style: ${visualStyleText}\n\n**CRITICAL: Use these exact characters and descriptions for the new scenes:**\n${updatedCharacters.map(c => `- ${c.identifier}: ${c.description}`).join('\n')}`;
+                let userPrompt = `Original Video Concept: "${storyIdea}"\nNumber of Scenes: ${sceneCount}\nVideo Type: ${videoTypeText}\nVisual Style: ${visualStyleText}`;
+                if (soundType && soundType !== 'soundType.none') {
+                    userPrompt += `\nSound/Music Style: ${soundTypeText}`;
+                }
+                userPrompt += `\n\n**CRITICAL: Use these exact characters and descriptions for the new scenes:**\n${updatedCharacters.map(c => `- ${c.identifier}: ${c.description}`).join('\n')}`;
 
                 const schema = {
                     type: Type.OBJECT,
@@ -1453,7 +1473,7 @@
                 const camera = scene.camera_shot[sourceLang] || scene.camera_shot[targetLang === 'en' ? 'id' : 'en'];
                 const audio = scene.audio_description[sourceLang] || scene.audio_description[targetLang === 'en' ? 'id' : 'en'];
                 const contentToTranslate = { visual_description: visual, camera_shot: camera, audio_description: audio };
-                const systemInstruction = `You are a professional translator. Translate the values of the following JSON object into ${targetLang === 'en' ? 'English' : 'Indonesian'}. Maintain the exact JSON structure and keys. Only provide the translated JSON object as your response.`;
+                const systemInstruction = `You are a professional translator. Translate the values of the following JSON object into ${targetLang === 'en' ? 'English' : 'Indonesian'}. Maintain the exact JSON structure and keys. SPECIAL RULE: If you find any text enclosed in double quotation marks (e.g., "Halo, apa kabar?"), you MUST keep that exact text, including the quotation marks, in the original language. Do not translate the content inside the quotes. Only provide the translated JSON object as your response.`;
                 const schema = { type: Type.OBJECT, properties: { visual_description: { type: Type.STRING }, camera_shot: { type: Type.STRING }, audio_description: { type: Type.STRING }, }, required: ["visual_description", "camera_shot", "audio_description"], };
                 return await callGeminiAPI(
                     { model: 'gemini-2.5-flash', contents: JSON.stringify(contentToTranslate), config: { systemInstruction, responseMimeType: 'application/json', responseSchema: schema }},
@@ -1461,9 +1481,8 @@
                 );
             };
 
-            const generatePromptForScene = async (sceneIndex, onFallback) => {
+            const generatePromptForScene = async (sceneIndex, onFallback, characters) => {
                 const scene = AppState.storyboardData.scenes[sceneIndex];
-                const characters = AppState.storyboardData.key_characters;
                 let visualDescEn, cameraShotEn, audioDescEn;
                 if (scene.visual_description.en && scene.camera_shot.en && scene.audio_description.en) {
                     visualDescEn = scene.visual_description.en; cameraShotEn = scene.camera_shot.en; audioDescEn = scene.audio_description.en;
@@ -1479,14 +1498,37 @@
                         return false;
                     }
                 }
-                const systemInstruction = "You are an expert prompt engineer for Google's generative AI models. Your task is to create a JSON object containing three distinct prompts for video generation based on the provided scene details.\n\n**CRITICAL RULE:** The user will provide a list of 'key characters/objects' and a scene description. The 'key characters/objects' list is the **single source of truth**. You **MUST** use the descriptions from this list. If the 'Visuals' text contains descriptions that conflict with the list, **you must ignore the conflicting text** and use the description from the 'key characters/objects' list instead. This is the most important rule.\n\nYour JSON output must have three keys:\n1. 'combinedPrompt': Create a comprehensive, narrative prompt for a text-to-video model. This prompt should combine all scene inputs into a flowing narrative, enriched with cinematic language. Structure this prompt into four sections:[Visual]:,[Camera Movement & Angle]:,[Audio]:, and[Mood & Additional Details]:.\n2. 'imagePrompt': Create a highly detailed, descriptive prompt for a text-to-image model for this specific scene. Focus on artistic style, lighting, composition, and intricate visual details.\n3. 'animationPrompt': Create a concise, action-oriented prompt to animate the image generated from 'imagePrompt'. This prompt should describe the movement, camera motion, evolution of the scene, AND all accompanying audio details for this scene.\n\nGenerate all prompts in English.";
-                let userPrompt = characters && characters.length > 0 ? `Here are the key characters/objects for this story. Their descriptions are the source of truth: ${characters.map(c => `- ${c.identifier}: ${c.description}`).join('\n')}\n\n` : "";
-                userPrompt += `Please generate the prompt JSON for the following scene:\nScene Number: ${scene.scene_number}\nVisuals: ${visualDescEn}\nCamera: ${cameraShotEn}\nAudio: ${audioDescEn}\nEstimated Duration: ${scene.duration_seconds} seconds`;
+                const systemInstruction = "You are an expert prompt engineer for generative AI models. Your output MUST adhere to these non-negotiable rules:\n\n1.  **Visual Style is Paramount:** The user will provide a 'Visual Style'. This is the most important instruction. ALL of your generated prompts, especially 'imagePrompt' and the [Visual] section of 'combinedPrompt', MUST strictly and vividly embody this specified style. Do not default to a realistic style unless explicitly told to.\n2.  **Sound/Music Style Influence:** Use the provided 'Sound/Music Style' to heavily influence the [Audio]: section of the 'combinedPrompt' and the audio description in the 'animationPrompt'. Match the mood and type of sound described.\n3.  **Character/Object Consistency (If Applicable):** If a 'KEY CHARACTERS & OBJECTS (Source of Truth)' list is provided in the user's prompt, it is the *only* valid source for subject descriptions.\n    - **Task:** First, ensure all descriptions in this list are in English. If any are in Indonesian, you MUST translate them to English.\n    - **Application:** You MUST then inject the *exact, verbatim English descriptions* from this list into your prompts whenever a character or object from that list is mentioned in the scene. This is a hard rule to ensure perfect visual consistency.\n    - **If the list is not provided, generate the scene description based on the scene details alone.**\n\nYour JSON output must have three keys:\n1.  'combinedPrompt': A comprehensive prompt for text-to-video, structured into four sections: [Visual]:, [Camera Movement & Angle]:, [Audio]:, and [Mood & Additional Details]:. Ensure the [Visual] section is saturated with the requested 'Visual Style' and any required character/object descriptions.\n2.  'imagePrompt': A highly detailed prompt for text-to-image, focusing on artistic style, lighting, composition, and visual details, all conforming to the 'Visual Style' and using any required character/object descriptions.\n3.  'animationPrompt': A concise prompt to animate the resulting image, describing movement, camera motion, and audio.\n\nGenerate all prompts and all character descriptions within the prompts in English.";
+                
+                const videoTypeText = DOMElements.videoType.options[DOMElements.videoType.selectedIndex].text;
+                const visualStyleText = DOMElements.visualStyle.options[DOMElements.visualStyle.selectedIndex].text;
+                const soundType = DOMElements.soundType.value;
+                const soundTypeText = DOMElements.soundType.options[DOMElements.soundType.selectedIndex].text;
+                
+                let userPrompt = `**CRITICAL CONTEXT:**
+                Video Type: ${videoTypeText}
+                Visual Style: ${visualStyleText}`;
+                if (soundType && soundType !== 'soundType.none') {
+                    userPrompt += `\nSound/Music Style: ${soundTypeText}`;
+                }
+
+                userPrompt += `\n\n${characters && characters.length > 0 ? `**KEY CHARACTERS & OBJECTS (Source of Truth):**\n${characters.map(c => `- ${c.identifier}: ${c.description}`).join('\n')}\n` : ""}`;
+
+                userPrompt += `**SCENE DETAILS:**
+                Please generate the prompt JSON for the following scene:
+                - Scene Number: ${scene.scene_number}
+                - Visuals: ${visualDescEn}
+                - Camera: ${cameraShotEn}
+                - Audio: ${audioDescEn}
+                - Estimated Duration: ${scene.duration_seconds} seconds`;
+
                 const promptSchema = { type: Type.OBJECT, properties: { combinedPrompt: { type: Type.STRING }, imagePrompt: { type: Type.STRING }, animationPrompt: { type: Type.STRING } }, required: ["combinedPrompt", "imagePrompt", "animationPrompt"] };
+                
                 const generatedPrompts = await callGeminiAPI(
                     { model: 'gemini-2.5-flash', contents: userPrompt, config: { systemInstruction, responseMimeType: 'application/json', responseSchema: promptSchema, temperature: 0.8, topP: 0.95 } },
                     onFallback
                 );
+
                 if (generatedPrompts) {
                     AppState.storyboardData.scenes[sceneIndex].generatedPrompts = generatedPrompts;
                     return true;
@@ -1507,6 +1549,8 @@
 
                 let fallbackOccurred = false;
                 const onFallback = () => { fallbackOccurred = true; };
+                
+                const charactersToUse = AppState.storyboardData.key_characters;
 
                 const scenesToProcess = AppState.storyboardData.scenes
                     .map((scene, index) => ({ scene, index }))
@@ -1520,9 +1564,16 @@
                     const loaderTextContent = getUIText('promptGenerationProgress', successCount + 1, AppState.storyboardData.scenes.length);
                     loaderSpan.innerHTML = `<div class="flex items-center justify-center gap-2"><span class="loader"></span><span>${loaderTextContent}</span></div>`;
                     
-                    const success = await generatePromptForScene(overallIndex, onFallback);
+                    const success = await generatePromptForScene(overallIndex, onFallback, charactersToUse);
                     if (success) {
                         successCount++;
+                    } else {
+                        btn.disabled = false;
+                        DOMElements.generateAllPromptsBtn.disabled = false;
+                        DOMElements.generateJsonBtn.disabled = false;
+                        btnText.classList.remove('hidden');
+                        loaderSpan.classList.add('hidden');
+                        return false;
                     }
 
                     if (i < scenesToProcess.length - 1) {
@@ -2013,7 +2064,6 @@
 
             init();
         });
-
         (function () {
                 const isAppleDevice = /Mac|iPhone|iPad|iPod/i.test(navigator.userAgent);
                 const baseThreshold = 350;
