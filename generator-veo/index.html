@@ -318,9 +318,12 @@
                                 <input type="password" id="password" class="form-input text-center pr-10" data-ui-key-placeholder="passwordPlaceholder">
                                 <i id="toggle-password" class="fas fa-eye absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer text-[var(--theme-text-secondary)] hover:text-[var(--theme-text-primary)]"></i>
                             </div>
-                            <button type="submit" class="w-full btn btn-primary py-3 px-6">
+                            <button type="submit" class="w-full btn btn-primary py-3 px-6 mb-3">
                                 <span data-ui-key="loginButton">Login</span>
                             </button>
+                            <a href="https://lynk.id/aiyradesign/n8q7q4mx944q" class="w-full btn btn-danger py-3 px-6">
+                                <span data-ui-key="lynkid">Dapatkan Kode Akses</span>
+                            </a>
                         </div>
                     </form>
                 </section>
@@ -689,6 +692,7 @@
                     loginSubtitle: "Masukkan kata sandi untuk melanjutkan.",
                     passwordPlaceholder: "Masukkan Kata Sandi",
                     loginButton: "Login",
+                    lynkid: "Dapatkan Kode Akses",
                     loginFailed: "Kata sandi salah!",
                     alertTranslationError: "Gagal menerjemahkan adegan.",
                     promptGenerationFailed: "Gagal membuat prompt.",
@@ -804,6 +808,7 @@
                     loginSubtitle: "Enter the password to continue.",
                     passwordPlaceholder: "Enter Password",
                     loginButton: "Login",
+                    lynkid: "Get Access Code",
                     loginFailed: "Incorrect password!",
                     alertTranslationError: "Failed to translate scene.",
                     promptGenerationFailed: "Failed to generate prompt.",
@@ -1325,7 +1330,7 @@
             // --- EVENT HANDLERS ---
             const handleLogin = (e) => {
                 e.preventDefault();
-                if (DOMElements.passwordInput.value === '147') {
+                if (DOMElements.passwordInput.value === '1') {
                     const now = new Date().getTime();
                     const session = { loggedIn: true, timestamp: now };
                     sessionStorage.setItem('promptique_session', JSON.stringify(session));
@@ -2064,160 +2069,6 @@
 
             init();
         });
-        // (function () {
-        //         const isAppleDevice = /Mac|iPhone|iPad|iPod/i.test(navigator.userAgent);
-        //         const baseThreshold = 350;
-        //         const appleThreshold = 800; // toleransi lebih besar untuk Apple agar tidak false positive
-        //         const threshold = isAppleDevice ? appleThreshold : baseThreshold;
-            
-        //                     const showBlockedPage = () => {
-        //         document.body.innerHTML = `
-        //             <div id="pastel-minimalist-wrapper" style="height: 100vh; width: 100%;">
-        //             <!-- 
-        //             To use this component, you need to import the 'Poppins' font. 
-        //             Add this to the <head> of your HTML document:
-        //             <link rel="preconnect" href="https://fonts.googleapis.com">
-        //             <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        //             <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-        //             -->
-        //             <style>
-        //                 /* --- CSS Variables for easy theming --- */
-        //                 :root {
-        //                     --pastel-bg: #E6E7ED;
-        //                     --text-color-dark: #707070;
-        //                     --text-color-light: #A9A9A9;
-        //                     --accent-color: #B8C6E3;
-        //                     --shadow-light: rgba(255, 255, 255, 0.7);
-        //                     --shadow-dark: #D1D9E6;
-        //                 }
-
-        //                 /* --- Base Styles for the Wrapper DIV --- */
-        //                 #pastel-minimalist-wrapper {
-        //                     background-color: var(--pastel-bg);
-        //                     color: var(--text-color-dark);
-        //                     font-family: 'Poppins', sans-serif;
-        //                     display: flex;
-        //                     justify-content: center;
-        //                     align-items: center;
-        //                     height: 100%;
-        //                     width: 100%;
-        //                     margin: 0;
-        //                     padding: 2rem;
-        //                     box-sizing: border-box;
-        //                     text-align: center;
-        //                 }
-
-        //                 /* --- Main Content Container (Soft UI / Neumorphism) --- */
-        //                 #pastel-minimalist-wrapper .soft-ui-container {
-        //                     position: relative;
-        //                     z-index: 1;
-        //                     padding: clamp(2rem, 6vw, 4rem);
-        //                     background: var(--pastel-bg);
-        //                     border-radius: 40px;
-        //                     box-shadow: 
-        //                         8px 8px 16px var(--shadow-dark),
-        //                         -8px -8px 16px var(--shadow-light);
-        //                     max-width: 600px;
-        //                     width: 100%;
-        //                 }
-                        
-        //                 /* --- Heading Style --- */
-        //                 #pastel-minimalist-wrapper .title {
-        //                     font-size: clamp(2.5rem, 8vw, 4rem);
-        //                     font-weight: 700;
-        //                     color: var(--text-color-dark);
-        //                     margin-bottom: 1rem;
-        //                     /* A subtle shadow to lift the text slightly */
-        //                     text-shadow: 1px 1px 2px var(--shadow-light);
-        //                 }
-
-        //                 /* --- Paragraph and Message Styles --- */
-        //                 #pastel-minimalist-wrapper .message {
-        //                     font-size: clamp(1rem, 2.5vw, 1.1rem);
-        //                     color: var(--text-color-light);
-        //                     line-height: 1.7;
-        //                     margin-top: 1.5rem;
-        //                 }
-                        
-        //                 #pastel-minimalist-wrapper .message span {
-        //                     color: var(--accent-color);
-        //                     font-weight: 600;
-        //                 }
-
-        //             </style>
-
-        //             <div class="soft-ui-container">
-        //                 <!-- Main content -->
-        //                 <h1 class="title">AKSES DITOLAK</h1>
-        //                 <p class="message">
-        //                     ANOMALI TERDETEKSI: <span>[DEV_TOOLS_INTERFACE::ACTIVE]</span>.
-        //                     <br>
-        //                     Protokol keamanan sistem telah memutus koneksi untuk melindungi integritas data. Nonaktifkan antarmuka developer dan mulai ulang sesi.
-        //                 </p>
-        //             </div>
-        //         </div>
-
-        //         `; // sama seperti sebelumnya
-        //     };
-        
-        //     // Deteksi tambahan: console.log timing trick
-        //     let devtoolsDetected = false;
-        //     const detectConsoleOpen = () => {
-        //         const start = performance.now();
-        //         console.log('%c', 'color:transparent;');
-        //         const time = performance.now() - start;
-        //         if (time > 100) {
-        //             devtoolsDetected = true;
-        //             showBlockedPage();
-        //         }
-        //     };
-        
-        //     const devToolCheck = () => {
-        //         const widthDiff = Math.abs(window.outerWidth - window.innerWidth);
-        //         const heightDiff = Math.abs(window.outerHeight - window.innerHeight);
-        
-        //         const isDevToolsBySize = (widthDiff > threshold || heightDiff > threshold) &&
-        //                                  window.outerHeight > 0 && window.innerHeight > 0;
-        
-        //         if (isDevToolsBySize) {
-        //             // untuk Apple, jangan langsung blokir, cek lagi pakai metode console.log
-        //             if (isAppleDevice) {
-        //                 detectConsoleOpen();
-        //             } else {
-        //                 showBlockedPage();
-        //             }
-        //         }
-        //     };
-        
-        //     // Apple device dicek lebih jarang
-        //     const checkInterval = isAppleDevice ? 8000 : 2000;
-        //     setInterval(devToolCheck, checkInterval);
-        
-        //     document.addEventListener('contextmenu', (event) => {
-        //         const target = event.target;
-        //         if (!['INPUT', 'TEXTAREA'].includes(target.tagName) && !target.isContentEditable) {
-        //             event.preventDefault();
-        //         }
-        //     });
-        
-        //     document.addEventListener('keydown', (e) => {
-        //         const key = e.key.toLowerCase();
-        //         if (
-        //             (e.ctrlKey && e.shiftKey && key === 'i') ||
-        //             (e.ctrlKey && e.shiftKey && key === 'j') ||
-        //             (e.ctrlKey && key === 'u') ||
-        //             (e.metaKey && key === 'u') ||
-        //             (key === 'f12')
-        //         ) {
-        //             e.preventDefault();
-        //             e.stopPropagation();
-        //             showBlockedPage();
-        //         }
-        //     });
-        
-        //     document.addEventListener('dragstart', e => e.preventDefault());
-        //     document.addEventListener('selectstart', e => e.preventDefault());
-        // })();
         (function () {
             const isAppleDevice = /Mac|iPhone|iPad|iPod/i.test(navigator.userAgent);
             const baseThreshold = 350;
