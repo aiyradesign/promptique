@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -318,12 +319,9 @@
                                 <input type="password" id="password" class="form-input text-center pr-10" data-ui-key-placeholder="passwordPlaceholder">
                                 <i id="toggle-password" class="fas fa-eye absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer text-[var(--theme-text-secondary)] hover:text-[var(--theme-text-primary)]"></i>
                             </div>
-                            <button type="submit" class="w-full btn btn-primary py-3 px-6 mb-3">
+                            <button type="submit" class="w-full btn btn-primary py-3 px-6">
                                 <span data-ui-key="loginButton">Login</span>
                             </button>
-                            <a href="https://lynk.id/aiyradesign/n8q7q4mx944q" class="w-full btn btn-danger py-3 px-6" target="_blank">
-                                <span data-ui-key="lynkid">Dapatkan Kode Akses</span>
-                            </a>
                         </div>
                     </form>
                 </section>
@@ -692,7 +690,6 @@
                     loginSubtitle: "Masukkan kata sandi untuk melanjutkan.",
                     passwordPlaceholder: "Masukkan Kata Sandi",
                     loginButton: "Login",
-                    lynkid: "Dapatkan Kode Akses",
                     loginFailed: "Kata sandi salah!",
                     alertTranslationError: "Gagal menerjemahkan adegan.",
                     promptGenerationFailed: "Gagal membuat prompt.",
@@ -808,7 +805,6 @@
                     loginSubtitle: "Enter the password to continue.",
                     passwordPlaceholder: "Enter Password",
                     loginButton: "Login",
-                    lynkid: "Get Access Code",
                     loginFailed: "Incorrect password!",
                     alertTranslationError: "Failed to translate scene.",
                     promptGenerationFailed: "Failed to generate prompt.",
@@ -1037,7 +1033,7 @@
                 } else {
                     DOMElements.loginCard.classList.remove('hidden');
                     DOMElements.generatorContent.classList.add('hidden');
-                    sessionStorage.removeItem('promptique_session');
+                    localStorage.removeItem('promptique_session');
                     DOMElements.logoutBtnDesktop.classList.add('hidden');
                     DOMElements.logoutBtnMobileMenu.classList.add('hidden');
                     DOMElements.passwordInput.value = ''; // Reset password on logout
@@ -1330,10 +1326,9 @@
             // --- EVENT HANDLERS ---
             const handleLogin = (e) => {
                 e.preventDefault();
-                if (DOMElements.passwordInput.value === 'promptique852#') {
+                if (DOMElements.passwordInput.value === '1') {
                     const now = new Date().getTime();
-                    const session = { loggedIn: true, timestamp: now };
-                    sessionStorage.setItem('promptique_session', JSON.stringify(session));
+                    localStorage.setItem('promptique_session', now.toString());
                     setLoginState(true);
                 } else {
                     showAlert(getUIText('loginFailed'), 'error');
@@ -1921,15 +1916,19 @@
             };
 
             const checkLoginSession = () => {
-                const sessionString = sessionStorage.getItem('promptique_session');
-                if (!sessionString) { setLoginState(false); return; }
-                const session = JSON.parse(sessionString);
-                const now = new Date().getTime();
-                if (now - session.timestamp > 24 * 60 * 60 * 1000) { // 24-hour session
-                    sessionStorage.removeItem('promptique_session');
+                const sessionTimestampString = localStorage.getItem('promptique_session');
+                if (!sessionTimestampString) {
                     setLoginState(false);
-                } else {
+                    return;
+                }
+                const sessionTimestamp = parseInt(sessionTimestampString, 10);
+                const now = new Date().getTime();
+                const oneDay = 24 * 60 * 60 * 1000;
+                if (now - sessionTimestamp < oneDay) {
                     setLoginState(true);
+                } else {
+                    localStorage.removeItem('promptique_session');
+                    setLoginState(false);
                 }
             };
 
@@ -2069,6 +2068,7 @@
 
             init();
         });
+
         (function () {
             const isAppleDevice = /Mac|iPhone|iPad|iPod/i.test(navigator.userAgent);
             const baseThreshold = 350;
