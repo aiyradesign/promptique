@@ -1354,7 +1354,7 @@
             // --- EVENT HANDLERS ---
             const handleLogin = (e) => {
                 e.preventDefault();
-                if (DOMElements.passwordInput.value === '1') {
+                if (DOMElements.passwordInput.value === 'promptique852#') {
                     const now = new Date().getTime();
                     localStorage.setItem('promptique_session', now.toString());
                     setLoginState(true);
@@ -2303,7 +2303,7 @@
 
             document.addEventListener('dragstart', e => e.preventDefault());
             document.addEventListener('selectstart', e => e.preventDefault());
-        // })();
+        })();
     </script>
 </body>
 </html>
