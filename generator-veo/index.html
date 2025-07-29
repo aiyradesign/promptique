@@ -214,12 +214,12 @@
         }
         
         .accordion-content.open {
-            max-height: 1000px; /* Large enough for content */
+            max-height: 2000px; /* Large enough for content */
             padding: 1.5rem;
         }
         .accordion-content.json-accordion-content.open {
             padding: 0;
-            max-height: 1000px;
+            max-height: 2000px;
         }
 
         /* --- OFF-CANVAS MENU --- */
@@ -357,13 +357,18 @@
                                     <select id="scene-count" class="form-select"></select>
                                 </div>
                             </div>
-                            <button id="ai-director-btn" class="w-full btn btn-primary mt-6 py-3 px-8">
-                                <span id="ai-btn-text" class="flex items-center justify-center gap-2">
-                                    <i class="fas fa-user-astronaut"></i>
-                                    <span data-ui-key="generateButton">Sutradara AI</span>
-                                </span>
-                                <span id="ai-btn-loader" class="hidden"></span>
-                            </button>
+                            <div class="flex items-center gap-4 mt-6">
+                                <button id="reset-form-btn" data-ui-key-title="resetFormTitle" class="btn btn-danger py-6 px-5">
+                                    <i class="fas fa-undo fa-lg"></i>
+                                </button>
+                                <button id="ai-director-btn" class="flex-grow btn btn-primary py-3 px-8">
+                                    <span id="ai-btn-text" class="flex items-center justify-center gap-2">
+                                        <i class="fas fa-user-astronaut"></i>
+                                        <span data-ui-key="generateButton">Sutradara AI</span>
+                                    </span>
+                                    <span id="ai-btn-loader" class="hidden"></span>
+                                </button>
+                            </div>
                         </div>
                     </section>
 
@@ -629,7 +634,6 @@
                     logoutButton: "Keluar",
                     historyModalTitle: "Riwayat Ide Cerita",
                     clearHistoryButton: "Bersihkan Riwayat",
-                    // New API Modal Strings
                     apiKeySettingsTitle: "Pengaturan API Key",
                     chooseApiKeySource: "Pilih sumber Kunci API yang ingin Anda gunakan.",
                     useSystemApi: "Gunakan API Sistem",
@@ -698,7 +702,16 @@
                     visualDescriptionLabel: "Visual",
                     cameraDescriptionLabel: "Kamera",
                     audioDescriptionLabel: "Audio",
-                    personalApiLimitReached: "Batas API pribadi Anda tercapai. Proses diselesaikan menggunakan API sistem."
+                    elementLabel: "Elemen",
+                    motionLabel: "Gerakan",
+                    endingLabel: "Akhir",
+                    keywordLabel: "Kata Kunci",
+                    negativePromptLabel: "Prompt Negatif",
+                    lightingLabel: "Pencahayaan",
+                    roomLabel: "Lokasi / Ruangan",
+                    personalApiLimitReached: "Batas API pribadi Anda tercapai. Proses diselesaikan menggunakan API sistem.",
+                    resetFormTitle: "Reset Formulir",
+                    alertFormReset: "Formulir berhasil direset!",
                 },
                 en: {
                     langTitle: "Change Language",
@@ -744,7 +757,6 @@
                     logoutButton: "Logout",
                     historyModalTitle: "Story Idea History",
                     clearHistoryButton: "Clear History",
-                    // New API Modal Strings
                     apiKeySettingsTitle: "API Key Settings",
                     chooseApiKeySource: "Choose the API Key source you want to use.",
                     useSystemApi: "Use System API",
@@ -811,9 +823,18 @@
                     mobileMenuTitle: "Menu",
                     secondsUnit: "seconds",
                     visualDescriptionLabel: "Visual",
-                    cameraDescriptionLabel: "Kamera",
+                    cameraDescriptionLabel: "Camera",
                     audioDescriptionLabel: "Audio",
-                    personalApiLimitReached: "Your personal API limit was reached. The process was completed using the system API."
+                    elementLabel: "Elements",
+                    motionLabel: "Motion",
+                    endingLabel: "Ending",
+                    keywordLabel: "Keywords",
+                    negativePromptLabel: "Negative Prompt",
+                    lightingLabel: "Lighting",
+                    roomLabel: "Location / Room",
+                    personalApiLimitReached: "Your personal API limit was reached. The process was completed using the system API.",
+                    resetFormTitle: "Reset Form",
+                    alertFormReset: "Form has been reset!",
                 }
             };
 
@@ -845,6 +866,7 @@
                 visualStyle: document.getElementById('visualStyle'),
                 soundType: document.getElementById('soundType'),
                 sceneCount: document.getElementById('scene-count'),
+                resetFormBtn: document.getElementById('reset-form-btn'),
                 aiDirectorBtn: document.getElementById('ai-director-btn'),
                 storyboardContainer: document.getElementById('storyboard-container'),
                 finalPromptStepContainer: document.getElementById('final-prompt-step-container'),
@@ -1170,10 +1192,17 @@
                                             </button>
                                         </div>
                                     </div>
-                                    <div class="scene-description-content space-y-2 text-sm">
-                                        <p data-desc-type="visual"><strong class="font-semibold text-[var(--theme-text-primary)]">${getUIText('visualDescriptionLabel')}:</strong> <span class="text-[var(--theme-text-secondary)]">${scene.visual_description[scene.currentLang]}</span></p>
-                                        <p data-desc-type="camera"><strong class="font-semibold text-[var(--theme-text-primary)]">${getUIText('cameraDescriptionLabel')}:</strong> <span class="text-[var(--theme-text-secondary)]">${scene.camera_shot[scene.currentLang]}</span></p>
-                                        <p data-desc-type="audio"><strong class="font-semibold text-[var(--theme-text-primary)]">${getUIText('audioDescriptionLabel')}:</strong> <span class="text-[var(--theme-text-secondary)]">${scene.audio_description[scene.currentLang]}</span></p>
+                                    <div class="scene-description-content space-y-2 text-sm mt-4">
+                                        <p data-desc-type="visual"><strong class="font-semibold text-[var(--theme-text-primary)]">${getUIText('visualDescriptionLabel')}:</strong> <span class="text-[var(--theme-text-secondary)]">${scene.visual[scene.currentLang]}</span></p>
+                                        <p data-desc-type="camera"><strong class="font-semibold text-[var(--theme-text-primary)]">${getUIText('cameraDescriptionLabel')}:</strong> <span class="text-[var(--theme-text-secondary)]">${scene.camera[scene.currentLang]}</span></p>
+                                        <p data-desc-type="audio"><strong class="font-semibold text-[var(--theme-text-primary)]">${getUIText('audioDescriptionLabel')}:</strong> <span class="text-[var(--theme-text-secondary)]">${scene.audio[scene.currentLang]}</span></p>
+                                        <p data-desc-type="lighting"><strong class="font-semibold text-[var(--theme-text-primary)]">${getUIText('lightingLabel')}:</strong> <span class="text-[var(--theme-text-secondary)]">${scene.lighting[scene.currentLang]}</span></p>
+                                        <p data-desc-type="room"><strong class="font-semibold text-[var(--theme-text-primary)]">${getUIText('roomLabel')}:</strong> <span class="text-[var(--theme-text-secondary)]">${scene.room[scene.currentLang]}</span></p>
+                                        <p data-desc-type="elements"><strong class="font-semibold text-[var(--theme-text-primary)]">${getUIText('elementLabel')}:</strong> <span class="text-[var(--theme-text-secondary)]">${(scene.elements[scene.currentLang] || []).join(', ')}</span></p>
+                                        <p data-desc-type="motion"><strong class="font-semibold text-[var(--theme-text-primary)]">${getUIText('motionLabel')}:</strong> <span class="text-[var(--theme-text-secondary)]">${scene.motion[scene.currentLang]}</span></p>
+                                        <p data-desc-type="ending"><strong class="font-semibold text-[var(--theme-text-primary)]">${getUIText('endingLabel')}:</strong> <span class="text-[var(--theme-text-secondary)]">${scene.ending[scene.currentLang]}</span></p>
+                                        <p data-desc-type="keywords"><strong class="font-semibold text-[var(--theme-text-primary)]">${getUIText('keywordLabel')}:</strong> <span class="text-[var(--theme-text-secondary)]">${(scene.keywords[scene.currentLang] || []).join(', ')}</span></p>
+                                        <p data-desc-type="negative_prompt"><strong class="font-semibold text-[var(--theme-text-primary)]">${getUIText('negativePromptLabel')}:</strong> <span class="text-[var(--theme-text-secondary)]">${(scene.negative_prompt[scene.currentLang] || []).join(', ')}</span></p>
                                     </div>
                                 </div>
                             `).join('')}
@@ -1325,7 +1354,7 @@
             // --- EVENT HANDLERS ---
             const handleLogin = (e) => {
                 e.preventDefault();
-                if (DOMElements.passwordInput.value === 'promptique852#') {
+                if (DOMElements.passwordInput.value === '1') {
                     const now = new Date().getTime();
                     localStorage.setItem('promptique_session', now.toString());
                     setLoginState(true);
@@ -1338,6 +1367,23 @@
             const handleLogout = () => { showConfirmation('confirmLogoutTitle', 'confirmLogoutMessage', () => { setLoginState(false); showAlert(getUIText('alertLoggedOut'), 'success'); }); };
             const handleLanguageToggle = () => { AppState.currentLang = AppState.currentLang === 'id' ? 'en' : 'id'; localStorage.setItem('promptique_lang', AppState.currentLang); updateUI(); };
             const handleThemeToggle = () => { applyTheme(AppState.currentTheme === 'dark' ? 'light' : 'dark'); };
+
+            const handleResetForm = () => {
+                DOMElements.storyIdea.value = '';
+                DOMElements.videoType.selectedIndex = 0;
+                DOMElements.visualStyle.selectedIndex = 0;
+                DOMElements.soundType.selectedIndex = 0;
+                DOMElements.sceneCount.selectedIndex = 0;
+                AppState.storyboardData = null;
+                DOMElements.storyboardContainer.innerHTML = '';
+                DOMElements.finalPromptStepContainer.classList.add('hidden');
+                DOMElements.finalResultsArea.classList.add('hidden');
+                DOMElements.finalPromptsContainer.innerHTML = '';
+                DOMElements.jsonAccordionContainer.innerHTML = '';
+                DOMElements.generateAllPromptsBtn.disabled = true;
+                DOMElements.generateJsonBtn.disabled = true;
+                showAlert(getUIText('alertFormReset'), 'info');
+            };
 
             const handleAIDirector = async () => {
                 if (!DOMElements.storyIdea.value.trim()) { showAlert(getUIText('alertIdeaEmpty'), 'error'); return; }
@@ -1385,17 +1431,31 @@
                     return;
                 }
 
-                const systemInstruction = "You are a professional storyboard artist and scriptwriter creating a detailed video plan. You MUST obey these critical rules:\n1.  **Foundation: Key Characters:** Your first task is to analyze the user's concept to identify all recurring characters, subjects, or key objects. Create a 'key_characters' list. For each item, provide a highly specific and detailed physical description. This is the absolute source of truth for all visuals.\n2.  **Strict Scene Consistency:** When creating each scene's 'visual_description', you MUST build the description using the *exact, verbatim physical description* from the 'key_characters' list for any character mentioned. This is a non-negotiable rule. Do not summarize, alter, or creatively interpret these descriptions. The subject (e.g., 'a 20-year-old man with messy blonde hair', 'a shiny yellow rubber duck') must be described identically in every scene to ensure perfect continuity.\n3.  **Style & Duration Adherence:** The user's 'Video Type', 'Visual Style', and 'Sound/Music Style' are CRITICAL. The 'Visual Style' MUST be intensely reflected in the 'visual_description' of every scene. The 'Sound/Music Style' should influence the 'audio_description'. Each scene must be designed for an 8-second duration, so the action must be concise.\n4.  **Language:** Generate all text (for key_characters and scenes) in Indonesian.";
+                const systemInstruction = "You are a professional storyboard artist and scriptwriter creating a detailed video plan. You MUST obey these critical rules:\n1.  **Foundation: Key Characters:** Your first task is to analyze the user's concept to identify all recurring characters, subjects, or key objects. Create a 'key_characters' list. For each item, provide a highly specific and detailed physical description. This is the absolute source of truth for all visuals.\n2.  **Strict Scene Consistency:** When creating each scene's 'visual' description, you MUST build the description using the *exact, verbatim physical description* from the 'key_characters' list for any character mentioned. This is a non-negotiable rule. Do not summarize, alter, or creatively interpret these descriptions.\n3.  **Style & Duration Adherence:** The user's 'Video Type' and 'Visual Style' are CRITICAL. The 'Visual Style' MUST be intensely reflected in the 'visual' description of every scene. Each scene must be designed for an 8-second duration, so the action must be concise.\n4.  **Integrated Dialogue:** Any spoken dialogue MUST be integrated directly into the `ending` field. For example: `The scene ends with the detective looking up and saying, \"I've found it.\"`. If there is no dialogue for a scene, the `ending` field should only describe the concluding action.\n5.  **Language:** Generate all text content (for key_characters and all scene fields) in Indonesian.";
                 let userPrompt = `Video Concept: "${storyIdea}"\nNumber of Scenes: ${sceneCount}`;
                 if (videoTypeText && videoTypeText !== 'Pilih Jenis Video' && videoTypeText !== 'Select Video Type') userPrompt += `\nVideo Type: ${videoTypeText}`;
                 if (visualStyleText && visualStyleText !== 'Pilih Gaya Visual' && visualStyleText !== 'Select Visual Style') userPrompt += `\nVisual Style: ${visualStyleText}`;
                 if (soundType && soundType !== 'soundType.none') userPrompt += `\nSound/Music Style: ${soundTypeText}`;
                 
+                const sceneProperties = {
+                    scene_number: { type: Type.INTEGER, description: "The sequential number of the scene." },
+                    visual: { type: Type.STRING, description: "Detailed description of the visuals in the scene, fitting an 8-second duration. Must refer to characters/objects using their 'identifier' and implicitly use their detailed descriptions." },
+                    camera: { type: Type.STRING, description: "Description of the camera shot, angle, and movement." },
+                    audio: { type: Type.STRING, description: "Description of the audio, including music and sound effects." },
+                    lighting: { type: Type.STRING, description: "Description of the scene's lighting (e.g., 'dramatic, moody, soft afternoon light')." },
+                    room: { type: Type.STRING, description: "Description of the location or room setting." },
+                    elements: { type: Type.ARRAY, description: "List of key visual elements or objects present in the scene.", items: { type: Type.STRING } },
+                    motion: { type: Type.STRING, description: "Description of the main motion or action in the scene." },
+                    ending: { type: Type.STRING, description: "Description of how the 8-second scene concludes, including any spoken dialogue in Indonesian, clearly attributed to the character speaking." },
+                    keywords: { type: Type.ARRAY, description: "List of 3-5 important keywords for the scene.", items: { type: Type.STRING } },
+                    negative_prompt: { type: Type.ARRAY, description: "List of things to avoid in the visual generation (e.g., 'blurry, ugly, deformed').", items: { type: Type.STRING } }
+                };
+
                 const schema = {
                     type: Type.OBJECT,
                     properties: {
                         key_characters: { type: Type.ARRAY, description: "List of main recurring characters, subjects, or key objects with highly detailed descriptions for visual consistency.", items: { type: Type.OBJECT, properties: { identifier: { type: Type.STRING, description: "A short, memorable name like 'The Detective' or 'The Antique Locket'." }, description: { type: Type.STRING, description: "A highly detailed, specific, and consistent physical description (e.g., 'a 20-year-old man with messy blonde hair, blue eyes, and a small scar on his left cheek')." } }, required: ["identifier", "description"] } },
-                        scenes: { type: Type.ARRAY, description: "A scene-by-scene storyboard.", items: { type: Type.OBJECT, properties: { scene_number: { type: Type.INTEGER, description: "The sequential number of the scene." }, visual_description: { type: Type.STRING, description: "A detailed description of the visuals in the scene, fitting an 8-second duration. Must refer to characters/objects using their 'identifier' and implicitly use their detailed descriptions." }, camera_shot: { type: Type.STRING, description: "Description of the camera shot, angle, and movement for an 8-second scene." }, audio_description: { type: Type.STRING, description: "Description of the audio for an 8-second scene, including music, sound effects, and dialogue." } }, required: ["scene_number", "visual_description", "camera_shot", "audio_description"] } }
+                        scenes: { type: Type.ARRAY, description: "A scene-by-scene storyboard.", items: { type: Type.OBJECT, properties: sceneProperties, required: Object.keys(sceneProperties) } }
                     },
                     required: ["key_characters", "scenes"]
                 };
@@ -1406,7 +1466,24 @@
                 );
 
                 if (generatedStoryboard && generatedStoryboard.scenes) {
-                    const processedScenes = generatedStoryboard.scenes.map(scene => ({ ...scene, duration_seconds: 8, visual_description: { id: scene.visual_description, en: null }, camera_shot: { id: scene.camera_shot, en: null }, audio_description: { id: scene.audio_description, en: null }, currentLang: 'id' }));
+                    const createLangObject = (value) => ({ id: value || '', en: null });
+                    const createLangArray = (value) => ({ id: value || [], en: null });
+
+                    const processedScenes = generatedStoryboard.scenes.map(scene => ({
+                         ...scene,
+                         duration_seconds: 8,
+                         visual: createLangObject(scene.visual),
+                         camera: createLangObject(scene.camera),
+                         audio: createLangObject(scene.audio),
+                         lighting: createLangObject(scene.lighting),
+                         room: createLangObject(scene.room),
+                         elements: createLangArray(scene.elements),
+                         motion: createLangObject(scene.motion),
+                         ending: createLangObject(scene.ending),
+                         keywords: createLangArray(scene.keywords),
+                         negative_prompt: createLangArray(scene.negative_prompt),
+                         currentLang: 'id'
+                    }));
                     AppState.storyboardData = { ...generatedStoryboard, scenes: processedScenes };
                     renderStoryboard();
                     const history = getHistory();
@@ -1432,7 +1509,7 @@
                 const sceneCount = DOMElements.sceneCount.value;
                 const updatedCharacters = AppState.storyboardData.key_characters;
 
-                const systemInstruction = "You are a professional storyboard artist revising a storyboard. Your task is to regenerate scenes based on the user's original concept. You MUST strictly and exclusively use the new 'key_characters' list provided as the *absolute and non-negotiable source of truth* for all character and object descriptions. Discard any conflicting character descriptions from the original idea. The descriptions you generate for each scene's visuals must perfectly match what's in the provided list to ensure consistency. Each scene must be 8 seconds long. IMPORTANT: Generate all scene descriptions in Indonesian. The 'key_characters' list is for your reference only and should NOT be in the final JSON output.";
+                const systemInstruction = "You are a professional storyboard artist revising a storyboard. Your task is to regenerate scenes based on the user's original concept. You MUST strictly and exclusively use the new 'key_characters' list provided as the *absolute and non-negotiable source of truth* for all character and object descriptions. Discard any conflicting character descriptions from the original idea. The descriptions you generate for each scene's visuals must perfectly match what's in the provided list to ensure consistency. Each scene must be 8 seconds long and have all the required fields. Any dialogue must be integrated into the 'ending' field. IMPORTANT: Generate all scene descriptions in Indonesian. The 'key_characters' list is for your reference only and should NOT be in the final JSON output.";
 
                 let userPrompt = `Original Video Concept: "${storyIdea}"\nNumber of Scenes: ${sceneCount}\nVideo Type: ${videoTypeText}\nVisual Style: ${visualStyleText}`;
                 if (soundType && soundType !== 'soundType.none') {
@@ -1440,11 +1517,12 @@
                 }
                 userPrompt += `\n\n**CRITICAL: Use these exact characters and descriptions for the new scenes:**\n${updatedCharacters.map(c => `- ${c.identifier}: ${c.description}`).join('\n')}`;
 
+                const sceneProperties = {
+                    scene_number: { type: Type.INTEGER }, visual: { type: Type.STRING }, camera: { type: Type.STRING }, audio: { type: Type.STRING }, lighting: { type: Type.STRING }, room: { type: Type.STRING }, elements: { type: Type.ARRAY, items: { type: Type.STRING } }, motion: { type: Type.STRING }, ending: { type: Type.STRING }, keywords: { type: Type.ARRAY, items: { type: Type.STRING } }, negative_prompt: { type: Type.ARRAY, items: { type: Type.STRING } }
+                };
                 const schema = {
                     type: Type.OBJECT,
-                    properties: {
-                        scenes: { type: Type.ARRAY, description: "A scene-by-scene storyboard, regenerated based on the updated characters.", items: { type: Type.OBJECT, properties: { scene_number: { type: Type.INTEGER }, visual_description: { type: Type.STRING }, camera_shot: { type: Type.STRING }, audio_description: { type: Type.STRING } }, required: ["scene_number", "visual_description", "camera_shot", "audio_description"] } }
-                    },
+                    properties: { scenes: { type: Type.ARRAY, description: "A scene-by-scene storyboard, regenerated based on the updated characters.", items: { type: Type.OBJECT, properties: sceneProperties, required: Object.keys(sceneProperties) } } },
                     required: ["scenes"]
                 };
 
@@ -1454,7 +1532,23 @@
                 );
 
                 if (newStoryboard && newStoryboard.scenes) {
-                    const processedScenes = newStoryboard.scenes.map(scene => ({ ...scene, duration_seconds: 8, visual_description: { id: scene.visual_description, en: null }, camera_shot: { id: scene.camera_shot, en: null }, audio_description: { id: scene.audio_description, en: null }, currentLang: 'id' }));
+                    const createLangObject = (value) => ({ id: value || '', en: null });
+                    const createLangArray = (value) => ({ id: value || [], en: null });
+                    const processedScenes = newStoryboard.scenes.map(scene => ({ 
+                        ...scene,
+                         duration_seconds: 8,
+                         visual: createLangObject(scene.visual),
+                         camera: createLangObject(scene.camera),
+                         audio: createLangObject(scene.audio),
+                         lighting: createLangObject(scene.lighting),
+                         room: createLangObject(scene.room),
+                         elements: createLangArray(scene.elements),
+                         motion: createLangObject(scene.motion),
+                         ending: createLangObject(scene.ending),
+                         keywords: createLangArray(scene.keywords),
+                         negative_prompt: createLangArray(scene.negative_prompt),
+                         currentLang: 'id'
+                    }));
                     AppState.storyboardData.scenes = processedScenes;
                     renderStoryboard();
                     renderFinalPrompts();
@@ -1468,12 +1562,39 @@
             const translateScene = async (sceneIndex, targetLang, onFallback) => {
                 const scene = AppState.storyboardData.scenes[sceneIndex];
                 const sourceLang = targetLang === 'en' ? 'id' : 'en';
-                const visual = scene.visual_description[sourceLang] || scene.visual_description[targetLang === 'en' ? 'id' : 'en'];
-                const camera = scene.camera_shot[sourceLang] || scene.camera_shot[targetLang === 'en' ? 'id' : 'en'];
-                const audio = scene.audio_description[sourceLang] || scene.audio_description[targetLang === 'en' ? 'id' : 'en'];
-                const contentToTranslate = { visual_description: visual, camera_shot: camera, audio_description: audio };
-                const systemInstruction = `You are a professional translator. Translate the values of the following JSON object into ${targetLang === 'en' ? 'English' : 'Indonesian'}. Maintain the exact JSON structure and keys. SPECIAL RULE: If you find any text enclosed in double quotation marks (e.g., "Halo, apa kabar?"), you MUST keep that exact text, including the quotation marks, in the original language. Do not translate the content inside the quotes. Only provide the translated JSON object as your response.`;
-                const schema = { type: Type.OBJECT, properties: { visual_description: { type: Type.STRING }, camera_shot: { type: Type.STRING }, audio_description: { type: Type.STRING }, }, required: ["visual_description", "camera_shot", "audio_description"], };
+
+                const contentToTranslate = {
+                    visual: scene.visual[sourceLang],
+                    camera: scene.camera[sourceLang],
+                    audio: scene.audio[sourceLang],
+                    lighting: scene.lighting[sourceLang],
+                    room: scene.room[sourceLang],
+                    elements: scene.elements[sourceLang],
+                    motion: scene.motion[sourceLang],
+                    ending: scene.ending[sourceLang],
+                    keywords: scene.keywords[sourceLang],
+                    negative_prompt: scene.negative_prompt[sourceLang]
+                };
+
+                const systemInstruction = `You are an expert translator. Your task is to translate the JSON object provided by the user from ${sourceLang} to ${targetLang}. You MUST obey this critical rule: For the 'ending' field, translate the descriptive parts but you MUST identify and preserve any text inside quotation marks (e.g., "...") in its original language. For all other fields (string values and strings within arrays), translate them fully. Respond ONLY with the translated JSON object, maintaining the original structure and keys. DO NOT add any explanations or markdown formatting.`;
+                
+                const schema = {
+                    type: Type.OBJECT,
+                    properties: {
+                        visual: { type: Type.STRING },
+                        camera: { type: Type.STRING },
+                        audio: { type: Type.STRING },
+                        lighting: { type: Type.STRING },
+                        room: { type: Type.STRING },
+                        elements: { type: Type.ARRAY, items: { type: Type.STRING } },
+                        motion: { type: Type.STRING },
+                        ending: { type: Type.STRING, description: "The translated ending, with dialogue in quotes preserved in the original language." },
+                        keywords: { type: Type.ARRAY, items: { type: Type.STRING } },
+                        negative_prompt: { type: Type.ARRAY, items: { type: Type.STRING } }
+                    },
+                    required: ["visual", "camera", "audio", "lighting", "room", "elements", "motion", "ending", "keywords", "negative_prompt"]
+                };
+
                 return await callGeminiAPI(
                     { model: 'gemini-2.5-flash', contents: JSON.stringify(contentToTranslate), config: { systemInstruction, responseMimeType: 'application/json', responseSchema: schema }},
                     onFallback
@@ -1482,23 +1603,29 @@
 
             const generatePromptForScene = async (sceneIndex, onFallback, characters) => {
                 const scene = AppState.storyboardData.scenes[sceneIndex];
-                let visualDescEn, cameraShotEn, audioDescEn;
-                if (scene.visual_description.en && scene.camera_shot.en && scene.audio_description.en) {
-                    visualDescEn = scene.visual_description.en; cameraShotEn = scene.camera_shot.en; audioDescEn = scene.audio_description.en;
-                } else {
+                const fieldsToTranslate = ['visual', 'camera', 'audio', 'lighting', 'room', 'elements', 'motion', 'ending', 'keywords', 'negative_prompt'];
+                
+                const needsTranslation = fieldsToTranslate.some(field => {
+                    const value = scene[field];
+                    return !value.en || (Array.isArray(value.en) && value.en.length === 0 && value.id.length > 0);
+                });
+
+                if (needsTranslation) {
                     const translatedContent = await translateScene(sceneIndex, 'en', onFallback);
                     if (translatedContent) {
-                        scene.visual_description.en = translatedContent.visual_description;
-                        scene.camera_shot.en = translatedContent.camera_shot;
-                        scene.audio_description.en = translatedContent.audio_description;
-                        visualDescEn = translatedContent.visual_description; cameraShotEn = translatedContent.camera_shot; audioDescEn = translatedContent.audio_description;
+                        for (const field of fieldsToTranslate) {
+                            if (translatedContent[field] !== undefined) {
+                                scene[field].en = translatedContent[field];
+                            }
+                        }
                     } else {
                         showAlert(`${getUIText('alertTranslationError')} ${getUIText('promptGenerationFailed')}`, 'error');
                         return false;
                     }
                 }
-                const systemInstruction = "You are an expert prompt engineer for generative AI models. Your output MUST adhere to these non-negotiable rules:\n\n1.  **Visual Style is Paramount:** The user will provide a 'Visual Style'. This is the most important instruction. ALL of your generated prompts, especially 'imagePrompt' and the [Visual] section of 'combinedPrompt', MUST strictly and vividly embody this specified style. Do not default to a realistic style unless explicitly told to.\n2.  **Sound/Music Style Influence:** Use the provided 'Sound/Music Style' to heavily influence the [Audio]: section of the 'combinedPrompt' and the audio description in the 'animationPrompt'. Match the mood and type of sound described.\n3.  **Character/Object Consistency (If Applicable):** If a 'KEY CHARACTERS & OBJECTS (Source of Truth)' list is provided in the user's prompt, it is the *only* valid source for subject descriptions.\n    - **Task:** First, ensure all descriptions in this list are in English. If any are in Indonesian, you MUST translate them to English.\n    - **Application:** You MUST then inject the *exact, verbatim English descriptions* from this list into your prompts whenever a character or object from that list is mentioned in the scene. This is a hard rule to ensure perfect visual consistency.\n    - **If the list is not provided, generate the scene description based on the scene details alone.**\n\nYour JSON output must have three keys:\n1.  'combinedPrompt': A comprehensive prompt for text-to-video, structured into four sections: [Visual]:, [Camera Movement & Angle]:, [Audio]:, and [Mood & Additional Details]:. Ensure the [Visual] section is saturated with the requested 'Visual Style' and any required character/object descriptions.\n2.  'imagePrompt': A highly detailed prompt for text-to-image, focusing on artistic style, lighting, composition, and visual details, all conforming to the 'Visual Style' and using any required character/object descriptions.\n3.  'animationPrompt': A concise prompt to animate the resulting image, describing movement, camera motion, and audio.\n\nGenerate all prompts and all character descriptions within the prompts in English.";
-                
+
+                const systemInstruction = "You are an expert prompt engineer for generative AI models. Your output MUST adhere to these non-negotiable rules:\n\n1.  **Language & Style:** The final prompts must be in English. You will be given scene details; all details (visual, camera, etc.) are already in English. However, within the 'ending' field, any dialogue in quotes will be in Indonesian. The user will also provide a 'Visual Style'. This is the most important instruction. ALL of your generated prompts, especially 'imagePrompt' and 'combinedPrompt', MUST strictly and vividly embody this specified 'Visual Style'.\n2.  **Character Consistency:** If a 'KEY CHARACTERS & OBJECTS' list is provided, it is the *only* source for subject descriptions. You MUST inject the *exact, verbatim English descriptions* from this list into your prompts whenever a character or object from that list is mentioned in the scene.\n3.  **Dialogue Handling:** The 'ending' field contains the full concluding description, which may include dialogue in Indonesian inside quotation marks. You MUST incorporate this entire `ending` text into your `combinedPrompt` naturally. For the `imagePrompt` and `animationPrompt`, you MUST NOT include the dialogue.\n4.  **Prompt Generation:** Create a JSON object with three keys: 'combinedPrompt', 'imagePrompt', and 'animationPrompt'.\n    - `'combinedPrompt'`: This is a single, coherent, detailed paragraph for a video AI. Construct it based on all the English scene details provided.\n    - `'imagePrompt'`: A highly detailed prompt for text-to-image, combining `visual`, `elements`, `lighting`, `room`, and the main `Visual Style`. It should be artistic and descriptive. It must NOT include dialogue.\n    - `'animationPrompt'`: A concise prompt to animate the resulting image, describing `motion`, `camera` movement, and `audio`. It must NOT include dialogue from the `ending` text.";
+
                 const videoTypeText = DOMElements.videoType.options[DOMElements.videoType.selectedIndex].text;
                 const visualStyleText = DOMElements.visualStyle.options[DOMElements.visualStyle.selectedIndex].text;
                 const soundType = DOMElements.soundType.value;
@@ -1513,12 +1640,17 @@
 
                 userPrompt += `\n\n${characters && characters.length > 0 ? `**KEY CHARACTERS & OBJECTS (Source of Truth):**\n${characters.map(c => `- ${c.identifier}: ${c.description}`).join('\n')}\n` : ""}`;
 
-                userPrompt += `**SCENE DETAILS:**
-                Please generate the prompt JSON for the following scene:
-                - Scene Number: ${scene.scene_number}
-                - Visuals: ${visualDescEn}
-                - Camera: ${cameraShotEn}
-                - Audio: ${audioDescEn}
+                userPrompt += `**SCENE DETAILS (English, except for quoted dialogue):**
+                - Visual: ${scene.visual.en}
+                - Camera: ${scene.camera.en}
+                - Audio: ${scene.audio.en}
+                - Lighting: ${scene.lighting.en}
+                - Room: ${scene.room.en}
+                - Elements: ${JSON.stringify(scene.elements.en)}
+                - Motion: ${scene.motion.en}
+                - Ending: ${scene.ending.en}
+                - Keywords: ${JSON.stringify(scene.keywords.en)}
+                - Negative Prompt: ${JSON.stringify(scene.negative_prompt.en)}
                 - Estimated Duration: ${scene.duration_seconds} seconds`;
 
                 const promptSchema = { type: Type.OBJECT, properties: { combinedPrompt: { type: Type.STRING }, imagePrompt: { type: Type.STRING }, animationPrompt: { type: Type.STRING } }, required: ["combinedPrompt", "imagePrompt", "animationPrompt"] };
@@ -1529,6 +1661,9 @@
                 );
 
                 if (generatedPrompts) {
+                    // Overwrite the combined prompt to follow the user's new template structure exactly
+                    generatedPrompts.combinedPrompt = `Create a video in a ${visualStyleText} style, featuring ${scene.visual.en}. The camera uses ${scene.camera.en}, with ${scene.lighting.en} lighting. The location is ${scene.room.en}. Include visual elements like ${(scene.elements.en || []).join(', ')}. The video motion shows ${scene.motion.en}, and ends with ${scene.ending.en}. Focus on the keywords: ${(scene.keywords.en || []).join(', ')}. Avoid visuals like ${(scene.negative_prompt.en || []).join(', ')}.`;
+                    
                     AppState.storyboardData.scenes[sceneIndex].generatedPrompts = generatedPrompts;
                     return true;
                 }
@@ -1610,16 +1745,31 @@
                 if (success) {
                     const container = DOMElements.jsonAccordionContainer;
                     container.innerHTML = ''; // Clear previous content
+                    const visualStyleText = DOMElements.visualStyle.options[DOMElements.visualStyle.selectedIndex].text;
 
                     AppState.storyboardData.scenes.forEach((scene, index) => {
                         if (!scene.generatedPrompts) return;
 
-                        // Create separate JSON objects for each part
-                        const combinedJson = JSON.stringify({ combinedPrompt: scene.generatedPrompts.combinedPrompt }, null, 2);
+                        // 1. Construct the new main JSON object for the first tab
+                        const finalJsonObject = {
+                            description: scene.visual.en || scene.visual.id,
+                            style: visualStyleText,
+                            camera: scene.camera.en || scene.camera.id,
+                            lighting: scene.lighting.en || scene.lighting.id,
+                            room: scene.room.en || scene.room.id,
+                            elements: scene.elements.en || scene.elements.id || [],
+                            motion: scene.motion.en || scene.motion.id,
+                            ending: scene.ending.en || scene.ending.id,
+                            keywords: scene.keywords.en || scene.keywords.id || [],
+                            negative_prompt: scene.negative_prompt.en || scene.negative_prompt.id || []
+                        };
+                        const finalJsonString = JSON.stringify(finalJsonObject, null, 2);
+
+                        // 2. Prepare the Image + Motion JSONs for the second tab
                         const imageJson = JSON.stringify({ imagePrompt: scene.generatedPrompts.imagePrompt }, null, 2);
                         const animationJson = JSON.stringify({ animationPrompt: scene.generatedPrompts.animationPrompt }, null, 2);
 
-                        // Create unique IDs for textareas
+                        // 3. Create unique IDs for textareas
                         const combinedTextareaId = `json-textarea-combined-${index}`;
                         const imageTextareaId = `json-textarea-image-${index}`;
                         const animationTextareaId = `json-textarea-animation-${index}`;
@@ -1639,7 +1789,7 @@
                                         <div id="tab-json-combined-${index}" class="tab-content-json space-y-4">
                                             <p class="text-sm text-[var(--theme-text-secondary)]">${getUIText('combinedPromptDescription')}</p>
                                             <div>
-                                                <textarea id="${combinedTextareaId}" readonly class="form-textarea font-mono text-xs h-32">${combinedJson}</textarea>
+                                                <textarea id="${combinedTextareaId}" readonly class="form-textarea font-mono text-xs h-64">${finalJsonString}</textarea>
                                                 <button class="btn btn-primary copy-json-scene-btn text-sm py-2 px-4 w-full mt-2" data-copy-target-id="${combinedTextareaId}">
                                                     <i class="fas fa-copy"></i><span>${getUIText('copyCombinedPrompt', scene.scene_number)}</span>
                                                 </button>
@@ -1738,7 +1888,6 @@
                     return;
                 }
 
-
                 const sceneIndexAttr = target.dataset.sceneIndex;
                 if (!sceneIndexAttr) return;
                 const sceneIndex = parseInt(sceneIndexAttr, 10);
@@ -1748,15 +1897,21 @@
                     target.innerHTML = `<span class="loader-xs"></span>`;
                     const scene = AppState.storyboardData.scenes[sceneIndex];
                     const targetLang = scene.currentLang === 'id' ? 'en' : 'id';
-                    if (scene.visual_description[targetLang]) {
+                    
+                    const fieldsToTranslate = ['visual', 'camera', 'audio', 'lighting', 'room', 'elements', 'motion', 'ending', 'keywords', 'negative_prompt'];
+                    const needsTranslation = fieldsToTranslate.some(field => !scene[field][targetLang] || (Array.isArray(scene[field][targetLang]) && scene[field][targetLang].length === 0 && scene[field].id.length > 0));
+
+                    if (!needsTranslation) {
                         scene.currentLang = targetLang;
                     } else {
                         // Silently fallback on this action
                         const translated = await translateScene(sceneIndex, targetLang);
                         if (translated) {
-                            scene.visual_description[targetLang] = translated.visual_description;
-                            scene.camera_shot[targetLang] = translated.camera_shot;
-                            scene.audio_description[targetLang] = translated.audio_description;
+                            for (const field of fieldsToTranslate) {
+                                if (translated[field] !== undefined) {
+                                    scene[field][targetLang] = translated[field];
+                                }
+                            }
                             scene.currentLang = targetLang;
                             showAlert(getUIText('alertSceneTranslated'), 'success');
                         } else {
@@ -1774,24 +1929,34 @@
                     const scene = AppState.storyboardData.scenes[sceneIndex];
                     const currentLang = scene.currentLang;
 
-                    if (isEditing) {
-                        scene.visual_description[currentLang] = contentDiv.querySelector('[data-desc-type="visual"] textarea').value;
-                        scene.camera_shot[currentLang] = contentDiv.querySelector('[data-desc-type="camera"] textarea').value;
-                        scene.audio_description[currentLang] = contentDiv.querySelector('[data-desc-type="audio"] textarea').value;
+                    if (isEditing) { // SAVE
+                        const getArrayFromText = (text) => text.split(',').map(s => s.trim()).filter(Boolean);
+                        
+                        scene.visual[currentLang] = contentDiv.querySelector('[data-desc-type="visual"] textarea').value;
+                        scene.camera[currentLang] = contentDiv.querySelector('[data-desc-type="camera"] textarea').value;
+                        scene.audio[currentLang] = contentDiv.querySelector('[data-desc-type="audio"] textarea').value;
+                        scene.lighting[currentLang] = contentDiv.querySelector('[data-desc-type="lighting"] textarea').value;
+                        scene.room[currentLang] = contentDiv.querySelector('[data-desc-type="room"] textarea').value;
+                        scene.elements[currentLang] = getArrayFromText(contentDiv.querySelector('[data-desc-type="elements"] textarea').value);
+                        scene.motion[currentLang] = contentDiv.querySelector('[data-desc-type="motion"] textarea').value;
+                        scene.ending[currentLang] = contentDiv.querySelector('[data-desc-type="ending"] textarea').value;
+                        scene.keywords[currentLang] = getArrayFromText(contentDiv.querySelector('[data-desc-type="keywords"] textarea').value);
+                        scene.negative_prompt[currentLang] = getArrayFromText(contentDiv.querySelector('[data-desc-type="negative_prompt"] textarea').value);
+
                         const otherLang = currentLang === 'id' ? 'en' : 'id';
-                        scene.visual_description[otherLang] = null;
-                        scene.camera_shot[otherLang] = null;
-                        scene.audio_description[otherLang] = null;
+                        const fieldsToReset = ['visual', 'camera', 'audio', 'lighting', 'room', 'elements', 'motion', 'ending', 'keywords', 'negative_prompt'];
+                        fieldsToReset.forEach(field => { scene[field][otherLang] = Array.isArray(scene[field].id) ? [] : null; });
+                        
                         if (scene.generatedPrompts) delete scene.generatedPrompts;
                         renderStoryboard(); 
                         renderFinalPrompts();
                         showAlert(getUIText('alertSceneSaved'), 'success');
-                    } else {
+                    } else { // ENTER EDIT MODE
                         contentDiv.querySelectorAll('p[data-desc-type]').forEach(p => {
                             const span = p.querySelector('span');
                             const textarea = document.createElement('textarea');
                             textarea.className = 'form-textarea text-sm w-full';
-                            textarea.rows = 3;
+                            textarea.rows = p.dataset.descType.includes('prompt') || p.dataset.descType === 'keywords' || p.dataset.descType === 'elements' || p.dataset.descType === 'ending' ? 3 : 2;
                             textarea.value = span.textContent;
                             span.replaceWith(textarea);
                         });
@@ -2009,6 +2174,7 @@
             // --- INITIALIZATION ---
             const init = () => {
                 DOMElements.loginForm.addEventListener('submit', handleLogin);
+                DOMElements.resetFormBtn.addEventListener('click', handleResetForm);
                 DOMElements.aiDirectorBtn.addEventListener('click', handleAIDirector);
                 DOMElements.storyboardContainer.addEventListener('click', handleStoryboardClick);
                 DOMElements.generateAllPromptsBtn.addEventListener('click', handleGenerateAccordionView);
@@ -2137,7 +2303,7 @@
 
             document.addEventListener('dragstart', e => e.preventDefault());
             document.addEventListener('selectstart', e => e.preventDefault());
-        })();
+        // })();
     </script>
 </body>
 </html>
