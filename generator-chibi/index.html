@@ -1,1 +1,1861 @@
-TES
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Chibi Character Prompt Generator | Promptique</title>
+    <meta name="description" content="Buat prompt AI untuk karakter Chibi 3D dengan gaya visual yang unik. Hasilkan prompt untuk kostum, pose, dan lainnya dengan mudah.">
+    
+    <meta property="og:title" content="Promptique | AI Chibi Character Prompt Generator">
+    <meta property="og:description" content="Buat prompt AI untuk karakter Chibi 3D yang imut dan bergaya. Desain konsep, kostum, dan pose dengan mudah menggunakan kekuatan AI.">
+    <meta property="og:image" content="https://promptique.my.id/generator-veo/chibi_poster.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:url" content="https://promptique.my.id/generator-chibi">
+    <meta property="og:type" content="website">
+    
+    <link rel="icon" href="../icon.png" type="image/png" />
+    
+    <!-- External Libraries -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    
+    <!-- App Stylesheet -->
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        :root {
+            /* Pastel Dark Theme */
+            --theme-font-primary: 'Poppins', sans-serif;
+            --theme-bg: #2a3045; /* Dark Slate Blue */
+            --theme-panel-bg: #374151; /* Dark Gray Blue */
+            --theme-border: #4a5568;
+            --theme-text-primary: #f0f2f5;
+            --theme-text-secondary: #a0aec0;
+            --theme-accent-1: #D4AF37; /* Gold */
+            --theme-accent-2: #6ee7b7; /* Mint */
+            --theme-accent-3: #fcd34d; /* Amber */
+            --theme-error: #fca5a5;
+            --theme-success: #86efac;
+        }
+
+        body.light-theme {
+            /* Light Theme */
+            --theme-bg: #f3f4f6; /* Light Gray */
+            --theme-panel-bg: #ffffff;
+            --theme-border: #e2e8f0;
+            --theme-text-primary: #2d3748;
+            --theme-text-secondary: #718096;
+            --theme-accent-1: #b89830; /* Dark Gold */
+            --theme-accent-2: #10b981; /* Teal */
+            --theme-accent-3: #f59e0b; /* Amber */
+            --theme-error: #ef4444;
+            --theme-success: #22c55e;
+        }
+
+        body {
+            font-family: var(--theme-font-primary);
+            background-color: var(--theme-bg);
+            color: var(--theme-text-primary);
+            position: relative;
+            transition: background-color 0.5s, color 0.5s;
+        }
+
+        .gradient-text {
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--theme-accent-2), var(--theme-accent-1), var(--theme-accent-3));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .form-label { display: block; margin-bottom: 0.5rem; font-weight: 500; color: var(--theme-text-secondary); }
+        .form-input, .form-textarea, .form-select {
+            width: 100%;
+            background-color: var(--theme-panel-bg);
+            border: 1px solid var(--theme-border);
+            border-radius: 8px; padding: 0.75rem 1rem;
+            color: var(--theme-text-primary);
+            transition: all 0.3s ease;
+        }
+        body.light-theme .form-input, body.light-theme .form-textarea, body.light-theme .form-select { background-color: var(--theme-bg); }
+        .form-input:focus, .form-textarea:focus, .form-select:focus {
+            border-color: var(--theme-accent-1);
+            box-shadow: 0 0 0 3px color-mix(in srgb, var(--theme-accent-1) 20%, transparent);
+            outline: none;
+        }
+        .form-input:read-only, .form-textarea:read-only {
+            background-color: color-mix(in srgb, var(--theme-panel-bg) 85%, black);
+            cursor: default;
+        }
+        .form-select {
+            -webkit-appearance: none; -moz-appearance: none; appearance: none;
+            background-repeat: no-repeat;
+            background-position: right 0.5rem center;
+            background-size: 1.5em 1.5em;
+        }
+
+        .card {
+            background-color: var(--theme-panel-bg);
+            border: 1px solid var(--theme-border);
+            border-radius: 16px;
+            transition: all 0.5s;
+            box-shadow: 0 4px 14px 0 rgba(0,0,0,0.05);
+        }
+        body:not(.light-theme) .card { box-shadow: 0 4px 14px 0 rgba(0,0,0,0.15); }
+
+        .btn {
+            border-radius: 8px; transition: all 0.3s ease;
+            font-weight: 600; display: inline-flex; align-items: center; justify-content: center;
+            gap: 0.5rem; border: 1px solid transparent; padding: 0.6rem 1.2rem;
+        }
+
+        .btn-primary { background-color: var(--theme-accent-1); color: #fff; border-color: var(--theme-accent-1); }
+        .btn-primary:hover:not(:disabled) { background-color: color-mix(in srgb, var(--theme-accent-1) 85%, black); transform: translateY(-2px); box-shadow: 0 4px 8px color-mix(in srgb, var(--theme-accent-1) 30%, transparent); }
+        .btn-secondary { color: var(--theme-accent-2); border-color: var(--theme-accent-2); }
+        .btn-secondary:hover:not(:disabled) { background-color: color-mix(in srgb, var(--theme-accent-2) 15%, transparent); transform: translateY(-2px); }
+        .btn-danger { color: var(--theme-error); border-color: var(--theme-error); }
+        .btn-danger:hover:not(:disabled) { background-color: color-mix(in srgb, var(--theme-error) 10%, transparent); }
+        .btn-neutral { color: var(--theme-text-secondary); border-color: var(--theme-border); }
+        .btn-neutral:hover:not(:disabled) { background-color: color-mix(in srgb, var(--theme-text-secondary) 10%, transparent); border-color: var(--theme-text-secondary); color: var(--theme-text-primary); }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        .loader { width: 18px; height: 18px; border: 2px solid currentColor; border-bottom-color: transparent; border-radius: 50%; display: inline-block; box-sizing: border-box; animation: rotation 1s linear infinite; }
+        @keyframes rotation { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        
+        .form-check-input {
+            cursor: pointer;
+            height: 1.25em; width: 1.25em; margin-top: 0.15em;
+            border-color: var(--theme-border);
+        }
+        .form-check-input:checked {
+            background-color: var(--theme-accent-1);
+            border-color: var(--theme-accent-1);
+        }
+        .form-check-label { cursor: pointer; }
+
+        /* Off-canvas styles */
+        #offcanvas-menu {
+            transition: transform 0.3s ease-in-out;
+            transform: translateX(100%);
+        }
+        #offcanvas-menu.open {
+            transform: translateX(0);
+        }
+        #offcanvas-overlay {
+            transition: opacity 0.3s ease-in-out;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div id="app-container">
+        <!-- Navbar -->
+        <header class="bg-[var(--theme-panel-bg)]/80 backdrop-blur-sm shadow-sm sticky top-0 z-40 border-b border-[var(--theme-border)] transition-colors duration-500">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-16">
+                    <div class="flex-shrink-0">
+                        <h1 class="text-xl md:text-2xl font-black tracking-tight gradient-text">
+                            PROMPT.IQUE
+                        </h1>
+                    </div>
+                    <div class="flex items-center">
+                        <!-- Buttons visible on all screen sizes -->
+                        <div class="flex items-center space-x-2">
+                            <button data-ui-key-title="languageTitle" id="language-btn" class="btn btn-neutral h-10 px-3">
+                               <i class="fas fa-language fa-fw text-base"></i>
+                               <span class="hidden sm:inline" data-ui-key="languageButtonShort">ID/EN</span>
+                            </button>
+                            <button data-ui-key-title="historyTitle" id="history-btn" class="btn btn-neutral h-10 px-3">
+                                <i class="fas fa-history fa-fw text-base"></i>
+                                 <span class="hidden sm:inline" data-ui-key="historyButtonShort">History</span>
+                            </button>
+                            <button data-ui-key-title="apiKeyTitle" id="api-key-btn" class="btn btn-neutral h-10 px-3">
+                                <i class="fas fa-key fa-fw text-base"></i>
+                                <span class="hidden sm:inline" data-ui-key="apiKeyButtonShort">API</span>
+                            </button>
+                        </div>
+        
+                        <!-- Desktop only buttons -->
+                        <div class="hidden sm:flex items-center space-x-2 ml-2">
+                            <button data-ui-key-title="themeTitle" id="theme-btn-desktop" class="btn btn-neutral w-10 h-10 px-0">
+                                <i class="fas fa-moon fa-fw text-lg"></i>
+                            </button>
+                            <button data-ui-key-title="logoutButton" id="logout-btn-desktop" class="btn btn-neutral w-10 h-10 px-0">
+                                <i class="fas fa-sign-out-alt fa-fw text-lg"></i>
+                            </button>
+                        </div>
+        
+                        <!-- Mobile only hamburger -->
+                        <div class="sm:hidden ml-2">
+                            <button id="hamburger-btn" class="btn btn-neutral w-10 h-10 px-0">
+                                <i class="fas fa-bars fa-fw text-lg"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Off-Canvas Menu -->
+        <div id="offcanvas-overlay" class="fixed inset-0 bg-black/60 z-40 hidden"></div>
+        <div id="offcanvas-menu" class="fixed top-0 right-0 h-full w-64 bg-[var(--theme-panel-bg)] shadow-xl z-50 p-4 flex flex-col">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-lg font-bold gradient-text">Menu</h2>
+                <button id="offcanvas-close-btn" class="text-2xl text-[var(--theme-text-secondary)] hover:text-[var(--theme-text-primary)]">&times;</button>
+            </div>
+            <div class="flex flex-col space-y-2">
+                <button id="theme-btn-mobile" class="w-full btn btn-neutral justify-start">
+                    <i id="theme-icon-mobile" class="fas fa-moon fa-fw w-5"></i>
+                    <span data-ui-key="themeTitle">Ganti Tema</span>
+                </button>
+                <button id="logout-btn-mobile" class="w-full btn btn-neutral justify-start">
+                    <i class="fas fa-sign-out-alt fa-fw w-5"></i>
+                    <span data-ui-key="logoutButton">Keluar</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <main class="container mx-auto p-4 sm:p-6 lg:p-8">
+            <div id="login-card" class="hidden">
+                 <section class="card p-6 sm:p-8 text-center animate__animated animate__fadeInUp max-w-lg mx-auto">
+                    <h3 data-ui-key="loginWelcome" class="text-2xl font-bold gradient-text">Selamat Datang!</h3>
+                    <p class="text-[var(--theme-text-secondary)] mt-2 mb-8" data-ui-key="loginSubtitle">Masukkan kata sandi untuk melanjutkan.</p>
+                    <form id="login-form" class="max-w-xs mx-auto">
+                        <div class="space-y-4">
+                            <div class="relative">
+                                <label for="password" class="sr-only">Password</label>
+                                <input type="password" id="password" class="form-input text-center pr-10" data-ui-key-placeholder="passwordPlaceholder">
+                                <i id="toggle-password" class="fas fa-eye absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer text-[var(--theme-text-secondary)] hover:text-[var(--theme-text-primary)]"></i>
+                            </div>
+                            <button type="submit" class="w-full btn btn-primary py-3 px-6">
+                                <span data-ui-key="loginButton">Login</span>
+                            </button>
+                        </div>
+                    </form>
+                </section>
+            </div>
+
+            <div id="generator-content" class="hidden">
+                <div class="text-center mb-10 animate__animated animate__fadeInDown">
+                    <h2 data-ui-key="mainTitle" class="text-3xl md:text-4xl font-bold tracking-tight gradient-text">Chibi 3D Character Prompt Generator</h2>
+                    <p data-ui-key="mainSubtitle" class="mt-3 max-w-2xl mx-auto text-lg text-[var(--theme-text-secondary)]">Buat Karakter 3D Chibimu yang di dukung oleh Aiyra Design & Gemini AI.</p>
+                </div>
+
+                <!-- Step-by-Step Generator -->
+                <div class="max-w-3xl mx-auto">
+                    <!-- Step 1: Initial Selection -->
+                    <form id="step-1" class="card p-6 sm:p-8 animate__animated animate__fadeIn">
+                        <div class="text-center mb-6">
+                            <div class="flex items-center justify-center gap-3 text-lg font-semibold text-[var(--theme-accent-2)]">
+                                <span class="w-8 h-8 flex items-center justify-center rounded-full bg-[var(--theme-accent-2)] text-[var(--theme-bg)] font-bold">1</span>
+                                <span data-ui-key="step1Title">Pilih Konsep Dasar</span>
+                            </div>
+                            <p class="text-sm text-[var(--theme-text-secondary)] mt-1" data-ui-key="step1Subtitle">Tentukan versi, kategori, gaya, dan latar karakter Anda.</p>
+                        </div>
+                        <div id="step-1-form" class="space-y-6">
+                            <div>
+                                <label class="form-label" data-ui-key="versionLabel">Versi Karakter</label>
+                                <div class="flex flex-wrap gap-x-6 gap-y-3 pt-2">
+                                    <div class="form-check flex items-center gap-2">
+                                        <input class="form-check-input" type="radio" name="versi" value="pria" id="versi-pria">
+                                        <label class="form-check-label" for="versi-pria" data-ui-key="versionMale">Pria</label>
+                                    </div>
+                                    <div class="form-check flex items-center gap-2">
+                                        <input class="form-check-input" type="radio" name="versi" value="wanita" id="versi-wanita">
+                                        <label class="form-check-label" for="versi-wanita" data-ui-key="versionFemale">Wanita</label>
+                                    </div>
+                                    <div class="form-check flex items-center gap-2">
+                                        <input class="form-check-input" type="radio" name="versi" value="wanita_berhijab" id="versi-hijab">
+                                        <label class="form-check-label" for="versi-hijab" data-ui-key="versionHijab">Hijab</label>
+                                    </div>
+                                    <div class="form-check flex items-center gap-2">
+                                        <input class="form-check-input" type="radio" name="versi" value="hewan" id="versi-hewan">
+                                        <label class="form-check-label" for="versi-hewan" data-ui-key="versionAnimal">Hewan</label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div id="animal-details-container" class="hidden space-y-6 bg-black/10 p-4 rounded-lg">
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                    <div>
+                                        <label for="jenis-hewan" class="form-label" data-ui-key="animalTypeLabel">Jenis Hewan</label>
+                                        <input type="text" id="jenis-hewan" class="form-input" data-ui-key-placeholder="animalTypePlaceholder">
+                                    </div>
+                                    <div>
+                                        <label class="form-label" data-ui-key="animalVersionLabel">Versi Karakter Hewan</label>
+                                        <div class="flex flex-wrap gap-x-6 gap-y-2 pt-2">
+                                            <div class="form-check flex items-center gap-2">
+                                                <input class="form-check-input" type="radio" name="animal-character-version" value="pria" id="animal-version-pria">
+                                                <label class="form-check-label" for="animal-version-pria" data-ui-key="versionMale">Pria</label>
+                                            </div>
+                                            <div class="form-check flex items-center gap-2">
+                                                <input class="form-check-input" type="radio" name="animal-character-version" value="wanita" id="animal-version-wanita">
+                                                <label class="form-check-label" for="animal-version-wanita" data-ui-key="versionFemale">Wanita</label>
+                                            </div>
+                                            <div class="form-check flex items-center gap-2">
+                                                <input class="form-check-input" type="radio" name="animal-character-version" value="wanita_berhijab" id="animal-version-hijab">
+                                                <label class="form-check-label" for="animal-version-hijab" data-ui-key="versionHijab">Hijab</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="form-label" data-ui-key="creationModeLabel">Mode Kreasi</label>
+                                <div class="flex flex-wrap gap-x-6 gap-y-3 pt-2">
+                                    <div class="form-check flex items-center gap-2">
+                                        <input class="form-check-input" type="radio" name="creation-mode" value="default" id="mode-default" checked>
+                                        <label class="form-check-label" for="mode-default" data-ui-key="modeDefault">Default</label>
+                                    </div>
+                                    <div class="form-check flex items-center gap-2">
+                                        <input class="form-check-input" type="radio" name="creation-mode" value="custom" id="mode-custom">
+                                        <label class="form-check-label" for="mode-custom" data-ui-key="modeCustom">Kustom</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Container for default options -->
+                            <div id="default-options-container" class="space-y-6">
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                    <div>
+                                        <label for="kategori" class="form-label" data-ui-key="categoryLabel">Pilih Kategori</label>
+                                        <select id="kategori" class="form-select" disabled></select>
+                                    </div>
+                                    <div>
+                                        <label for="gaya" class="form-label" data-ui-key="styleLabel">Pilih Gaya</label>
+                                        <select id="gaya" class="form-select" disabled></select>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Container for custom options -->
+                            <div id="custom-options-container" class="hidden">
+                                <div>
+                                    <label for="custom-style-idea" class="form-label" data-ui-key="customStyleLabel">Ide Gaya Anda</label>
+                                    <textarea id="custom-style-idea" rows="4" class="form-textarea" data-ui-key-placeholder="customStylePlaceholder"></textarea>
+                                </div>
+                            </div>
+
+                             <div class="grid grid-cols-1">
+                                <div>
+                                    <label for="latar-pilihan" class="form-label" data-ui-key="backgroundChoiceLabel">Pilihan Latar</label>
+                                    <select id="latar-pilihan" class="form-select">
+                                        <option value="background" data-ui-key="useBackgroundOption">Gunakan Latar</option>
+                                        <option value="transparent" data-ui-key="transparentBackgroundOption">Latar Transparan</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div>
+                                <label for="character-id" class="form-label" data-ui-key="characterIdLabel">ID Karakter (Opsional)</label>
+                                <input type="text" id="character-id" class="form-input" data-ui-key-placeholder="characterIdPlaceholder">
+                            </div>
+                            <div class="pt-4">
+                                <button type="button" id="designer-btn" class="btn btn-primary w-full py-3">
+                                    <span class="btn-text flex items-center justify-center gap-2">
+                                        <i class="fas fa-tshirt"></i>
+                                        <span data-ui-key="designerButton">Desainer Busana AI</span>
+                                    </span>
+                                    <span class="btn-loader hidden"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <!-- Step 2: Refine Details -->
+                    <div id="step-2" class="hidden card p-6 sm:p-8 animate__animated">
+                        <div class="text-center mb-6">
+                            <div class="flex items-center justify-center gap-3 text-lg font-semibold text-[var(--theme-accent-2)]">
+                                <span class="w-8 h-8 flex items-center justify-center rounded-full bg-[var(--theme-accent-2)] text-[var(--theme-bg)] font-bold">2</span>
+                                <span data-ui-key="step2Title">Sempurnakan Detail</span>
+                            </div>
+                            <p class="text-sm text-[var(--theme-text-secondary)] mt-1" data-ui-key="step2Subtitle">Edit detail yang dihasilkan AI, atau gunakan apa adanya.</p>
+                        </div>
+                        <form id="step-2-form" class="space-y-6">
+                            <div>
+                                <label for="detail-kostum" class="form-label" data-ui-key="costumeDetailLabel">Detail Kostum / Aksesoris</label>
+                                <textarea id="detail-kostum" rows="3" class="form-textarea" readonly></textarea>
+                            </div>
+                            <div id="nuansa-latar-container">
+                                <label for="nuansa-latar" class="form-label" data-ui-key="backgroundNuanceLabel">Nuansa Latar</label>
+                                <textarea id="nuansa-latar" rows="3" class="form-textarea" readonly></textarea>
+                            </div>
+                            <div>
+                                <label for="pose-karakter" class="form-label" data-ui-key="poseDetailLabel">Pose Karakter</label>
+                                <textarea id="pose-karakter" rows="3" class="form-textarea" readonly></textarea>
+                            </div>
+                            
+                            <div class="flex flex-wrap items-center justify-center gap-4 pt-2">
+                                 <button type="button" id="regenerate-details-btn" class="text-sm text-[var(--theme-accent-2)] hover:underline inline-flex items-center gap-2">
+                                    <span class="btn-text">
+                                        <i class="fas fa-sync-alt fa-fw"></i> <span data-ui-key="regenerateButton">Minta desain lain</span>
+                                    </span>
+                                    <span class="btn-loader hidden"></span>
+                                 </button>
+                                 <button type="button" id="edit-save-btn" class="btn btn-neutral btn-sm !py-1 !px-3">
+                                    <span class="btn-text"><i class="fas fa-pencil-alt fa-fw"></i> <span data-ui-key="editButton">Edit</span></span>
+                                </button>
+                                <button type="button" id="translate-btn" class="btn btn-neutral btn-sm !py-1 !px-3">
+                                    <span class="btn-text"><i class="fas fa-language fa-fw"></i> <span data-ui-key="languageButton">EN/ID</span></span>
+                                    <span class="btn-loader hidden"></span>
+                                </button>
+                            </div>
+                            
+                            <div class="pt-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <button type="button" id="back-to-step1-btn" class="btn btn-neutral w-full py-3">
+                                    <i class="fas fa-arrow-left"></i>
+                                    <span data-ui-key="backButton">Kembali</span>
+                                </button>
+                                <button type="submit" id="generate-prompt-btn" class="btn btn-primary w-full py-3">
+                                    <span class="btn-text flex items-center justify-center gap-2">
+                                        <i class="fas fa-wand-magic-sparkles"></i>
+                                        <span data-ui-key="generateButton">Generate Prompt</span>
+                                    </span>
+                                    <span class="btn-loader hidden"></span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Step 3: Final Result -->
+                    <div id="step-3" class="hidden card p-6 sm:p-8 animate__animated">
+                        <div id="result-placeholder" class="text-center m-auto flex flex-col justify-center items-center h-full py-10">
+                             <svg class="mx-auto text-[var(--theme-text-secondary)]" style="height: 5rem; width: 5rem;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.898 20.572L16.5 21.75l-.398-1.178a3.375 3.375 0 00-2.455-2.456L12.75 18l1.178-.398a3.375 3.375 0 002.455-2.456L16.5 14.25l.398 1.178a3.375 3.375 0 002.456 2.456L20.25 18l-1.178.398a3.375 3.375 0 00-2.456 2.456z"/>
+                            </svg>
+                            <h3 class="mt-2 text-xl font-semibold" data-ui-key="resultTitle">Hasil Prompt Anda</h3>
+                            <p class="text-[var(--theme-text-secondary)]" data-ui-key="resultSubtitle">Hasil akan muncul di sini.</p>
+                        </div>
+                        <div id="result-content" class="hidden h-full flex flex-col">
+                            <h2 class="text-xl text-center font-bold gradient-text mb-4" data-ui-key="resultReady">🎉 Prompt Anda Siap!</h2>
+                            <div class="flex flex-col gap-4 flex-grow-1" style="min-height:0;">
+                                <div class="flex flex-col">
+                                    <div class="flex justify-between items-center mb-1">
+                                        <label for="prompt-output-text" class="form-label text-[var(--theme-text-secondary)] mb-0" data-ui-key="textFormat">Format Teks</label>
+                                        <button id="copy-btn-text" class="btn btn-secondary text-xs !py-1 !px-2"><i class="fas fa-copy"></i> <span data-ui-key="copyButton">Salin</span></button>
+                                    </div>
+                                    <textarea id="prompt-output-text" class="form-textarea h-full text-sm" readonly style="resize: none; min-height: 120px;"></textarea>
+                                </div>
+                                <div class="flex flex-col">
+                                    <div class="flex justify-between items-center mb-1">
+                                        <label for="prompt-output-json" class="form-label text-[var(--theme-text-secondary)] mb-0" data-ui-key="jsonFormat">Format JSON</label>
+                                        <button id="copy-btn-json" class="btn btn-secondary text-xs !py-1 !px-2"><i class="fas fa-copy"></i> <span data-ui-key="copyButton">Salin</span></button>
+                                    </div>
+                                    <textarea id="prompt-output-json" class="form-textarea h-full text-sm font-mono" readonly style="resize: none; min-height: 120px;"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="start-over-container" class="hidden mt-6 flex gap-4">
+                            <button type="button" id="start-over-btn" class="btn btn-primary w-full py-3">
+                                <i class="fas fa-plus"></i> <span data-ui-key="startOverButton">Buat Prompt Baru</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <div id="history-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden items-start justify-center p-4 pt-16">
+        <div class="card p-6 w-full max-w-lg transform transition-all flex flex-col animate__animated animate__faster max-h-[80vh]">
+            <div class="flex-shrink-0 flex justify-between items-center mb-4 pb-4 border-b border-[var(--theme-border)]">
+                <h3 class="text-2xl font-bold gradient-text"><i class="fas fa-history mr-2"></i><span data-ui-key="historyModalTitle">Riwayat Prompt</span></h3>
+                <button class="close-modal-btn text-[var(--theme-text-secondary)] hover:text-[var(--theme-accent-2)] text-2xl">&times;</button>
+            </div>
+            <div id="history-content" class="flex-grow overflow-y-auto space-y-2 pr-2"></div>
+            <div class="flex-shrink-0 mt-4 pt-4 border-t border-[var(--theme-border)] flex justify-end">
+                <button id="clear-history-btn" class="btn btn-danger py-2 px-4"><i class="fas fa-trash mr-2"></i><span data-ui-key="clearHistoryButton">Bersihkan Riwayat</span></button>
+            </div>
+        </div>
+    </div>
+
+    <div id="api-key-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden items-start justify-center p-4 pt-16">
+        <div class="card p-6 sm:p-8 w-full max-w-lg transform transition-all animate__animated animate__faster flex flex-col max-h-[80vh]">
+            <div class="flex-shrink-0 flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-bold gradient-text"><i class="fas fa-key mr-2"></i><span data-ui-key="apiKeySettingsTitle">Pengaturan API Key</span></h3>
+                <button class="close-modal-btn text-[var(--theme-text-secondary)] hover:text-[var(--theme-accent-2)] text-2xl">&times;</button>
+            </div>
+            <div class="flex-grow overflow-y-auto -mr-4 pr-4 sm:-mr-6 sm:pr-6">
+                <p class="text-[var(--theme-text-secondary)] mb-6" data-ui-key="chooseApiKeySource">Pilih sumber Kunci API yang ingin Anda gunakan.</p>
+                <div class="space-y-4">
+                    <div id="api-source-system" class="api-source-option border-2 rounded-lg p-4 cursor-pointer transition-all">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="font-bold text-[var(--theme-text-primary)]" data-ui-key="useSystemApi">Gunakan API Sistem</p>
+                                <p class="text-sm text-[var(--theme-text-secondary)]" data-ui-key="useSystemApiDesc">Menggunakan kunci bawaan (ada batasan)</p>
+                            </div>
+                            <i class="fas fa-check-circle text-xl"></i>
+                        </div>
+                    </div>
+                    <div id="api-source-personal" class="api-source-option border-2 rounded-lg p-4 cursor-pointer transition-all">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="font-bold text-[var(--theme-text-primary)]" data-ui-key="usePersonalApi">Gunakan API Pribadi Anda</p>
+                                <p class="text-sm text-[var(--theme-text-secondary)]" data-ui-key="usePersonalApiDesc">Masukkan kunci API Gemini Anda sendiri</p>
+                            </div>
+                            <i class="far fa-circle text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+                <div id="personal-api-details" class="mt-6 space-y-4 hidden">
+                    <div class="text-[var(--theme-text-secondary)] text-sm space-y-2">
+                        <h4 class="font-semibold text-[var(--theme-text-primary)]" data-ui-key="howToGetKeyTitle">Cara mendapatkan API Key:</h4>
+                        <!-- Desktop Instructions -->
+                        <div class="hidden sm:block">
+                            <ol class="list-decimal list-inside space-y-1">
+                                <li data-ui-key="desktopInstruction1"></li>
+                                <li data-ui-key="desktopInstruction2"></li>
+                                <li data-ui-key="desktopInstruction3"></li>
+                                <li data-ui-key="desktopInstruction4"></li>
+                            </ol>
+                        </div>
+                        <!-- Mobile Instructions -->
+                        <div class="block sm:hidden">
+                            <ol class="list-decimal list-inside space-y-1">
+                                <li data-ui-key="mobileInstruction1"></li>
+                                <li data-ui-key="mobileInstruction2"></li>
+                                <li data-ui-key="mobileInstruction3"></li>
+                                <li data-ui-key="mobileInstruction4"></li>
+                                <li data-ui-key="mobileInstruction5"></li>
+                            </ol>
+                        </div>
+                    </div>
+                    <div>
+                        <label for="api-key-input" class="form-label uppercase text-xs" data-ui-key="yourApiKeyLabel">API KEY GEMINI ANDA</label>
+                        <div class="relative">
+                            <input type="password" id="api-key-input" class="form-input pr-24" data-ui-key-placeholder="apiKeyPlaceholder">
+                            <div class="absolute inset-y-0 right-0 flex items-center pr-2 space-x-1">
+                                 <button id="toggle-api-key-visibility" class="btn btn-neutral w-8 h-8 p-0"><i class="fas fa-eye"></i></button>
+                                <button id="delete-api-key-btn" class="btn btn-danger w-8 h-8 p-0"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="system-api-note" class="mt-6 p-4 bg-blue-500/10 border-l-4 border-blue-400 text-blue-300 rounded-r-lg">
+                    <p class="text-sm" data-ui-key="apiKeyNote">Catatan: Kunci ini digunakan bersama dan mungkin memiliki batasan. Untuk pengalaman terbaik, kami sangat menyarankan menggunakan Kunci API Anda sendiri.</p>
+                </div>
+            </div>
+            <div class="flex-shrink-0 flex gap-4 mt-8 pt-6 border-t border-[var(--theme-border)]">
+                <button id="api-modal-cancel-btn" class="w-full btn btn-neutral py-2 px-4" data-ui-key="cancelButton">Batal</button>
+                <button id="api-modal-save-btn" class="w-full btn btn-primary py-2 px-4" data-ui-key="saveButton">Simpan</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="alert-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+        <div id="alert-modal-content" class="card p-8 w-full max-w-md transform transition-all text-center animate__animated animate__faster flex flex-col max-h-[90vh]">
+            <div class="flex-grow overflow-y-auto">
+                <div id="alert-icon-container" class="w-16 h-16 rounded-full mx-auto flex items-center justify-center mb-4">
+                    <i id="alert-icon" class="fas text-4xl text-white"></i>
+                </div>
+                <h3 id="alert-title" class="text-2xl font-bold text-[var(--theme-text-primary)] mb-2"></h3>
+                <p id="alert-message" class="text-[var(--theme-text-secondary)]"></p>
+            </div>
+            <div class="flex-shrink-0 mt-6">
+                <button id="alert-close-btn" class="btn w-full"></button>
+            </div>
+        </div>
+    </div>
+
+    <div id="confirmation-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+        <div id="confirmation-modal-content" class="card p-8 w-full max-w-md transform transition-all text-center animate__animated animate__faster flex flex-col max-h-[90vh]">
+            <div class="flex-grow overflow-y-auto">
+                <div class="w-16 h-16 rounded-full mx-auto flex items-center justify-center mb-4 bg-[var(--theme-accent-3)]">
+                    <i class="fas fa-exclamation-triangle text-4xl text-[var(--theme-bg)]"></i>
+                </div>
+                <h3 id="confirmation-title" class="text-2xl font-bold text-[var(--theme-text-primary)] mb-2"></h3>
+                <p id="confirmation-message" class="text-[var(--theme-text-secondary)]"></p>
+            </div>
+            <div class="flex-shrink-0 mt-6">
+                <div class="flex gap-4">
+                    <button id="confirm-yes-btn" class="w-full btn btn-danger"></button>
+                    <button id="confirm-no-btn" class="w-full btn btn-neutral"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script type="importmap">
+      {
+        "imports": {
+          "@google/genai": "https://esm.sh/@google/genai@^1.4.0"
+        }
+      }
+    </script>
+    <script type="module">
+        import { GoogleGenAI, Type } from "@google/genai";
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- SECURITY ---
+            (function () {
+                const isAppleDevice = /Mac|iPhone|iPad|iPod/i.test(navigator.userAgent);
+                const baseThreshold = 350;
+                const appleThreshold = 800;
+                const threshold = isAppleDevice ? appleThreshold : baseThreshold;
+
+                const closeTab = () => {
+                    // Coba close tab secara paksa
+                    window.open('', '_self');
+                    window.close();
+
+                    // Jika gagal (karena browser tidak mengizinkan), coba alihkan ke about:blank
+                    setTimeout(() => {
+                        window.location.href = 'about:blank';
+                    }, 50);
+                };
+
+                const detectConsoleOpen = () => {
+                    const start = performance.now();
+                    console.log('%c', 'color:transparent;');
+                    const time = performance.now() - start;
+                    if (time > 100) {
+                        closeTab();
+                    }
+                };
+
+                const devToolCheck = () => {
+                    const widthDiff = Math.abs(window.outerWidth - window.innerWidth);
+                    const heightDiff = Math.abs(window.outerHeight - window.innerHeight);
+
+                    const isDevToolsBySize = (widthDiff > threshold || heightDiff > threshold) &&
+                                            window.outerHeight > 0 && window.innerHeight > 0;
+
+                    if (isDevToolsBySize) {
+                        if (isAppleDevice) {
+                            detectConsoleOpen();
+                        } else {
+                            closeTab();
+                        }
+                    }
+                };
+
+                const checkInterval = isAppleDevice ? 8000 : 2000;
+                setInterval(devToolCheck, checkInterval);
+
+                document.addEventListener('contextmenu', (event) => {
+                    const target = event.target;
+                    if (!['INPUT', 'TEXTAREA'].includes(target.tagName) && !target.isContentEditable) {
+                        event.preventDefault();
+                    }
+                });
+
+                document.addEventListener('keydown', (e) => {
+                    const key = e.key.toLowerCase();
+                    if (
+                        (e.ctrlKey && e.shiftKey && key === 'i') ||
+                        (e.ctrlKey && e.shiftKey && key === 'j') ||
+                        (e.ctrlKey && key === 'u') ||
+                        (e.metaKey && key === 'u') ||
+                        (key === 'f12')
+                    ) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        closeTab();
+                    }
+                });
+
+                document.addEventListener('dragstart', e => e.preventDefault());
+                document.addEventListener('selectstart', e => e.preventDefault());
+            })();
+            
+            // --- GEMINI API SETUP ---
+            const SYSTEM_API_KEY = 'AIzaSyCD-K5AQEWegHMEr4oL2s6gFmcYWeg6BI8'; 
+
+            // --- CONFIGURATION & STATE ---
+            const AppState = {
+                currentTheme: 'dark',
+                currentLanguage: 'id',
+                isLoggedIn: false,
+                personalApiKey: null,
+                apiKeySource: 'system', // 'system' or 'personal'
+                currentStep: 1,
+                isEditingDetails: false,
+                detailsLanguage: 'id', // 'id' or 'en'
+            };
+
+            const UI_STRINGS = {
+                id: {
+                    themeTitle: "Ganti Tema",
+                    mainTitle: "Chibi 3D Character Prompt Generator",
+                    mainSubtitle: "Buat Karakter 3D Chibimu yang di dukung oleh Aiyra Design & Gemini AI.",
+                    // Step 1
+                    step1Title: "Pilih Konsep Dasar",
+                    step1Subtitle: "Tentukan versi, kategori, gaya, dan latar karakter Anda.",
+                    versionLabel: "Versi Karakter",
+                    versionMale: "Pria",
+                    versionFemale: "Wanita",
+                    versionHijab: "Hijab",
+                    versionAnimal: "Hewan",
+                    animalTypeLabel: "Jenis Hewan",
+                    animalTypePlaceholder: "Contoh: Kucing, Anjing, Naga",
+                    animalVersionLabel: "Versi Karakter Hewan",
+                    creationModeLabel: "Mode Kreasi",
+                    modeDefault: "Default",
+                    modeCustom: "Kustom",
+                    customStyleLabel: "Ide Gaya Anda",
+                    customStylePlaceholder: "Contoh: Seorang ksatria cyberpunk dengan armor neon dan katana energi, berdiri di atap gedung saat hujan...",
+                    categoryLabel: "Pilih Kategori",
+                    styleLabel: "Pilih Gaya",
+                    backgroundChoiceLabel: "Pilihan Latar",
+                    useBackgroundOption: "Gunakan Latar",
+                    transparentBackgroundOption: "Latar Transparan",
+                    characterIdLabel: "ID Karakter (Opsional)",
+                    characterIdPlaceholder: "Masukkan ID Karakter Anda...",
+                    designerButton: "Desainer Busana AI",
+                    // Step 2
+                    step2Title: "Sempurnakan Detail",
+                    step2Subtitle: "Edit detail yang dihasilkan AI, atau gunakan apa adanya.",
+                    costumeDetailLabel: "Detail Kostum / Aksesoris",
+                    backgroundNuanceLabel: "Nuansa Latar",
+                    poseDetailLabel: "Pose Karakter",
+                    regenerateButton: "Minta desain lain",
+                    editButton: "Edit",
+                    saveButton: "Simpan",
+                    languageButton: "EN/ID",
+                    backButton: "Kembali",
+                    generateButton: "Generate Prompt",
+                    // Step 3
+                    resultTitle: "Hasil Prompt Anda",
+                    resultSubtitle: "Hasil akan muncul di sini.",
+                    resultReady: "🎉 Prompt Anda Siap!",
+                    textFormat: "Format Teks",
+                    jsonFormat: "Format JSON",
+                    copyButton: "Salin",
+                    startOverButton: "Buat Prompt Baru",
+                    // General & Navbar
+                    languageTitle: "Ganti Bahasa",
+                    languageButtonShort: "ID/EN",
+                    historyTitle: "Riwayat",
+                    historyButtonShort: "Riwayat",
+                    apiKeyTitle: "Kunci API",
+                    apiKeyButtonShort: "API",
+                    logoutButton: "Keluar",
+                    historyModalTitle: "Riwayat Prompt",
+                    clearHistoryButton: "Bersihkan Riwayat",
+                    apiKeySettingsTitle: "Pengaturan API Key",
+                    chooseApiKeySource: "Pilih sumber Kunci API yang ingin Anda gunakan.",
+                    useSystemApi: "Gunakan API Sistem",
+                    useSystemApiDesc: "Menggunakan kunci bawaan (ada batasan)",
+                    usePersonalApi: "Gunakan API Pribadi Anda",
+                    usePersonalApiDesc: "Masukkan kunci API Gemini Anda sendiri",
+                    howToGetKeyTitle: "Cara mendapatkan API Key:",
+                    desktopInstruction1: 'Kunjungi <a href="https://aistudio.google.com/app/apikey" target="_blank" class="font-bold text-[var(--theme-accent-2)] hover:underline">Google AI Studio.</a>',
+                    desktopInstruction2: "Masuk dengan akun Google Anda.",
+                    desktopInstruction3: 'Klik tombol <strong>Get API key</strong> yang ada di menu sebelah kiri.',
+                    desktopInstruction4: 'Pilih atau buat proyek, lalu klik <strong>Create API key</strong>.',
+                    mobileInstruction1: 'Kunjungi <a href="https://aistudio.google.com/app/apikey" target="_blank" class="font-bold text-[var(--theme-accent-2)] hover:underline">Google AI Studio.</a>',
+                    mobileInstruction2: "Masuk dengan akun Google Anda.",
+                    mobileInstruction3: 'Ketuk ikon menu (&#9776;) di pojok kiri atas.',
+                    mobileInstruction4: 'Pilih menu <strong>Get API key</strong>.',
+                    mobileInstruction5: 'Pilih atau buat proyek, lalu ketuk <strong>Create API key</strong>.',
+                    yourApiKeyLabel: "API KEY GEMINI ANDA",
+                    apiKeyNote: "Catatan: Kunci ini digunakan bersama dan mungkin memiliki batasan. Untuk pengalaman terbaik, kami sangat menyarankan menggunakan Kunci API Anda sendiri.",
+                    apiKeyPlaceholder: "Masukkan API Key Anda...",
+                    cancelButton: "Batal",
+                    deleteButton: "Hapus",
+                    alertApiSettingsSaved: "Pengaturan API berhasil disimpan!",
+                    alertApiKeyEmpty: "Input API Key tidak boleh kosong.",
+                    alertHistoryCleared: "Riwayat berhasil dibersihkan.",
+                    alertHistoryEmpty: "Tidak ada riwayat untuk ditampilkan.",
+                    alertCopied: "Prompt berhasil disalin!",
+                    alertCopyFailed: "Gagal menyalin prompt.",
+                    alertInputEmpty: (field) => `Mohon lengkapi kolom berikut: ${field}.`,
+                    loaderSystemAI: "Ai Sistem Menganalisa...",
+                    loaderUserAI: "Ai Anda Menganalisa...",
+                    alertGenerated: "Prompt berhasil dibuat!",
+                    alertErrorTitle: "Terjadi Kesalahan",
+                    alertSuccessTitle: "Berhasil",
+                    alertInfoTitle: "Informasi",
+                    alertCloseButton: "Tutup",
+                    confirmLogoutTitle: "Konfirmasi Logout",
+                    confirmLogoutMessage: "Apakah Anda yakin ingin keluar?",
+                    confirmYes: "Ya, Keluar",
+                    confirmNo: "Tidak",
+                    alertLoggedOut: "Anda telah berhasil logout.",
+                    loginWelcome: "Selamat Datang!",
+                    loginSubtitle: "Masukkan kata sandi untuk melanjutkan.",
+                    passwordPlaceholder: "Masukkan Kata Sandi",
+                    loginButton: "Login",
+                    loginFailed: "Kata sandi salah!",
+                    promptGenerationFailed: "Gagal membuat prompt. Silakan coba lagi atau periksa kunci API Anda.",
+                    autoDetailSuccess: "Detail karakter berhasil dibuat!",
+                    autoDetailFailed: "Gagal membuat detail otomatis. Silakan coba lagi.",
+                    translationFailed: "Gagal menerjemahkan teks. Silakan coba lagi.",
+                    translationInProgress: "Menerjemahkan...",
+                    processing: "Memproses...",
+                    // Placeholders
+                    selectPlaceholder: "Pilih...",
+                    selectCategoryFirstPlaceholder: "Pilih Kategori Dahulu",
+                    selectVersionAndPersonaPlaceholder: "Pilih Versi & Persona Karakter",
+                },
+                en: {
+                    themeTitle: "Switch Theme",
+                    mainTitle: "Chibi 3D Character Prompt Generator",
+                    mainSubtitle: "Create Your 3D Chibi Character, powered by Aiyra Design & Gemini AI.",
+                    // Step 1
+                    step1Title: "Select Basic Concept",
+                    step1Subtitle: "Define your character's version, category, style, and background.",
+                    versionLabel: "Character Version",
+                    versionMale: "Male",
+                    versionFemale: "Female",
+                    versionHijab: "Hijab",
+                    versionAnimal: "Animal",
+                    animalTypeLabel: "Animal Type",
+                    animalTypePlaceholder: "e.g., Cat, Dog, Dragon",
+                    animalVersionLabel: "Animal Character Version",
+                    creationModeLabel: "Creation Mode",
+                    modeDefault: "Default",
+                    modeCustom: "Custom",
+                    customStyleLabel: "Your Style Idea",
+                    customStylePlaceholder: "e.g., A cyberpunk knight with neon armor and an energy katana, standing on a rainy rooftop...",
+                    categoryLabel: "Select Category",
+                    styleLabel: "Select Style",
+                    backgroundChoiceLabel: "Background Choice",
+                    useBackgroundOption: "Use Background",
+                    transparentBackgroundOption: "Transparent Background",
+                    characterIdLabel: "Character ID (Optional)",
+                    characterIdPlaceholder: "Enter Your Character ID...",
+                    designerButton: "AI Fashion Designer",
+                    // Step 2
+                    step2Title: "Refine Details",
+                    step2Subtitle: "Edit the AI-generated details, or use them as is.",
+                    costumeDetailLabel: "Costume / Accessory Details",
+                    backgroundNuanceLabel: "Background Nuance",
+                    poseDetailLabel: "Character Pose",
+                    regenerateButton: "Request another design",
+                    editButton: "Edit",
+                    saveButton: "Save",
+                    languageButton: "EN/ID",
+                    backButton: "Back",
+                    generateButton: "Generate Prompt",
+                    // Step 3
+                    resultTitle: "Your Prompt Result",
+                    resultSubtitle: "The result will appear here.",
+                    resultReady: "🎉 Your Prompt is Ready!",
+                    textFormat: "Text Format",
+                    jsonFormat: "JSON Format",
+                    copyButton: "Copy",
+                    startOverButton: "Create New Prompt",
+                    // General & Navbar
+                    languageTitle: "Switch Language",
+                    languageButtonShort: "EN/ID",
+                    historyTitle: "History",
+                    historyButtonShort: "History",
+                    apiKeyTitle: "API Key",
+                    apiKeyButtonShort: "API",
+                    logoutButton: "Logout",
+                    historyModalTitle: "Prompt History",
+                    clearHistoryButton: "Clear History",
+                    apiKeySettingsTitle: "API Key Settings",
+                    chooseApiKeySource: "Choose the API Key source you want to use.",
+                    useSystemApi: "Use System API",
+                    useSystemApiDesc: "Uses the built-in key (has limits)",
+                    usePersonalApi: "Use Your Personal API",
+                    usePersonalApiDesc: "Enter your own Gemini API key",
+                    howToGetKeyTitle: "How to get an API Key:",
+                    desktopInstruction1: 'Visit <a href="https://aistudio.google.com/app/apikey" target="_blank" class="font-bold text-[var(--theme-accent-2)] hover:underline">Google AI Studio.</a>',
+                    desktopInstruction2: "Sign in with your Google account.",
+                    desktopInstruction3: 'Click the <strong>Get API key</strong> button in the left menu.',
+                    desktopInstruction4: 'Select or create a project, then click <strong>Create API key</strong>.',
+                    mobileInstruction1: 'Visit <a href="https://aistudio.google.com/app/apikey" target="_blank" class="font-bold text-[var(--theme-accent-2)] hover:underline">Google AI Studio.</a>',
+                    mobileInstruction2: "Sign in with your Google account.",
+                    mobileInstruction3: 'Tap the menu icon (&#9776;) in the top-left corner.',
+                    mobileInstruction4: 'Select the <strong>Get API key</strong> menu.',
+                    mobileInstruction5: 'Select or create a project, then tap <strong>Create API key</strong>.',
+                    yourApiKeyLabel: "YOUR GEMINI API KEY",
+                    apiKeyNote: "Note: This key is shared and may have limitations. For the best experience, we highly recommend using your own API Key.",
+                    apiKeyPlaceholder: "Enter your API Key...",
+                    cancelButton: "Cancel",
+                    deleteButton: "Delete",
+                    alertApiSettingsSaved: "API settings saved successfully!",
+                    alertApiKeyEmpty: "API Key input cannot be empty.",
+                    alertHistoryCleared: "History cleared successfully.",
+                    alertHistoryEmpty: "No history to display.",
+                    alertCopied: "Prompt copied successfully!",
+                    alertCopyFailed: "Failed to copy prompt.",
+                    alertInputEmpty: (field) => `Please complete the following field(s): ${field}.`,
+                    loaderSystemAI: "System AI Analyzing...",
+                    loaderUserAI: "Your AI Analyzing...",
+                    alertGenerated: "Prompt generated successfully!",
+                    alertErrorTitle: "An Error Occurred",
+                    alertSuccessTitle: "Success",
+                    alertInfoTitle: "Information",
+                    alertCloseButton: "Close",
+                    confirmLogoutTitle: "Confirm Logout",
+                    confirmLogoutMessage: "Are you sure you want to log out?",
+                    confirmYes: "Yes, Logout",
+                    confirmNo: "No",
+                    alertLoggedOut: "You have successfully logged out.",
+                    loginWelcome: "Welcome!",
+                    loginSubtitle: "Enter the password to continue.",
+                    passwordPlaceholder: "Enter Password",
+                    loginButton: "Login",
+                    loginFailed: "Incorrect password!",
+                    promptGenerationFailed: "Failed to generate prompt. Please try again or check your API key.",
+                    autoDetailSuccess: "Character details generated successfully!",
+                    autoDetailFailed: "Failed to generate details automatically. Please try again.",
+                    translationFailed: "Failed to translate text. Please try again.",
+                    translationInProgress: "Translating...",
+                    processing: "Processing...",
+                     // Placeholders
+                    selectPlaceholder: "Select...",
+                    selectCategoryFirstPlaceholder: "Select Category First",
+                    selectVersionAndPersonaPlaceholder: "Select Version & Character Persona",
+                }
+            };
+            
+            const PROMPT_DATA = {
+                id: {
+                    pria: {
+                        "Chibi Kasual Modern": ["Gaya Urban Streetwear (Hoodie & Sneaker)", "Tampilan Kafe Minimalis (Kemeja & Chino)", "Outfit Skater Park (Kaos Grafis & Celana Pendek)", "Gaya E-Boy (Baju Hitam & Rantai)", "Smart Casual (Blazer & Kaos Polos)", "Gaya Oversized Korea (Sweater gombrong)", "Techwear Fungsional (Jaket & Cargo Pants)", "Gaya Pantai Santai (Kemeja Hawaii & Sandal)", "Gaya Preppy Kampus (Polo Shirt & Loafers)", "Outfit Gym/Athleisure (Training Suit)", "Vibe Retro 90-an (Jaket Windbreaker & Jeans)", "Gaya Biker (Jaket Kulit & Boots)", "Tampilan Musim Dingin (Sweater Rajut & Syal)", "Gaya Grunge (Kemeja Flanel & Ripped Jeans)", "Tampilan Monokromatik (Serba Putih/Hitam)", "Outfit Festival Musik (Bohemian Style)", "Gaya Hip-Hop Klasik (Topi & Kalung Emas)", "Tampilan Artistik (Kemeja Lukis & Beanie)", "Outfit Malam Minggu (Kemeja Rapi & Celana Kain)", "Gaya Pakaian Tidur Mewah (Set Piyama Sutra)"],
+                        "Chibi Fantasi Pahlawan": ["Ksatria Naga Baja (Armor & Pedang Besar)", "Pemanah Elf Hutan (Jubah & Panah Sihir)", "Warlock Kontrak Iblis (Jubah Gelap & Buku Mantra)", "Rogue Bayangan Malam (Hoodie Kulit & Belati)", "Paladin Cahaya Suci (Armor Emas & Palu Perang)", "Barbarian dari Utara (Kulit Binatang & Kapak Besar)", "Biksu Astral (Pakaian Latihan & Sarung Tinju Energi)", "Druid Penjaga Hutan (Jubah Lumut & Tongkat Alam)", "Ksatria Griffon Kerajaan (Armor Ukir & Tombak)", "Necromancer Terlarang (Jubah Tulang & Tengkorak)", "Illusionist Licik (Setelan Pesulap & Kartu Ilusi)", "Pejuang Kurcaci (Armor Besi & Kapak Ganda)", "Summoner Makhluk Eterial (Jubah & Kristal Panggil)", "Ahli Pedang Angin (Kimono & Katana)", "Penyihir Perang (Battlemage) (Armor & Staf Sihir)", "Ksatria Waktu (Time Knight)", "Pemburu Iblis (Demon Hunter)", "Alkemis Transmutasi", "Blood Mage (Penyihir Darah)", "Chronomancer (Pengendali Waktu)"],
+                        "Chibi Profesional": ["Dokter Bedah (Pakaian Operasi & Stetoskop)", "Pilot Jet Tempur (Seragam Penerbang & Helm)", "Chef Eksekutif (Baju Koki & Topi Tinggi)", "Pemadam Kebakaran (Seragam Tahan Api & Kapak)", "Arsitek (Kemeja Gulung & Cetak Biru)", "Detektif Kepolisian (Jas Hujan & Kaca Pembesar)", "Ilmuwan Laboratorium (Jas Lab & Kacamata Pelindung)", "Pengacara Ruang Sidang (Jas & Dasi Rapi)", "Jurnalis Investigasi (Rompi & Kamera)", "Programmer (Kaos & Headphone)", "Barista Ahli (Apron & Cangkir Kopi)", "Insinyur Robotik (Jaket & Lengan Robot)", "Pemain Saham Wall Street (Setelan Mahal)", "Sutradara Film (Topi & Megafon)", "Pustakawan (Kacamata & Kardigan)", "Pekerja Konstruksi (Helm & Rompi)", "Tukang Pos (Seragam & Tas Surat)", "Musisi Orkestra (Tuxedo & Biola)", "Fotografer Alam Liar (Rompi & Lensa Tele)", "Pemandu Wisata (Seragam & Bendera)"],
+                        "Chibi Cyberpunk": ["Netrunner Bawah Tanah (Jaket LED & Visor VR)", "Samurai Jalanan Neon (Kimono Modern & Katana Energi)", "Kurir Data Kecepatan Tinggi (Jaket Aerodinamis & Tas Hologram)", "Insinyur Augmentasi (Lengan Mekanik & Alat)", "Detektif Distopia (Jas Hujan Panjang & Pistol Blaster)", "Geng Motor Neon (Jaket Kulit & Helm Kustom)", "Pemburu Bayaran (Armor Taktis & Senapan Plasma)", "Dokter Jalanan Ilegal (Tas Medis & Implan Cyber)", "Pemberontak Anti-Korporasi (Pakaian Lusuh & Topeng Gas)", "DJ Klub Malam Futuristik (Headphone & Pakaian Mencolok)", "Spesialis Drone (Kontroler & Kacamata Drone)", "Mantan Prajurit Korporat (Implan Militer)", "Seniman Grafiti Bio-Luminescent (Masker & Kaleng Semprot)", "Pedagang Pasar Gelap (Jubah & Barang Teknologi)", "Infiltrator Realitas Virtual (Bodysuit & Sarung Tangan Haptic)", "Android Detektif", "Teknisi Perbaikan Cyborg", "Peramal Data (Data Diviner)", "Petarung Jalanan Ilegal", "Polisi Anti-Cybercrime"],
+                        "Chibi Etnik & Budaya Lokal": ["Pendekar Silat Betawi (Baju Pangsi & Golok)", "Penari Kecak Bali (Kain Poleng & Gelang)", "Ksatria Dayak (Baju Perang & Mandau)", "Raja Jawa (Beskap & Blangkon)", "Pelaut Bugis (Sarung & Badik)", "Gembala Sumba (Kain Tenun & Tongkat)", "Prajurit Asmat (Hiasan Kepala & Tombak)", "Bangsawan Melayu (Baju Melayu & Songkok)", "Petani Baduy (Pakaian Serba Putih/Hitam)", "Pemburu Nias (Rompi Kulit & Perisai)", "Pemain Sasando dari Rote (Pakaian Adat)", "Pendekar Minang (Pakaian Gelap & Kerambit)", "Bangsawan Batak (Ulos & Sorpa)", "Penari Saman Gayo (Seragam Warna-warni)", "Pengrajin Perak Kota Gede (Baju Kerja & Palu)", "Penjaga Candi Borobudur", "Dalang Wayang Kulit", "Pawang Hujan", "Penjual Jamu Gendong", "Pemain Gamelan"],
+                        "Chibi Dewa-Dewi Mythos": ["Dewa Petir (Zeus/Thor) (Toga/Armor & Petir)", "Dewa Laut (Poseidon) (Kain & Trisula)", "Dewa Dunia Bawah (Hades) (Jubah Hitam & Helm Kegelapan)", "Dewa Perang (Ares) (Armor Sparta & Pedang)", "Dewa Matahari (Apollo) (Toga Emas & Lira)", "Dewa Penipu (Loki) (Pakaian Hijau & Belati)", "Dewa Hutan (Pan) (Kaki Kambing & Suling)", "Dewa Pandai Besi (Hephaestus) (Apron & Palu)", "Dewa Anggur (Dionysus) (Jubah Ungu & Gelas Anggur)", "Dewa Pengetahuan (Thoth/Odin) (Jubah & Tombak/Gulungan)", "Dewa Langit Mesir (Horus) (Pakaian Firaun & Kepala Elang)", "Dewa Kematian Mesir (Anubis) (Kain & Kepala Anjing Hutan)", "Dewa Kekuatan (Hercules) (Kulit Singa & Gada)", "Dewa Mimpi (Morpheus) (Jubah Berbintang)", "Dewa Kehancuran India (Shiva) (Kain & Trisula)", "Dewa Pembawa Pesan (Hermes/Mercury)", "Dewa Waktu (Chronos)", "Dewa Cinta (Eros/Cupid)", "Dewa Matahari Jepang (Susanoo)", "Dewa Naga Tiongkok"],
+                        "Chibi Horor Imut": ["Vampir Bangsawan Cilik (Jubah & Taring)", "Manusia Serigala Remaja (Jaket Sobek & Cakar)", "Frankenstein Junior (Baut di Leher & Jas)", "Mumi Ceria (Perban & Mata Menyala)", "Hantu Klasik (Sprei Putih & Rantai)", "Zombie Pelajar (Seragam Sekolah & Wajah Pucat)", "Slime Monster Menggemaskan (Tubuh Jeli & Mata Besar)", "Setan Kecil Nakal (Tanduk & Garpu Taman)", "Orang-orangan Sawah Hidup (Topi Jerami & Tambalan)", "Anak Laki-Laki Labu (Kepala Jack-o'-lantern)", "Kerangka Menari (Tulang & Topi Tinggi)", "Gargoyle Pelindung (Sayap Batu & Wajah Galak)", "Alien Penginvasi Mungil (Helm Kaca & Pistol Sinar)", "Anak Laki-Laki Badut Seram (Riasan & Balon)", "Makhluk Rawa Kecil (Sisik & Insang)", "Penjaga Pemakaman", "Boneka Ventriloquist Jahat", "Pemburu Hantu Cilik", "Dokter Wabah (Plague Doctor)", "Kuntilanak Pria (GENDERUWO)"],
+                        "Chibi Adventure RPG": ["Ksatria Pemula (Pedang Kayu & Perisai Panci)", "Penyihir Apprentice (Topi Kerucut & Tongkat Ranting)", "Pemanah Desa (Busur Sederhana & Tas Panah)", "Pencuri Cilik (Belati & Kantong Koin)", "Pendeta Acolyte (Jubah Putih & Simbol Suci)", "Ahli Ramuan (Tas Penuh Botol & Mortar)", "Pandai Besi Muda (Palu & Apron Kulit)", "Penambang Kurcaci (Helm Tambang & Beliung)", "Penginap Petualang (Pakaian Biasa & Ransel)", "Pedagang Keliling (Gerobak & Barang Dagangan)", "Brawler (Sarung Tangan Kulit)", "Bard (Lut & Seruling)", "Tamer Monster (Sarung Tangan & Bola Makhluk)", "Ahli Peta (Gulungan Peta & Kompas)", "Ksatria Berat Lapis Baja (Full Plate Armor)", "Beastmaster (Ahli Binatang)", "Gunslinger (Penembak Jitu)", "Dragoon (Ksatria Naga)", "Dark Knight (Ksatria Kegelapan)", "Merchant Guild Master (Master Serikat Pedagang)"],
+                        "Chibi Hari Raya": ["Idul Fitri (Baju Koko & Peci)", "Natal (Kostum Sinterklas atau Elf)", "Tahun Baru Imlek (Cheongsam & Angpao)", "Halloween (Kostum Drakula atau Labu)", "Valentine (Setelan Cupid dengan Panah Cinta)", "Nyepi (Pakaian Putih & dupa)", "Waisak (Jubah Biksu sederhana)", "Paskah (Telinga Kelinci & Keranjang Telur)", "Thanksgiving (Kostum Pilgrim)", "St. Patrick's Day (Baju Hijau & Topi Leprechaun)", "Malam Tahun Baru (Jas Pesta & Terompet)", "Kemerdekaan (Baju Pejuang & Bendera)", "Idul Adha (Baju Koko & Sapi/Kambing Mainan)", "Deepavali (Kurta & Lampu Diya)", "Hari Kartini (Beskap Modern)", "Hari Guru (Baju Batik PGRI)", "Galungan & Kuningan (Pakaian Adat Bali)", "Tahun Baru Saka", "Hari Buruh (Pakaian Pekerja)", "Hari Bumi (Pakaian Tema Alam)"],
+                        "Chibi Cerita Rakyat Nusantara": ["Sangkuriang (Pakaian Kerajaan & Kapal Mainan)", "Malin Kundang (Baju Pelaut & Batu)", "Timun Mas (Pakaian Desa & Biji Timun Emas)", "Si Pitung (Baju Silat & Golok)", "Gatotkaca (Kostum Wayang Orang)", "Hanoman (Kostum Kera Putih & Gada)", "Panji Asmoro Bangun (Pakaian Pangeran & Topeng)", "Lutung Kasarung (Pakaian Monyet & Mahkota)", "Bawang Merah (Baju Mewah & Wajah Jahat)", "Bawang Putih (Baju Sederhana & Wajah Baik)", "Jaka Tarub (Baju Pemburu & Selendang Bidadari)", "Kancil Cerdik (Kostum Kancil)", "Arjuna (Kostum Ksatria Pandawa & Panah)", "Prabu Siliwangi (Jubah Raja & Harimau Mainan)", "Keong Emas (Pakaian Putri & Cangkang Keong)", "Calonarang", "Angling Dharma", "Ciung Wanara", "Jaka Tingkir", "Roro Anteng & Joko Seger"],
+                        "Chibi Festival & Budaya": ["Festival Songkran (Kemeja Bunga & Pistol Air)", "Oktoberfest (Lederhosen & Gelas Bir)", "Mardi Gras (Kostum Ungu-Hijau-Emas & Topeng)", "Holi Festival (Baju Putih Penuh Bubuk Warna)", "Festival Lampion (Pakaian Tradisional & Lampion)", "Dia de los Muertos (Riasan Tengkorak & Bunga Marigold)", "Festival Bunga Sakura (Yukata & Kelopak Bunga)", "Festival Balon Udara (Jaket & Kacamata Penerbang)", "Karnaval Rio (Pakaian Samba Berbulu)", "Festival Musik Coachella (Gaya Bohemian)", "Running of the Bulls (Pakaian Putih & Syal Merah)", "St. Patrick's Day Parade (Kostum Leprechaun)", "Upacara Minum Teh Jepang (Kimono)", "Festival Film Cannes (Tuxedo & Kamera)", "Pameran Komik (Cosplay Karakter Populer)", "Jember Fashion Carnaval", "Festival Sekaten Yogya", "Karapan Sapi Madura", "Pasola Sumba", "Bau Nyale Lombok"],
+                        "Chibi Atlet & Olahraga": ["Pemain Sepak Bola (Jersey & Bola)", "Pebasket (Seragam Basket & Bola Basket)", "Perenang (Celana Renang & Kacamata)", "Pelari Maraton (Singlet & Sepatu Lari)", "Petenis (Pakaian Tenis & Raket)", "Pembalap F1 (Wearpack & Helm)", "Peselancar (Celana Papan & Papan Selancar)", "Pendaki Gunung (Jaket & Ransel)", "Pemain Baseball (Seragam & Tongkat Pemukul)", "Skater Profesional (Pakaian longgar & Skateboard)", "Atlet Angkat Besi (Singlet & Barbel)", "Pemanah Olimpiade (Seragam & Busur Recurve)", "Pemain Golf (Baju Polo & Stik Golf)", "Pemain Hoki Es (Jersey & Stik Hoki)", "Pesenam Artistik (Leotard)", "Pemain Bulu Tangkis", "Atlet Pencak Silat", "Pembalap Sepeda", "Pemain Catur", "Atlet E-Sport"],
+                        "Chibi Musik & Band": ["Gitaris Rock (Jaket Kulit & Gitar Listrik)", "Vokalis Pop (Mikrofon & Pakaian Panggung)", "Drummer Metal (Kaos Band & Stik Drum)", "Pemain Bass Funk (Kacamata Hitam & Bass Gitar)", "Pianis Klasik (Tuxedo & Grand Piano Mini)", "DJ EDM (Headphone & Meja DJ)", "Penyanyi Rap (Hoodie & Rantai Emas)", "Pemain Biola Jalanan (Kemeja & Biola)", "Anggota Boyband K-Pop (Gaya Fashionable)", "Peniup Saksofon Jazz (Fedora & Saksofon)", "Pemain Cello (Setelan Jas)", "Vokalis Emo/Punk (Rambut Berwarna & Piercing)", "Pemain Ukulele Pantai (Kemeja Hawaii & Ukulele)", "Pemain Sitar India (Kurta & Sitar)", "Anggota Band Marching (Seragam & Terompet)", "Produser Musik", "Penyanyi Dangdut", "Pemain Gamelan", "Anggota Paduan Suara", "Penyanyi Seriosa"],
+                        "Chibi Teknologi & Programmer": ["Hacker Topi Hitam (Hoodie & Laptop Penuh Stiker)", "CEO Startup (Kaos & Blazer)", "Pengembang Game Indie (Kaos Pixel Art & Konsol)", "Insinyur AI (Kacamata AR & Tablet Hologram)", "Spesialis Keamanan Siber (Setelan Jas & Kunci Enkripsi)", "Manajer Produk (Kemeja & Papan Tulis Penuh Catatan)", "Desainer UI/UX (Sweater & Tablet Gambar)", "Perakit PC Kustom (Kaos & Obeng Listrik)", "Vlogger Teknologi (Kamera & Gadget Terbaru)", "Ahli Robotika (Jaket & Lengan Robot)", "Penambang Kripto (Rak Server & Kipas Pendingin)", "Analis Data (Kemeja Kotak-kotak & Grafik)", "Insinyur Perangkat Lunak Google (Kaos Logo & Lanyard)", "Guru Coding Online (Headset & Webcam)", "Beta Tester Game (Kontroler & Minuman Energi)", "Ahli Virtual Reality", "Spesialis Augmented Reality", "Teknisi Jaringan", "Admin Database", "Content Creator Tech"],
+                        "Chibi Pelajar": ["Anak SMA (Seragam Putih Abu-abu & Ransel)", "Mahasiswa Teknik (Jaket Almamater & Kalkulator)", "Siswa Seni (Baret & Kuas)", "Anak Pesantren (Sarung & Peci)", "Pelajar Jepang (Gakuran & Tas Sekolah)", "Siswa Sekolah Sihir (Jubah & Tongkat)", "Anak IT (Kaos & Laptop)", "Murid Sekolah Dasar (Seragam Merah Putih & Topi)", "Mahasiswa Kedokteran (Jas Dokter & Buku Anatomi)", "Anak Band Sekolah (Gitar & Seragam)", "Siswa Pertukaran Pelajar (Bendera Negara Asal)", "Ketua OSIS (Jas OSIS & Megafon)", "Anak Pramuka (Seragam Pramuka & Tongkat)", "Mahasiswa Arkeologi (Rompi & Kuas Debu)", "Siswa Kutu Buku (Kacamata Tebal & Tumpukan Buku)", "Siswa Paskibra", "Mahasiswa Hukum", "Siswa Penerbangan", "Anak Nongkrong (Street Style)", "Mahasiswa Aktivis"],
+                        "Chibi Pahlawan Nasional / Patriotik (mode kreatif)": ["Pangeran Diponegoro (Sorban & Keris)", "Jenderal Sudirman (Jas & Blangkon)", "Bung Tomo (Pakaian Perang & Mikrofon)", "Kapitan Pattimura (Ikat Kepala Merah & Parang)", "Cut Nyak Dien (Pakaian Pejuang Aceh)", "Tuanku Imam Bonjol (Jubah Putih & Turban)", "Bung Karno (Peci & Kacamata)", "Bung Hatta (Jas & Kacamata)", "Sultan Hasanuddin (Pakaian Ayam Jantan dari Timur)", "I Gusti Ngurah Rai (Seragam Militer)", "Ki Hajar Dewantara (Beskap & Blangkon)", "Martha Christina Tiahahu (Pakaian & Tombak)", "Untung Suropati (Pakaian Jawa & Pedang)", "Pattimura Junior (Versi modern)", "Sudirman Cyber (Versi futuristik)", "Soekarno versi modern", "Hatta versi cyberpunk", "Diponegoro versi fantasi", "Pahlawan Medis (Dokter/Perawat)", "Relawan Bencana"],
+                        "Chibi Sci-Fi Space (astronot, alien, penjelajah)": ["Astronot Penjelajah Mars (Baju Antariksa Oranye)", "Kapten Armada Luar Angkasa (Seragam Komandan)", "Pemburu Alien (Armor & Senapan Plasma)", "Ilmuwan Xenomorph (Jas Lab & Spesimen Alien)", "Insinyur Kapal (Wearpack & Kunci Inggris Laser)", "Alien Imut (Kulit Hijau & Antena)", "Pemberontak Galaksi (Jaket Kulit & Blaster)", "Pedagang Antarplanet (Jubah & Kargo Aneh)", "Pilot Pesawat Tempur Bintang (Helm & Kokpit)", "Duta Besar Alien (Pakaian Formal Aneh)", "Penambang Asteroid (Baju Pelindung & Bor Laser)", "Prajurit Mecha Raksasa (Seragam Pilot)", "Dokter Luar Angkasa (Seragam Medis Futuristik)", "Mekanik Robot (Lengan Berminyak & Droid Pendamping)", "Arkeolog Luar Angkasa (Pakaian Pelindung & Artefak)", "Polisi Luar Angkasa", "Bajak Laut Antariksa", "Koki Luar Angkasa", "Penyelundup Barang Antik", "Musisi Alien"],
+                        "Chibi Elemental (api, air, tanah, angin, petir)": ["Pengendali Api (Rambut Menyala & Bola Api)", "Penguasa Air (Pakaian Ombak & Trisula Air)", "Pelindung Tanah (Armor Batu & Sarung Tangan Batu)", "Avatar Angin (Jubah Awan & Tornado Kecil)", "Ksatria Petir (Armor Berkilat & Pedang Petir)", "Penyihir Es (Jubah Kristal & Staf Es)", "Golem Lava (Tubuh Batu Cair)", "Roh Hutan (Kulit Kayu & Rambut Daun)", "Jin Badai Pasir (Pakaian Gurun & Pasir Berputar)", "Manusia Logam (Kulit Metalik & Pedang Baja)", "Geomancer (Jubah & Batu Melayang)", "Aeromancer (Pakaian Ringan & Awan di Kaki)", "Pyromancer (Tato Api & Sarung Tangan Api)", "Hydromancer (Sisik & Aura Air)", "Electromancer (Rambut Berdiri & Listrik di Tangan)", "Elemen Cahaya", "Elemen Kegelapan", "Elemen Racun", "Elemen Waktu", "Elemen Gravitasi"],
+                        "Chibi Makhluk Mitos & Monster Lucu": ["Naga Eropa Mungil (Sayap & Semburan Api Kecil)", "Griffin Hatchling (Kepala Elang & Tubuh Singa)", "Centaur Muda (Busur & Anak Panah Mainan)", "Minotaur Cilik (Tanduk & Labyrinth Peta)", "Cyclops Balita (Satu Mata Besar & Gada Kayu)", "Unicorn Berwarna Pelangi (Tanduk & Surai Berkilau)", "Hydra Berkepala Tiga (Setiap kepala punya ekspresi)", "Cerberus Puppy (Tiga Kepala Anjing Lucu)", "Gorgon Remaja (Rambut Ular & Kacamata Hitam)", "Peri Laki-laki (Sayap Kupu-kupu & Debu Sihir)", "Werewolf Pup (Telinga & Ekor Serigala)", "Kraken Kecil (Tentakel & Kapal Mainan)", "Phoenix Bayi (Bulu Api & Telur Abu)", "Sasquatch Junior (Bulu & Jejak Kaki Besar)", "Kitsune (Sembilan Ekor & Topeng Rubah)", "Leprechaun", "Gnome", "Troll", "Ogre", "Slime"],
+                        "Chibi Fashion Show / Model Catwalk": ["Gaya Avant-Garde (Pakaian Geometris Aneh)", "Haute Couture (Gaun Mewah & Detail Rumit)", "Tampilan Deconstructed (Pakaian Terurai & Asimetris)", "Gaya Minimalis Monokrom (Setelan Serba Hitam/Putih)", "Busana Futuristik (Bahan Metalik & LED)", "Tampilan Androgini (Jas & Dasi Ramping)", "Streetwear Mewah (Hoodie & Sneaker Desainer)", "Gaya Formal Klasik (Tuxedo & Dasi Kupu-kupu)", "Tema Tropis & Bunga (Kemeja Hawaii & Celana Pendek Sutra)", "Inspirasi Militer (Jaket & Celana Kargo Ramping)", "Gaya Preppy Modern (Blazer & Celana Pendek)", "Busana Rajut Artistik (Sweater & Celana Rajut)", "Tampilan Gothic Modern (Jubah & Boots Platform)", "Gaya Pangeran Pop (Setelan Berwarna Cerah & Bling)", "Inspirasi Busana Sejarah (Ruff Collar & Doublet)", "Tema Cyberpunk", "Tema Fantasi", "Tema Steampunk", "Tema Vintage", "Tema Post-Apocalyptic"]
+                    },
+                    wanita: {
+                        "Chibi Kasual Modern": ["Gaya Parisian Chic (Baret & Striped Shirt)", "Outfit Brunch Santai (Dress & Sandal)", "Tampilan Skater Girl (Kaos & Beanie)", "E-Girl Estetik (Rambut Warna-warni & Riasan)", "Smart Casual Feminin (Blouse & Rok Pensil)", "Gaya Oversized Korea (Sweater & Rok Mini)", "Techwear Fungsional (Jaket & Celana Kargo)", "Vibe Musim Panas (Sundress & Topi Jerami)", "Gaya Preppy Kampus (Rok Kotak-kotak & Kardigan)", "Outfit Yoga/Athleisure (Legging & Sport Bra)", "Y2K Fashion Revival (Crop Top & Celana Lebar)", "Gaya Biker (Jaket Kulit & Ripped Jeans)", "Tampilan Musim Gugur (Sweater & Boots Tinggi)", "Soft Grunge (Baby-doll Dress & Combat Boots)", "Tampilan Monokromatik Elegan", "Gaya Festival Coachella (Fringe & Kacamata Bundar)", "Gaya Streetwear Mewah (Hoodie Desainer)", "Tampilan Galeri Seni (Pakaian Unik & Artistik)", "Gaya Kencan Malam (Little Black Dress)", "Set Piyama Sutra Cantik"],
+                        "Chibi Fantasi Pahlawan": ["Putri Ksatria Naga (Armor & Pedang Ramping)", "Pemanah Elf Anggun (Jubah & Panah Bercahaya)", "Penyihir Arcane Kuat (Jubah Berbintang & Staf Kristal)", "Rogue Bayangan Gesit (Pakaian Kulit & Belati Kembar)", "Paladin Cahaya Suci (Armor Perak & Perisai Suci)", "Pendeta Penyembuh Ilahi (Jubah Putih & Simbol Cahaya)", "Druid Penjaga Hutan (Pakaian Daun & Mahkota Bunga)", "Ratu Prajurit Barbarian (Armor Tulang & Kapak Besar)", "Biksu Astral Tenang (Pakaian Sutra & Bola Energi)", "Valkyrie Penunggang Pegasus (Armor Sayap & Tombak)", "Penyihir Elemen (Sorceress) (Gaun Mengalir & Elemen di Tangan)", "Necromancer Elegan (Gaun Gelap & Tengkorak Hias)", "Pemburu Iblis (Demon Hunter) (Mantel & Panah Otomatis)", "Insinyur Gnomish Cerdik (Kacamata Goggle & Kunci Inggris)", "Penari Pedang Eksotis (Pakaian & Pedang Melengkung)", "Ratu Penyihir (Sorceress Queen)", "Valkyrie General", "Celestial Mage", "Shadow Assassin", "Dragon Rider"],
+                        "Chibi Profesional": ["Dokter Anak (Jas Dokter & Boneka Hewan)", "CEO Perusahaan Teknologi (Setelan Rapi & Tablet)", "Arsitek (Pakaian Hitam & Maket Bangunan)", "Astronot (Baju Antariksa & Helm)", "Chef Pastri (Baju Koki & Kue Cantik)", "Jurnalis Perang (Rompi Anti Peluru & Kamera)", "Pengacara (Blus Sutra & Kacamata)", "Ilmuwan Genetika (Jas Lab & DNA Heliks)", "Perancang Busana (Pita Ukur & Sketsa)", "Detektif Wanita (Jas Hujan & Senter)", "Pemain Biola Konser (Gaun Malam & Biola)", "Programmer Wanita (Kaos Lucu & Laptop)", "Guru TK (Baju Ceria & Buku Cerita)", "Pilot Maskapai (Seragam Pilot & Koper)", "Kurator Museum (Pakaian Elegan & Artefak)", "Pramugari", "Perawat", "Polisi Wanita", "Hakim", "Reporter TV"],
+                        "Chibi Cyberpunk": ["Idola Pop Holografik (Pakaian LED & Mikrofon Futuristik)", "Peretas Netrunner (Jaket dengan Kabel Fiber Optik)", "Pembunuh Bayaran Augmentasi (Mata Sibernetik & Pistol)", "Mekanik Pasar Gelap (Overall & Lengan Robot)", "Kurir Informasi (Pakaian Aerodinamis & Sepatu Roda Roket)", "Polisi Wanita Futuristik (Armor Ringan & Borgol Energi)", "Geng Motor Neon (Jaket Kulit & Motor Melayang)", "Seniman Jalanan Digital (Proyektor Hologram & Masker)", "Bangsawan Korporat (Gaun Mewah dengan Sirkuit)", "Teknisi Medis Bawah Tanah (Pakaian Taktis & Medi-gel)", "Pemberontak Realitas Virtual (Bodysuit & Kacamata VR)", "Infiltrator Korporat (Setelan Bisnis dengan Gadget Tersembunyi)", "Penjaga Kelab Malam Distopia (Pakaian Seksi & Gada Listrik)", "Spesialis Modifikasi Tubuh (Jarum Tato Laser)", "Aktivis Hak Android (Kaos Slogan & Spanduk Digital)", "Gamer Profesional", "Streamer", "Cosplayer Cyber", "Blogger Fashion Futuristik", "Penyanyi Virtual"],
+                        "Chibi Etnik & Budaya Lokal": ["Penari Pendet Bali (Kain & Mahkota Bunga)", "Putri Keraton Jawa (Kemben & Sanggul)", "Gadis Dayak (Baju Manik-manik & Anting-anting Panjang)", "Mojang Priangan (Kebaya Sunda & Payung)", "Gadis Minang (Baju Kurung & Tikuluak Tanduk)", "Penari Tor-Tor Batak (Ulos & Hiasan Kepala)", "Putri dari Sumba (Kain Tenun & Perhiasan Mamuli)", "Gadis Papua (Rok Rumbai & Hiasan Cendrawasih)", "Nona Ambon (Baju Cele & Konde)", "Bangsawan Melayu Riau (Kebaya Labuh & Selendang)", "Pengrajin Batik (Kain Batik & Canting)", "Penari Legong (Kipas & Riasan Dramatis)", "Gadis Petani Kopi Gayo (Pakaian & Keranjang Kopi)", "Gadis Sasak Penenun (Alat Tenun & Benang Warna)", "Putri Tidore (Mahkota & Pakaian Kebesaran)", "Sinden", "Penari Jaipong", "Gadis Baduy", "Ratu Kalinyamat", "Gadis Petani Teh"],
+                        "Chibi Dewa-Dewi Mythos": ["Dewi Kebijaksanaan & Perang (Athena) (Helm & Perisai Aegis)", "Dewi Bulan & Perburuan (Artemis) (Tunik & Busur Perak)", "Dewi Cinta & Kecantikan (Aphrodite) (Gaun & Mawar)", "Dewi Pertanian (Demeter) (Jubah & Untaian Gandum)", "Ratu Para Dewa (Hera) (Mahkota & Tongkat Kerajaan)", "Dewi Kemenangan (Nike) (Sayap & Karangan Bunga Laurel)", "Dewi Sihir (Hecate) (Jubah Gelap & Dua Obor)", "Dewi Musim Semi (Persephone) (Gaun Bunga & Buah Delima)", "Dewi Malam (Nyx) (Jubah Berbintang & Kerudung Gelap)", "Dewi Kucing Mesir (Bastet) (Perhiasan Emas & Sistrum)", "Dewi Matahari Jepang (Amaterasu) (Kimono & Cermin Suci)", "Dewi Hindu (Lakshmi/Saraswati) (Sari & Teratai/Veena)", "Peri Ratu (Titania) (Gaun dari Kelopak Bunga & Sayap Kupu-kupu)", "Nimfa Hutan (Dryad) (Pakaian dari Kulit Kayu)", "Siren Laut (Ekor Ikan & Lira)", "Dewi Keadilan (Themis)", "Dewi Pelangi (Iris)", "Dewi Bumi (Gaia)", "Dewi Ular (Medusa)", "Dewi Bunga (Flora)"],
+                        "Chibi Horor Imut": ["Gadis Vampir Gotik (Gaun Victoria & Payung Renda)", "Hantu Wanita Jepang (Yurei) (Kimono Putih & Rambut Panjang)", "Penyihir Cilik (Topi Runcing & Kucing Hitam)", "Boneka Porselen Hidup (Gaun Renda & Mata Retak)", "Gadis Zombie Imut (Pita di Rambut & Jahitan)", "Gadis Iblis (Succubus) (Sayap Kelelawar & Ekor)", "Dullahan (Tanpa Kepala, Memegang Kepala Labu)", "Gorgon (Medusa) Remaja (Rambut Ular & Kacamata)", "Banshee Menangis (Jubah Robek & Air Mata Berkilau)", "Peri Gelap (Sayap Capung & Aura Ungu)", "Gadis Serigala (Telinga & Ekor Serigala)", "Gadis Manusia Ikan dari Laguna Hitam", "Kekasih Frankenstein (Rambut Putih & Jahitan)", "Anak Perempuan Badut Menyeramkan (Gaun & Balon)", "Gadis Hutan Terkutuk (Mahkota Ranting & Mata Menyala)", "Kuntilanak", "Suster Ngesot", "Wewe Gombel", "Jiangshi (Vampir China)", "Bloody Mary"],
+                        "Chibi Adventure RPG": ["Ksatria Wanita Pemula (Armor Ringan & Pedang)", "Penyihir Wanita Apprentice (Jubah & Buku Mantra)", "Pemanah Wanita Desa (Tunik Kulit & Busur)", "Pencuri Wanita Gesit (Jubah Bertudung & Belati)", "Pendeta Wanita Acolyte (Gaun Putih & Staf Penyembuh)", "Ahli Ramuan Wanita (Celemek & Tas Herbal)", "Pandai Besi Wanita (Overall & Palu Kecil)", "Penjelajah Wanita (Pakaian Praktis & Kompas)", "Putri Petualang (Gaun & Pedang Rapier)", "Bard Wanita (Gaun & Harpa Kecil)", "Tamer Monster Wanita (Sarung Tangan & Makhluk Imut)", "Ninja Wanita (Kunoichi) (Pakaian Gelap & Kunai)", "Shaman Wanita (Pakaian Suku & Jimat)", "Ahli Peta Wanita (Kacamata & Gulungan Peta)", "Gladiator Wanita (Armor & Trisula)", "Battle Mage", "Thief Guild Leader", "Royal Guard Captain", "Dragon Slayer", "Treasure Hunter"],
+                        "Chibi Hari Raya": ["Idul Fitri (Gamis & Hijab Cantik)", "Natal (Kostum Malaikat atau Ratu Salju)", "Tahun Baru Imlek (Cheongsam & Kipas)", "Halloween (Kostum Penyihir atau Kucing Hitam)", "Valentine (Gaun Merah Muda & Hati)", "Nyepi (Mukena Putih Bali)", "Waisak (Jubah Putih sederhana)", "Paskah (Gaun Musim Semi & Keranjang Bunga)", "Thanksgiving (Gaun Kolonial)", "St. Patrick's Day (Gaun Hijau & Semanggi)", "Malam Tahun Baru (Gaun Berkilau & Kacamata 202X)", "Kemerdekaan (Kebaya Merah Putih)", "Idul Adha (Gamis & Domba Mainan)", "Deepavali (Sari & Perhiasan India)", "Hari Kartini (Kebaya & Sanggul)", "Hari Ibu", "Hari Anak", "Hari Valentine (versi dewi cinta)", "Hari Kemerdekaan (versi pahlawan wanita)", "Tahun Baru (versi gaun pesta)"],
+                        "Chibi Cerita Rakyat Nusantara": ["Roro Jonggrang (Kemben & Mahkota Candi)", "Dewi Sri (Pakaian Dewi Padi & Padi)", "Nyi Roro Kidul (Gaun Hijau Laut & Selendang)", "Bawang Putih (Baju Sederhana & Labu Emas)", "Timun Mas (Pakaian Desa & Kantong Ajaib)", "Dayang Sumbi (Pakaian Putri & Alat Tenun)", "Putri Mandalika (Gaun Pesta Laut)", "Cinderalas (Pakaian Desa & Ayam Jago Ajaib)", "Putri Salju (versi lokal, Kebaya Biru)", "Tujuh Bidadari (Selendang Warna-warni)", "Putri Duyung (Ekor Ikan Batik)", "Ratu Calon Arang (Pakaian Hitam & Buku Sihir)", "Putri Hijau dari Deli (Gaun Hijau & Naga)", "Putri Kandita (Sebelum jadi Nyi Roro Kidul)", "Putri Pukes (Gaun & Batu)", "Siti Nurbaya", "Ken Dedes", "Triveni (dari legenda India)", "Savitri dan Satyavan", "Damayanti"],
+                        "Chibi Festival & Budaya": ["Penari Samba Karnaval Rio (Pakaian Berbulu & Hiasan Kepala)", "Geisha Festival Gion (Kimono & Riasan Wajah Putih)", "Penari Flamenco Spanyol (Gaun Merah & Kastanyet)", "Gadis Oktoberfest (Dirndl & Kepang Rambut)", "Ratu Festival Bunga (Gaun dari Bunga Asli)", "Peserta Dia de los Muertos (Gaun & Riasan Calavera)", "Gadis Festival Lampion (Hanfu & Lampion Teratai)", "Gadis Festival Holi (Sari Putih & Bubuk Warna)", "Gadis Festival Bunga Sakura (Yukata & Payung Kertas)", "Venetian Carnival (Gaun Abad 18 & Topeng Berornamen)", "Gadis Highland Games Skotlandia (Rok Tartan)", "Penari Hula Hawaii (Rok Hula & Mahkota Bunga Lei)", "Penari Barongsai Wanita (Kepala Barongsai)", "Gadis Festival Musik (Gaya Hippie/Boho)", "Ratu Festival Panen (Gaun & Keranjang Buah)", "Gadis Cap Go Meh", "Ratu Jember Fashion Carnaval", "Penari K-Pop di Festival", "Ratu Pesta Topeng", "Gadis Festival Es Harbin"],
+                        "Chibi Atlet & Olahraga": ["Pesenam Ritmik (Leotard & Pita)", "Pemain Voli Pantai (Bikini & Bola Voli)", "Balerina (Tutu & Sepatu Pointe)", "Atlet Seluncur Indah (Kostum Berkilau & Sepatu Seluncur)", "Pemain Sepak Bola Wanita (Jersey & Sepatu Bola)", "Petenis Wanita (Rok Tenis & Visor)", "Atlet Panahan (Seragam & Busur Compound)", "Juara Renang Sinkronisasi (Baju Renang Hias)", "Pendaki Tebing (Pakaian & Harness)", "Pemain Softball (Seragam & Sarung Tangan)", "Atlet Berkuda (Jaket & Helm Berkuda)", "Pemain Bulu Tangkis (Kaos & Raket)", "Karateka (Gi & Sabuk Hitam)", "Atlet Lari Gawang (Singlet & Sepatu Paku)", "Pemain Skateboard (Tank Top & Helm)", "Pemanah Berkuda", "Atlet Anggar", "Pemain Hoki", "Pemain Polo Air", "Atlet Senam Aerobik"],
+                        "Chibi Musik & Band": ["Vokalis Band Rock Gotik (Gaun Korset & Mikrofon Retro)", "Idola J-Pop (Seragam Imut & Tanda Peace)", "Pemain Harpa Klasik (Gaun Panjang & Harpa Emas)", "Gitaris Bass Punk Rock (Jaket Denim & Bass Gitar Stiker)", "Penyanyi Country (Gaun & Gitar Akustik)", "Ratu Disko 70-an (Celana Cutbray & Atasan Berkilau)", "Pemain Cello Orkestra (Gaun Hitam & Cello)", "Anggota Girlband K-Pop (Gaya Panggung Trendi)", "Penyanyi Jazz Klub Malam (Gaun Berpayet & Boa Bulu)", "Pemain Sitar (Sari & Sitar)", "Peniup Flute (Gaun & Flute Perak)", "Drummer Wanita (Tank Top & Headphone)", "Aktris Musikal (Kostum Panggung & Topi)", "Penyanyi Rakyat (Gaun Sederhana & Bunga di Rambut)", "DJ Wanita (Pakaian Keren & Headphone Besar)", "Penyanyi Opera", "Rapper Wanita", "Penyanyi Reggae", "Bintang Pop Latin", "Pemain Akordeon"],
+                        "Chibi Teknologi & Programmer": ["Gamer Profesional (Headset Gaming & Jersey Tim eSports)", "Streamer Twitch (Cincin Cahaya & Webcam Kucing)", "Pengembang Aplikasi VR/AR (Kacamata VR & Sarung Tangan Haptic)", "Insinyur Robotika (Jaket Lab & Drone Pendamping)", "Desainer UI/UX (Sweater Nyaman & Tablet Stylus)", "CEO Startup Wanita (Blazer & Smartphone)", "Peretas Etis (Kaos dengan Kode & Kacamata)", "Vlogger Unboxing Gadget (Tumpukan Kotak & Kamera)", "Analis Big Data (Pakaian Kantor & Layar Hologram)", "Spesialis AI (Pakaian Futuristik & Otak Digital)", "Manajer Proyek Scrum (Papan Penuh Post-it)", "Guru Coding untuk Anak (Kaos Ceria & Laptop)", "Penulis Blog Teknologi (Kacamata & Macbook)", "Ahli Keamanan Jaringan (Setelan & Tablet Aman)", "Pencipta Wearable Tech (Jam Tangan Pintar & Cincin)", "Model Virtual", "Influencer Teknologi", "Animator 3D", "Podcaster Teknologi", "Ilustrator Digital"],
+                        "Chibi Pelajar": ["Siswi SMA Jepang (Seragam Sailor & Tas Sekolah)", "Mahasiswi Seni (Overall Penuh Noda Cat & Baret)", "Ketua Klub Sains (Jas Lab & Kacamata Pelindung)", "Siswi Sekolah Sihir (Jubah Asrama & Buku Mantra)", "Anak Pesantren Putri (Gamis & Kerudung)", "Mahasiswi Sastra (Sweater & Tumpukan Novel)", "Ratu Pesta Prom (Gaun Pesta & Mahkota)", "Anak Paskibra (Seragam Paskibra)", "Atlet Sekolah (Jaket Tim & Medali)", "Anggota Klub Musik (Seragam & Alat Musik)", "Siswi Kutu Buku (Kacamata Bulat & Kardigan)", "Siswi Pertukaran Pelajar (Blazer & Lencana Bendera)", "Mahasiswi Arsitektur (Tabung Gambar & Penggaris)", "Pramugari Sekolah Penerbangan (Seragam)", "Pemandu Sorak (Seragam & Pom-pom)", "Ketua Kelas", "Anggota Debat", "Siswi Berprestasi", "Ratu Sekolah", "Gadis Perpustakaan"],
+                        "Chibi Pahlawan Nasional / Patriotik (mode kreatif)": ["Cut Nyak Dien (Pakaian Pejuang Aceh & Rencong)", "R.A. Kartini (Kebaya & Buku 'Habis Gelap Terbitlah Terang')", "Martha Christina Tiahahu (Pakaian & Tombak Bambu)", "Dewi Sartika (Kebaya Sunda & Papan Tulis)", "Nyi Ageng Serang (Kemben & Tombak)", "Fatmawati Soekarno (Mesin Jahit & Kain Bendera)", "Opu Daeng Risaju (Pakaian Bangsawan Bugis)", "Rasuna Said (Pakaian Formal & Mikrofon)", "Laksamana Malahayati (Pakaian Laksamana Laut)", "Ratu Kalinyamat (Pakaian Ratu Jepara)", "Cut Meutia (Ikat Kepala & Pedang)", "Agung Hajjah Rangkayo Rasuna Said (versi modern)", "Kartini Milenial (Laptop & Kebaya)", "Pahlawan Medis Wanita (Jas Dokter & Masker)", "Aktivis Lingkungan Muda (Kaos & Bibit Pohon)", "Ibu Pertiwi", "Srikandi", "Pejuang Kemerdekaan Wanita", "Diplomat Wanita", "Ilmuwan Wanita"],
+                        "Chibi Sci-Fi Space (astronot, alien, penjelajah)": ["Kapten Wanita Armada Bintang (Seragam Putih & Lencana)", "Insinyur Alien Cantik (Pakaian Aneh & Alat Canggih)", "Putri Galaksi (Gaun Berkilau dari Debu Bintang)", "Pemburu Bayaran Sibernetik (Lengan Robot & Mata Merah)", "Pilot Pesawat Tempur Ace (Helm & Jaket Kulit)", "Dokter Xenobiologi (Jas Lab & Tabung Spesimen)", "Pemberontak Pasca-Apokaliptik (Armor Rakitan & Senapan)", "Duta Besar Perdamaian Antarplanet (Jubah & Simbol Damai)", "Android Pembantu (Seragam & Ekspresi Datar)", "Penjelajah Planet Es (Pakaian Termal & Kapak Es)", "Ratu Alien Serangga (Kerangka Luar & Sayap)", "Mekanik Kapal Kargo (Overall & Obeng Sonik)", "Prajurit Wanita Klon (Armor Identik & Blaster)", "Peramal Luar Angkasa (Jubah & Bola Kristal Hologram)", "Mata-mata Pengubah Bentuk (Pakaian Biasa & Aura Misterius)", "Ratu Bajak Laut Antariksa", "Penyanyi Opera Luar Angkasa", "Penari Eksotis Alien", "Pustakawan Arsip Galaksi", "Koki Bintang Lima Antar Bintang"],
+                        "Chibi Elemental (api, air, tanah, angin, petir)": ["Peri Api (Gaun dari Api & Sayap Menyala)", "Putri Air (Gaun Gelembung & Mahkota Kerang)", "Golem Tanah Liat (Pakaian dari Tanah & Bunga)", "Nimfa Angin (Gaun Sutra Transparan & Dikelilingi Daun)", "Ratu Petir (Gaun Badai Gelap & Petir di Tangan)", "Penyihir Es (Gaun Kristal Salju & Tongkat Es)", "Roh Hutan (Gaun dari Kulit Kayu & Rambut Akar)", "Geomancer Wanita (Jubah Coklat & Kristal Melayang)", "Gadis Lava (Rambut dari Magma & Gaun Batuan Beku)", "Dryad Bunga (Gaun dari Kelopak Mawar)", "Sylph Udara (Sayap Angin & Pakaian Ringan)", "Undine Danau (Rambut Ganggang & Gaun Air)", "Salamander Api (Kulit Bersisik & Ekor Api)", "Gadis Badai (Rambut Awan Gelap & Mata Berkilat)", "Avatar Keseimbangan Elemental (Setiap elemen ada di pakaiannya)", "Dewi Cahaya", "Ratu Kegelapan", "Putri Racun", "Penyihir Waktu", "Gadis Gravitasi"],
+                        "Chibi Makhluk Mitos & Monster Lucu": ["Gadis Naga Imut (Tanduk, Sayap, Ekor & Gaun)", "Harpy Remaja (Sayap di Lengan & Cakar di Kaki)", "Centauride (Gadis Centaur) (Busur & Bunga di Rambut)", "Gadis Minotaur (Tanduk Kecil & Gaun Labirin)", "Gadis Cyclops (Satu Mata Besar & Gaun Polkadot)", "Gadis Unicorn (Tanduk Pelangi & Gaun Berkilau)", "Gadis Hydra (Beberapa Kepala Kecil sebagai Hiasan Rambut)", "Gadis Cerberus (Tiga Anak Anjing di Sampingnya)", "Gorgon Imut (Rambut Ular & Kacamata)", "Gadis Peri Bunga (Sayap Kupu-kupu & Gaun Kelopak)", "Gadis Manusia Serigala (Telinga & Ekor & Overall)", "Gadis Kraken (Tentakel sebagai Rok & Mahkota Kerang)", "Gadis Phoenix (Gaun Bulu Api & Air Mata Berkilau)", "Gadis Kitsune (Sembilan Ekor & Kimono)", "Gadis Slime (Gaun Transparan Berbentuk Jeli)", "Gadis Leprechaun", "Gadis Gnome", "Gadis Troll", "Gadis Ogre", "Putri Slime"],
+                        "Chibi Fashion Show / Model Catwalk": ["Gaya Avant-Garde (Gaun Arsitektural)", "Haute Couture (Gaun Pengantin Mewah)", "Tampilan Deconstructed (Gaun Asimetris)", "Gaya Minimalis Monokrom (Setelan Putih Elegan)", "Busana Futuristik (Gaun LED & Visor)", "Gaya Androgini (Tuxedo Wanita)", "Streetwear Mewah (Jaket Bomber Sutra & Sneaker Langka)", "Inspirasi Ratu Victoria (Gaun Korset Modern)", "Tema Bawah Laut (Gaun Putri Duyung Berkilau)", "Inspirasi Militer Chic (Gaun Kamuflase Elegan)", "Gaya Dewi Yunani (Gaun Drapery Satu Bahu)", "Busana Rajut Kompleks (Gaun Rajut & Kardigan)", "Gaya Gotik Romantis (Gaun Renda Hitam & Payung)", "Busana Pop Art (Gaun dengan Pola Komik)", "Inspirasi Balerina (Rok Tutu & Atasan Korset)", "Supermodel Cyberpunk", "Ratu Fantasi", "Diva Steampunk", "Ikon Vintage", "Pahlawan Wanita Post-Apocalyptic"]
+                    },
+                    wanita_berhijab: {
+                        "Modern Casual Chibi": ["Layering Style (Tunic & Jeans)", "Cafe Hangout Outfit (Blouse & Pleated Skirt)", "Hijabi Skater Look (Hoodie & Sneakers)", "Office Smart Casual (Blazer & Trousers)", "Oversized Style (Long Cardigan & Inner)", "Sporty Hijab (Training Suit & Sport Hijab)", "Modest Techwear (Functional Jacket & Cargo Skirt)", "Beach Holiday Style (Maxi Dress & Wide Hat)", "University Student Style (Sweater & Backpack)", "Syar'i Monochromatic Style (Black/White Gamis & Khimar)", "Grunge Look (Long Flannel as Outer)", "Formal Invitation Style (Brocade Gamis)", "Rainy Season OOTD (Trench Coat & Boots)", "Streetwear (Hoodie & Cap over Hijab)", "Comfy Homewear (Rayon Pajama Set)", "Bohemian Style", "Vintage Look", "Preppy Look", "Artsy Style", "Minimalist Chic"],
+                        "Fantasy Hero Chibi": ["Holy Light Hijabi Paladin (White Armor & Hijab)", "Hooded Forest Archer (Cloak & Hijab Hood)", "Arcane Sorceress (Mystical Turban & Astronomy Robe)", "Shadow Rogue (Face-covering Shawl & Dark Outfit)", "Royal Knight (Helmet & Neck-protecting Hijab)", "Healer Priestess (White Khimar & Staff of Light)", "Forest Guardian Druidess (Leafy Scarf & Flowers)", "Desert Warrior Queen (Ornate Outfit & Turban)", "Astral Monk (Meditative Head Covering)", "Eagle Knight of the East (Armor & Flying Shawl)", "Elemental Sorceress (Flowing Hijab matching Element)", "Necromancer (Dark Scarf & Bone Accessories)", "Night Creature Hunter (Leather Coat & Wide-brimmed Hat)", "Steampunk Engineer (Hijab with Goggles)", "Sacred Temple Guardian (White Outfit & Holy Symbol)", "Battle Mage", "Assassin's Guild Leader", "Royal Sorceress", "Dragon Tamer", "Guardian of the Sacred Forest"],
+                        "Professional Chibi": ["Hijabi Female Doctor (Doctor's Coat & Stethoscope)", "Architect (Blazer & Turban Hijab with Model)", "Scientist (Lab Coat & Goggles)", "Sharia Lawyer (Black Robe & Book)", "Startup CEO (Modern Suit & Laptop)", "Muslim Fashion Designer (Measuring Tape & Sketch)", "Teacher (Uniform & Textbook)", "Chef (Chef's Coat & Hat over Hijab)", "Journalist (Camera & Press ID)", "Programmer (T-shirt & Headphones)", "Pharmacist (Pharmacist's Coat & Medicine)", "Psychologist (Neat Outfit & Notepad)", "University Lecturer (Formal Wear & Marker)", "Civil Engineer (Project Helmet & Vest)", "Librarian (Cardigan & Glasses)", "Flight Attendant", "Nurse", "Policewoman", "Judge", "TV Reporter"],
+                        "Cyberpunk Chibi": ["Hooded Hacker (Hoodie with Circuit Patterns)", "Augmentation Mechanic (Overalls & Turban Hijab)", "Data Courier (Aerodynamic Jacket & Sling Bag)", "Drone Specialist (Goggles & Remote Control)", "Corporate Intelligence Agent (Neat Suit with Gadgets)", "Tech Rebel (Patched Clothes & LED Mask)", "Holographic Artist (Projector & Digital Gloves)", "Street Doctor (Medical Bag & Visor)", "Black Market Guardian (Long Robe & Smuggled Goods)", "Bio-Genetics Engineer (Futuristic Lab Coat)", "Cyber Police (Tactical Uniform & Energy Cuffs)", "Virtual Reality Navigator (Bodysuit & VR Headset)", "Hover Vehicle Designer (Tablet & Sketches)", "Android Rights Activist (Slogan T-shirt)", "Resistance Soldier (Assembled Armor & Plasma Rifle)", "Professional Gamer", "Streamer", "Cyber Cosplayer", "Futuristic Fashion Blogger", "Virtual Singer"],
+                        "Ethnic & Local Culture Chibi": ["Minang Girl (Baju Kurung & Horn-like Headpiece)", "Acehnese Bride (Daro Baro & Sunting)", "Sundanese Maiden (Kebaya & Batik Skirt)", "Betawi Girl (Baju Kurung & Scarf)", "Malay Noblewoman (Kebaya Labuh & Tudung Manto)", "Santriwati (Gamis & Yellow Book)", "Lombok Weaver (Traditional Attire & Woven Fabric)", "Palembang Girl (Aesan Gede & Crown)", "Quran Teacher (Mukena & Quran)", "Zapin Dancer (Outfit & Shawl)", "Banjar Girl (Bagajah Gamuling Bridal Attire)", "Gayo Coffee Farmer (Work Clothes & Scarf)", "Cultural Activist (Cultural T-shirt & Headband)", "Coastal Girl (Loose Clothing & Caping Hat)", "Floating Market Trader (Simple Clothes & Hijab)", "Modern Sinden", "Contemporary Jaipong Dancer", "Inner Baduy Girl", "Queen of Cirebon Palace", "West Java Tea Farmer Girl"],
+                        "Mythos Gods & Goddesses Chibi": ["Angel from Heaven (Gown & Sparkling Shawl)", "Forest Fairy (Moss Gown & Flower Hijab)", "Desert Oasis Guardian (Outfit & Water Jug)", "Desert Wind Spirit (Sand Robe & Flying Shawl)", "Underwater Kingdom Princess (Shell Gown & Bubble Hijab)", "Guardian of Paradise Garden (White Robe & Golden Key)", "Goddess of Fertility (Green Gown & Wheat Crown)", "Morning Star (Night Robe & Starry Veil)", "Animal Protector (Talking to Animals)", "Sacred Mountain Spirit (Stone & Crystal Outfit)", "Crescent Moon Princess (Silver Gown & Moon Symbol)", "Guardian of the Sacred Spring (Blue Outfit & Flowing Water)", "Angel of Mercy (Wings & White Robe)", "Kind Female Djinn (Silk Outfit & Magic Lamp)", "Rainbow Princess (Seven-colored Gown & Hijab)", "Goddess of Knowledge", "Queen of Clouds", "Crystal Princess", "Nature Witch", "Falling Star Girl"],
+                        "Cute Horror Chibi": ["Hijabi Female Ghost (White Robe & Pale Face)", "Kind-hearted Witch (Black Robe & Black Cat)", "Muslimah Noble Vampire (Dark Gown & Crescent Moon Brooch)", "Haunted Doll (Lace Dress & Button Eyes)", "Cheerful Zombie Girl (Torn Gamis & Patches)", "Night Fairy (Dark Robe & Bat Wings)", "Graveyard Keeper (Robe & Lantern)", "Mysterious Girl from the Foggy Forest", "Shadow Creature (Dark Figure & Glowing Eyes)", "Spirit of an Old House (Old-fashioned Clothes)", "Halloween Pumpkin Girl (Orange Hijab & Pumpkin Face)", "Supernatural Snake Charmer (Outfit & Cobra)", "Girl Harbinger of Omens (Crow on Shoulder)", "Soul Collector (Robe & Hourglass)", "Haunted School Student (Uniform & Old Book)", "Pocong Girl", "Nenek Gayung (Water Dipper Granny)", "Young Mak Lampir", "Jelangkung Girl", "Jeruk Purut Ghost"],
+                        "RPG Adventure Chibi": ["Hijabi Adventurer (Cloak & Leather Backpack)", "Traveling Healer (White Robe & Herbal Pouch)", "Desert Cartographer (Turban & Map Scroll)", "Spice Trader (Outfit & Spice Pouches)", "Desert Knight (Light Armor & Scimitar Sword)", "Oasis Archer (Bow & Arrow)", "Ancient Ruins Scholar (Glasses & Notebook)", "Mythical Beast Tamer (Glove & Companion Creature)", "Artifact Collector (Practical Outfit & Bag of Relics)", "Alchemist (Apron & Various Bottles)", "Royal Spy (Dark Outfit & Dagger)", "Young Diplomat (Formal Wear & Royal Letter)", "Caravan Guard (Spear & Shield)", "Nomad Tribe Shaman (Outfit & Talisman)", "Treasure Hunter (Map & Shovel)", "Mystic Warrior", "Scholar of Ancient Texts", "Beast Tamer", "Caravan Guard", "Royal Diplomat"],
+                        "Holiday Chibi": ["Eid al-Fitr (Silk Mukena & Prayer Beads)", "Eid al-Adha (Gamis & Toy Cow/Goat)", "Islamic New Year (White Gamis & Lantern)", "Ramadan (Outfit & Takjil in Hand)", "Prophet's Birthday Celebration (Gamis & Love Prophet Banner)", "Isra Mi'raj (Robe & Night Sky Background)", "Nuzulul Qur'an (Sitting & Reading Quran)", "Hajj Eid (chibi Ihram clothes)", "Aqiqah Celebration (Party Dress & Baby Decorations)", "Graduation Thanksgiving (Toga over Gamis)", "Wedding Party (Muslimah Bridal Gown)", "Family Gathering (Family Uniform)", "Teenagers' Quran Study (Casual Muslim Wear)", "Pious Children Festival (Robe & Competition Trophy)", "Iftar Gathering (Carrying Food Container)", "Santri Day", "Islamic Organization Anniversary", "Torch Parade", "Bedug Festival", "Calligraphy Competition"],
+                        "Nusantara Folklore Chibi": ["Siti Nurbaya (Baju Kurung & Scarf)", "Hijabi Princess Mandalika (Gown & Umbrella)", "Dayang Sumbi weaving (Loom & Hijab)", "Roro Jonggrang (muslimah version)", "Bawang Putih (Simple Gamis & Golden Pumpkin)", "Bawang Merah (Luxurious Gamis & Arrogant Face)", "Queen Balqis (Throne & Queen's Attire)", "Mother of Malin Kundang (Old Clothes & Prayer)", "Green Princess of Deli (Green Gown & Shawl)", "Female Hero (local version, e.g., Cut Nyak Dien)", "Admiral Malahayati (Admiral's Attire)", "Fatmawati Soekarno (Kebaya & Sewing Machine)", "Dewi Sartika (Kebaya & Book)", "Tree Guardian Spirit (merging with a tree)", "Princess of Gunung Ledang (Gown & Flower)", "Princess Campa", "Princess Ong Tien", "Syarifah Ambami (Queen of Bangkalan)", "Nyi Mas Gandasari", "Queen Pembayun"],
+                        "Festival & Culture Chibi": ["Ramadan Festival (Selling Takjil & Islamic Decorations)", "Tabuik Festival in Pariaman (Black Outfit & Tabuik Miniature)", "Grebeg Maulud Festival in Yogyakarta (Traditional Attire & Gunungan)", "Erau Festival in Kutai (Sultanate Attire)", "Baliem Valley Festival (Tribal Wear & Arrow)", "Lake Toba Festival (Batak Attire & Boat)", "Jember Fashion Carnaval (Grand & Creative Costume)", "Sekaten Festival (Night Market & Games)", "Culinary Festival (Apron & Local Delicacies)", "Islamic Calligraphy Exhibition (Brush & Ink)", "Islamic Film Festival (Camera & Clapperboard)", "Nasyid Music Concert (Microphone & Group Outfit)", "Muslim Fashion Exhibition (Designer's Wear)", "Middle Eastern Culture Festival (Belly Dance & Decorations)", "MTQ Competition (Quran & Trophy)", "Halal Tourism Ambassador", "Halal Food Influencer", "Hijabers Community Gathering", "Contemporary Islamic Art Exhibition", "Muslimah Entrepreneurship Workshop"],
+                        "Athlete & Sports Chibi": ["Archery Athlete (Uniform & Bow with Sport Hijab)", "Badminton Player (Jersey & Racket)", "Equestrian Athlete (Uniform & Helmet over Hijab)", "Marathon Runner (Running Outfit & Medal)", "Pencak Silat Athlete (Black Uniform & Belt)", "Basketball Player (Jersey & Basketball)", "Swimming Athlete (Burkini & Goggles)", "Futsal Player (Team Uniform)", "Weightlifting Athlete (Outfit & Barbell)", "Table Tennis Player (T-shirt & Paddle)", "Chess Champion (Trophy & Chessboard)", "Volleyball Team Captain (Uniform & Volleyball)", "Gymnastics Athlete (Modest Gymnastics Wear)", "Mountain Climber (Jacket & Carrier)", "Sepak Takraw Player (Jersey & Takraw Ball)", "Taekwondo Athlete", "Tennis Player", "Wall Climbing Athlete", "Speed Chess Player", "Wushu Athlete"],
+                        "Music & Band Chibi": ["Nasyid Vocalist (Gamis & Microphone)", "Gambus Player (Robe & Gambus)", "Religious Acoustic Guitarist (Guitar & Songbook)", "Rebana Player (Baju Koko & Rebana)", "Islamic Song Pianist (Piano & Sheet Music)", "Shalawat Group Member (Group Uniform)", "Violin Player (Gown & Violin)", "Religious Rock Band Vocalist (Leather Jacket & Cool Hijab)", "Qasidah Rapper (Hoodie & Microphone)", "Harp Player (Gown & Harp)", "Children's Music Teacher (Instrument & Students)", "Studio Music Producer (Headphones & Mixer)", "Youtube Cover Singer (Camera & Ring Light)", "Bamboo Flute Player (Ethnic Outfit)", "Choir Member (Uniform Robe)", "Islamic Pop Singer", "Keyboard Player", "Drummer", "Bass Player", "Band Manager"],
+                        "Tech & Programmer Chibi": ["Muslimah Female Programmer (Laptop & Coffee Cup)", "Graphic Designer (Drawing Tablet & Stylus)", "Islamic App Developer (Smartphone & App Mockup)", "Game Streamer (Headset & Webcam with Hijab)", "Robotics Engineer (Robotic Arm & Screwdriver)", "Data Analyst (Screen full of Graphs & Glasses)", "Halal Startup CEO (Blazer & Presentation)", "Tech Vlogger (Gadget & Camera)", "Cyber Security Specialist (Laptop & Lock Symbol)", "Online Coding Teacher (Headset & Digital Whiteboard)", "Muslim E-commerce Project Manager (Flowchart)", "Digital Content Writer (Keyboard & Bright Idea)", "AI Expert (Holographic Digital Brain)", "App Tester (Smartphone & Bug List)", "IT Student (University Jacket & Laptop Backpack)", "Digital Marketer", "Social Media Manager", "Content Strategist", "Product Manager", "Software Engineer"],
+                        "Student Chibi": ["Clever Santriwati (Yellow Book & Glasses)", "MAN Student (Uniform & Madrasah Badge)", "Medical Student (Doctor's Coat & Stethoscope)", "Rohis President (Rohis Jacket & Agenda Book)", "Architecture Student (Mosque Model & Drawing Tube)", "Exemplary High School Student (Trophy & Neat Uniform)", "Hafizah Qur'an (Quran in Hand)", "Arabic Literature Student (Dictionary & Arabic Text)", "Campus Da'wah Activist (Megaphone & Banner)", "Paskibra Member (White Uniform)", "Science Olympiad Student (Medal & Lab Coat)", "Calligraphy Student (Calligraphy Pen & Ink)", "Humanitarian Volunteer (Volunteer Vest & Donation Box)", "Visual Communication Design Student (Laptop & Sketches)", "Islamic School Librarian (Pile of Books & Member Card)", "Class President", "Arabic Debate Club Member", "Tahfidz Competition Winner", "Islamic Short Story Writer", "School Activity Photographer"],
+                        "National Hero / Patriotic Chibi (creative mode)": ["Cut Nyak Dien (Aceh War Outfit)", "R.A. Kartini (Kebaya & Book)", "Admiral Malahayati (Admiral's Attire)", "Rasuna Said (Microphone & Podium)", "Fatmawati Soekarno (Sewing Machine & Flag)", "Dewi Sartika (Blackboard & Sundanese Attire)", "Nyi Ageng Serang (Spear & Caping)", "Opu Daeng Risaju (Bugis Attire & Spirit of Resistance)", "Siti Manggopoh (Rifle & Martial Arts Attire)", "Covid-19 Medical Hero (Full PPE)", "Environmental Activist (Seedling & Protest Sign)", "Teacher in a Remote Area (Book & Map)", "Natural Disaster Volunteer (Vest & Helping Hand)", "Nation-Bringing Athlete (Gold Medal & Flag)", "Vaccine-Inventing Scientist (Lab Coat & Microscope)", "Mother of the Nation (First Lady Figure)", "Women's Emancipation Fighter", "Education Hero", "Peace Diplomat", "Social Innovator"],
+                        "Sci-Fi Space Chibi (astronaut, alien, explorer)": ["Muslimah Astronaut (Spacesuit & Flag Patch)", "Halal Cargo Ship Captain (Uniform & Star Map)", "Xenobotany Scientist (Lab Coat & Alien Plant)", "Intergalactic Diplomat (Gown & Federation Badge)", "Terraform Engineer (Jumpsuit & Soil Analysis Tool)", "Explorer Craft Pilot (Jacket & Futuristic Helmet)", "Doctor in Mars Colony (Medical Uniform & First Aid Kit)", "Rebel Against Oppressive Regime (Dark Clothes & Blaster)", "Ruins Archaeologist (Brush & Artifact)", "Interstellar Trader (Robe & Strange Merchandise)", "Space Station Guardian (Uniform & Tablet)", "Mecha Pilot (Pilot Suit & Giant Robot)", "Communications Specialist (Headset & Console)", "Nebula Researcher (Telescope & Cosmic Map)", "Space Food Chef (Apron & Tube Food)", "Intergalactic Sharia Police", "Ustadzah on a New Planet", "Outer Space Fiqh Expert", "Solar System Explorer", "Mosque Builder on the Moon"],
+                        "Elemental Chibi (fire, water, earth, wind, lightning)": ["Fire Element (Flaming Hijab & Red Gown)", "Water Element (Wave Hijab & Sea Blue Gown)", "Earth Element (Stone Hijab & Brown Crystal Gown)", "Wind Element (Cloud Hijab & Sheer White Gown)", "Lightning Element (Lightning Hijab & Yellow-Purple Gown)", "Ice Element (Snowflake Crystal Hijab & Icy Blue Gown)", "Light Element (Glowing Hijab & Golden Gown)", "Shadow Element (Smoke Hijab & Pitch Black Gown)", "Plant Element (Leaf Hijab & Bark Gown)", "Metal Element (Silver Hijab & Steel Gown)", "Sand Element (Sandstorm Hijab & Desert Gown)", "Lava Element (Magma Hijab & Igneous Rock Gown)", "Flower Element (Flower Crown Hijab & Petal Gown)", "Crystal Element (Geode Hijab & Gemstone Gown)", "Elemental Balance Guardian (All elements in one design)", "Life Element", "Death Element", "Time Element", "Space Element", "Soul Element"],
+                        "Mythical Creature & Cute Monster Chibi": ["Kind Female Djinn (Silk Outfit & Magic Lamp)", "Desert Flower Fairy (Wings & Gown of Cactus)", "Red Sea Mermaid (Fish Tail & Shell Hijab)", "Griffin Girl (Eagle Wings & Lion Ears)", "Desert Harpy (Wings & Bird Feet)", "Eastern Dragon (Horns & Golden Scales)", "Buraq (Winged girl with horse-like aura)", "Guardian Angel (White Wings & Light)", "Fox Spirit (Kitsune) (Fox Ears & Nine Tails)", "Oasis Guardian (Water Gown & Lush Plants)", "Sand Golem Girl (Body of Sand)", "Wind Spirit (Transparent & Swirling)", "Sky Kingdom Princess (Walking on clouds)", "Tamer of Giant Birds (Roc/Simurgh)", "Sidra Tree Girl (Sacred tree in girl form)", "Princess of the Djinn Kingdom", "Guardian of Heaven's Gate", "Helper Angel (Bidadari)", "Golden Phoenix Girl", "Mythical Creature Guardian of Knowledge"],
+                        "Fashion Show / Catwalk Model Chibi": ["Islamic Haute Couture (Luxurious Gamis & Intricate Hijab)", "Avant-Garde Style (Asymmetrical & Geometric Design)", "Modern Muslimah Bridal Wear (Gown & Long Veil)", "Modest Streetwear (Jacket & Skirt with Sneakers)", "Elegant Minimalist Style (Abaya & Simple Accessories)", "Contemporary Ethnic Theme (Woven Fabric into a Gown)", "Futuristic Fashion (Metallic Materials & LED Lights)", "Desert Queen Style (Grand Gown & Gold Jewelry)", "Ka'bah Inspiration (Black & Gold Design)", "Bohemian Deluxe Style (Layering & Unique Accessories)", "Sporty Chic (Bomber Jacket & Skirt with Sporty Hijab)", "Sequin Evening Gown (Sparkly Gown & Hijab)", "Calligraphy Inspiration (Calligraphy Patterns on Fabric)", "Deconstructed Style (Visible Stitches & Unique Cuts)", "Eco-Friendly Fashion (Recycled & Natural Materials)", "Muslimah Supermodel", "Syar'i Fashion Designer", "Hijab Fashion Blogger", "Modest Style Icon", "Famous Designer's Muse"]
+                    }
+                }
+            };
+            
+            // --- DOM Selectors ---
+            const DOMElements = {
+                body: document.body,
+                loginCard: document.getElementById('login-card'),
+                generatorContent: document.getElementById('generator-content'),
+                loginForm: document.getElementById('login-form'),
+                passwordInput: document.getElementById('password'),
+                togglePassword: document.getElementById('toggle-password'),
+                // Stepper
+                step1: document.getElementById('step-1'),
+                step2: document.getElementById('step-2'),
+                step3: document.getElementById('step-3'),
+                // Step 1
+                step1Form: document.getElementById('step-1-form'),
+                kategori: document.getElementById('kategori'),
+                gaya: document.getElementById('gaya'),
+                latarPilihan: document.getElementById('latar-pilihan'),
+                designerBtn: document.getElementById('designer-btn'),
+                animalDetailsContainer: document.getElementById('animal-details-container'),
+                jenisHewan: document.getElementById('jenis-hewan'),
+                characterId: document.getElementById('character-id'),
+                defaultOptionsContainer: document.getElementById('default-options-container'),
+                customOptionsContainer: document.getElementById('custom-options-container'),
+                customStyleIdea: document.getElementById('custom-style-idea'),
+                // Step 2
+                step2Form: document.getElementById('step-2-form'),
+                detailKostum: document.getElementById('detail-kostum'),
+                nuansaLatarContainer: document.getElementById('nuansa-latar-container'),
+                nuansaLatar: document.getElementById('nuansa-latar'),
+                poseKarakter: document.getElementById('pose-karakter'),
+                step2Textareas: document.querySelectorAll('#step-2-form textarea'),
+                regenerateDetailsBtn: document.getElementById('regenerate-details-btn'),
+                editSaveBtn: document.getElementById('edit-save-btn'),
+                translateBtn: document.getElementById('translate-btn'),
+                backToStep1Btn: document.getElementById('back-to-step1-btn'),
+                generatePromptBtn: document.getElementById('generate-prompt-btn'),
+                // Step 3
+                resultPlaceholder: document.getElementById('result-placeholder'),
+                resultContent: document.getElementById('result-content'),
+                promptOutputText: document.getElementById('prompt-output-text'),
+                promptOutputJson: document.getElementById('prompt-output-json'),
+                copyBtnText: document.getElementById('copy-btn-text'),
+                copyBtnJson: document.getElementById('copy-btn-json'),
+                startOverContainer: document.getElementById('start-over-container'),
+                startOverBtn: document.getElementById('start-over-btn'),
+                // Navbar
+                languageBtn: document.getElementById('language-btn'),
+                historyBtn: document.getElementById('history-btn'),
+                apiKeyBtn: document.getElementById('api-key-btn'),
+                themeBtnDesktop: document.getElementById('theme-btn-desktop'),
+                logoutBtnDesktop: document.getElementById('logout-btn-desktop'),
+                hamburgerBtn: document.getElementById('hamburger-btn'),
+                offcanvasMenu: document.getElementById('offcanvas-menu'),
+                offcanvasOverlay: document.getElementById('offcanvas-overlay'),
+                offcanvasCloseBtn: document.getElementById('offcanvas-close-btn'),
+                themeBtnMobile: document.getElementById('theme-btn-mobile'),
+                themeIconMobile: document.getElementById('theme-icon-mobile'),
+                logoutBtnMobile: document.getElementById('logout-btn-mobile'),
+                // Modals & General
+                historyModal: document.getElementById('history-modal'),
+                apiKeyModal: document.getElementById('api-key-modal'),
+                alertModal: document.getElementById('alert-modal'),
+                confirmationModal: document.getElementById('confirmation-modal'),
+                allModals: document.querySelectorAll('.fixed.inset-0'),
+                apiSourceSystem: document.getElementById('api-source-system'),
+                apiSourcePersonal: document.getElementById('api-source-personal'),
+                personalApiDetails: document.getElementById('personal-api-details'),
+                systemApiNote: document.getElementById('system-api-note'),
+                apiKeyInput: document.getElementById('api-key-input'),
+                toggleApiKeyVisibility: document.getElementById('toggle-api-key-visibility'),
+                deleteApiKeyBtn: document.getElementById('delete-api-key-btn'),
+                apiModalSaveBtn: document.getElementById('api-modal-save-btn'),
+                apiModalCancelBtn: document.getElementById('api-modal-cancel-btn'),
+            };
+
+            // --- UTILITY & HELPER FUNCTIONS ---
+            const getUIText = (key, ...args) => {
+                const langStrings = UI_STRINGS[AppState.currentLanguage] || UI_STRINGS.id;
+                const translation = langStrings[key];
+                return typeof translation === 'function' ? translation(...args) : translation || key;
+            };
+            
+            const openModal = (modal) => {
+                const content = modal.querySelector('.card');
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+                content?.classList.remove('animate__zoomOut');
+                content?.classList.add('animate__zoomIn');
+            };
+
+            const closeModal = (modal) => {
+                const content = modal.querySelector('.card');
+                content?.classList.remove('animate__zoomIn');
+                content?.classList.add('animate__zoomOut');
+                const handleAnimationEnd = () => {
+                    modal.classList.add('hidden');
+                    modal.removeEventListener('animationend', handleAnimationEnd);
+                };
+                modal.addEventListener('animationend', handleAnimationEnd, { once: true });
+            };
+
+            const toggleOffcanvas = (show) => {
+                if (show) {
+                    DOMElements.offcanvasOverlay.classList.remove('hidden');
+                    DOMElements.offcanvasOverlay.style.opacity = '1';
+                    DOMElements.offcanvasMenu.classList.add('open');
+                } else {
+                    DOMElements.offcanvasOverlay.style.opacity = '0';
+                    DOMElements.offcanvasMenu.classList.remove('open');
+                    setTimeout(() => {
+                        DOMElements.offcanvasOverlay.classList.add('hidden');
+                    }, 300); // Match transition duration
+                }
+            };
+            
+            const showAlert = (message, type = 'info') => {
+                const typeMap = {
+                    success: { titleKey: 'alertSuccessTitle', icon: 'fa-check-circle', color: 'bg-[var(--theme-success)]', btn: 'btn-secondary' },
+                    error: { titleKey: 'alertErrorTitle', icon: 'fa-times-circle', color: 'bg-[var(--theme-error)]', btn: 'btn-danger' },
+                    info: { titleKey: 'alertInfoTitle', icon: 'fa-info-circle', color: 'bg-[var(--theme-accent-2)]', btn: 'btn-primary' }
+                };
+                const config = typeMap[type];
+
+                document.getElementById('alert-title').textContent = getUIText(config.titleKey);
+                document.getElementById('alert-message').textContent = message;
+                document.getElementById('alert-icon-container').className = `w-16 h-16 rounded-full mx-auto flex items-center justify-center mb-4 ${config.color}`;
+                document.getElementById('alert-icon').className = `fas text-4xl text-white ${config.icon}`;
+                const closeBtn = document.getElementById('alert-close-btn');
+                closeBtn.textContent = getUIText('alertCloseButton');
+                closeBtn.className = `btn w-full ${config.btn}`;
+                
+                openModal(DOMElements.alertModal);
+            };
+            
+            const showConfirmation = (titleKey, messageKey, onConfirm) => {
+                document.getElementById('confirmation-title').textContent = getUIText(titleKey);
+                document.getElementById('confirmation-message').textContent = getUIText(messageKey);
+                const yesBtn = document.getElementById('confirm-yes-btn');
+                const noBtn = document.getElementById('confirm-no-btn');
+                
+                yesBtn.textContent = getUIText('confirmYes');
+                noBtn.textContent = getUIText('confirmNo');
+
+                const newYesBtn = yesBtn.cloneNode(true);
+                yesBtn.parentNode.replaceChild(newYesBtn, yesBtn);
+                newYesBtn.onclick = () => {
+                    onConfirm();
+                    closeModal(DOMElements.confirmationModal);
+                };
+                openModal(DOMElements.confirmationModal);
+            };
+            
+            const toggleButtonLoader = (btn, showLoader, loaderText = '') => {
+                const btnText = btn.querySelector('.btn-text');
+                const loaderSpan = btn.querySelector('.btn-loader');
+                btn.disabled = showLoader;
+
+                if (showLoader) {
+                    btnText?.classList.add('hidden');
+                    loaderSpan?.classList.remove('hidden');
+                    loaderSpan.innerHTML = `<span class="loader"></span>${loaderText ? `<span class="ml-2">${loaderText}</span>` : ''}`;
+                } else {
+                    btnText?.classList.remove('hidden');
+                    loaderSpan?.classList.add('hidden');
+                }
+            };
+
+            // --- CORE APPLICATION LOGIC ---
+            const applyTheme = (theme) => {
+                AppState.currentTheme = theme;
+                localStorage.setItem('chibi_theme', theme);
+                
+                const sunIcon = 'fa-sun';
+                const moonIcon = 'fa-moon';
+                const sunIconHTML = `<i class="fas ${sunIcon} fa-fw text-lg"></i>`;
+                const moonIconHTML = `<i class="fas ${moonIcon} fa-fw text-lg"></i>`;
+
+                if (theme === 'light') {
+                    DOMElements.body.classList.add('light-theme');
+                    DOMElements.themeBtnDesktop.innerHTML = sunIconHTML;
+                    DOMElements.themeIconMobile.className = `fas ${sunIcon} fa-fw w-5`;
+                } else {
+                    DOMElements.body.classList.remove('light-theme');
+                    DOMElements.themeBtnDesktop.innerHTML = moonIconHTML;
+                    DOMElements.themeIconMobile.className = `fas ${moonIcon} fa-fw w-5`;
+                }
+                
+                const accentColor = getComputedStyle(document.documentElement).getPropertyValue('--theme-accent-1').trim();
+                const encodedColor = encodeURIComponent(accentColor);
+                document.querySelectorAll('.form-select').forEach(el => {
+                    el.style.backgroundImage = `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='${encodedColor}' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e")`;
+                });
+            };
+            
+            const updateUI = () => {
+                document.documentElement.lang = AppState.currentLanguage;
+                const pageTitleKey = 'mainTitle';
+                document.title = getUIText(pageTitleKey);
+
+                document.querySelectorAll('[data-ui-key]').forEach(el => {
+                    const key = el.dataset.uiKey;
+                    const text = getUIText(key);
+                    if (text) {
+                        if (key.startsWith("desktopInstruction") || key.startsWith("mobileInstruction")) {
+                            el.innerHTML = text;
+                        } else {
+                            el.textContent = text;
+                        }
+                    }
+                });
+                
+                document.querySelectorAll('[data-ui-key-placeholder]').forEach(el => {
+                    const key = el.dataset.uiKeyPlaceholder;
+                    if (getUIText(key)) el.placeholder = getUIText(key);
+                });
+
+                document.querySelectorAll('[data-ui-key-title]').forEach(el => {
+                    const key = el.dataset.uiKeyTitle;
+                    if(getUIText(key)) el.title = getUIText(key);
+                });
+                
+                // Refresh dynamic dropdowns to show translated placeholders
+                populateKategori();
+            };
+
+            const setLanguage = (lang) => {
+                AppState.currentLanguage = lang;
+                localStorage.setItem('chibi_language', lang);
+                updateUI();
+            };
+
+            const goToStep = (step) => {
+                AppState.currentStep = step;
+                const steps = [DOMElements.step1, DOMElements.step2, DOMElements.step3];
+                steps.forEach((stepEl, index) => {
+                    const isCurrent = (index + 1) === step;
+                    if (isCurrent) {
+                        stepEl.classList.remove('hidden');
+                        stepEl.classList.remove('animate__fadeOut');
+                        stepEl.classList.add('animate__fadeIn');
+                    } else {
+                       stepEl.classList.add('hidden');
+                    }
+                });
+                 window.scrollTo(0, 0);
+            };
+
+            const setLoginState = (loggedIn) => {
+                AppState.isLoggedIn = loggedIn;
+                DOMElements.loginCard.classList.toggle('hidden', loggedIn);
+                DOMElements.generatorContent.classList.toggle('hidden', !loggedIn);
+                if (!loggedIn) {
+                    localStorage.removeItem('promptique_session');
+                    DOMElements.passwordInput.value = '';
+                }
+            };
+            
+            const checkLoginSession = () => {
+                const sessionTimestampString = localStorage.getItem('promptique_session');
+                if (!sessionTimestampString) {
+                    setLoginState(false);
+                    return;
+                }
+                const sessionTimestamp = parseInt(sessionTimestampString, 10);
+                const now = new Date().getTime();
+                const oneDay = 24 * 60 * 60 * 1000;
+                if (now - sessionTimestamp < oneDay) {
+                    setLoginState(true);
+                } else {
+                    localStorage.removeItem('promptique_session');
+                    setLoginState(false);
+                }
+            };
+            
+            async function callGeminiAPI(params) {
+                let apiKeyToUse = (AppState.apiKeySource === 'personal' && AppState.personalApiKey) ? AppState.personalApiKey : SYSTEM_API_KEY;
+                
+                if (!apiKeyToUse) {
+                    showAlert(getUIText('apiKeyNote'), 'error');
+                    resetAndOpenApiKeyModal();
+                    return null;
+                }
+
+                try {
+                    const ai = new GoogleGenAI({ apiKey: apiKeyToUse });
+                    const response = await ai.models.generateContent(params);
+                    
+                    if (params.config?.responseMimeType === 'application/json') {
+                         const text = response.text.trim();
+                         const jsonMatch = text.match(/```json\s*([\s\S]*?)\s*```/);
+                         if (jsonMatch && jsonMatch[1]) {
+                           try { return JSON.parse(jsonMatch[1]); } catch(e) { /* fall through */ }
+                         }
+                         try { return JSON.parse(text); } catch (e) {
+                             console.error("Gemini API Error: Expected JSON, but received non-JSON response.", text);
+                             throw new Error("AI did not return valid JSON content.");
+                         }
+                    }
+                    return response.text;
+                } catch (e) {
+                    console.error("Error calling Gemini API:", e.toString());
+                    showAlert(getUIText('promptGenerationFailed'), 'error');
+                    return null;
+                }
+            }
+
+            const getHistory = () => JSON.parse(localStorage.getItem('chibi_history')) || [];
+            const saveHistory = (history) => localStorage.setItem('chibi_history', JSON.stringify(history));
+
+            const renderHistory = () => {
+                const history = getHistory();
+                const contentEl = document.getElementById('history-content');
+                contentEl.innerHTML = '';
+                if (history.length === 0) {
+                    contentEl.innerHTML = `<p class="text-center text-[var(--theme-text-secondary)] py-10">${getUIText('alertHistoryEmpty')}</p>`;
+                    return;
+                }
+                history.reverse().forEach((entry, index) => {
+                    const item = document.createElement('div');
+                    item.className = 'group flex items-center justify-between w-full text-left p-3 rounded-lg hover:bg-[var(--theme-border)]/20 transition-colors duration-200 cursor-pointer';
+                    item.innerHTML = `
+                        <span class="flex-grow truncate pr-2">${entry.text.split(',').slice(0, 3).join(', ')}...</span>
+                        <button class="delete-history-btn flex-shrink-0 text-[var(--theme-text-secondary)] hover:text-[var(--theme-error)] transition-opacity opacity-0 group-hover:opacity-100" data-index="${history.length - 1 - index}" title="${getUIText('deleteButton')}"><i class="fas fa-trash fa-sm"></i></button>
+                    `;
+                    item.onclick = (e) => {
+                        if (e.target.closest('.delete-history-btn')) return;
+                        DOMElements.promptOutputText.value = entry.text;
+                        DOMElements.promptOutputJson.value = entry.json;
+                        DOMElements.resultPlaceholder.classList.add('hidden');
+                        DOMElements.resultContent.classList.remove('hidden');
+                        DOMElements.startOverContainer.classList.remove('hidden');
+                        goToStep(3);
+                        closeModal(DOMElements.historyModal);
+                    };
+                    contentEl.appendChild(item);
+                });
+                
+                contentEl.querySelectorAll('.delete-history-btn').forEach(btn => {
+                    btn.onclick = (e) => {
+                        e.stopPropagation();
+                        const idxToDelete = parseInt(btn.dataset.index, 10);
+                        const currentHistory = getHistory();
+                        currentHistory.splice(idxToDelete, 1);
+                        saveHistory(currentHistory);
+                        renderHistory(); // Re-render
+                    };
+                });
+            };
+            
+            // --- EVENT HANDLERS ---
+            const handleLogin = (e) => {
+                e.preventDefault();
+                if (DOMElements.passwordInput.value === 'promptique852#') {
+                    localStorage.setItem('promptique_session', new Date().getTime().toString());
+                    setLoginState(true);
+                } else {
+                    showAlert(getUIText('loginFailed'), 'error');
+                    DOMElements.passwordInput.value = '';
+                }
+            };
+
+            const handleLogout = () => showConfirmation('confirmLogoutTitle', 'confirmLogoutMessage', () => { setLoginState(false); showAlert(getUIText('alertLoggedOut'), 'success'); });
+            const handleThemeToggle = () => applyTheme(AppState.currentTheme === 'dark' ? 'light' : 'dark');
+            const handleLanguageToggle = () => setLanguage(AppState.currentLanguage === 'id' ? 'en' : 'id');
+            const handleLatarChange = () => {
+                const showBackground = DOMElements.latarPilihan.value === 'background';
+                DOMElements.nuansaLatarContainer.style.display = showBackground ? 'block' : 'none';
+            };
+
+            const handleModeChange = () => {
+                const mode = document.querySelector('input[name="creation-mode"]:checked').value;
+                const isDefault = mode === 'default';
+                DOMElements.defaultOptionsContainer.classList.toggle('hidden', !isDefault);
+                DOMElements.customOptionsContainer.classList.toggle('hidden', isDefault);
+            };
+
+            const populateGaya = () => {
+                const kategori = DOMElements.kategori.value;
+                const versi = document.querySelector('input[name="versi"]:checked')?.value;
+                const animalVersion = document.querySelector('input[name="animal-character-version"]:checked')?.value;
+                
+                DOMElements.gaya.innerHTML = '';
+                DOMElements.gaya.disabled = true;
+
+                let sourceKey = versi;
+                if (versi === 'hewan') {
+                    sourceKey = animalVersion;
+                }
+                
+                const currentLangData = PROMPT_DATA[AppState.currentLanguage];
+
+                if (kategori && sourceKey && currentLangData?.[sourceKey]) {
+                    DOMElements.gaya.disabled = false;
+                    DOMElements.gaya.innerHTML = `<option selected value="">${getUIText('selectPlaceholder')}</option>`;
+                    const styles = currentLangData[sourceKey]?.[kategori];
+                    if (styles) {
+                        styles.forEach(item => {
+                            DOMElements.gaya.innerHTML += `<option value="${item}">${item}</option>`;
+                        });
+                    }
+                } else {
+                     DOMElements.gaya.innerHTML = `<option>${getUIText('selectCategoryFirstPlaceholder')}</option>`;
+                }
+            };
+
+            const populateKategori = () => {
+                const versi = document.querySelector('input[name="versi"]:checked')?.value;
+                const animalVersion = document.querySelector('input[name="animal-character-version"]:checked')?.value;
+                DOMElements.kategori.innerHTML = '';
+                DOMElements.kategori.disabled = true;
+
+                let sourceKey = versi;
+                if (versi === 'hewan') {
+                    sourceKey = animalVersion;
+                }
+
+                const currentLangData = PROMPT_DATA[AppState.currentLanguage];
+
+                if (sourceKey && currentLangData?.[sourceKey]) {
+                    const categories = Object.keys(currentLangData[sourceKey]);
+                    DOMElements.kategori.disabled = false;
+                    DOMElements.kategori.innerHTML = `<option selected value="">${getUIText('selectPlaceholder')}</option>`;
+                    categories.forEach(kategori => {
+                        DOMElements.kategori.innerHTML += `<option value="${kategori}">${kategori}</option>`;
+                    });
+                } else {
+                    DOMElements.kategori.innerHTML = `<option>${getUIText('selectVersionAndPersonaPlaceholder')}</option>`;
+                }
+                populateGaya(); // Reset style dropdown
+            };
+
+            const handleVersionChange = () => {
+                const versi = document.querySelector('input[name="versi"]:checked')?.value;
+                const isAnimal = versi === 'hewan';
+                DOMElements.animalDetailsContainer.classList.toggle('hidden', !isAnimal);
+                populateKategori();
+            };
+            
+            const handleDesignRequest = async (e) => {
+                e.preventDefault();
+                const btn = e.currentTarget;
+
+                // --- Validation ---
+                const creationMode = document.querySelector('input[name="creation-mode"]:checked').value;
+                const versi = document.querySelector('input[name="versi"]:checked')?.value;
+                const latarPilihan = DOMElements.latarPilihan.value;
+
+                let emptyFields = [];
+                if (!versi) emptyFields.push(getUIText('versionLabel'));
+                if (versi === 'hewan') {
+                    if (!DOMElements.jenisHewan.value) emptyFields.push(getUIText('animalTypeLabel'));
+                    if (!document.querySelector('input[name="animal-character-version"]:checked')) emptyFields.push(getUIText('animalVersionLabel'));
+                }
+
+                if (creationMode === 'default') {
+                    if (!DOMElements.kategori.value) emptyFields.push(getUIText('categoryLabel'));
+                    if (!DOMElements.gaya.value) emptyFields.push(getUIText('styleLabel'));
+                } else { // Custom mode
+                    if (!DOMElements.customStyleIdea.value.trim()) emptyFields.push(getUIText('customStyleLabel'));
+                }
+                
+                if (emptyFields.length > 0) {
+                    showAlert(getUIText('alertInputEmpty', emptyFields.join(', ')), 'error');
+                    return;
+                }
+                
+                const usePersonalAI = AppState.apiKeySource === 'personal' && AppState.personalApiKey;
+                const loaderText = usePersonalAI ? getUIText('loaderUserAI') : getUIText('loaderSystemAI');
+                toggleButtonLoader(btn, true, loaderText);
+                
+                handleLatarChange(); // Ensure UI is correct before API call
+                
+                // --- Prompt Construction ---
+                const wantsBackground = latarPilihan === 'background';
+                let systemInstruction, userPrompt, schema;
+                
+                let characterPromptPart = '';
+                if (versi === 'hewan') {
+                    const jenisHewan = DOMElements.jenisHewan.value;
+                    const animalVersion = document.querySelector('input[name="animal-character-version"]:checked').value;
+                    characterPromptPart = `\n- Version: Anthropomorphic Animal (stands and behaves like a human)\n- Animal Type: "${jenisHewan}"\n- Persona: "${animalVersion}"`;
+                } else {
+                    characterPromptPart = `\n- Version: "${versi}"`;
+                }
+                
+                if(creationMode === 'default') {
+                    const kategori = DOMElements.kategori.value;
+                    const gaya = DOMElements.gaya.value;
+                    userPrompt = `Generate details for a chibi character:\n- Category: "${kategori}"\n- Style: "${gaya}"${characterPromptPart}`;
+                } else {
+                    const customIdea = DOMElements.customStyleIdea.value.trim();
+                    userPrompt = `Analyze the user's custom style idea and generate details for a chibi character.\n- User's Idea: "${customIdea}"${characterPromptPart}`;
+                }
+
+                const promptWord = versi === 'hewan' ? 'pakaian/kostum yang modis' : 'kostum';
+                const outputLanguage = "Indonesian";
+
+                if (wantsBackground) {
+                    userPrompt += "\n- Background Requirement: Generate a background description.";
+                    systemInstruction = `You are a creative assistant for describing 3D Chibi characters. Based on the user's inputs, generate a detailed ${promptWord} description, a dynamic pose, and a suitable background nuance. Your output MUST be a single, clean JSON object with three keys: "costume", "pose", and "background_nuance". Do not include any other text, explanations, or markdown formatting. All descriptions must be creative, fit the theme, and be in ${outputLanguage}.`;
+                    schema = {
+                        type: Type.OBJECT,
+                        properties: {
+                            costume: { type: Type.STRING, description: `A detailed description of the character's ${promptWord} in ${outputLanguage}.` },
+                            pose: { type: Type.STRING, description: `A description of the character's pose and expression in ${outputLanguage}.` },
+                            background_nuance: { type: Type.STRING, description: `A description of the background nuance in ${outputLanguage}.` }
+                        },
+                        required: ["costume", "pose", "background_nuance"]
+                    };
+                } else {
+                    userPrompt += "\n- Background Requirement: None (transparent).";
+                    systemInstruction = `You are a creative assistant for describing 3D Chibi characters. Based on the user's inputs, generate a detailed ${promptWord} description and a dynamic pose. Your output MUST be a single, clean JSON object with two keys: "costume" and "pose". Do not include any other text, explanations, or markdown formatting. The descriptions should be creative and fit the theme. Generate all descriptions in ${outputLanguage}.`;
+                    schema = {
+                        type: Type.OBJECT,
+                        properties: {
+                            costume: { type: Type.STRING, description: `A detailed description of the character's ${promptWord} in ${outputLanguage}.` },
+                            pose: { type: Type.STRING, description: `A description of the character's pose and expression in ${outputLanguage}.` }
+                        },
+                        required: ["costume", "pose"]
+                    };
+                }
+
+                const result = await callGeminiAPI({
+                    model: 'gemini-2.5-flash',
+                    contents: userPrompt,
+                    config: { systemInstruction, responseMimeType: 'application/json', responseSchema: schema }
+                });
+
+                toggleButtonLoader(btn, false);
+                if (result && result.costume && result.pose) {
+                    DOMElements.detailKostum.value = result.costume;
+                    DOMElements.poseKarakter.value = result.pose;
+                    if (wantsBackground && result.background_nuance) {
+                        DOMElements.nuansaLatar.value = result.background_nuance;
+                    } else {
+                        DOMElements.nuansaLatar.value = '';
+                    }
+                    showAlert(getUIText('autoDetailSuccess'), 'success');
+                    AppState.detailsLanguage = 'id';
+                    updateStep2Controls(false); // Go to "view" mode
+                    goToStep(2);
+                } else {
+                    showAlert(getUIText('autoDetailFailed'), 'error');
+                }
+            };
+            
+            const updateStep2Controls = (isEditing) => {
+                AppState.isEditingDetails = isEditing;
+                const { editSaveBtn, translateBtn, step2Textareas } = DOMElements;
+                const btnTextSpan = editSaveBtn.querySelector('.btn-text');
+                
+                if (isEditing) {
+                    btnTextSpan.innerHTML = `<i class="fas fa-save fa-fw"></i> <span data-ui-key="saveButton">${getUIText('saveButton')}</span>`;
+                    editSaveBtn.classList.remove('btn-neutral');
+                    editSaveBtn.classList.add('btn-secondary');
+                    translateBtn.disabled = true;
+                } else {
+                    btnTextSpan.innerHTML = `<i class="fas fa-pencil-alt fa-fw"></i> <span data-ui-key="editButton">${getUIText('editButton')}</span>`;
+                    editSaveBtn.classList.add('btn-neutral');
+                    editSaveBtn.classList.remove('btn-secondary');
+                    translateBtn.disabled = false;
+                }
+                
+                step2Textareas.forEach(ta => ta.readOnly = !isEditing);
+            };
+
+            const handleTranslateDetails = async () => {
+                const btn = DOMElements.translateBtn;
+                toggleButtonLoader(btn, true, getUIText('translationInProgress'));
+
+                const sourceLang = AppState.detailsLanguage;
+                const targetLang = sourceLang === 'id' ? 'en' : 'id';
+                const sourceLangName = sourceLang === 'id' ? 'Indonesian' : 'English';
+                const targetLangName = targetLang === 'id' ? 'Indonesian' : 'English';
+
+                const costumeText = DOMElements.detailKostum.value;
+                const poseText = DOMElements.poseKarakter.value;
+                const backgroundText = DOMElements.nuansaLatar.value;
+
+                const systemInstruction = `You are a translation assistant. Translate the values in the provided JSON object from ${sourceLangName} to ${targetLangName}. Respond with a single, clean JSON object with the translated text. Do not include any other text or markdown.`;
+                const userPrompt = JSON.stringify({
+                    costume: costumeText,
+                    pose: poseText,
+                    background_nuance: backgroundText,
+                });
+                
+                const schema = {
+                    type: Type.OBJECT,
+                    properties: {
+                        costume: { type: Type.STRING },
+                        pose: { type: Type.STRING },
+                        background_nuance: { type: Type.STRING }
+                    },
+                    required: ["costume", "pose", "background_nuance"]
+                };
+
+                const result = await callGeminiAPI({
+                    model: 'gemini-2.5-flash',
+                    contents: userPrompt,
+                    config: { systemInstruction, responseMimeType: 'application/json', responseSchema: schema }
+                });
+
+                toggleButtonLoader(btn, false);
+
+                if (result) {
+                    DOMElements.detailKostum.value = result.costume || '';
+                    DOMElements.poseKarakter.value = result.pose || '';
+                    DOMElements.nuansaLatar.value = result.background_nuance || '';
+                    AppState.detailsLanguage = targetLang;
+                } else {
+                    showAlert(getUIText('translationFailed'), 'error');
+                }
+            };
+            
+            const getEnglishDetails = async () => {
+                if (AppState.detailsLanguage === 'en') {
+                    return {
+                        costume: DOMElements.detailKostum.value.trim(),
+                        pose: DOMElements.poseKarakter.value.trim(),
+                        background: DOMElements.nuansaLatar.value.trim()
+                    };
+                }
+
+                // If language is 'id', translate it
+                const systemInstruction = `You are a translation assistant. Translate the values in the provided JSON object from Indonesian to English. Respond with a single, clean JSON object with the translated text. Do not include any other text or markdown.`;
+                const userPrompt = JSON.stringify({
+                    costume: DOMElements.detailKostum.value.trim(),
+                    pose: DOMElements.poseKarakter.value.trim(),
+                    background_nuance: DOMElements.nuansaLatar.value.trim()
+                });
+                
+                 const schema = {
+                    type: Type.OBJECT,
+                    properties: {
+                        costume: { type: Type.STRING },
+                        pose: { type: Type.STRING },
+                        background_nuance: { type: Type.STRING }
+                    },
+                    required: ["costume", "pose"]
+                };
+                
+                const result = await callGeminiAPI({
+                    model: 'gemini-2.5-flash',
+                    contents: userPrompt,
+                    config: { systemInstruction, responseMimeType: 'application/json', responseSchema: schema }
+                });
+
+                if (result) {
+                    return {
+                        costume: result.costume,
+                        pose: result.pose,
+                        background: result.background_nuance || ''
+                    };
+                } else {
+                    showAlert(getUIText('translationFailed'), 'error');
+                    return null; // Indicates translation failure
+                }
+            };
+
+            const handleGeneratePrompt = async (e) => {
+                e.preventDefault();
+                const detailKostum = DOMElements.detailKostum.value.trim();
+                const poseKarakter = DOMElements.poseKarakter.value.trim();
+                const latarPilihan = DOMElements.latarPilihan.value;
+                const nuansaLatar = DOMElements.nuansaLatar.value.trim();
+                const characterId = DOMElements.characterId.value.trim();
+                
+                if (!detailKostum || !poseKarakter) {
+                    showAlert(getUIText('alertInputEmpty', `${getUIText('costumeDetailLabel')} & ${getUIText('poseDetailLabel')}`), 'error');
+                    return;
+                }
+                if (latarPilihan === 'background' && !nuansaLatar) {
+                    showAlert(getUIText('alertInputEmpty', getUIText('backgroundNuanceLabel')), 'error');
+                    return;
+                }
+
+                const btn = DOMElements.generatePromptBtn;
+                toggleButtonLoader(btn, true, getUIText('processing'));
+
+                const englishDetails = await getEnglishDetails();
+                
+                if (!englishDetails) { // If translation failed
+                    toggleButtonLoader(btn, false);
+                    return;
+                }
+                
+                goToStep(3);
+                DOMElements.resultPlaceholder.classList.remove('hidden');
+                DOMElements.resultContent.classList.add('hidden');
+                DOMElements.startOverContainer.classList.add('hidden');
+
+                // --- Template-based prompt generation ---
+                const backgroundTextDetail = latarPilihan === 'background' 
+                    ? englishDetails.background 
+                    : 'transparent background, .png format';
+
+                const referenceText = characterId ? `from character ID ${characterId}` : 'from the attached photo';
+                const promptText = `Create a 3D Chibi Stylized character ${referenceText}, ${englishDetails.costume}. Use costume colors different from the clothing in the reference photo. ${englishDetails.pose}. Full Body View, 1:16 Scale, 2:3 Aspect Ratio, Long Legs, Balanced Body Proportions, 3D Render, Chibi Style, Cute, Professional Lighting, Studio Quality, 8K Resolution. ${backgroundTextDetail}.`;
+                
+                const backgroundJsonDetail = latarPilihan === 'background'
+                    ? englishDetails.background
+                    : "Transparent background, .png format";
+
+                const referenceJsonText = characterId ? `from character ID ${characterId}` : 'from *the attached photo*';
+                const promptJson = {
+                  "description": `Create a 3D Chibi Stylized character ${referenceJsonText}, ${englishDetails.costume}. Use costume colors different from the clothing in the reference photo. ${englishDetails.pose}.`,
+                  "style": "Chibi Stylized Style, Cute, 3D Render, Professional Lighting, Studio Quality",
+                  "camera": "Centered Composition, Full Body View, 1:16 Scale, 2:3 Aspect Ratio, HD Focus, Balanced Body Proportions, Long Legs",
+                  "lighting": "Professional studio lighting, highlighting character details with a neutral background",
+                  "resolution": "8k",
+                  "background": backgroundJsonDetail,
+                  "safety": {
+                    "margin": "Safe margin around the edges of the image",
+                    "framing": "Scaled to fit the 2:3 ratio without cropping"
+                  }
+                };
+                
+                toggleButtonLoader(btn, false);
+
+                DOMElements.promptOutputText.value = promptText;
+                DOMElements.promptOutputJson.value = JSON.stringify(promptJson, null, 2);
+                DOMElements.resultPlaceholder.classList.add('hidden');
+                DOMElements.resultContent.classList.remove('hidden');
+                DOMElements.startOverContainer.classList.remove('hidden');
+                
+                const history = getHistory();
+                history.push({ text: promptText, json: JSON.stringify(promptJson, null, 2) });
+                if (history.length > 20) history.shift();
+                saveHistory(history);
+
+                showAlert(getUIText('alertGenerated'), 'success');
+            };
+
+
+            const handleReset = () => {
+                DOMElements.step1.reset();
+                DOMElements.step2Form.reset();
+                
+                DOMElements.kategori.innerHTML = '';
+                DOMElements.gaya.innerHTML = '';
+                DOMElements.customStyleIdea.value = '';
+                
+                DOMElements.kategori.disabled = true;
+                DOMElements.gaya.disabled = true;
+                DOMElements.animalDetailsContainer.classList.add('hidden');
+                DOMElements.resultPlaceholder.classList.remove('hidden');
+                DOMElements.resultContent.classList.add('hidden');
+                DOMElements.startOverContainer.classList.add('hidden');
+                DOMElements.latarPilihan.value = 'background';
+                handleLatarChange();
+                updateStep2Controls(false); // Reset edit state
+                handleVersionChange(); // Repopulate dropdowns based on reset state
+                handleModeChange(); // Reset creation mode UI
+                goToStep(1);
+            };
+            
+            const handleCopy = (elementId) => {
+                const textToCopy = document.getElementById(elementId).value;
+                if (textToCopy && navigator.clipboard) {
+                    navigator.clipboard.writeText(textToCopy)
+                        .then(() => showAlert(getUIText('alertCopied'), 'success'))
+                        .catch(() => showAlert(getUIText('alertCopyFailed'), 'error'));
+                }
+            };
+            
+            // --- API MODAL LOGIC ---
+            let modalApiKeySource;
+            const renderApiModalState = (source) => {
+                const { apiSourceSystem, apiSourcePersonal, personalApiDetails, systemApiNote, apiKeyInput } = DOMElements;
+                const isSystem = source === 'system';
+                apiSourceSystem.style.borderColor = isSystem ? 'var(--theme-accent-2)' : 'var(--theme-border)';
+                apiSourceSystem.querySelector('i').className = isSystem ? 'fas fa-check-circle text-xl text-[var(--theme-accent-2)]' : 'far fa-circle text-xl text-[var(--theme-text-secondary)]';
+                apiSourcePersonal.style.borderColor = !isSystem ? 'var(--theme-accent-2)' : 'var(--theme-border)';
+                apiSourcePersonal.querySelector('i').className = !isSystem ? 'fas fa-check-circle text-xl text-[var(--theme-accent-2)]' : 'far fa-circle text-xl text-[var(--theme-text-secondary)]';
+                personalApiDetails.classList.toggle('hidden', isSystem);
+                systemApiNote.classList.toggle('hidden', !isSystem);
+                apiKeyInput.value = AppState.personalApiKey || '';
+            };
+            const resetAndOpenApiKeyModal = () => {
+                modalApiKeySource = AppState.apiKeySource;
+                renderApiModalState(modalApiKeySource);
+                openModal(DOMElements.apiKeyModal);
+            };
+
+            // --- INITIALIZATION ---
+            const init = () => {
+                // Event Listeners
+                DOMElements.loginForm.addEventListener('submit', handleLogin);
+                DOMElements.themeBtnDesktop.addEventListener('click', handleThemeToggle);
+                DOMElements.themeBtnMobile.addEventListener('click', handleThemeToggle);
+                DOMElements.languageBtn.addEventListener('click', handleLanguageToggle);
+                DOMElements.logoutBtnDesktop.addEventListener('click', handleLogout);
+                DOMElements.logoutBtnMobile.addEventListener('click', handleLogout);
+                document.querySelectorAll('input[name="versi"]').forEach(radio => radio.addEventListener('change', handleVersionChange));
+                document.querySelectorAll('input[name="animal-character-version"]').forEach(radio => radio.addEventListener('change', populateKategori));
+                document.querySelectorAll('input[name="creation-mode"]').forEach(radio => radio.addEventListener('change', handleModeChange));
+                DOMElements.kategori.addEventListener('change', populateGaya);
+                DOMElements.latarPilihan.addEventListener('change', handleLatarChange);
+                
+                // Stepper Logic
+                DOMElements.designerBtn.addEventListener('click', handleDesignRequest);
+                DOMElements.regenerateDetailsBtn.addEventListener('click', handleDesignRequest);
+                DOMElements.step2Form.addEventListener('submit', handleGeneratePrompt);
+                DOMElements.backToStep1Btn.addEventListener('click', () => goToStep(1));
+                DOMElements.startOverBtn.addEventListener('click', handleReset);
+                
+                // Step 2 Controls
+                DOMElements.editSaveBtn.addEventListener('click', () => updateStep2Controls(!AppState.isEditingDetails));
+                DOMElements.translateBtn.addEventListener('click', handleTranslateDetails);
+
+                // Copy
+                DOMElements.copyBtnText.addEventListener('click', () => handleCopy('prompt-output-text'));
+                DOMElements.copyBtnJson.addEventListener('click', () => handleCopy('prompt-output-json'));
+                
+                DOMElements.togglePassword.addEventListener('click', () => {
+                    const isPassword = DOMElements.passwordInput.type === 'password';
+                    DOMElements.passwordInput.type = isPassword ? 'text' : 'password';
+                    DOMElements.togglePassword.className = `fas ${isPassword ? 'fa-eye-slash' : 'fa-eye'} absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer text-[var(--theme-text-secondary)] hover:text-[var(--theme-text-primary)]`;
+                });
+                
+                // Modal Listeners
+                DOMElements.historyBtn.addEventListener('click', () => { renderHistory(); openModal(DOMElements.historyModal); });
+                DOMElements.apiKeyBtn.addEventListener('click', resetAndOpenApiKeyModal);
+                DOMElements.allModals.forEach(modal => {
+                    modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(modal); });
+                    modal.querySelector('.close-modal-btn')?.addEventListener('click', () => closeModal(modal));
+                });
+                document.getElementById('alert-close-btn').addEventListener('click', () => closeModal(DOMElements.alertModal));
+                document.getElementById('confirm-no-btn').addEventListener('click', () => closeModal(DOMElements.confirmationModal));
+                document.getElementById('clear-history-btn').addEventListener('click', () => { saveHistory([]); renderHistory(); showAlert(getUIText('alertHistoryCleared'), 'info'); });
+
+                // Off-canvas listeners
+                DOMElements.hamburgerBtn.addEventListener('click', () => toggleOffcanvas(true));
+                DOMElements.offcanvasOverlay.addEventListener('click', () => toggleOffcanvas(false));
+                DOMElements.offcanvasCloseBtn.addEventListener('click', () => toggleOffcanvas(false));
+                
+                // API Modal Logic
+                DOMElements.apiSourceSystem.addEventListener('click', () => { modalApiKeySource = 'system'; renderApiModalState(modalApiKeySource); });
+                DOMElements.apiSourcePersonal.addEventListener('click', () => { modalApiKeySource = 'personal'; renderApiModalState(modalApiKeySource); });
+                DOMElements.apiModalSaveBtn.addEventListener('click', () => {
+                    if (modalApiKeySource === 'personal' && !DOMElements.apiKeyInput.value.trim()) { showAlert(getUIText('alertApiKeyEmpty'), 'error'); return; }
+                    AppState.apiKeySource = modalApiKeySource;
+                    localStorage.setItem('chibi_api_source', modalApiKeySource);
+                    AppState.personalApiKey = DOMElements.apiKeyInput.value.trim();
+                    localStorage.setItem('chibi_api_key', AppState.personalApiKey);
+                    showAlert(getUIText('alertApiSettingsSaved'), 'success');
+                    closeModal(DOMElements.apiKeyModal);
+                });
+                DOMElements.apiModalCancelBtn.addEventListener('click', () => closeModal(DOMElements.apiKeyModal));
+                DOMElements.toggleApiKeyVisibility.addEventListener('click', () => {
+                    const isPassword = DOMElements.apiKeyInput.type === 'password';
+                    DOMElements.apiKeyInput.type = isPassword ? 'text' : 'password';
+                    DOMElements.toggleApiKeyVisibility.querySelector('i').className = `fas ${isPassword ? 'fa-eye-slash' : 'fa-eye'}`;
+                });
+                DOMElements.deleteApiKeyBtn.addEventListener('click', () => { DOMElements.apiKeyInput.value = ''; });
+
+
+                // Load initial state
+                setLanguage(localStorage.getItem('chibi_language') || 'id');
+                AppState.apiKeySource = localStorage.getItem('chibi_api_source') || 'system';
+                AppState.personalApiKey = localStorage.getItem('chibi_api_key');
+                applyTheme(localStorage.getItem('chibi_theme') || 'dark');
+                checkLoginSession();
+                handleModeChange();
+                handleLatarChange(); 
+                handleVersionChange();
+                goToStep(1);
+            };
+
+            init();
+        });
+    </script>
+</body>
+</html>
