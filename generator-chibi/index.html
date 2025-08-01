@@ -181,10 +181,6 @@
                                <i class="fas fa-language fa-fw text-base"></i>
                                <span class="hidden sm:inline" data-ui-key="languageButtonShort">ID/EN</span>
                             </button>
-                            <button data-ui-key-title="historyTitle" id="history-btn" class="btn btn-neutral h-10 px-3">
-                                <i class="fas fa-history fa-fw text-base"></i>
-                                 <span class="hidden sm:inline" data-ui-key="historyButtonShort">History</span>
-                            </button>
                             <button data-ui-key-title="apiKeyTitle" id="api-key-btn" class="btn btn-neutral h-10 px-3">
                                 <i class="fas fa-key fa-fw text-base"></i>
                                 <span class="hidden sm:inline" data-ui-key="apiKeyButtonShort">API</span>
@@ -482,19 +478,6 @@
     </div>
 
     <!-- Modals -->
-    <div id="history-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden items-start justify-center p-4 pt-16">
-        <div class="card p-6 w-full max-w-lg transform transition-all flex flex-col animate__animated animate__faster max-h-[80vh]">
-            <div class="flex-shrink-0 flex justify-between items-center mb-4 pb-4 border-b border-[var(--theme-border)]">
-                <h3 class="text-2xl font-bold gradient-text"><i class="fas fa-history mr-2"></i><span data-ui-key="historyModalTitle">Riwayat Prompt</span></h3>
-                <button class="close-modal-btn text-[var(--theme-text-secondary)] hover:text-[var(--theme-accent-2)] text-2xl">&times;</button>
-            </div>
-            <div id="history-content" class="flex-grow overflow-y-auto space-y-2 pr-2"></div>
-            <div class="flex-shrink-0 mt-4 pt-4 border-t border-[var(--theme-border)] flex justify-end">
-                <button id="clear-history-btn" class="btn btn-danger py-2 px-4"><i class="fas fa-trash mr-2"></i><span data-ui-key="clearHistoryButton">Bersihkan Riwayat</span></button>
-            </div>
-        </div>
-    </div>
-
     <div id="api-key-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden items-start justify-center p-4 pt-16">
         <div class="card p-6 sm:p-8 w-full max-w-lg transform transition-all animate__animated animate__faster flex flex-col max-h-[80vh]">
             <div class="flex-shrink-0 flex justify-between items-center mb-6">
@@ -751,13 +734,9 @@
                     // General & Navbar
                     languageTitle: "Ganti Bahasa",
                     languageButtonShort: "ID/EN",
-                    historyTitle: "Riwayat",
-                    historyButtonShort: "Riwayat",
                     apiKeyTitle: "Kunci API",
                     apiKeyButtonShort: "API",
                     logoutButton: "Keluar",
-                    historyModalTitle: "Riwayat Prompt",
-                    clearHistoryButton: "Bersihkan Riwayat",
                     apiKeySettingsTitle: "Pengaturan API Key",
                     chooseApiKeySource: "Pilih sumber Kunci API yang ingin Anda gunakan.",
                     useSystemApi: "Gunakan API Sistem",
@@ -781,8 +760,6 @@
                     deleteButton: "Hapus",
                     alertApiSettingsSaved: "Pengaturan API berhasil disimpan!",
                     alertApiKeyEmpty: "Input API Key tidak boleh kosong.",
-                    alertHistoryCleared: "Riwayat berhasil dibersihkan.",
-                    alertHistoryEmpty: "Tidak ada riwayat untuk ditampilkan.",
                     alertCopied: "Prompt berhasil disalin!",
                     alertCopyFailed: "Gagal menyalin prompt.",
                     alertInputEmpty: (field) => `Mohon lengkapi kolom berikut: ${field}.`,
@@ -866,13 +843,9 @@
                     // General & Navbar
                     languageTitle: "Switch Language",
                     languageButtonShort: "EN/ID",
-                    historyTitle: "History",
-                    historyButtonShort: "History",
                     apiKeyTitle: "API Key",
                     apiKeyButtonShort: "API",
                     logoutButton: "Logout",
-                    historyModalTitle: "Prompt History",
-                    clearHistoryButton: "Clear History",
                     apiKeySettingsTitle: "API Key Settings",
                     chooseApiKeySource: "Choose the API Key source you want to use.",
                     useSystemApi: "Use System API",
@@ -896,8 +869,6 @@
                     deleteButton: "Delete",
                     alertApiSettingsSaved: "API settings saved successfully!",
                     alertApiKeyEmpty: "API Key input cannot be empty.",
-                    alertHistoryCleared: "History cleared successfully.",
-                    alertHistoryEmpty: "No history to display.",
                     alertCopied: "Prompt copied successfully!",
                     alertCopyFailed: "Failed to copy prompt.",
                     alertInputEmpty: (field) => `Please complete the following field(s): ${field}.`,
@@ -1119,7 +1090,6 @@
                 backToStep2FromStep3Btn: document.getElementById('back-to-step2-from-step3-btn'),
                 // Navbar
                 languageBtn: document.getElementById('language-btn'),
-                historyBtn: document.getElementById('history-btn'),
                 apiKeyBtn: document.getElementById('api-key-btn'),
                 themeBtnDesktop: document.getElementById('theme-btn-desktop'),
                 logoutBtnDesktop: document.getElementById('logout-btn-desktop'),
@@ -1131,7 +1101,6 @@
                 themeIconMobile: document.getElementById('theme-icon-mobile'),
                 logoutBtnMobile: document.getElementById('logout-btn-mobile'),
                 // Modals & General
-                historyModal: document.getElementById('history-modal'),
                 apiKeyModal: document.getElementById('api-key-modal'),
                 alertModal: document.getElementById('alert-modal'),
                 confirmationModal: document.getElementById('confirmation-modal'),
@@ -1176,7 +1145,7 @@
             const toggleOffcanvas = (show) => {
                 if (show) {
                     DOMElements.offcanvasOverlay.classList.remove('hidden');
-                    DOMElements.offcanvasOverlay.style.opacity = 'promptique963#';
+                    DOMElements.offcanvasOverlay.style.opacity = '1';
                     DOMElements.offcanvasMenu.classList.add('open');
                 } else {
                     DOMElements.offcanvasOverlay.style.opacity = '0';
@@ -1383,53 +1352,10 @@
                 }
             }
 
-            const getHistory = () => JSON.parse(localStorage.getItem('chibi_history')) || [];
-            const saveHistory = (history) => localStorage.setItem('chibi_history', JSON.stringify(history));
-
-            const renderHistory = () => {
-                const history = getHistory();
-                const contentEl = document.getElementById('history-content');
-                contentEl.innerHTML = '';
-                if (history.length === 0) {
-                    contentEl.innerHTML = `<p class="text-center text-[var(--theme-text-secondary)] py-10">${getUIText('alertHistoryEmpty')}</p>`;
-                    return;
-                }
-                history.reverse().forEach((entry, index) => {
-                    const item = document.createElement('div');
-                    item.className = 'group flex items-center justify-between w-full text-left p-3 rounded-lg hover:bg-[var(--theme-border)]/20 transition-colors duration-200 cursor-pointer';
-                    item.innerHTML = `
-                        <span class="flex-grow truncate pr-2">${entry.text.split(',').slice(0, 3).join(', ')}...</span>
-                        <button class="delete-history-btn flex-shrink-0 text-[var(--theme-text-secondary)] hover:text-[var(--theme-error)] transition-opacity opacity-0 group-hover:opacity-100" data-index="${history.length - 1 - index}" title="${getUIText('deleteButton')}"><i class="fas fa-trash fa-sm"></i></button>
-                    `;
-                    item.onclick = (e) => {
-                        if (e.target.closest('.delete-history-btn')) return;
-                        DOMElements.promptOutputText.value = entry.text;
-                        DOMElements.promptOutputJson.value = entry.json;
-                        DOMElements.resultPlaceholder.classList.add('hidden');
-                        DOMElements.resultContent.classList.remove('hidden');
-                        DOMElements.startOverContainer.classList.remove('hidden');
-                        goToStep(3);
-                        closeModal(DOMElements.historyModal);
-                    };
-                    contentEl.appendChild(item);
-                });
-                
-                contentEl.querySelectorAll('.delete-history-btn').forEach(btn => {
-                    btn.onclick = (e) => {
-                        e.stopPropagation();
-                        const idxToDelete = parseInt(btn.dataset.index, 10);
-                        const currentHistory = getHistory();
-                        currentHistory.splice(idxToDelete, 1);
-                        saveHistory(currentHistory);
-                        renderHistory(); // Re-render
-                    };
-                });
-            };
-            
             // --- EVENT HANDLERS ---
             const handleLogin = (e) => {
                 e.preventDefault();
-                if (DOMElements.passwordInput.value === 'promptique963#') {
+                if (DOMElements.passwordInput.value === '1') {
                     localStorage.setItem('promptique_session', new Date().getTime().toString());
                     setLoginState(true);
                 } else {
@@ -1802,11 +1728,6 @@
                 DOMElements.resultContent.classList.remove('hidden');
                 DOMElements.startOverContainer.classList.remove('hidden');
                 
-                const history = getHistory();
-                history.push({ text: promptText, json: JSON.stringify(promptJson, null, 2) });
-                if (history.length > 20) history.shift();
-                saveHistory(history);
-
                 showAlert(getUIText('alertGenerated'), 'success');
             };
 
@@ -1905,7 +1826,6 @@
                 });
                 
                 // Modal Listeners
-                DOMElements.historyBtn.addEventListener('click', () => { renderHistory(); openModal(DOMElements.historyModal); });
                 DOMElements.apiKeyBtn.addEventListener('click', resetAndOpenApiKeyModal);
                 DOMElements.allModals.forEach(modal => {
                     modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(modal); });
@@ -1913,7 +1833,6 @@
                 });
                 document.getElementById('alert-close-btn').addEventListener('click', () => closeModal(DOMElements.alertModal));
                 document.getElementById('confirm-no-btn').addEventListener('click', () => closeModal(DOMElements.confirmationModal));
-                document.getElementById('clear-history-btn').addEventListener('click', () => { saveHistory([]); renderHistory(); showAlert(getUIText('alertHistoryCleared'), 'info'); });
 
                 // Off-canvas listeners
                 DOMElements.hamburgerBtn.addEventListener('click', () => toggleOffcanvas(true));
