@@ -1,0 +1,1699 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PROMPTIQUE - Lynk.Id Landing Page Concept</title>
+    <meta name="description" content="Generate complete, persuasive landing page content for your bio-link page using AI. Features dark/light modes, multi-language support, and flexible API key management.">
+    
+    <!-- External Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/animate.css/4.1.1/animate.min.css"/>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    
+    <!-- App Stylesheet -->
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        :root {
+            /* Dark Theme */
+            --theme-font-primary: 'Poppins', sans-serif;
+            --theme-bg: #111827; /* gray-900 */
+            --theme-panel-bg: #1f2937; /* gray-800 */
+            --theme-border: #374151; /* gray-700 */
+            --theme-text-primary: #f9fafb; /* gray-50 */
+            --theme-text-secondary: #9ca3af; /* gray-400 */
+            --theme-accent-1: #3b82f6; /* blue-500 */
+            --theme-accent-2: #10b981; /* green-500 */
+            --theme-accent-3: #fcd34d; /* amber-300 */
+            --theme-error: #ef4444; /* red-500 */
+            --theme-success: #22c55e; /* green-500 */
+        }
+
+        body.light-theme {
+            /* Light Theme */
+            --theme-bg: #f3f4f6; /* gray-100 */
+            --theme-panel-bg: #ffffff;
+            --theme-border: #e5e7eb; /* gray-200 */
+            --theme-text-primary: #111827; /* gray-900 */
+            --theme-text-secondary: #6b7280; /* gray-500 */
+            --theme-accent-1: #2563eb; /* blue-600 */
+            --theme-accent-2: #059669; /* green-600 */
+            --theme-accent-3: #f59e0b; /* amber-500 */
+            --theme-error: #dc2626; /* red-600 */
+            --theme-success: #16a34a; /* green-600 */
+        }
+
+        body {
+            font-family: var(--theme-font-primary);
+            background-color: var(--theme-bg);
+            color: var(--theme-text-primary);
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .gradient-text {
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--theme-accent-1), var(--theme-accent-2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .form-label { display: block; margin-bottom: 0.75rem; font-weight: 600; color: var(--theme-text-primary); font-size: 1.125rem; }
+        .form-input, .form-textarea, .form-select {
+            width: 100%;
+            background-color: var(--theme-bg);
+            border: 1px solid var(--theme-border);
+            border-radius: 8px; padding: 0.75rem 1rem;
+            color: var(--theme-text-primary);
+            transition: all 0.3s ease;
+        }
+        body.light-theme .form-input, body.light-theme .form-textarea, body.light-theme .form-select { background-color: #f9fafb; }
+        .form-input:focus, .form-textarea:focus, .form-select:focus {
+            border-color: var(--theme-accent-1);
+            box-shadow: 0 0 0 3px color-mix(in srgb, var(--theme-accent-1) 20%, transparent);
+            outline: none;
+        }
+        .form-select {
+            -webkit-appearance: none; -moz-appearance: none; appearance: none;
+            background-repeat: no-repeat;
+            background-position: right 0.5rem center;
+            background-size: 1.5em 1.5em;
+        }
+
+        .card {
+            background-color: var(--theme-panel-bg);
+            border: 1px solid var(--theme-border);
+            border-radius: 16px;
+            transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 14px 0 rgba(0,0,0,0.15);
+        }
+        body.light-theme .card { box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1); }
+
+        .btn {
+            border-radius: 8px; transition: all 0.3s ease;
+            font-weight: 600; display: inline-flex; align-items: center; justify-content: center;
+            gap: 0.5rem; border: 1px solid transparent; padding: 0.75rem 1.5rem; text-align: center;
+        }
+
+        .btn-primary { background-color: var(--theme-accent-1); color: #fff; border-color: var(--theme-accent-1); }
+        .btn-primary:hover:not(:disabled) { background-color: color-mix(in srgb, var(--theme-accent-1) 85%, black); transform: translateY(-2px); box-shadow: 0 4px 8px color-mix(in srgb, var(--theme-accent-1) 30%, transparent); }
+        .btn-secondary { background-color: var(--theme-accent-2); color: #fff; border-color: var(--theme-accent-2); }
+        .btn-secondary:hover:not(:disabled) { background-color: color-mix(in srgb, var(--theme-accent-2) 85%, black); transform: translateY(-2px); }
+        .btn-danger { color: var(--theme-error); border-color: var(--theme-error); }
+        .btn-danger:hover:not(:disabled) { background-color: color-mix(in srgb, var(--theme-error) 10%, transparent); }
+        .btn-neutral { color: var(--theme-text-secondary); border-color: var(--theme-border); background-color: transparent; }
+        .btn-neutral:hover:not(:disabled) { background-color: color-mix(in srgb, var(--theme-text-secondary) 10%, transparent); border-color: var(--theme-text-secondary); color: var(--theme-text-primary); }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        .loader { width: 18px; height: 18px; border: 2px solid currentColor; border-bottom-color: transparent; border-radius: 50%; display: inline-block; box-sizing: border-box; animation: rotation 1s linear infinite; }
+        @keyframes rotation { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* Off-canvas styles */
+        #offcanvas-menu { transition: transform 0.3s ease-in-out; transform: translateX(100%); }
+        #offcanvas-menu.open { transform: translateX(0); }
+        #offcanvas-overlay { transition: opacity 0.3s ease-in-out; }
+
+        .whitespace-pre-wrap {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        /* Tab Styles */
+        .tab-btn {
+            border-bottom: 2px solid transparent;
+            color: var(--theme-text-secondary);
+        }
+        .tab-btn.active {
+            color: var(--theme-text-primary);
+            border-bottom-color: var(--theme-accent-1);
+        }
+        .tab-panel {
+            display: none;
+        }
+        .tab-panel.active {
+            display: block;
+        }
+        
+        /* Summary Card Style */
+        .summary-card {
+            background-color: var(--theme-bg);
+            border: 1px solid var(--theme-border);
+            border-radius: 8px;
+            padding: 1rem 1.5rem;
+        }
+        .summary-card h5 {
+            font-weight: 700;
+            color: var(--theme-accent-1);
+            margin-bottom: 0.5rem;
+        }
+        .summary-card p {
+            color: var(--theme-text-secondary);
+            font-size: 0.95rem;
+        }
+        body.light-theme .summary-card p {
+            color: var(--theme-text-primary);
+        }
+
+
+        /* --- Modal Animation --- */
+        @keyframes modal-fade-scale-in {
+            from { opacity: 0; transform: scale(0.95) translateY(1rem); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        @keyframes modal-fade-scale-out {
+            from { opacity: 1; transform: scale(1) translateY(0); }
+            to { opacity: 0; transform: scale(0.95) translateY(1rem); }
+        }
+        .modal-content-animating-in {
+            animation: modal-fade-scale-in 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .modal-content-animating-out {
+            animation: modal-fade-scale-out 0.25s ease-out forwards;
+        }
+        
+        /* --- Custom Alert Animations --- */
+        @keyframes alert-spring-in {
+            0% { opacity: 0; transform: scale(0.3) translateY(2rem); }
+            80% { transform: scale(1.05) translateY(0); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        @keyframes alert-slide-up-in {
+            from { opacity: 0; transform: translateY(1.5rem); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes alert-fade-scale-out {
+            from { opacity: 1; transform: scale(1); }
+            to { opacity: 0; transform: scale(0.95); }
+        }
+        .alert-spring-in { animation: alert-spring-in 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+        .alert-slide-up-in { animation: alert-slide-up-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .alert-fade-scale-out { animation: alert-fade-scale-out 0.25s ease-out forwards; }
+        
+        .animate__animated.animate__shakeX {
+            --animate-duration: 0.6s;
+        }
+
+    </style>
+</head>
+<body class="antialiased">
+
+    <div id="app-container">
+        <!-- Navbar -->
+        <header class="bg-[var(--theme-panel-bg)]/80 backdrop-blur-sm shadow-sm sticky top-0 z-40 border-b border-[var(--theme-border)] transition-colors duration-300">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-16">
+                    <div class="flex-shrink-0">
+                        <h1 class="text-xl md:text-2xl font-black tracking-tight gradient-text">
+                            PROMPTIQUE
+                        </h1>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="flex items-center space-x-2">
+                            <button data-ui-key-title="languageTitle" id="language-btn" class="btn btn-neutral h-10 px-3">
+                               <i class="fas fa-language fa-fw text-base"></i>
+                               <span class="hidden sm:inline" data-ui-key="languageButtonShort">ID/EN</span>
+                            </button>
+                            <button data-ui-key-title="apiKeyTitle" id="api-key-btn" class="btn btn-neutral h-10 px-3">
+                                <i class="fas fa-key fa-fw text-base"></i>
+                                <span class="hidden sm:inline" data-ui-key="apiKeyButtonShort">API</span>
+                            </button>
+                        </div>
+        
+                        <div class="hidden sm:flex items-center space-x-2 ml-2">
+                            <button data-ui-key-title="themeTitle" id="theme-btn-desktop" class="btn btn-neutral w-10 h-10 px-0">
+                                <i class="fas fa-moon fa-fw text-lg"></i>
+                            </button>
+                            <button data-ui-key-title="logoutButton" id="logout-btn-desktop" class="btn btn-neutral w-10 h-10 px-0 hidden">
+                                <i class="fas fa-sign-out-alt fa-fw text-lg"></i>
+                            </button>
+                        </div>
+        
+                        <div class="sm:hidden ml-2">
+                            <button id="hamburger-btn" class="btn btn-neutral w-10 h-10 px-0">
+                                <i class="fas fa-bars fa-fw text-lg"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Off-Canvas Menu -->
+        <div id="offcanvas-overlay" class="fixed inset-0 bg-black/60 z-40 hidden"></div>
+        <div id="offcanvas-menu" class="fixed top-0 right-0 h-full w-64 bg-[var(--theme-panel-bg)] shadow-xl z-50 p-4 flex flex-col">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-lg font-bold gradient-text">Menu</h2>
+                <button id="offcanvas-close-btn" class="text-2xl text-[var(--theme-text-secondary)] hover:text-[var(--theme-text-primary)]">&times;</button>
+            </div>
+            <div class="flex flex-col space-y-2">
+                <button id="theme-btn-mobile" class="w-full btn btn-neutral justify-start">
+                    <i id="theme-icon-mobile" class="fas fa-moon fa-fw w-5"></i>
+                    <span data-ui-key="themeTitle">Ganti Tema</span>
+                </button>
+                <button id="logout-btn-mobile" class="w-full btn btn-neutral justify-start hidden">
+                    <i class="fas fa-sign-out-alt fa-fw w-5"></i>
+                    <span data-ui-key="logoutButton">Keluar</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <main class="container mx-auto p-4 sm:p-6 lg:p-8">
+            <div id="login-card" class="hidden">
+                 <section class="card p-6 sm:p-8 text-center animate__animated animate__fadeInUp max-w-lg mx-auto">
+                    <h3 data-ui-key="loginWelcome" class="text-2xl font-bold gradient-text">Selamat Datang!</h3>
+                    <p class="text-[var(--theme-text-secondary)] mt-2 mb-8" data-ui-key="loginSubtitle">Masukkan kata sandi untuk melanjutkan.</p>
+                    <form id="login-form" class="max-w-xs mx-auto">
+                        <div class="space-y-4">
+                            <div class="relative">
+                                <label for="password" class="sr-only">Password</label>
+                                <input type="password" id="password" class="form-input text-center pr-10" data-ui-key-placeholder="passwordPlaceholder">
+                                <i id="toggle-password" class="fas fa-eye absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer text-[var(--theme-text-secondary)] hover:text-[var(--theme-text-primary)]"></i>
+                            </div>
+                            <button type="submit" class="w-full btn btn-primary py-3 px-6">
+                                <i class="fas fa-sign-in-alt mr-2"></i>
+                                <span data-ui-key="loginButton">Masuk</span>
+                            </button>
+                        </div>
+                    </form>
+                </section>
+            </div>
+
+            <div id="generator-content" class="hidden">
+                <div class="text-center mb-10 animate__animated animate__fadeInDown">
+                    <h2 data-ui-key="mainTitle" class="text-3xl md:text-4xl font-bold tracking-tight gradient-text">Lynk.Id Landing Page Concept</h2>
+                    <p data-ui-key="mainSubtitle" class="mt-3 max-w-3xl mx-auto text-lg text-[var(--theme-text-secondary)]">Cukup berikan ide kasarnya, biarkan AI yang memolesnya menjadi konten halaman bio-link yang memukau.</p>
+                </div>
+                
+                <div class="flex flex-col lg:flex-row lg:gap-8 xl:gap-12">
+                    <!-- Left Column: Form -->
+                    <div class="lg:w-5/12 xl:w-4/12 flex-shrink-0">
+                        <div class="card p-6 sm:p-8 animate__animated animate__fadeIn">
+                            <form id="generator-form" class="space-y-8">
+                                <div>
+                                    <label for="owner_name" class="form-label" data-ui-key="q1Label">1. Nama Anda / Brand Anda</label>
+                                    <input type="text" id="owner_name" class="form-input" data-ui-key-placeholder="q1Placeholder" required>
+                                </div>
+
+                                <div>
+                                    <label for="about_you" class="form-label" data-ui-key="q2Label">2. Ceritakan tentang Anda & Visi Anda</label>
+                                    <p class="text-sm text-[var(--theme-text-secondary)] -mt-2 mb-3" data-ui-key="q2Sublabel">Siapa Anda? Apa yang membuat Anda bersemangat? Apa tujuan besar Anda?</p>
+                                    <textarea id="about_you" rows="5" class="form-textarea" data-ui-key-placeholder="q2Placeholder" required></textarea>
+                                </div>
+
+                                <div>
+                                    <label for="what_you_sell" class="form-label" data-ui-key="q3Label">3. Jelaskan Produk / Jasa Anda</label>
+                                    <p class="text-sm text-[var(--theme-text-secondary)] -mt-2 mb-3" data-ui-key="q3Sublabel">Tuliskan apa saja yang Anda tawarkan. Boleh dalam bentuk daftar, cerita, atau poin-poin.</p>
+                                    <textarea id="what_you_sell" rows="5" class="form-textarea" data-ui-key-placeholder="q3Placeholder" required></textarea>
+                                </div>
+
+                                <div>
+                                    <label for="for_whom" class="form-label" data-ui-key="q4Label">4. Siapa Target Pelanggan Anda?</label>
+                                    <p class="text-sm text-[var(--theme-text-secondary)] -mt-2 mb-3" data-ui-key="q4Sublabel">Untuk siapa ini semua? Apa yang Anda ingin mereka lakukan di halaman Anda?</p>
+                                    <textarea id="for_whom" rows="4" class="form-textarea" data-ui-key-placeholder="q4Placeholder" required></textarea>
+                                </div>
+                                
+                                <div>
+                                    <label for="language_style" class="form-label" data-ui-key="q5Label">5. Pilih Gaya Bahasa</label>
+                                    <p class="text-sm text-[var(--theme-text-secondary)] -mt-2 mb-3" data-ui-key="q5Sublabel">Pilih nada suara yang paling sesuai dengan brand Anda.</p>
+                                    <select id="language_style" class="form-select">
+                                        <option value="Ramah & Santai" data-ui-key="styleFriendly">Ramah & Santai</option>
+                                        <option value="Profesional & Meyakinkan" data-ui-key="styleProfessional">Profesional & Meyakinkan</option>
+                                        <option value="Kreatif & Bersemangat" data-ui-key="styleCreative">Kreatif & Bersemangat</option>
+                                        <option value="Minimalis & To the Point" data-ui-key="styleMinimalist">Minimalis & To the Point</option>
+                                    </select>
+                                </div>
+
+                                <button type="submit" id="generate-btn" class="w-full btn btn-primary py-3.5">
+                                    <span class="btn-text flex items-center justify-center gap-2">
+                                        <i class="fas fa-wand-magic-sparkles"></i>
+                                        <span data-ui-key="generateButton">Susun Halaman Saya</span>
+                                    </span>
+                                    <span class="btn-loader hidden"></span>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Output -->
+                    <div class="flex-grow lg:w-7/12 xl:w-8/12">
+                        <div class="lg:sticky lg:top-24 mt-12 lg:mt-0 h-full">
+                            <div id="initial-output-placeholder" class="card p-6 sm:p-8 flex flex-col items-center justify-center text-center h-full min-h-[400px] lg:min-h-[600px]">
+                                <div class="mb-6">
+                                    <svg class="w-20 h-20 text-[var(--theme-text-secondary)] opacity-70" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M32,16 L36,32 L32,48 L28,32 L32,16 Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                        <path d="M52,28 L48,32 L52,36 L56,32 L52,28 Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                        <path d="M48,8 L46,12 L48,16 L50,12 L48,8 Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                    </svg>
+                                </div>
+                                <h3 data-ui-key="initialStateTitle" class="text-2xl font-bold text-[var(--theme-text-primary)]">Konten Anda Siap Dibuat</h3>
+                                <p data-ui-key="initialStateSubtitle" class="text-lg text-[var(--theme-text-secondary)] mt-2">Isi formulir di kiri untuk melihat keajaibannya.</p>
+                            </div>
+                            <section id="output-section" class="hidden">
+                                <div class="card p-6 sm:p-8">
+                                    <h2 class="text-2xl font-bold text-center mb-6 gradient-text" data-ui-key="resultReady">✨ Konten Halaman Anda Siap!</h2>
+                                    
+                                    <!-- Tabs -->
+                                    <div class="border-b border-[var(--theme-border)] mb-4">
+                                        <nav id="output-tabs" class="flex space-x-4" aria-label="Tabs">
+                                            <button id="tab-btn-text" type="button" class="tab-btn py-3 px-4 text-sm font-medium active" data-tab="text-output-panel">
+                                                <i class="fas fa-file-alt mr-2"></i><span data-ui-key="tabText">Konten Teks</span>
+                                            </button>
+                                            <button id="tab-btn-summary" type="button" class="tab-btn py-3 px-4 text-sm font-medium hidden" data-tab="summary-output-panel">
+                                                <i class="fas fa-bolt mr-2"></i><span data-ui-key="tabSummary">Konten Ringkas</span>
+                                            </button>
+                                            <button id="tab-btn-sketch" type="button" class="tab-btn py-3 px-4 text-sm font-medium hidden" data-tab="sketch-output-panel">
+                                                <i class="fas fa-pencil-ruler mr-2"></i><span data-ui-key="tabSketch">Sketsa Layout</span>
+                                            </button>
+                                        </nav>
+                                    </div>
+
+                                    <!-- Tab Panels -->
+                                    <div>
+                                        <div id="text-output-panel" class="tab-panel active">
+                                            <div id="text-content-loader" class="text-center py-8 hidden">
+                                                <span class="loader"></span>
+                                                <p class="mt-4 text-[var(--theme-text-secondary)]" data-ui-key="loaderSystemAI"></p>
+                                            </div>
+                                            <div id="output-content-container">
+                                                <div id="output-content" class="bg-[var(--theme-bg)] p-4 rounded-lg border border-[var(--theme-border)]">
+                                                    <pre class="whitespace-pre-wrap font-sans text-sm leading-relaxed"></pre>
+                                                </div>
+                                                <div id="action-buttons-container" class="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                                    <button id="copy-btn" class="btn btn-secondary w-full">
+                                                        <i class="fas fa-copy"></i> <span data-ui-key="copyButton">Salin Teks</span>
+                                                    </button>
+                                                    <button id="download-txt-btn" class="btn btn-neutral w-full">
+                                                        <i class="fas fa-file-lines"></i> <span data-ui-key="downloadTxtButton">Unduh sebagai TXT</span>
+                                                    </button>
+                                                    <button id="download-btn" class="btn btn-neutral w-full">
+                                                        <i class="fas fa-file-arrow-down"></i> <span data-ui-key="downloadButton">Unduh sebagai PDF</span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="summary-output-panel" class="tab-panel">
+                                            <div id="summary-prompt-container" class="text-center py-8">
+                                                <p class="text-[var(--theme-text-secondary)] mb-4" data-ui-key="summaryPromptMessage"></p>
+                                                <button id="generate-summary-btn" class="btn btn-secondary">
+                                                    <span class="btn-text flex items-center justify-center gap-2">
+                                                        <i class="fas fa-bolt"></i> <span data-ui-key="generateSummaryButton"></span>
+                                                    </span>
+                                                    <span class="btn-loader hidden"></span>
+                                                </button>
+                                            </div>
+                                            <div id="summary-loader" class="text-center py-8 hidden">
+                                                <span class="loader"></span>
+                                                <p class="mt-4 text-[var(--theme-text-secondary)]" data-ui-key="generatingSummary">Meringkas konten...</p>
+                                            </div>
+                                            <div id="summary-content-container" class="hidden">
+                                                <h4 class="font-bold text-lg mb-4 text-center gradient-text" data-ui-key="summaryTitle"></h4>
+                                                <div id="summary-content-output" class="space-y-4">
+                                                    <!-- Summary items will be injected here -->
+                                                </div>
+                                                <div class="mt-6 grid grid-cols-2 gap-3">
+                                                    <button id="regenerate-summary-btn" class="btn btn-primary w-full">
+                                                        <span class="btn-text flex items-center justify-center gap-2">
+                                                            <i class="fas fa-sync-alt"></i> <span data-ui-key="regenerateSummaryButton"></span>
+                                                        </span>
+                                                        <span class="btn-loader hidden"></span>
+                                                    </button>
+                                                    <button id="copy-summary-btn" class="btn btn-secondary w-full">
+                                                        <i class="fas fa-copy"></i> <span data-ui-key="copySummaryButton"></span>
+                                                    </button>
+                                                    <button id="download-summary-txt-btn" class="btn btn-neutral w-full">
+                                                        <i class="fas fa-file-lines"></i> <span data-ui-key="downloadSummaryTxtButton"></span>
+                                                    </button>
+                                                    <button id="download-summary-pdf-btn" class="btn btn-neutral w-full">
+                                                        <i class="fas fa-file-arrow-down"></i> <span data-ui-key="downloadSummaryPdfButton"></span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="sketch-output-panel" class="tab-panel">
+                                            <div>
+                                                <h4 class="font-bold text-lg mb-3 text-center" data-ui-key="sketchTitle"></h4>
+                                                <div id="sketch-prompt-container" class="text-center py-8">
+                                                    <p class="text-[var(--theme-text-secondary)] mb-4" data-ui-key="sketchPromptMessage"></p>
+                                                    <button id="generate-sketch-btn" class="btn btn-secondary">
+                                                        <span class="btn-text flex items-center justify-center gap-2">
+                                                            <i class="fas fa-pencil-ruler"></i> <span data-ui-key="generateSketchButton"></span>
+                                                        </span>
+                                                        <span class="btn-loader hidden"></span>
+                                                    </button>
+                                                </div>
+                                                <div id="sketch-loader" class="text-center py-8 hidden">
+                                                    <span class="loader"></span>
+                                                    <p class="mt-4 text-[var(--theme-text-secondary)]" data-ui-key="generatingSketch">Membuat sketsa...</p>
+                                                </div>
+                                                <div id="sketch-content" class="hidden text-center">
+                                                    <img id="sketch-image" src="" alt="AI generated layout sketch" class="w-full max-w-md mx-auto rounded-lg border border-[var(--theme-border)] bg-[var(--theme-bg)]">
+                                                    
+                                                    <!-- Color Palette Section -->
+                                                    <div id="sketch-color-palette" class="mt-8 text-left hidden">
+                                                        <h5 class="text-lg font-bold text-center mb-4 gradient-text" data-ui-key="colorPaletteTitle"></h5>
+                                                        <div id="color-palette-container" class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-sm mx-auto">
+                                                            <!-- Color items will be injected here -->
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                                        <button id="regenerate-sketch-btn" class="btn btn-secondary w-full">
+                                                            <i class="fas fa-sync-alt"></i> <span data-ui-key="regenerateSketchButton"></span>
+                                                        </button>
+                                                        <button id="download-sketch-btn" class="btn btn-neutral w-full">
+                                                            <i class="fas fa-download"></i> <span data-ui-key="downloadSketchButton"></span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <p class="text-center text-xs text-[var(--theme-text-secondary)] mt-8" data-ui-key="sketchDisclaimer">Ini adalah sketsa konsep yang dibuat AI untuk inspirasi.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <div id="api-key-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden items-start justify-center p-4 pt-16">
+        <div class="card p-6 sm:p-8 w-full max-w-lg transform flex flex-col max-h-[80vh]">
+            <div class="flex-shrink-0 flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-bold gradient-text"><i class="fas fa-key mr-2"></i><span data-ui-key="apiKeySettingsTitle">Pengaturan API Key</span></h3>
+                <button class="close-modal-btn text-[var(--theme-text-secondary)] hover:text-[var(--theme-accent-1)] text-2xl">&times;</button>
+            </div>
+            <div class="flex-grow overflow-y-auto -mr-4 pr-4 sm:-mr-6 sm:pr-6">
+                <p class="text-[var(--theme-text-secondary)] mb-6" data-ui-key="chooseApiKeySource">Pilih sumber Kunci API yang ingin Anda gunakan.</p>
+                <div class="space-y-4">
+                    <div id="api-source-system" class="api-source-option border-2 rounded-lg p-4 cursor-pointer transition-all">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="font-bold text-[var(--theme-text-primary)]" data-ui-key="useSystemApi">Gunakan AI Sistem</p>
+                                <p class="text-sm text-[var(--theme-text-secondary)]" data-ui-key="useSystemApiDesc">Menggunakan kunci bawaan (ada batasan)</p>
+                            </div>
+                            <i class="fas fa-check-circle text-xl"></i>
+                        </div>
+                    </div>
+                    <div id="api-source-personal" class="api-source-option border-2 rounded-lg p-4 cursor-pointer transition-all">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="font-bold text-[var(--theme-text-primary)]" data-ui-key="usePersonalApi">Gunakan AI Pribadi Anda</p>
+                                <p class="text-sm text-[var(--theme-text-secondary)]" data-ui-key="usePersonalApiDesc">Masukkan kunci API Gemini Anda sendiri</p>
+                            </div>
+                            <i class="far fa-circle text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+                <div id="personal-api-details" class="mt-6 space-y-4 hidden">
+                    <div>
+                        <label for="api-key-input" class="form-label uppercase text-xs !text-[var(--theme-text-secondary)] !font-bold !mb-2" data-ui-key="yourApiKeyLabel">API KEY GEMINI ANDA</label>
+                        <div class="relative">
+                            <input type="password" id="api-key-input" class="form-input pr-12" data-ui-key-placeholder="apiKeyPlaceholder">
+                            <button id="toggle-api-key-visibility" class="absolute top-1/2 right-3 -translate-y-1/2 text-[var(--theme-text-secondary)] hover:text-[var(--theme-text-primary)]"><i class="fas fa-eye"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div id="system-api-note" class="mt-6 p-4 bg-blue-500/10 border-l-4 border-blue-400 text-blue-300 rounded-r-lg">
+                    <p class="text-sm" data-ui-key="apiKeyNote">Catatan: Kunci ini digunakan bersama dan mungkin memiliki batasan. Untuk pengalaman terbaik, kami sangat menyarankan menggunakan Kunci API Anda sendiri.</p>
+                </div>
+            </div>
+            <div class="flex-shrink-0 flex gap-4 mt-8 pt-6 border-t border-[var(--theme-border)]">
+                <button id="api-modal-cancel-btn" class="w-full btn btn-neutral py-2 px-4" data-ui-key="cancelButton">Batal</button>
+                <button id="api-modal-save-btn" class="w-full btn btn-primary py-2 px-4" data-ui-key="saveButton">Simpan</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="alert-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+        <div id="alert-modal-content" class="card p-8 w-full max-w-md transform text-center flex flex-col max-h-[90vh]">
+            <div class="flex-grow overflow-y-auto">
+                <div id="alert-icon-container" class="w-16 h-16 rounded-full mx-auto flex items-center justify-center mb-4">
+                    <i id="alert-icon" class="fas text-4xl text-white"></i>
+                </div>
+                <h3 id="alert-title" class="text-2xl font-bold text-[var(--theme-text-primary)] mb-2"></h3>
+                <p id="alert-message" class="text-[var(--theme-text-secondary)]"></p>
+            </div>
+            <div class="flex-shrink-0 mt-6">
+                <button id="alert-close-btn" class="btn w-full"></button>
+            </div>
+        </div>
+    </div>
+
+    <div id="confirmation-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+        <div id="confirmation-modal-content" class="card p-8 w-full max-w-md transform text-center flex flex-col max-h-[90vh]">
+            <div class="flex-grow overflow-y-auto">
+                <div class="w-16 h-16 rounded-full mx-auto flex items-center justify-center mb-4 bg-[var(--theme-accent-3)]">
+                    <i class="fas fa-exclamation-triangle text-4xl text-[var(--theme-bg)]"></i>
+                </div>
+                <h3 id="confirmation-title" class="text-2xl font-bold text-[var(--theme-text-primary)] mb-2"></h3>
+                <p id="confirmation-message" class="text-[var(--theme-text-secondary)]"></p>
+            </div>
+            <div class="flex-shrink-0 mt-6">
+                <div class="flex gap-4">
+                    <button id="confirm-no-btn" class="w-full btn btn-neutral"></button>
+                    <button id="confirm-yes-btn" class="w-full btn btn-danger"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script type="module">
+        import { GoogleGenAI, Type } from "https://esm.run/@google/genai";
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const { jsPDF } = window.jspdf;
+            
+            // --- SECURITY ---
+            // Basic anti-dev-tools measures as requested
+            (function() {
+                const threshold = 200;
+                const devToolCheck = () => {
+                    if (window.outerWidth - window.innerWidth > threshold || window.outerHeight - window.innerHeight > threshold) {
+                        document.body.innerHTML = '<h1 style="color:red;text-align:center;margin-top:50px;">Please close developer tools to continue.</h1>';
+                    }
+                };
+                // Commenting out for development, but can be enabled for "production"
+                // setInterval(devToolCheck, 1000);
+                document.addEventListener('contextmenu', e => {
+                     if (!['INPUT', 'TEXTAREA'].includes(e.target.tagName) && !e.target.isContentEditable) {
+                        e.preventDefault();
+                    }
+                });
+            })();
+            
+            // --- GEMINI API SETUP ---
+            const SYSTEM_API_KEY = atob('QUl6YVN5Q0QtSzVBUUVXZ2hITUVSNG9MMnM2Z0ZtY1lXZWc2Qkk4'); // Obfuscated system key
+
+            // --- CONFIGURATION & STATE ---
+            const AppState = {
+                currentTheme: 'dark',
+                currentLanguage: 'id',
+                isLoggedIn: false,
+                personalApiKey: null,
+                apiKeySource: 'system', // 'system' or 'personal'
+            };
+
+            const UI_STRINGS = {
+                id: {
+                    themeTitle: "Ganti Tema",
+                    languageTitle: "Ganti Bahasa",
+                    languageButtonShort: "ID/EN",
+                    apiKeyTitle: "Kunci API",
+                    apiKeyButtonShort: "API",
+                    logoutButton: "Keluar",
+                    loginWelcome: "Selamat Datang!",
+                    loginSubtitle: "Masukkan kata sandi untuk melanjutkan.",
+                    passwordPlaceholder: "Masukkan Kata Sandi",
+                    loginButton: "Masuk",
+                    loginFailed: "Kata sandi salah!",
+                    mainTitle: "Konsep Halaman Landing Lynk.Id",
+                    mainSubtitle: "Cukup berikan ide kasarnya, biarkan AI yang memolesnya menjadi konten halaman bio-link yang memukau.",
+                    initialStateTitle: "Konten Anda Siap Dibuat",
+                    initialStateSubtitle: "Isi formulir di kiri untuk melihat keajaibannya.",
+                    q1Label: "1. Nama Anda / Brand Anda",
+                    q1Placeholder: "Contoh: Rina Hartono atau 'Pastel Creative'",
+                    q2Label: "2. Ceritakan tentang Anda & Visi Anda",
+                    q2Sublabel: "Siapa Anda? Apa yang membuat Anda bersemangat? Apa tujuan besar Anda?",
+                    q2Placeholder: "Contoh: Saya seorang ilustrator yang suka desain minimalis. Saya ingin membantu para kreator lain agar bisa membuat konten yang cantik tanpa pusing mikirin desain.",
+                    q3Label: "3. Jelaskan Produk / Jasa Anda",
+                    q3Sublabel: "Tuliskan apa saja yang Anda tawarkan. Boleh dalam bentuk daftar, cerita, atau poin-poin.",
+                    q3Placeholder: "Contoh:\n- Template Instagram 'Pastel' (30 desain siap pakai)\n- Jasa desain logo kustom\n- E-book 'Dasar-Dasar Branding Visual'",
+                    q4Label: "4. Siapa Target Pelanggan Anda?",
+                    q4Sublabel: "Untuk siapa ini semua? Apa yang Anda ingin mereka lakukan di halaman Anda?",
+                    q4Placeholder: "Contoh: Target saya content creator dan pemilik UMKM. Saya ingin mereka membeli template saya atau menghubungi saya untuk jasa desain.",
+                    q5Label: "5. Pilih Gaya Konten Bahasamu",
+                    q5Sublabel: "yang paling sesuai dengan brand Anda.",
+                    styleFriendly: "Ramah & Santai",
+                    styleProfessional: "Profesional & Meyakinkan",
+                    styleCreative: "Kreatif & Bersemangat",
+                    styleMinimalist: "Minimalis & To the Point",
+                    generateButton: "Susun Halaman Saya",
+                    regenerateButton: "Susun Ulang Halaman",
+                    loaderSystemAI: "AI Sistem Menganalisa...",
+                    loaderUserAI: "AI Anda Menganalisa...",
+                    resultReady: "✨ Konten Halaman Anda Siap!",
+                    tabText: "Konten Teks",
+                    tabSummary: "Konten Ringkas",
+                    tabSketch: "Sketsa Layout",
+                    summaryPromptMessage: "Klik tombol di bawah untuk membuat ringkasan dari konten yang telah dibuat.",
+                    generateSummaryButton: "Ringkas Konten",
+                    regenerateSummaryButton: "Ringkas Ulang",
+                    generatingSummary: "Meringkas konten...",
+                    summaryTitle: "Ringkasan Konten",
+                    summaryHook: "Hook (Kail)",
+                    summaryBio: "Bio Singkat",
+                    summaryProblem: "Masalah",
+                    summarySolution: "Solusi",
+                    summaryCTA: "Panggilan Aksi (CTA)",
+                    copySummaryButton: "Salin Ringkasan",
+                    downloadSummaryTxtButton: "Unduh TXT",
+                    downloadSummaryPdfButton: "Unduh PDF",
+                    sketchTitle: "Konsep Layout",
+                    generatingSketch: "Membuat sketsa...",
+                    generateSketchButton: "Buat Sketsa Layout",
+                    regenerateSketchButton: "Buat Ulang Sketsa",
+                    downloadSketchButton: "Unduh Gambar",
+                    sketchPromptMessage: "Teks konten Anda telah dibuat. Klik di bawah untuk membuat visualisasi layout berdasarkan konten tersebut.",
+                    sketchDisclaimer: "Ini adalah sketsa konsep yang dibuat AI untuk inspirasi.",
+                    colorPaletteTitle: "Saran Palet Warna",
+                    colorBg: "Warna Latar",
+                    colorText: "Warna Teks",
+                    copyButton: "Salin Teks",
+                    downloadTxtButton: "Unduh sebagai TXT",
+                    downloadButton: "Unduh sebagai PDF",
+                    apiKeySettingsTitle: "Pengaturan API Key",
+                    chooseApiKeySource: "Pilih sumber Kunci API yang ingin Anda gunakan.",
+                    useSystemApi: "Gunakan AI Sistem",
+                    useSystemApiDesc: "Menggunakan kunci bawaan (ada batasan)",
+                    usePersonalApi: "Gunakan AI Pribadi Anda",
+                    usePersonalApiDesc: "Masukkan kunci API Gemini Anda sendiri",
+                    yourApiKeyLabel: "API KEY GEMINI ANDA",
+                    apiKeyPlaceholder: "Masukkan API Key Anda...",
+                    apiKeyNote: "Catatan: Kunci ini digunakan bersama dan mungkin memiliki batasan. Untuk pengalaman terbaik, kami sangat menyarankan menggunakan Kunci API Anda sendiri.",
+                    cancelButton: "Batal",
+                    saveButton: "Simpan",
+                    alertApiSettingsSaved: "Pengaturan API berhasil disimpan!",
+                    alertApiKeyEmpty: "Input API Key tidak boleh kosong.",
+                    alertCopied: "Teks berhasil disalin!",
+                    alertSummaryCopied: "Ringkasan berhasil disalin!",
+                    alertColorCopied: "Kode HEX berhasil disalin!",
+                    alertCopyFailed: "Gagal menyalin teks.",
+                    alertDownloadFailed: "Gagal mengunduh file.",
+                    alertInputEmpty: "Mohon lengkapi semua kolom isian.",
+                    alertErrorTitle: "Terjadi Kesalahan",
+                    alertSuccessTitle: "Berhasil",
+                    alertInfoTitle: "Informasi",
+                    alertCloseButton: "Tutup",
+                    confirmLogoutTitle: "Konfirmasi Keluar",
+                    confirmLogoutMessage: "Apakah Anda yakin ingin keluar?",
+                    confirmYes: "Ya, Keluar",
+                    confirmNo: "Tidak",
+                    alertLoggedOut: "Anda telah berhasil keluar.",
+                    generationFailed: "Gagal membuat konten. Silakan coba lagi atau periksa kunci API Anda.",
+                    summaryGenerationFailed: "Gagal membuat ringkasan. Silakan coba lagi.",
+                    imageAndColorGenerationFailed: "Gagal membuat sketsa & palet warna. Silakan coba lagi.",
+                },
+                en: {
+                    themeTitle: "Switch Theme",
+                    languageTitle: "Switch Language",
+                    languageButtonShort: "EN/ID",
+                    apiKeyTitle: "API Key",
+                    apiKeyButtonShort: "API",
+                    logoutButton: "Logout",
+                    loginWelcome: "Welcome!",
+                    loginSubtitle: "Enter the password to continue.",
+                    passwordPlaceholder: "Enter Password",
+                    loginButton: "Login",
+                    loginFailed: "Incorrect password!",
+                    mainTitle: "Lynk.Id Landing Page Concept",
+                    mainSubtitle: "Just provide the rough idea, and let the AI polish it into stunning bio-link page content.",
+                    initialStateTitle: "Your Content Awaits",
+                    initialStateSubtitle: "Fill out the form to see the magic happen.",
+                    q1Label: "1. Your Name / Brand Name",
+                    q1Placeholder: "e.g., Rina Hartono or 'Pastel Creative'",
+                    q2Label: "2. Tell Us About Yourself & Your Vision",
+                    q2Sublabel: "Who are you? What makes you passionate? What is your big goal?",
+                    q2Placeholder: "e.g., I'm an illustrator who loves minimalist design. I want to help other creators make beautiful content without the design hassle.",
+                    q3Label: "3. Describe Your Products / Services",
+                    q3Sublabel: "List what you offer. It can be a list, a story, or bullet points.",
+                    q3Placeholder: "e.g.,\n- 'Pastel' Instagram Templates (30 ready-to-use designs)\n- Custom logo design service\n- 'Visual Branding Basics' E-book",
+                    q4Label: "4. Who Is Your Target Audience?",
+                    q4Sublabel: "Who is this all for? What do you want them to do on your page?",
+                    q4Placeholder: "e.g., My target is content creators and small business owners. I want them to buy my templates or contact me for design services.",
+                    q5Label: "5. Choose a Tone of Voice",
+                    q5Sublabel: "Select the tone that best fits your brand.",
+                    styleFriendly: "Friendly & Casual",
+                    styleProfessional: "Professional & Convincing",
+                    styleCreative: "Creative & Enthusiastic",
+                    styleMinimalist: "Minimalist & To the Point",
+                    generateButton: "Compose My Page",
+                    regenerateButton: "Re-compose Page",
+                    loaderSystemAI: "System AI Analyzing...",
+                    loaderUserAI: "Your AI Analyzing...",
+                    resultReady: "✨ Your Page Content is Ready!",
+                    tabText: "Page Content",
+                    tabSummary: "Summary",
+                    tabSketch: "Layout Sketch",
+                    summaryPromptMessage: "Click the button below to create a summary from the generated content.",
+                    generateSummaryButton: "Summarize Content",
+                    regenerateSummaryButton: "Regenerate Summary",
+                    generatingSummary: "Summarizing content...",
+                    summaryTitle: "Content Summary",
+                    summaryHook: "Hook",
+                    summaryBio: "Short Bio",
+                    summaryProblem: "Problem",
+                    summarySolution: "Solution",
+                    summaryCTA: "Call to Action (CTA)",
+                    copySummaryButton: "Copy Summary",
+                    downloadSummaryTxtButton: "Download TXT",
+                    downloadSummaryPdfButton: "Download PDF",
+                    sketchTitle: "Layout Concept",
+                    generatingSketch: "Generating sketch...",
+                    generateSketchButton: "Generate Layout Sketch",
+                    regenerateSketchButton: "Regenerate Sketch",
+                    downloadSketchButton: "Download Image",
+                    sketchPromptMessage: "Your content text has been generated. Click below to create a layout visualization based on that content.",
+                    sketchDisclaimer: "This is an AI-generated concept sketch for inspiration.",
+                    colorPaletteTitle: "Color Palette Suggestion",
+                    colorBg: "Background Color",
+                    colorText: "Text Color",
+                    copyButton: "Copy Text",
+                    downloadTxtButton: "Download as TXT",
+                    downloadButton: "Download as PDF",
+                    apiKeySettingsTitle: "API Key Settings",
+                    chooseApiKeySource: "Choose the API Key source you want to use.",
+                    useSystemApi: "Use System AI",
+                    useSystemApiDesc: "Uses the built-in key (has limits)",
+                    usePersonalApi: "Use Your Personal AI",
+                    usePersonalApiDesc: "Enter your own Gemini API key",
+                    yourApiKeyLabel: "YOUR GEMINI API KEY",
+                    apiKeyPlaceholder: "Enter your API Key...",
+                    apiKeyNote: "Note: This key is shared and may have limitations. For the best experience, we highly recommend using your own API Key.",
+                    cancelButton: "Cancel",
+                    saveButton: "Save",
+                    alertApiSettingsSaved: "API settings saved successfully!",
+                    alertApiKeyEmpty: "API Key input cannot be empty.",
+                    alertCopied: "Text copied successfully!",
+                    alertSummaryCopied: "Summary copied successfully!",
+                    alertColorCopied: "HEX code copied successfully!",
+                    alertCopyFailed: "Failed to copy text.",
+                    alertDownloadFailed: "Failed to download file.",
+                    alertInputEmpty: "Please fill in all the fields.",
+                    alertErrorTitle: "An Error Occurred",
+                    alertSuccessTitle: "Success",
+                    alertInfoTitle: "Information",
+                    alertCloseButton: "Close",
+                    confirmLogoutTitle: "Confirm Logout",
+                    confirmLogoutMessage: "Are you sure you want to log out?",
+                    confirmYes: "Yes, Logout",
+                    confirmNo: "No",
+                    alertLoggedOut: "You have successfully logged out.",
+                    generationFailed: "Failed to generate content. Please try again or check your API key.",
+                    summaryGenerationFailed: "Failed to generate summary. Please try again.",
+                    imageAndColorGenerationFailed: "Failed to generate sketch & color palette. Please try again.",
+                }
+            };
+            
+            // --- DOM Selectors ---
+            const DOMElements = {
+                body: document.body,
+                loginCard: document.getElementById('login-card'),
+                generatorContent: document.getElementById('generator-content'),
+                loginForm: document.getElementById('login-form'),
+                passwordInput: document.getElementById('password'),
+                togglePassword: document.getElementById('toggle-password'),
+                generatorForm: document.getElementById('generator-form'),
+                generateBtn: document.getElementById('generate-btn'),
+                initialOutputPlaceholder: document.getElementById('initial-output-placeholder'),
+                outputSection: document.getElementById('output-section'),
+                outputTabs: document.getElementById('output-tabs'),
+                tabBtnText: document.getElementById('tab-btn-text'),
+                tabBtnSummary: document.getElementById('tab-btn-summary'),
+                tabBtnSketch: document.getElementById('tab-btn-sketch'),
+                textOutputPanel: document.getElementById('text-output-panel'),
+                summaryOutputPanel: document.getElementById('summary-output-panel'),
+                sketchOutputPanel: document.getElementById('sketch-output-panel'),
+                textContentLoader: document.getElementById('text-content-loader'),
+                outputContentContainer: document.getElementById('output-content-container'),
+                outputContent: document.getElementById('output-content').querySelector('pre'),
+                summaryPromptContainer: document.getElementById('summary-prompt-container'),
+                generateSummaryBtn: document.getElementById('generate-summary-btn'),
+                regenerateSummaryBtn: document.getElementById('regenerate-summary-btn'),
+                summaryLoader: document.getElementById('summary-loader'),
+                summaryContentContainer: document.getElementById('summary-content-container'),
+                summaryContentOutput: document.getElementById('summary-content-output'),
+                copySummaryBtn: document.getElementById('copy-summary-btn'),
+                downloadSummaryTxtBtn: document.getElementById('download-summary-txt-btn'),
+                downloadSummaryPdfBtn: document.getElementById('download-summary-pdf-btn'),
+                sketchPromptContainer: document.getElementById('sketch-prompt-container'),
+                generateSketchBtn: document.getElementById('generate-sketch-btn'),
+                regenerateSketchBtn: document.getElementById('regenerate-sketch-btn'),
+                downloadSketchBtn: document.getElementById('download-sketch-btn'),
+                sketchLoader: document.getElementById('sketch-loader'),
+                sketchContent: document.getElementById('sketch-content'),
+                sketchImage: document.getElementById('sketch-image'),
+                sketchColorPalette: document.getElementById('sketch-color-palette'),
+                colorPaletteContainer: document.getElementById('color-palette-container'),
+                copyBtn: document.getElementById('copy-btn'),
+                downloadTxtBtn: document.getElementById('download-txt-btn'),
+                downloadBtn: document.getElementById('download-btn'),
+                languageBtn: document.getElementById('language-btn'),
+                apiKeyBtn: document.getElementById('api-key-btn'),
+                themeBtnDesktop: document.getElementById('theme-btn-desktop'),
+                logoutBtnDesktop: document.getElementById('logout-btn-desktop'),
+                hamburgerBtn: document.getElementById('hamburger-btn'),
+                offcanvasMenu: document.getElementById('offcanvas-menu'),
+                offcanvasOverlay: document.getElementById('offcanvas-overlay'),
+                offcanvasCloseBtn: document.getElementById('offcanvas-close-btn'),
+                themeBtnMobile: document.getElementById('theme-btn-mobile'),
+                themeIconMobile: document.getElementById('theme-icon-mobile'),
+                logoutBtnMobile: document.getElementById('logout-btn-mobile'),
+                apiKeyModal: document.getElementById('api-key-modal'),
+                alertModal: document.getElementById('alert-modal'),
+                confirmationModal: document.getElementById('confirmation-modal'),
+                allModals: document.querySelectorAll('.fixed.inset-0'),
+                apiSourceSystem: document.getElementById('api-source-system'),
+                apiSourcePersonal: document.getElementById('api-source-personal'),
+                personalApiDetails: document.getElementById('personal-api-details'),
+                systemApiNote: document.getElementById('system-api-note'),
+                apiKeyInput: document.getElementById('api-key-input'),
+                toggleApiKeyVisibility: document.getElementById('toggle-api-key-visibility'),
+                apiModalSaveBtn: document.getElementById('api-modal-save-btn'),
+                apiModalCancelBtn: document.getElementById('api-modal-cancel-btn'),
+            };
+
+            // --- UTILITY & HELPER FUNCTIONS ---
+            const getUIText = (key) => UI_STRINGS[AppState.currentLanguage]?.[key] || UI_STRINGS.id[key] || key;
+            
+            const openModal = (modal) => {
+                const content = modal.querySelector('.card, [id$=-modal-content]');
+                if (!content) return;
+
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+                
+                // Clear previous animations to ensure the new one plays
+                content.className = content.className.replace(/\b(animate__[\w-]+|modal-content-animating-[\w-]+|alert-[\w-]+)\b/g, '').trim();
+
+                requestAnimationFrame(() => {
+                    const animationIn = content.dataset.animationIn;
+                    if (animationIn) {
+                        // This is now flexible enough for 'alert-spring-in' and 'animate__animated animate__shakeX'
+                        animationIn.split(' ').forEach(cls => cls && content.classList.add(cls));
+                    } else {
+                        // Default, more sophisticated animation for general modals
+                        content.classList.add('modal-content-animating-in');
+                    }
+                });
+            };
+
+            const closeModal = (modal) => {
+                const content = modal.querySelector('.card, [id$=-modal-content]');
+                if (!content || modal.classList.contains('hidden')) return;
+
+                const handleAnimationEnd = () => {
+                    modal.classList.add('hidden');
+                    modal.classList.remove('flex');
+                    // Clean up the animation class so it's ready for the next time
+                    content.className = content.className.replace(/\b(animate__[\w-]+|modal-content-animating-[\w-]+|alert-[\w-]+)\b/g, '').trim();
+                    content.removeEventListener('animationend', handleAnimationEnd);
+                };
+                content.addEventListener('animationend', handleAnimationEnd, { once: true });
+
+                // Clear any opening animations and prepare for closing animation
+                content.className = content.className.replace(/\b(animate__[\w-]+|modal-content-animating-[\w-]+|alert-[\w-]+)\b/g, '').trim();
+
+                let animationOutClass = 'modal-content-animating-out'; // Default closing animation
+                
+                if (modal.id === 'alert-modal') {
+                    animationOutClass = 'alert-fade-scale-out'; // Override for alerts
+                } else if (content.dataset.animationOut) {
+                    animationOutClass = content.dataset.animationOut;
+                }
+                
+                animationOutClass.split(' ').forEach(cls => cls && content.classList.add(cls));
+            };
+
+            const toggleOffcanvas = (show) => {
+                if (show) {
+                    DOMElements.offcanvasOverlay.classList.remove('hidden');
+                    DOMElements.offcanvasOverlay.style.opacity = '1';
+                    DOMElements.offcanvasMenu.classList.add('open');
+                } else {
+                    DOMElements.offcanvasOverlay.style.opacity = '0';
+                    DOMElements.offcanvasMenu.classList.remove('open');
+                    setTimeout(() => DOMElements.offcanvasOverlay.classList.add('hidden'), 300);
+                }
+            };
+            
+            const showAlert = (message, type = 'info') => {
+                const alertContent = document.getElementById('alert-modal-content');
+                const typeMap = {
+                    success: { titleKey: 'alertSuccessTitle', icon: 'fa-check-circle', color: 'bg-[var(--theme-success)]', btn: 'btn-secondary', animationIn: 'alert-spring-in' },
+                    error: { titleKey: 'alertErrorTitle', icon: 'fa-times-circle', color: 'bg-[var(--theme-error)]', btn: 'btn-danger', animationIn: 'animate__animated animate__shakeX' },
+                    info: { titleKey: 'alertInfoTitle', icon: 'fa-info-circle', color: 'bg-[var(--theme-accent-2)]', btn: 'btn-primary', animationIn: 'alert-slide-up-in' }
+                };
+                const config = typeMap[type];
+
+                // Set animation before opening modal
+                alertContent.dataset.animationIn = config.animationIn;
+                
+                document.getElementById('alert-title').textContent = getUIText(config.titleKey);
+                document.getElementById('alert-message').textContent = message;
+                document.getElementById('alert-icon-container').className = `w-16 h-16 rounded-full mx-auto flex items-center justify-center mb-4 ${config.color}`;
+                document.getElementById('alert-icon').className = `fas text-4xl text-white ${config.icon}`;
+                const closeBtn = document.getElementById('alert-close-btn');
+                closeBtn.textContent = getUIText('alertCloseButton');
+                closeBtn.className = `btn w-full ${config.btn}`;
+                openModal(DOMElements.alertModal);
+            };
+            
+            const showConfirmation = (titleKey, messageKey, onConfirm) => {
+                document.getElementById('confirmation-title').textContent = getUIText(titleKey);
+                document.getElementById('confirmation-message').textContent = getUIText(messageKey);
+                const yesBtn = document.getElementById('confirm-yes-btn');
+                const noBtn = document.getElementById('confirm-no-btn');
+                yesBtn.textContent = getUIText('confirmYes');
+                noBtn.textContent = getUIText('confirmNo');
+                const newYesBtn = yesBtn.cloneNode(true);
+                yesBtn.parentNode.replaceChild(newYesBtn, yesBtn);
+                newYesBtn.onclick = () => { onConfirm(); closeModal(DOMElements.confirmationModal); };
+                openModal(DOMElements.confirmationModal);
+            };
+            
+            const toggleButtonLoader = (btn, showLoader, loaderText = '') => {
+                const btnText = btn.querySelector('.btn-text');
+                const loaderSpan = btn.querySelector('.btn-loader');
+                btn.disabled = showLoader;
+                if (showLoader) {
+                    btnText?.classList.add('hidden');
+                    if (loaderSpan) {
+                        loaderSpan.classList.remove('hidden');
+                        loaderSpan.innerHTML = `<span class="loader"></span>${loaderText ? `<span class="ml-2">${loaderText}</span>` : ''}`;
+                    }
+                } else {
+                    btnText?.classList.remove('hidden');
+                    loaderSpan?.classList.add('hidden');
+                }
+            };
+
+            const parseGeneratedText = (text) => {
+                const sections = {};
+                const lines = text.split('\n');
+                let currentKey = null;
+
+                const keyMap = {
+                    "HEADLINE UTAMA:": "headline",
+                    "BIO PROFIL:": "bio",
+                    "APA YANG SAYA YAKINI:": "vision",
+                    "DIBUAT KHUSUS UNTUK KAMU:": "target",
+                    "PRODUK & LAYANAN UNGGULAN:": "products",
+                    "SIAP MEMULAI PERJALANANMU?:": "cta",
+                };
+
+                for (const line of lines) {
+                    const trimmedLine = line.trim();
+                    if (keyMap[trimmedLine]) {
+                        currentKey = keyMap[trimmedLine];
+                        sections[currentKey] = '';
+                    } else if (currentKey && trimmedLine) {
+                        sections[currentKey] = (sections[currentKey] + ' ' + trimmedLine).trim();
+                    }
+                }
+                return sections;
+            };
+
+            // --- CORE APPLICATION LOGIC ---
+            const applyTheme = (theme) => {
+                AppState.currentTheme = theme;
+                localStorage.setItem('landingpage_theme', theme);
+                const iconClass = theme === 'light' ? 'fa-sun' : 'fa-moon';
+                DOMElements.body.classList.toggle('light-theme', theme === 'light');
+                DOMElements.themeBtnDesktop.querySelector('i').className = `fas ${iconClass} fa-fw text-lg`;
+                DOMElements.themeIconMobile.className = `fas ${iconClass} fa-fw w-5`;
+                const accentColor = encodeURIComponent(getComputedStyle(document.documentElement).getPropertyValue('--theme-accent-1').trim());
+                document.querySelectorAll('.form-select').forEach(el => {
+                    el.style.backgroundImage = `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='${accentColor}' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e")`;
+                });
+            };
+            
+            const updateUI = () => {
+                document.documentElement.lang = AppState.currentLanguage;
+                document.querySelectorAll('[data-ui-key]').forEach(el => { el.textContent = getUIText(el.dataset.uiKey); });
+                document.querySelectorAll('[data-ui-key-placeholder]').forEach(el => { el.placeholder = getUIText(el.dataset.uiKeyPlaceholder); });
+                document.querySelectorAll('[data-ui-key-title]').forEach(el => { el.title = getUIText(el.dataset.uiKeyTitle); });
+            };
+
+            const setLanguage = (lang) => {
+                AppState.currentLanguage = lang;
+                localStorage.setItem('landingpage_language', lang);
+                updateUI();
+            };
+
+            const setLoginState = (loggedIn) => {
+                AppState.isLoggedIn = loggedIn;
+                DOMElements.loginCard.classList.toggle('hidden', loggedIn);
+                DOMElements.generatorContent.classList.toggle('hidden', !loggedIn);
+                DOMElements.logoutBtnDesktop.classList.toggle('hidden', !loggedIn);
+                DOMElements.logoutBtnMobile.classList.toggle('hidden', !loggedIn);
+                if (!loggedIn) {
+                    localStorage.removeItem('landingpage_session');
+                    DOMElements.passwordInput.value = '';
+                }
+            };
+            
+            const checkLoginSession = () => {
+                const sessionTimestamp = parseInt(localStorage.getItem('landingpage_session'), 10);
+                if (sessionTimestamp && (new Date().getTime() - sessionTimestamp < 24 * 60 * 60 * 1000)) {
+                    setLoginState(true);
+                } else {
+                    setLoginState(false);
+                }
+            };
+            
+            const getApiKey = () => (AppState.apiKeySource === 'personal' && AppState.personalApiKey) ? AppState.personalApiKey : SYSTEM_API_KEY;
+
+            async function callGeminiAPI(prompt, jsonResponseSchema = null) {
+                const apiKeyToUse = getApiKey();
+                if (!apiKeyToUse) return { error: getUIText('apiKeyNote') };
+                try {
+                    const ai = new GoogleGenAI({ apiKey: apiKeyToUse });
+                    const request = {
+                        model: 'gemini-2.5-flash',
+                        contents: prompt,
+                    };
+                    if (jsonResponseSchema) {
+                        request.config = {
+                            responseMimeType: "application/json",
+                            responseSchema: jsonResponseSchema
+                        };
+                    }
+                    const response = await ai.models.generateContent(request);
+                    return { text: response.text };
+                } catch (e) {
+                    console.error("Error calling Gemini API:", e);
+                    return { error: getUIText('generationFailed') };
+                }
+            }
+            
+            async function callImagenAPI(prompt) {
+                const apiKeyToUse = getApiKey();
+                if (!apiKeyToUse) return { error: getUIText('apiKeyNote') };
+                 try {
+                    const ai = new GoogleGenAI({ apiKey: apiKeyToUse });
+                    const response = await ai.models.generateImages({
+                        model: 'imagen-3.0-generate-002',
+                        prompt: prompt,
+                        config: {
+                          numberOfImages: 1,
+                          outputMimeType: 'image/png',
+                          aspectRatio: '9:16',
+                        },
+                    });
+                    return { image: response.generatedImages[0].image.imageBytes };
+                } catch (e) {
+                    console.error("Error calling Imagen API:", e);
+                    return { error: getUIText('imageAndColorGenerationFailed') };
+                }
+            }
+            
+            const handleFormSubmit = async (e) => {
+                e.preventDefault();
+                const btn = DOMElements.generateBtn;
+                if (btn.disabled) return;
+
+                const ownerName = document.getElementById('owner_name').value.trim();
+                const aboutYou = document.getElementById('about_you').value.trim();
+                const whatYouSell = document.getElementById('what_you_sell').value.trim();
+                const forWhom = document.getElementById('for_whom').value.trim();
+                
+                if (!ownerName || !aboutYou || !whatYouSell || !forWhom) {
+                    showAlert(getUIText('alertInputEmpty'), 'error');
+                    return;
+                }
+                
+                DOMElements.initialOutputPlaceholder.classList.add('hidden');
+
+                const languageStyle = document.getElementById('language_style').value;
+                const usePersonalAI = AppState.apiKeySource === 'personal' && AppState.personalApiKey;
+                const loaderTextKey = usePersonalAI ? 'loaderUserAI' : 'loaderSystemAI';
+                toggleButtonLoader(btn, true, getUIText(loaderTextKey));
+                
+                // --- Reset and show output section ---
+                DOMElements.outputSection.classList.remove('hidden', 'animate__animated', 'animate__fadeInUp');
+                // Only scroll into view on smaller screens where the layout is stacked
+                if (window.innerWidth < 1024) { // 1024px is Tailwind's lg breakpoint
+                    DOMElements.outputSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+                
+                // --- Reset and hide tabs on new generation ---
+                DOMElements.tabBtnSummary.classList.add('hidden');
+                DOMElements.tabBtnSketch.classList.add('hidden');
+
+                // Reset text panel
+                DOMElements.textContentLoader.querySelector('p').textContent = getUIText(loaderTextKey);
+                DOMElements.textContentLoader.classList.remove('hidden');
+                DOMElements.outputContentContainer.classList.add('hidden');
+                
+                // Reset sketch panel
+                DOMElements.sketchPromptContainer.classList.remove('hidden');
+                DOMElements.sketchLoader.classList.add('hidden');
+                DOMElements.sketchContent.classList.add('hidden');
+                DOMElements.sketchColorPalette.classList.add('hidden');
+
+                // Reset summary panel
+                DOMElements.summaryPromptContainer.classList.remove('hidden');
+                DOMElements.summaryLoader.classList.add('hidden');
+                DOMElements.summaryContentContainer.classList.add('hidden');
+
+                DOMElements.tabBtnText.click();
+
+                // --- Generate Text Content ---
+                const textPrompt = `
+                    Anda adalah seorang copywriter ahli dan penyusun strategi konten yang sangat kreatif untuk halaman bio-link (seperti Lynk.id atau Carrd).
+                    Tugas Anda adalah mengubah jawaban sederhana dari pengguna menjadi satu konten halaman yang lengkap, profesional, dan sangat persuasif.
+                    Anda harus BISA MENGANALISIS, MENYIMPULKAN, dan MENGEMBANGKAN ide mentah menjadi tulisan yang siap jual.
+                    Gunakan gaya bahasa ${languageStyle} dalam Bahasa Indonesia.
+
+                    INFORMASI MENTAH DARI PENGGUNA:
+                    ---
+                    NAMA PEMILIK/BRAND: ${ownerName}
+                    TENTANG DIA & VISINYA: ${aboutYou}
+                    PRODUK/JASA YANG DITAWARKAN: ${whatYouSell}
+                    TARGET AUDIENS & TUJUAN: ${forWhom}
+                    ---
+
+                    TUGAS ANDA (Gunakan keahlian copywriting Anda):
+                    1.  Analisis & Ekstrak: Baca semua informasi di atas. Identifikasi siapa orang ini, apa passion/visinya, apa saja yang ia jual, dan siapa targetnya.
+                    2.  Susun Konten Lengkap: Buat konten utuh mengikuti format WAJIB di bawah ini. JANGAN hanya menyalin jawaban pengguna. Kembangkan, poles, dan buat setiap bagian menjadi menarik.
+                    3.  PENTING: Jangan gunakan format markdown. Hasilkan teks biasa (plain text) saja. Ini penting agar hasilnya rapi saat disalin atau diunduh sebagai PDF.
+                    
+                    FORMAT OUTPUT (WAJIB DIIKUTI DENGAN TEGAS):
+                    ========================================
+
+                    HEADLINE UTAMA:
+                    [Buat 1 headline yang KUAT, PENDEK, dan MENARIK yang merangkum nilai utama. Contoh: 'Desain Cantik, Tanpa Ribet.' atau 'Wujudkan Ide Liarmu.']
+
+                    BIO PROFIL:
+                    [Olah bagian 'Tentang Dia & Visinya' menjadi bio perkenalan yang hangat dan profesional (2-4 kalimat). Perkenalkan nama dan jelaskan siapa dia dan apa yang dilakukannya secara menarik.]
+
+                    APA YANG SAYA YAKINI:
+                    [Ekstrak dan kembangkan 'Visi' dari cerita pengguna. Ubah menjadi sebuah paragraf naratif singkat yang inspiratif, menjelaskan 'mengapa' dia melakukan ini.]
+
+                    DIBUAT KHUSUS UNTUK KAMU:
+                    [Tulis 2-3 kalimat yang langsung berbicara kepada 'Target Audiens'. Tunjukkan bahwa Anda memahami masalah mereka dan bagaimana penawaran Anda adalah solusinya.]
+
+                    PRODUK & LAYANAN UNGGULAN:
+                    [INI BAGIAN PALING PENTING. Analisis bagian 'Produk/Jasa yang Ditawarkan'. Untuk SETIAP produk/jasa yang Anda temukan, buat satu bagian terpisah.
+                    - Gunakan Nama Produk sebagai sub-judul yang menonjol (tambahkan emoji yang relevan).
+                    - Tulis 1-2 kalimat deskripsi yang menggugah selera.
+                    - BUAT 2-3 poin MANFAUT UTAMA (benefit-oriented, bukan hanya fitur). Contoh: 'Hemat waktu berjam-jam' bukan 'Dapat 30 template'.
+                    - Buatkan satu kalimat Call-to-Action (CTA) yang jelas dan spesifik untuk setiap produk. Contoh: '➡️ Dapatkan Templatenya Sekarang' atau '📞 Jadwalkan Konsultasi Gratis'.
+                    - Beri pemisah '---' antar produk.]
+                    
+                    SIAP MEMULAI PERJALANANMU?:
+                    [Tulis 1-2 kalimat penutup yang energetik, merangkum tujuan utama halaman (berdasarkan input 'Target Audiens & Tujuan') dan mengajak mereka mengambil langkah pertama sekarang juga.]
+                `;
+                
+                const textResult = await callGeminiAPI(textPrompt);
+
+                if (textResult.error) {
+                    showAlert(textResult.error, 'error');
+                    DOMElements.outputSection.classList.add('hidden');
+                    DOMElements.initialOutputPlaceholder.classList.remove('hidden'); // Show placeholder again on error
+                    toggleButtonLoader(btn, false);
+                    btn.querySelector('.btn-text span').textContent = getUIText('generateButton');
+                    return;
+                }
+
+                DOMElements.outputContent.textContent = textResult.text;
+                DOMElements.textContentLoader.classList.add('hidden');
+                DOMElements.outputContentContainer.classList.remove('hidden');
+                DOMElements.outputSection.classList.add('animate__animated', 'animate__fadeInUp');
+
+                // Show summary tab after text generation is successful
+                DOMElements.tabBtnSummary.classList.remove('hidden');
+                
+                toggleButtonLoader(btn, false);
+                btn.querySelector('.btn-text span').textContent = getUIText('regenerateButton');
+            };
+            
+             const handleSummaryGeneration = async () => {
+                toggleButtonLoader(DOMElements.generateSummaryBtn, true, getUIText('generatingSummary'));
+                toggleButtonLoader(DOMElements.regenerateSummaryBtn, true);
+
+                DOMElements.summaryPromptContainer.classList.add('hidden');
+                DOMElements.summaryContentContainer.classList.add('hidden');
+                DOMElements.summaryLoader.classList.remove('hidden');
+
+                const fullText = DOMElements.outputContent.textContent;
+                const summaryPrompt = `
+                    Analisis teks berikut dan ekstrak esensinya ke dalam format JSON. Setiap nilai string harus SANGAT RINGKAS, dengan panjang maksimal 150 karakter.
+
+                    Teks untuk dianalisis:
+                    ---
+                    ${fullText}
+                    ---
+                `;
+
+                const summarySchema = {
+                    type: Type.OBJECT,
+                    properties: {
+                        hook: { type: Type.STRING, description: "Kalimat pembuka yang paling menarik perhatian (headline)." },
+                        bio: { type: Type.STRING, description: "Ringkasan bio profil dalam satu kalimat. Jika nama pemilik adalah nama orang, awali dengan 'Hai, saya [Nama]...'. Jika itu nama brand/bisnis, awali dengan 'Kami adalah [Nama Brand]...'." },
+                        problem: { type: Type.STRING, description: "Identifikasi masalah utama yang dihadapi target audiens." },
+                        solution: { type: Type.STRING, description: "Jelaskan bagaimana produk/jasa yang ditawarkan menjadi solusi dari masalah tersebut." },
+                        cta: { type: Type.STRING, description: "Kalimat ajakan bertindak (Call to Action) yang paling utama dan jelas." },
+                    },
+                    required: ["hook", "bio", "problem", "solution", "cta"]
+                };
+
+                const summaryResult = await callGeminiAPI(summaryPrompt, summarySchema);
+
+                toggleButtonLoader(DOMElements.generateSummaryBtn, false);
+                toggleButtonLoader(DOMElements.regenerateSummaryBtn, false);
+                DOMElements.summaryLoader.classList.add('hidden');
+
+                if (summaryResult.error) {
+                    showAlert(getUIText('summaryGenerationFailed'), 'error');
+                    DOMElements.summaryContentContainer.classList.remove('hidden'); // Show buttons again for retry
+                    return;
+                }
+                
+                try {
+                    const summaryData = JSON.parse(summaryResult.text);
+                    const outputContainer = DOMElements.summaryContentOutput;
+                    outputContainer.innerHTML = ''; // Clear previous content
+
+                    const summaryItems = [
+                        { key: 'hook', titleKey: 'summaryHook' },
+                        { key: 'bio', titleKey: 'summaryBio' },
+                        { key: 'problem', titleKey: 'summaryProblem' },
+                        { key: 'solution', titleKey: 'summarySolution' },
+                        { key: 'cta', titleKey: 'summaryCTA' }
+                    ];
+
+                    summaryItems.forEach(item => {
+                        const card = document.createElement('div');
+                        card.className = 'summary-card';
+                        card.innerHTML = `
+                            <h5>${getUIText(item.titleKey)}</h5>
+                            <p>${summaryData[item.key] || ''}</p>
+                        `;
+                        outputContainer.appendChild(card);
+                    });
+
+                    DOMElements.summaryContentContainer.classList.remove('hidden');
+                    // Show sketch tab after summary generation is successful
+                    DOMElements.tabBtnSketch.classList.remove('hidden');
+                } catch (e) {
+                    console.error("Error parsing summary JSON:", e);
+                    showAlert(getUIText('summaryGenerationFailed'), 'error');
+                    DOMElements.summaryContentContainer.classList.remove('hidden');
+                }
+            };
+
+            const renderColorPalette = (colors) => {
+                const container = DOMElements.colorPaletteContainer;
+                container.innerHTML = '';
+
+                const createColorCard = (labelKey, hex) => {
+                    const card = document.createElement('div');
+                    card.className = 'flex items-center gap-4 p-3 rounded-lg bg-[var(--theme-bg)] border border-[var(--theme-border)]';
+                    card.innerHTML = `
+                        <div class="w-12 h-12 rounded-md border border-[var(--theme-border)]" style="background-color: ${hex};"></div>
+                        <div class="flex-grow">
+                            <p class="font-semibold text-sm text-[var(--theme-text-primary)]">${getUIText(labelKey)}</p>
+                            <div class="flex items-center gap-2">
+                                <code class="text-sm text-[var(--theme-text-secondary)] font-mono">${hex}</code>
+                                <button class="copy-color-btn text-[var(--theme-text-secondary)] hover:text-[var(--theme-accent-1)] transition-colors" data-hex="${hex}" title="Copy HEX code">
+                                    <i class="fas fa-copy fa-fw"></i>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    return card;
+                };
+
+                container.appendChild(createColorCard('colorBg', colors.backgroundColor));
+                container.appendChild(createColorCard('colorText', colors.textColor));
+
+                container.querySelectorAll('.copy-color-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const hex = e.currentTarget.dataset.hex;
+                        navigator.clipboard.writeText(hex).then(() => {
+                           showAlert(`${getUIText('alertColorCopied')} (${hex})`, 'success');
+                        });
+                    });
+                });
+
+                DOMElements.sketchColorPalette.classList.remove('hidden');
+            };
+
+            const handleSketchGeneration = async () => {
+                const btnOriginal = DOMElements.generateSketchBtn;
+                const btnRegen = DOMElements.regenerateSketchBtn;
+
+                if (btnOriginal.disabled || btnRegen.disabled) return;
+                toggleButtonLoader(btnOriginal, true);
+                toggleButtonLoader(btnRegen, true);
+
+                DOMElements.sketchPromptContainer.classList.add('hidden');
+                DOMElements.sketchContent.classList.add('hidden');
+                DOMElements.sketchColorPalette.classList.add('hidden');
+                DOMElements.sketchLoader.classList.remove('hidden');
+                DOMElements.sketchLoader.querySelector('p').textContent = getUIText('generatingSketch');
+
+                const ownerName = document.getElementById('owner_name').value.trim();
+                const aboutYou = document.getElementById('about_you').value.trim();
+                const languageStyle = document.getElementById('language_style').value;
+                const generatedText = DOMElements.outputContent.textContent;
+                const contentParts = parseGeneratedText(generatedText);
+
+                const sketchPrompt = `A vertical 9:16 layout storyboard, strictly divided into three vertical sections (top, middle, bottom). Use a rough, unfinished, black and white sketch style. The human character is a generic figure with no detailed face, gender, or clothing—just loose, gestural line art, like a storyboard draft. The background is minimal or abstract. **Top Section:** A sketched human figure is on the **right side**, standing and waving their right hand in a friendly, welcoming pose. On the **left side**, add hand-written style text for a headline and bio, summarizing this text: "${contentParts.headline || 'Selamat Datang'}\n${contentParts.bio || `Hai, aku ${ownerName}!`}" Add a few small, sketchy decorative icons like leaves and sparkles around the text. **Middle Section:** A sketched human figure is on the **left side**, holding a tablet in one hand and making a peace sign (two fingers) with the other hand. On the **right side**, add a bold, hand-written style title summarizing this text: "${contentParts.products ? 'Produk & Layanan Unggulan' : 'Apa yang Saya Tawarkan'}" Below the title, add a few bullet points in rough handwriting, summarizing the offerings from this text: "${contentParts.products || 'Jasa, Konsultasi, Produk Digital'}" Add small, rough sketch icons for an e-book, a design tool (like a simplified Canva logo), and an AI symbol (like a brain or robot head) near the character or text. **Bottom Section:** A sketched human figure is in the **upper-right corner** of this section, in a sitting or kneeling pose, looking down at a phone (represented as a rectangle) in their hands. In the **lower-left area**, add friendly, handwritten text summarizing this call to action: "${contentParts.cta || 'Siap untuk memulai perjalananmu?'}" At the very bottom, centered, draw a large, decorative handwritten CTA button with the text "Mulai Dari Sini". Add small decorative elements like arrows or sparkles.`;
+                const colorPrompt = `
+                    Analyze the user's vision: "${aboutYou}" and their chosen style: "${languageStyle}".
+                    Based on this, generate a RICH and DYNAMIC color palette suitable for a modern bio-link website.
+
+                    **Key Requirements:**
+                    1.  **Colorful Background:** The background color MUST be a distinct, noticeable pastel color. Think soft pastel pink, calming mint green, warm pastel yellow, or gentle sky blue. The goal is to provide a creative and colorful starting point, NOT a neutral one.
+                    2.  **Strictly No White/Gray Backgrounds:** The background color MUST NOT be white, off-white, beige, or any shade of gray. It must be a clear, vibrant pastel color.
+                    3.  **High Contrast Text:** The text color MUST have excellent contrast against the background color to ensure readability (meeting at least WCAG AA standards). The text color should be a dark, rich color like deep charcoal, navy, or dark plum, but STRICTLY AVOID pure black (#000000).
+                    4.  **JSON Format:** Provide the output *only* in the required JSON format.
+
+                    **Example Palettes to Inspire You:**
+                    - For a "Creative & Playful" vision: { "backgroundColor": "#F7D6E0", "textColor": "#4B4453" } (Pastel Pink & Dark Plum)
+                    - For a "Calm & Natural" vision: { "backgroundColor": "#D4E2D4", "textColor": "#393E46" } (Sage Green & Charcoal)
+                    - For an "Energetic & Modern" vision: { "backgroundColor": "#F8E5A2", "textColor": "#003B46" } (Pastel Yellow & Dark Teal)
+                `;
+                
+                const colorSchema = {
+                    type: Type.OBJECT,
+                    properties: {
+                        backgroundColor: { type: Type.STRING, description: "A hex color code for the page background. Must be a vibrant pastel color like pink, green, blue, or yellow. It must NOT be white, off-white, or any shade of gray." },
+                        textColor: { type: Type.STRING, description: "A hex color code for the main text that contrasts well with the background. It must NOT be #000000 or #000." }
+                    },
+                    required: ["backgroundColor", "textColor"]
+                };
+
+                try {
+                    const [imageResult, colorResult] = await Promise.all([
+                        callImagenAPI(sketchPrompt),
+                        callGeminiAPI(colorPrompt, colorSchema)
+                    ]);
+
+                    if (imageResult.error || colorResult.error) {
+                       throw new Error(imageResult.error || colorResult.error);
+                    }
+                    
+                    const imageUrl = `data:image/png;base64,${imageResult.image}`;
+                    DOMElements.sketchImage.src = imageUrl;
+                    
+                    const colorData = JSON.parse(colorResult.text);
+                    renderColorPalette(colorData);
+
+                    DOMElements.sketchLoader.classList.add('hidden');
+                    DOMElements.sketchContent.classList.remove('hidden');
+
+                } catch(e) {
+                    console.error("Sketch/Color Generation Error:", e);
+                    DOMElements.sketchLoader.innerHTML = `<i class="fas fa-exclamation-triangle text-red-500 text-2xl"></i><p class="mt-2">${getUIText('imageAndColorGenerationFailed')}</p>`;
+                    DOMElements.sketchPromptContainer.classList.remove('hidden');
+                } finally {
+                    toggleButtonLoader(btnOriginal, false);
+                    toggleButtonLoader(btnRegen, false);
+                }
+            };
+            
+            const handleDownloadSketch = () => {
+                const imageUrl = DOMElements.sketchImage.src;
+                if (!imageUrl || !imageUrl.startsWith('data:image')) {
+                    showAlert(getUIText('alertDownloadFailed'), 'error');
+                    return;
+                }
+                try {
+                    const ownerName = document.getElementById('owner_name').value || "konsep";
+                    const filename = `${ownerName.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-')}-sketch.png`;
+                    const link = document.createElement('a');
+                    link.href = imageUrl;
+                    link.download = filename;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                } catch (error) {
+                    console.error("Sketch Download Error:", error);
+                    showAlert(getUIText('alertDownloadFailed'), 'error');
+                }
+            };
+
+            const getSummaryAsText = () => {
+                const summaryCards = DOMElements.summaryContentOutput.querySelectorAll('.summary-card');
+                if (summaryCards.length === 0) return '';
+                
+                let textToCopy = '';
+                summaryCards.forEach(card => {
+                    const title = card.querySelector('h5').textContent.trim();
+                    const content = card.querySelector('p').textContent.trim();
+                    textToCopy += `${title}:\n${content}\n\n`;
+                });
+                return textToCopy.trim();
+            };
+            
+            const handleCopySummary = () => {
+                const textToCopy = getSummaryAsText();
+                if (!textToCopy) return;
+
+                if (navigator.clipboard) {
+                    navigator.clipboard.writeText(textToCopy)
+                        .then(() => showAlert(getUIText('alertSummaryCopied'), 'success'))
+                        .catch(() => showAlert(getUIText('alertCopyFailed'), 'error'));
+                }
+            };
+
+            const handleDownloadSummaryTxt = () => {
+                const text = getSummaryAsText();
+                if (!text) return;
+
+                try {
+                    const ownerName = document.getElementById('owner_name').value || "konten";
+                    const filename = `${ownerName.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-')}-summary.txt`;
+
+                    const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+                    const url = URL.createObjectURL(blob);
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.download = filename;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    URL.revokeObjectURL(url);
+                } catch (error) {
+                    console.error("TXT Summary Download Error:", error);
+                    showAlert(getUIText('alertDownloadFailed'), 'error');
+                }
+            };
+
+            const handleDownloadSummaryPdf = () => {
+                const summaryCards = DOMElements.summaryContentOutput.querySelectorAll('.summary-card');
+                if (summaryCards.length === 0) return;
+                
+                try {
+                    const doc = new jsPDF();
+                    const ownerName = document.getElementById('owner_name').value || "konten";
+                    const filename = `${ownerName.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-')}-summary.pdf`;
+                    
+                    doc.setFontSize(11);
+                    let y = 20;
+
+                    summaryCards.forEach(card => {
+                        if (y > 270) {
+                            doc.addPage();
+                            y = 20;
+                        }
+                        const title = card.querySelector('h5').textContent.trim();
+                        const content = card.querySelector('p').textContent.trim();
+                        
+                        doc.setFont('helvetica', 'bold');
+                        doc.text(title, 14, y);
+                        y += 7;
+
+                        doc.setFont('helvetica', 'normal');
+                        const splitContent = doc.splitTextToSize(content, 180);
+                        doc.text(splitContent, 14, y);
+                        y += (splitContent.length * 5) + 10;
+                    });
+
+                    doc.save(filename);
+                } catch (error) {
+                    console.error("PDF Summary Download Error:", error);
+                    showAlert(getUIText('alertDownloadFailed'), 'error');
+                }
+            };
+
+            const handleCopy = () => {
+                const textToCopy = DOMElements.outputContent.textContent;
+                if (textToCopy && navigator.clipboard) {
+                    navigator.clipboard.writeText(textToCopy)
+                        .then(() => showAlert(getUIText('alertCopied'), 'success'))
+                        .catch(() => showAlert(getUIText('alertCopyFailed'), 'error'));
+                }
+            };
+
+            const handleDownloadTxt = () => {
+                const text = DOMElements.outputContent.textContent;
+                if (!text) return;
+
+                try {
+                    const ownerName = document.getElementById('owner_name').value || "konten";
+                    const filename = `${ownerName.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-')}-page-content.txt`;
+
+                    const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+                    const url = URL.createObjectURL(blob);
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.download = filename;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    URL.revokeObjectURL(url);
+                } catch (error) {
+                    console.error("TXT Download Error:", error);
+                    showAlert(getUIText('alertDownloadFailed'), 'error');
+                }
+            };
+            
+            const handleDownload = () => {
+                const text = DOMElements.outputContent.textContent;
+                if (!text) return;
+
+                try {
+                    const doc = new jsPDF();
+                    const ownerName = document.getElementById('owner_name').value || "konten";
+                    const filename = `${ownerName.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-')}-page-content.pdf`;
+                    
+                    doc.setFont('helvetica', 'normal');
+                    doc.setFontSize(11);
+                    const splitText = doc.splitTextToSize(text, 180);
+                    doc.text(splitText, 14, 20);
+                    doc.save(filename);
+                } catch (error) {
+                    console.error("PDF Generation Error:", error);
+                    showAlert(getUIText('generationFailed'), 'error');
+                }
+            };
+
+            // --- API MODAL LOGIC ---
+            let modalApiKeySource;
+            const renderApiModalState = (source) => {
+                const isSystem = source === 'system';
+                DOMElements.apiSourceSystem.style.borderColor = isSystem ? 'var(--theme-accent-2)' : 'var(--theme-border)';
+                DOMElements.apiSourceSystem.querySelector('i').className = `fas fa-check-circle text-xl text-[var(--theme-accent-2)]`;
+                DOMElements.apiSourcePersonal.style.borderColor = !isSystem ? 'var(--theme-accent-2)' : 'var(--theme-border)';
+                DOMElements.apiSourcePersonal.querySelector('i').className = !isSystem ? `fas fa-check-circle text-xl text-[var(--theme-accent-2)]` : `far fa-circle text-xl text-[var(--theme-text-secondary)]`;
+                DOMElements.personalApiDetails.classList.toggle('hidden', isSystem);
+                DOMElements.systemApiNote.classList.toggle('hidden', !isSystem);
+                DOMElements.apiKeyInput.value = AppState.personalApiKey || '';
+            };
+            const resetAndOpenApiKeyModal = () => {
+                modalApiKeySource = AppState.apiKeySource;
+                renderApiModalState(modalApiKeySource);
+                openModal(DOMElements.apiKeyModal);
+            };
+
+            // --- INITIALIZATION ---
+            const init = () => {
+                // Event Listeners
+                DOMElements.loginForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    if (DOMElements.passwordInput.value === '1') {
+                        localStorage.setItem('landingpage_session', new Date().getTime().toString());
+                        setLoginState(true);
+                    } else {
+                        showAlert(getUIText('loginFailed'), 'error');
+                    }
+                });
+                DOMElements.themeBtnDesktop.addEventListener('click', () => applyTheme(AppState.currentTheme === 'dark' ? 'light' : 'dark'));
+                DOMElements.themeBtnMobile.addEventListener('click', () => { applyTheme(AppState.currentTheme === 'dark' ? 'light' : 'dark'); toggleOffcanvas(false); });
+                DOMElements.languageBtn.addEventListener('click', () => setLanguage(AppState.currentLanguage === 'id' ? 'en' : 'id'));
+                const logoutAction = () => showConfirmation('confirmLogoutTitle', 'confirmLogoutMessage', () => { setLoginState(false); showAlert(getUIText('alertLoggedOut'), 'success'); });
+                DOMElements.logoutBtnDesktop.addEventListener('click', logoutAction);
+                DOMElements.logoutBtnMobile.addEventListener('click', () => { logoutAction(); toggleOffcanvas(false); });
+
+                DOMElements.generatorForm.addEventListener('submit', handleFormSubmit);
+                
+                DOMElements.generateSummaryBtn.addEventListener('click', handleSummaryGeneration);
+                DOMElements.regenerateSummaryBtn.addEventListener('click', handleSummaryGeneration);
+                DOMElements.copySummaryBtn.addEventListener('click', handleCopySummary);
+                DOMElements.downloadSummaryTxtBtn.addEventListener('click', handleDownloadSummaryTxt);
+                DOMElements.downloadSummaryPdfBtn.addEventListener('click', handleDownloadSummaryPdf);
+
+                DOMElements.generateSketchBtn.addEventListener('click', handleSketchGeneration);
+                DOMElements.regenerateSketchBtn.addEventListener('click', handleSketchGeneration);
+                DOMElements.downloadSketchBtn.addEventListener('click', handleDownloadSketch);
+
+                DOMElements.copyBtn.addEventListener('click', handleCopy);
+                DOMElements.downloadTxtBtn.addEventListener('click', handleDownloadTxt);
+                DOMElements.downloadBtn.addEventListener('click', handleDownload);
+                
+                DOMElements.togglePassword.addEventListener('click', () => {
+                    const isPassword = DOMElements.passwordInput.type === 'password';
+                    DOMElements.passwordInput.type = isPassword ? 'text' : 'password';
+                    DOMElements.togglePassword.classList.toggle('fa-eye-slash', !isPassword);
+                    DOMElements.togglePassword.classList.toggle('fa-eye', isPassword);
+                });
+                
+                // Tab Listeners
+                DOMElements.outputTabs.addEventListener('click', (e) => {
+                    const tabButton = e.target.closest('.tab-btn');
+                    if (!tabButton) return;
+                    
+                    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+                    document.querySelectorAll('.tab-panel').forEach(panel => panel.classList.remove('active'));
+                    
+                    tabButton.classList.add('active');
+                    document.getElementById(tabButton.dataset.tab).classList.add('active');
+                });
+
+                // Modal Listeners
+                DOMElements.apiKeyBtn.addEventListener('click', resetAndOpenApiKeyModal);
+                DOMElements.allModals.forEach(modal => {
+                    modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(modal); });
+                    modal.querySelector('.close-modal-btn')?.addEventListener('click', () => closeModal(modal));
+                });
+                document.getElementById('alert-close-btn').addEventListener('click', () => closeModal(DOMElements.alertModal));
+                document.getElementById('confirm-no-btn').addEventListener('click', () => closeModal(DOMElements.confirmationModal));
+
+                // Off-canvas listeners
+                DOMElements.hamburgerBtn.addEventListener('click', () => toggleOffcanvas(true));
+                DOMElements.offcanvasOverlay.addEventListener('click', () => toggleOffcanvas(false));
+                DOMElements.offcanvasCloseBtn.addEventListener('click', () => toggleOffcanvas(false));
+                
+                // API Modal Logic
+                DOMElements.apiSourceSystem.addEventListener('click', () => { modalApiKeySource = 'system'; renderApiModalState(modalApiKeySource); });
+                DOMElements.apiSourcePersonal.addEventListener('click', () => { modalApiKeySource = 'personal'; renderApiModalState(modalApiKeySource); });
+                DOMElements.apiModalSaveBtn.addEventListener('click', () => {
+                    if (modalApiKeySource === 'personal' && !DOMElements.apiKeyInput.value.trim()) { showAlert(getUIText('alertApiKeyEmpty'), 'error'); return; }
+                    AppState.apiKeySource = modalApiKeySource;
+                    localStorage.setItem('landingpage_api_source', modalApiKeySource);
+                    AppState.personalApiKey = DOMElements.apiKeyInput.value.trim();
+                    if(AppState.personalApiKey) localStorage.setItem('landingpage_api_key', AppState.personalApiKey); else localStorage.removeItem('landingpage_api_key');
+                    showAlert(getUIText('alertApiSettingsSaved'), 'success');
+                    closeModal(DOMElements.apiKeyModal);
+                });
+                DOMElements.apiModalCancelBtn.addEventListener('click', () => closeModal(DOMElements.apiKeyModal));
+                
+                DOMElements.toggleApiKeyVisibility.addEventListener('click', (e) => {
+                    const icon = e.currentTarget.querySelector('i');
+                    const isPassword = DOMElements.apiKeyInput.type === 'password';
+                    DOMElements.apiKeyInput.type = isPassword ? 'text' : 'password';
+                    icon.classList.toggle('fa-eye-slash', !isPassword);
+                    icon.classList.toggle('fa-eye', isPassword);
+                });
+
+                // Load initial state
+                setLanguage(localStorage.getItem('landingpage_language') || 'id');
+                AppState.apiKeySource = localStorage.getItem('landingpage_api_source') || 'system';
+                AppState.personalApiKey = localStorage.getItem('landingpage_api_key');
+                applyTheme(localStorage.getItem('landingpage_theme') || 'dark');
+                checkLoginSession();
+            };
+
+            init();
+        });
+    </script>
+
+</body>
+</html>
