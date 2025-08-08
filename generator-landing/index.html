@@ -162,7 +162,21 @@
         body.light-theme .summary-card p {
             color: var(--theme-text-primary);
         }
+        
+        .additional-info-card {
+            background-color: color-mix(in srgb, var(--theme-panel-bg) 50%, var(--theme-bg));
+            border-radius: 12px;
+            border-color: var(--theme-border);
+        }
+        
+        /* Custom animation speed for a better user experience */
+        .additional-info-card.animate__fadeOut {
+            --animate-duration: 0.35s;
+        }
 
+        .remove-info-btn i {
+            pointer-events: none;
+        }
 
         /* --- Modal Animation --- */
         @keyframes modal-fade-scale-in {
@@ -200,6 +214,53 @@
         
         .animate__animated.animate__shakeX {
             --animate-duration: 0.6s;
+        }
+        
+        /* --- HTML Layout Sketch Styles --- */
+        .layout-container {
+            border: 2px solid var(--theme-border);
+            padding: 1rem;
+            aspect-ratio: 9 / 16;
+            max-width: 320px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            background-color: var(--theme-bg);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+        .layout-row {
+            display: flex;
+            gap: 0.75rem;
+            align-items: stretch;
+            flex-grow: 1; /* Default grow factor */
+        }
+        .layout-block {
+            padding: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #ffffff;
+            flex-grow: 1;
+            word-break: break-word;
+            min-height: 50px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        .layout-block--hook { background-color: var(--theme-accent-1); }
+        .layout-block--bio { background-color: var(--theme-accent-2); }
+        .layout-block--problem { background-color: var(--theme-error); }
+        .layout-block--solution { background-color: var(--theme-success); }
+        .layout-block--cta { background-color: var(--theme-accent-3); color: var(--theme-bg); }
+        .layout-block--character {
+            background-color: transparent;
+            border: 2px dashed var(--theme-text-secondary);
+            color: var(--theme-text-secondary);
+            min-height: 60px;
         }
 
     </style>
@@ -332,6 +393,17 @@
                                         <option value="Minimalis & To the Point" data-ui-key="styleMinimalist">Minimalis & To the Point</option>
                                     </select>
                                 </div>
+                                
+                                <div>
+                                    <label class="form-label" data-ui-key="q6Label">6. Informasi Tambahan (Opsional)</label>
+                                    <div id="additional-info-container" class="space-y-4">
+                                        <!-- Dynamic cards will be injected here -->
+                                    </div>
+                                    <button type="button" id="add-info-btn" class="mt-4 w-full btn btn-neutral border-dashed hover:border-solid">
+                                        <i class="fas fa-plus"></i> <span data-ui-key="q6AddButton">Tambah Informasi</span>
+                                    </button>
+                                </div>
+
 
                                 <button type="submit" id="generate-btn" class="w-full btn btn-primary py-3.5">
                                     <span class="btn-text flex items-center justify-center gap-2">
@@ -372,7 +444,7 @@
                                                 <i class="fas fa-bolt mr-2"></i><span data-ui-key="tabSummary">Konten Ringkas</span>
                                             </button>
                                             <button id="tab-btn-sketch" type="button" class="tab-btn py-3 px-4 text-sm font-medium hidden" data-tab="sketch-output-panel">
-                                                <i class="fas fa-pencil-ruler mr-2"></i><span data-ui-key="tabSketch">Sketsa Layout</span>
+                                                <i class="fas fa-palette mr-2"></i><span data-ui-key="tabSketch">Sketsa Layout</span>
                                             </button>
                                         </nav>
                                     </div>
@@ -453,30 +525,21 @@
                                                 </div>
                                                 <div id="sketch-loader" class="text-center py-8 hidden">
                                                     <span class="loader"></span>
-                                                    <p class="mt-4 text-[var(--theme-text-secondary)]" data-ui-key="generatingSketch">Membuat sketsa...</p>
+                                                    <p class="mt-4 text-[var(--theme-text-secondary)]" data-ui-key="generatingSketch">Menyusun layout...</p>
                                                 </div>
                                                 <div id="sketch-content" class="hidden text-center">
-                                                    <img id="sketch-image" src="" alt="AI generated layout sketch" class="w-full max-w-md mx-auto rounded-lg border border-[var(--theme-border)] bg-[var(--theme-bg)]">
-                                                    
-                                                    <!-- Color Palette Section -->
-                                                    <div id="sketch-color-palette" class="mt-8 text-left hidden">
-                                                        <h5 class="text-lg font-bold text-center mb-4 gradient-text" data-ui-key="colorPaletteTitle"></h5>
-                                                        <div id="color-palette-container" class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-sm mx-auto">
-                                                            <!-- Color items will be injected here -->
-                                                        </div>
+                                                    <div id="sketch-layout-container" class="my-4">
+                                                        <!-- Dynamic HTML layout will be injected here -->
                                                     </div>
 
-                                                    <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-2">
-                                                        <button id="regenerate-sketch-btn" class="btn btn-secondary w-full">
+                                                    <div class="mt-4">
+                                                        <button id="regenerate-sketch-btn" class="btn btn-secondary w-full sm:w-auto">
                                                             <i class="fas fa-sync-alt"></i> <span data-ui-key="regenerateSketchButton"></span>
-                                                        </button>
-                                                        <button id="download-sketch-btn" class="btn btn-neutral w-full">
-                                                            <i class="fas fa-download"></i> <span data-ui-key="downloadSketchButton"></span>
                                                         </button>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <p class="text-center text-xs text-[var(--theme-text-secondary)] mt-8" data-ui-key="sketchDisclaimer">Ini adalah sketsa konsep yang dibuat AI untuk inspirasi.</p>
+                                            <p class="text-center text-xs text-[var(--theme-text-secondary)] mt-8" data-ui-key="sketchDisclaimer">Ini adalah sketsa konsep yang dibuat secara acak untuk inspirasi struktur halaman.</p>
                                         </div>
                                     </div>
                                 </div>
@@ -501,38 +564,57 @@
                     <div id="api-source-system" class="api-source-option border-2 rounded-lg p-4 cursor-pointer transition-all">
                         <div class="flex items-center justify-between">
                             <div>
-                                <p class="font-bold text-[var(--theme-text-primary)]" data-ui-key="useSystemApi">Gunakan AI Sistem</p>
+                                <p class="font-bold text-[var(--theme-text-primary)]" data-ui-key="useSystemApi">Gunakan API Sistem</p>
                                 <p class="text-sm text-[var(--theme-text-secondary)]" data-ui-key="useSystemApiDesc">Menggunakan kunci bawaan (ada batasan)</p>
                             </div>
-                            <i class="fas fa-check-circle text-xl"></i>
+                            <i class="far fa-circle text-xl text-[var(--theme-text-secondary)]"></i>
                         </div>
                     </div>
                     <div id="api-source-personal" class="api-source-option border-2 rounded-lg p-4 cursor-pointer transition-all">
                         <div class="flex items-center justify-between">
                             <div>
-                                <p class="font-bold text-[var(--theme-text-primary)]" data-ui-key="usePersonalApi">Gunakan AI Pribadi Anda</p>
+                                <p class="font-bold text-[var(--theme-text-primary)]" data-ui-key="usePersonalApi">Gunakan API Pribadi Anda</p>
                                 <p class="text-sm text-[var(--theme-text-secondary)]" data-ui-key="usePersonalApiDesc">Masukkan kunci API Gemini Anda sendiri</p>
                             </div>
-                            <i class="far fa-circle text-xl"></i>
+                            <i class="far fa-circle text-xl text-[var(--theme-text-secondary)]"></i>
                         </div>
                     </div>
                 </div>
-                <div id="personal-api-details" class="mt-6 space-y-4 hidden">
+
+                <div id="personal-api-details" class="mt-6 space-y-6 hidden">
+                    <div>
+                        <h4 data-ui-key="howToGetApiKeyTitle" class="font-semibold text-md mb-3 text-[var(--theme-text-primary)]"></h4>
+                        <ol class="list-decimal list-inside text-sm text-[var(--theme-text-secondary)] space-y-1.5 bg-gray-500/10 p-4 rounded-lg">
+                            <li data-ui-key="apiKeyInstruction1"></li>
+                            <li data-ui-key="apiKeyInstruction2"></li>
+                            <!-- Desktop-only Instruction -->
+                            <li data-ui-key="apiKeyInstruction3Desktop" class="hidden sm:list-item"></li>
+                            <!-- Mobile-only Instructions -->
+                            <li data-ui-key="apiKeyInstruction3Mobile" class="list-item sm:hidden"></li>
+                            <li data-ui-key="apiKeyInstruction4Mobile" class="list-item sm:hidden"></li>
+                             <!-- Common Last Instruction -->
+                            <li data-ui-key="apiKeyInstructionLast"></li>
+                        </ol>
+                    </div>
                     <div>
                         <label for="api-key-input" class="form-label uppercase text-xs !text-[var(--theme-text-secondary)] !font-bold !mb-2" data-ui-key="yourApiKeyLabel">API KEY GEMINI ANDA</label>
                         <div class="relative">
-                            <input type="password" id="api-key-input" class="form-input pr-12" data-ui-key-placeholder="apiKeyPlaceholder">
-                            <button id="toggle-api-key-visibility" class="absolute top-1/2 right-3 -translate-y-1/2 text-[var(--theme-text-secondary)] hover:text-[var(--theme-text-primary)]"><i class="fas fa-eye"></i></button>
+                            <input type="password" id="api-key-input" class="form-input pr-20" data-ui-key-placeholder="apiKeyPlaceholder">
+                            <div class="absolute top-1/2 right-4 -translate-y-1/2 flex items-center space-x-4">
+                                 <button id="toggle-api-key-visibility" class="text-[var(--theme-text-secondary)] hover:text-[var(--theme-text-primary)]" title="Toggle visibility"><i class="fas fa-eye"></i></button>
+                                 <button id="clear-api-key-btn" class="text-[var(--theme-text-secondary)] hover:text-[var(--theme-error)]" title="Clear input"><i class="fas fa-trash-alt"></i></button>
+                            </div>
                         </div>
                     </div>
                 </div>
+                
                 <div id="system-api-note" class="mt-6 p-4 bg-blue-500/10 border-l-4 border-blue-400 text-blue-300 rounded-r-lg">
                     <p class="text-sm" data-ui-key="apiKeyNote">Catatan: Kunci ini digunakan bersama dan mungkin memiliki batasan. Untuk pengalaman terbaik, kami sangat menyarankan menggunakan Kunci API Anda sendiri.</p>
                 </div>
             </div>
             <div class="flex-shrink-0 flex gap-4 mt-8 pt-6 border-t border-[var(--theme-border)]">
-                <button id="api-modal-cancel-btn" class="w-full btn btn-neutral py-2 px-4" data-ui-key="cancelButton">Batal</button>
-                <button id="api-modal-save-btn" class="w-full btn btn-primary py-2 px-4" data-ui-key="saveButton">Simpan</button>
+                <button id="api-modal-cancel-btn" class="w-full btn btn-neutral py-3" data-ui-key="cancelButton">Batal</button>
+                <button id="api-modal-save-btn" class="w-full btn btn-primary py-3" data-ui-key="saveButton">Simpan & Perbarui</button>
             </div>
         </div>
     </div>
@@ -595,7 +677,7 @@
             })();
             
             // --- GEMINI API SETUP ---
-            const SYSTEM_API_KEY = atob('QUl6YVN5Q0QtSzVBUUVXZ2hITUVSNG9MMnM2Z0ZtY1lXZWc2Qkk4'); // Obfuscated system key
+            const SYSTEM_API_KEY = 'AIzaSyDVpLbYS_B5tkJ8brKDN32m8F6wWAcAk0A'; // System key
 
             // --- CONFIGURATION & STATE ---
             const AppState = {
@@ -604,6 +686,8 @@
                 isLoggedIn: false,
                 personalApiKey: null,
                 apiKeySource: 'system', // 'system' or 'personal'
+                generatedContentJson: null, // Holds the structured JSON result
+                generatedSummaryJson: null, // Holds the structured summary JSON
             };
 
             const UI_STRINGS = {
@@ -634,8 +718,15 @@
                     q4Label: "4. Siapa Target Pelanggan Anda?",
                     q4Sublabel: "Untuk siapa ini semua? Apa yang Anda ingin mereka lakukan di halaman Anda?",
                     q4Placeholder: "Contoh: Target saya content creator dan pemilik UMKM. Saya ingin mereka membeli template saya atau menghubungi saya untuk jasa desain.",
-                    q5Label: "5. Pilih Gaya Konten Bahasamu",
-                    q5Sublabel: "yang paling sesuai dengan brand Anda.",
+                    q5Label: "5. Pilih Gaya Bahasa",
+                    q5Sublabel: "Pilih nada suara yang paling sesuai dengan brand Anda.",
+                    q6Label: "6. Informasi Tambahan (Opsional)",
+                    q6AddButton: "Tambah Informasi",
+                    q6RemoveButtonTitle: "Hapus Informasi",
+                    q6CardTitlePlaceholder: "Judul Bagian (Contoh: Jadwal Live)",
+                    q6CardContentPlaceholder: "Isi konten untuk bagian ini...",
+                    q6TitleLabel: "Judul Bagian",
+                    q6ContentLabel: "Konten Bagian",
                     styleFriendly: "Ramah & Santai",
                     styleProfessional: "Profesional & Meyakinkan",
                     styleCreative: "Kreatif & Bersemangat",
@@ -658,33 +749,37 @@
                     summaryProblem: "Masalah",
                     summarySolution: "Solusi",
                     summaryCTA: "Panggilan Aksi (CTA)",
+                    summaryAdditionalInfo: "Informasi Tambahan",
                     copySummaryButton: "Salin Ringkasan",
                     downloadSummaryTxtButton: "Unduh TXT",
                     downloadSummaryPdfButton: "Unduh PDF",
-                    sketchTitle: "Konsep Layout",
-                    generatingSketch: "Membuat sketsa...",
+                    sketchTitle: "Konsep Layout Landing Page",
+                    generatingSketch: "Menyusun layout...",
                     generateSketchButton: "Buat Sketsa Layout",
                     regenerateSketchButton: "Buat Ulang Sketsa",
-                    downloadSketchButton: "Unduh Gambar",
                     sketchPromptMessage: "Teks konten Anda telah dibuat. Klik di bawah untuk membuat visualisasi layout berdasarkan konten tersebut.",
-                    sketchDisclaimer: "Ini adalah sketsa konsep yang dibuat AI untuk inspirasi.",
-                    colorPaletteTitle: "Saran Palet Warna",
-                    colorBg: "Warna Latar",
-                    colorText: "Warna Teks",
+                    sketchDisclaimer: "Ini adalah sketsa konsep yang dibuat secara acak untuk inspirasi struktur halaman.",
                     copyButton: "Salin Teks",
                     downloadTxtButton: "Unduh sebagai TXT",
                     downloadButton: "Unduh sebagai PDF",
                     apiKeySettingsTitle: "Pengaturan API Key",
                     chooseApiKeySource: "Pilih sumber Kunci API yang ingin Anda gunakan.",
-                    useSystemApi: "Gunakan AI Sistem",
+                    useSystemApi: "Gunakan API Sistem",
                     useSystemApiDesc: "Menggunakan kunci bawaan (ada batasan)",
-                    usePersonalApi: "Gunakan AI Pribadi Anda",
+                    usePersonalApi: "Gunakan API Pribadi Anda",
                     usePersonalApiDesc: "Masukkan kunci API Gemini Anda sendiri",
+                    howToGetApiKeyTitle: "Cara mendapatkan API Key:",
+                    apiKeyInstruction1: "Kunjungi <a href='https://aistudio.google.com/app/apikey' target='_blank' class='font-bold text-[var(--theme-accent-1)] hover:underline'>Google AI Studio</a>.",
+                    apiKeyInstruction2: "Masuk dengan akun Google Anda.",
+                    apiKeyInstruction3Desktop: "Klik tombol <strong>Get API key</strong> di menu sebelah kiri.",
+                    apiKeyInstruction3Mobile: "Ketuk ikon menu (☰) di pojok kiri atas.",
+                    apiKeyInstruction4Mobile: "Pilih menu <strong>Get API key</strong>.",
+                    apiKeyInstructionLast: "Pilih atau buat proyek, lalu klik/ketuk <strong>Create API key</strong>.",
                     yourApiKeyLabel: "API KEY GEMINI ANDA",
-                    apiKeyPlaceholder: "Masukkan API Key Anda...",
+                    apiKeyPlaceholder: "Tempel API Key Anda di sini...",
                     apiKeyNote: "Catatan: Kunci ini digunakan bersama dan mungkin memiliki batasan. Untuk pengalaman terbaik, kami sangat menyarankan menggunakan Kunci API Anda sendiri.",
                     cancelButton: "Batal",
-                    saveButton: "Simpan",
+                    saveButton: "Simpan & Perbarui",
                     alertApiSettingsSaved: "Pengaturan API berhasil disimpan!",
                     alertApiKeyEmpty: "Input API Key tidak boleh kosong.",
                     alertCopied: "Teks berhasil disalin!",
@@ -699,12 +794,14 @@
                     alertCloseButton: "Tutup",
                     confirmLogoutTitle: "Konfirmasi Keluar",
                     confirmLogoutMessage: "Apakah Anda yakin ingin keluar?",
-                    confirmYes: "Ya, Keluar",
+                    confirmDeleteInfoTitle: "Konfirmasi Hapus",
+                    confirmDeleteInfoMessage: "Apakah Anda yakin ingin menghapus bagian informasi ini?",
+                    confirmYes: "Ya, Hapus",
                     confirmNo: "Tidak",
                     alertLoggedOut: "Anda telah berhasil keluar.",
                     generationFailed: "Gagal membuat konten. Silakan coba lagi atau periksa kunci API Anda.",
                     summaryGenerationFailed: "Gagal membuat ringkasan. Silakan coba lagi.",
-                    imageAndColorGenerationFailed: "Gagal membuat sketsa & palet warna. Silakan coba lagi.",
+                    imageAndColorGenerationFailed: "Gagal membuat sketsa. Silakan coba lagi.",
                 },
                 en: {
                     themeTitle: "Switch Theme",
@@ -735,6 +832,13 @@
                     q4Placeholder: "e.g., My target is content creators and small business owners. I want them to buy my templates or contact me for design services.",
                     q5Label: "5. Choose a Tone of Voice",
                     q5Sublabel: "Select the tone that best fits your brand.",
+                    q6Label: "6. Additional Information (Optional)",
+                    q6AddButton: "Add Information",
+                    q6RemoveButtonTitle: "Remove Information",
+                    q6CardTitlePlaceholder: "Section Title (e.g., Live Schedule)",
+                    q6CardContentPlaceholder: "Content for this section...",
+                    q6TitleLabel: "Section Title",
+                    q6ContentLabel: "Section Content",
                     styleFriendly: "Friendly & Casual",
                     styleProfessional: "Professional & Convincing",
                     styleCreative: "Creative & Enthusiastic",
@@ -757,33 +861,37 @@
                     summaryProblem: "Problem",
                     summarySolution: "Solution",
                     summaryCTA: "Call to Action (CTA)",
+                    summaryAdditionalInfo: "Additional Information",
                     copySummaryButton: "Copy Summary",
                     downloadSummaryTxtButton: "Download TXT",
                     downloadSummaryPdfButton: "Download PDF",
-                    sketchTitle: "Layout Concept",
-                    generatingSketch: "Generating sketch...",
+                    sketchTitle: "Landing Page Layout Concept",
+                    generatingSketch: "Composing layout...",
                     generateSketchButton: "Generate Layout Sketch",
                     regenerateSketchButton: "Regenerate Sketch",
-                    downloadSketchButton: "Download Image",
                     sketchPromptMessage: "Your content text has been generated. Click below to create a layout visualization based on that content.",
-                    sketchDisclaimer: "This is an AI-generated concept sketch for inspiration.",
-                    colorPaletteTitle: "Color Palette Suggestion",
-                    colorBg: "Background Color",
-                    colorText: "Text Color",
+                    sketchDisclaimer: "This is a randomly generated concept sketch for page structure inspiration.",
                     copyButton: "Copy Text",
                     downloadTxtButton: "Download as TXT",
                     downloadButton: "Download as PDF",
                     apiKeySettingsTitle: "API Key Settings",
                     chooseApiKeySource: "Choose the API Key source you want to use.",
-                    useSystemApi: "Use System AI",
+                    useSystemApi: "Use System API",
                     useSystemApiDesc: "Uses the built-in key (has limits)",
-                    usePersonalApi: "Use Your Personal AI",
+                    usePersonalApi: "Use Your Personal API",
                     usePersonalApiDesc: "Enter your own Gemini API key",
+                    howToGetApiKeyTitle: "How to get an API Key:",
+                    apiKeyInstruction1: "Visit <a href='https://aistudio.google.com/app/apikey' target='_blank' class='font-bold text-[var(--theme-accent-1)] hover:underline'>Google AI Studio</a>.",
+                    apiKeyInstruction2: "Sign in with your Google account.",
+                    apiKeyInstruction3Desktop: "Click the <strong>Get API key</strong> button in the left menu.",
+                    apiKeyInstruction3Mobile: "Tap the menu icon (☰) in the top-left corner.",
+                    apiKeyInstruction4Mobile: "Select the <strong>Get API key</strong> menu.",
+                    apiKeyInstructionLast: "Select or create a project, then click/tap <strong>Create API key</strong>.",
                     yourApiKeyLabel: "YOUR GEMINI API KEY",
-                    apiKeyPlaceholder: "Enter your API Key...",
+                    apiKeyPlaceholder: "Paste your API Key here...",
                     apiKeyNote: "Note: This key is shared and may have limitations. For the best experience, we highly recommend using your own API Key.",
                     cancelButton: "Cancel",
-                    saveButton: "Save",
+                    saveButton: "Save & Update",
                     alertApiSettingsSaved: "API settings saved successfully!",
                     alertApiKeyEmpty: "API Key input cannot be empty.",
                     alertCopied: "Text copied successfully!",
@@ -798,12 +906,14 @@
                     alertCloseButton: "Close",
                     confirmLogoutTitle: "Confirm Logout",
                     confirmLogoutMessage: "Are you sure you want to log out?",
-                    confirmYes: "Yes, Logout",
+                    confirmDeleteInfoTitle: "Confirm Deletion",
+                    confirmDeleteInfoMessage: "Are you sure you want to delete this information section?",
+                    confirmYes: "Yes, Delete",
                     confirmNo: "No",
                     alertLoggedOut: "You have successfully logged out.",
                     generationFailed: "Failed to generate content. Please try again or check your API key.",
                     summaryGenerationFailed: "Failed to generate summary. Please try again.",
-                    imageAndColorGenerationFailed: "Failed to generate sketch & color palette. Please try again.",
+                    imageAndColorGenerationFailed: "Failed to generate sketch. Please try again.",
                 }
             };
             
@@ -841,12 +951,9 @@
                 sketchPromptContainer: document.getElementById('sketch-prompt-container'),
                 generateSketchBtn: document.getElementById('generate-sketch-btn'),
                 regenerateSketchBtn: document.getElementById('regenerate-sketch-btn'),
-                downloadSketchBtn: document.getElementById('download-sketch-btn'),
                 sketchLoader: document.getElementById('sketch-loader'),
                 sketchContent: document.getElementById('sketch-content'),
-                sketchImage: document.getElementById('sketch-image'),
-                sketchColorPalette: document.getElementById('sketch-color-palette'),
-                colorPaletteContainer: document.getElementById('color-palette-container'),
+                sketchLayoutContainer: document.getElementById('sketch-layout-container'),
                 copyBtn: document.getElementById('copy-btn'),
                 downloadTxtBtn: document.getElementById('download-txt-btn'),
                 downloadBtn: document.getElementById('download-btn'),
@@ -871,8 +978,11 @@
                 systemApiNote: document.getElementById('system-api-note'),
                 apiKeyInput: document.getElementById('api-key-input'),
                 toggleApiKeyVisibility: document.getElementById('toggle-api-key-visibility'),
+                clearApiKeyBtn: document.getElementById('clear-api-key-btn'),
                 apiModalSaveBtn: document.getElementById('api-modal-save-btn'),
                 apiModalCancelBtn: document.getElementById('api-modal-cancel-btn'),
+                additionalInfoContainer: document.getElementById('additional-info-container'),
+                addInfoBtn: document.getElementById('add-info-btn'),
             };
 
             // --- UTILITY & HELPER FUNCTIONS ---
@@ -966,11 +1076,25 @@
                 document.getElementById('confirmation-message').textContent = getUIText(messageKey);
                 const yesBtn = document.getElementById('confirm-yes-btn');
                 const noBtn = document.getElementById('confirm-no-btn');
-                yesBtn.textContent = getUIText('confirmYes');
+
+                // Check language to set button text correctly
+                if (titleKey === 'confirmDeleteInfoTitle') {
+                    yesBtn.innerHTML = `<i class="fas fa-trash-alt"></i> ${getUIText('confirmYes')}`;
+                } else if (titleKey === 'confirmLogoutTitle') {
+                    yesBtn.innerHTML = `<i class="fas fa-sign-out-alt"></i> ${getUIText('confirmYes').replace('Hapus', 'Keluar')}`; // Adjust for logout
+                } else {
+                    yesBtn.textContent = getUIText('confirmYes');
+                }
                 noBtn.textContent = getUIText('confirmNo');
-                const newYesBtn = yesBtn.cloneNode(true);
-                yesBtn.parentNode.replaceChild(newYesBtn, yesBtn);
-                newYesBtn.onclick = () => { onConfirm(); closeModal(DOMElements.confirmationModal); };
+                
+                // By assigning to .onclick, we overwrite any previous handler for the 'yes' button.
+                // This is a simple and effective way to handle context-sensitive actions in a reusable modal.
+                // It's more direct and robust than cloning nodes for this specific use case.
+                yesBtn.onclick = () => {
+                    onConfirm();
+                    closeModal(DOMElements.confirmationModal);
+                };
+                
                 openModal(DOMElements.confirmationModal);
             };
             
@@ -990,30 +1114,35 @@
                 }
             };
 
-            const parseGeneratedText = (text) => {
-                const sections = {};
-                const lines = text.split('\n');
-                let currentKey = null;
-
-                const keyMap = {
-                    "HEADLINE UTAMA:": "headline",
-                    "BIO PROFIL:": "bio",
-                    "APA YANG SAYA YAKINI:": "vision",
-                    "DIBUAT KHUSUS UNTUK KAMU:": "target",
-                    "PRODUK & LAYANAN UNGGULAN:": "products",
-                    "SIAP MEMULAI PERJALANANMU?:": "cta",
-                };
-
-                for (const line of lines) {
-                    const trimmedLine = line.trim();
-                    if (keyMap[trimmedLine]) {
-                        currentKey = keyMap[trimmedLine];
-                        sections[currentKey] = '';
-                    } else if (currentKey && trimmedLine) {
-                        sections[currentKey] = (sections[currentKey] + ' ' + trimmedLine).trim();
+            const formatJsonToText = (jsonData) => {
+                let output = '';
+                const addSection = (title, content) => {
+                    if (content && content.trim()) {
+                        output += `${title.toUpperCase()}:\n${content.trim()}\n\n`;
                     }
+                };
+            
+                addSection(getUIText('summaryHook'), jsonData.headline);
+                addSection('BIO PROFIL', jsonData.bio);
+                addSection('APA YANG SAYA YAKINI', jsonData.vision);
+                addSection('DIBUAT KHUSUS UNTUK KAMU', jsonData.targetAudience);
+            
+                if (jsonData.products && jsonData.products.length > 0) {
+                    let productsContent = jsonData.products.map(product => {
+                        let benefitsText = product.benefits.map(b => `- ${b}`).join('\n');
+                        return `${product.name}\n${product.description}\n${benefitsText}\n${product.cta}`;
+                    }).join('\n\n---\n\n');
+                    addSection('PRODUK & LAYANAN UNGGULAN', productsContent);
                 }
-                return sections;
+                
+                if (jsonData.additionalInfo && jsonData.additionalInfo.length > 0) {
+                    let additionalContent = jsonData.additionalInfo.map(info => `${info.title.toUpperCase()}\n${info.content}`).join('\n\n');
+                    addSection('INFORMASI TAMBAHAN', additionalContent);
+                }
+            
+                addSection('SIAP MEMULAI PERJALANANMU?', jsonData.closingCta);
+            
+                return output.trim();
             };
 
             // --- CORE APPLICATION LOGIC ---
@@ -1032,7 +1161,7 @@
             
             const updateUI = () => {
                 document.documentElement.lang = AppState.currentLanguage;
-                document.querySelectorAll('[data-ui-key]').forEach(el => { el.textContent = getUIText(el.dataset.uiKey); });
+                document.querySelectorAll('[data-ui-key]').forEach(el => { el.innerHTML = getUIText(el.dataset.uiKey); });
                 document.querySelectorAll('[data-ui-key-placeholder]').forEach(el => { el.placeholder = getUIText(el.dataset.uiKeyPlaceholder); });
                 document.querySelectorAll('[data-ui-key-title]').forEach(el => { el.title = getUIText(el.dataset.uiKeyTitle); });
             };
@@ -1089,27 +1218,6 @@
                 }
             }
             
-            async function callImagenAPI(prompt) {
-                const apiKeyToUse = getApiKey();
-                if (!apiKeyToUse) return { error: getUIText('apiKeyNote') };
-                 try {
-                    const ai = new GoogleGenAI({ apiKey: apiKeyToUse });
-                    const response = await ai.models.generateImages({
-                        model: 'imagen-3.0-generate-002',
-                        prompt: prompt,
-                        config: {
-                          numberOfImages: 1,
-                          outputMimeType: 'image/png',
-                          aspectRatio: '9:16',
-                        },
-                    });
-                    return { image: response.generatedImages[0].image.imageBytes };
-                } catch (e) {
-                    console.error("Error calling Imagen API:", e);
-                    return { error: getUIText('imageAndColorGenerationFailed') };
-                }
-            }
-            
             const handleFormSubmit = async (e) => {
                 e.preventDefault();
                 const btn = DOMElements.generateBtn;
@@ -1125,6 +1233,16 @@
                     return;
                 }
                 
+                const additionalInfoCards = document.querySelectorAll('.additional-info-card');
+                let additionalInfoString = '';
+                additionalInfoCards.forEach((card) => {
+                    const title = card.querySelector('input[type="text"]').value.trim();
+                    const content = card.querySelector('textarea').value.trim();
+                    if (title && content) {
+                        additionalInfoString += `\nJudul Bagian: ${title}\nKonten: ${content}\n---`;
+                    }
+                });
+
                 DOMElements.initialOutputPlaceholder.classList.add('hidden');
 
                 const languageStyle = document.getElementById('language_style').value;
@@ -1134,38 +1252,31 @@
                 
                 // --- Reset and show output section ---
                 DOMElements.outputSection.classList.remove('hidden', 'animate__animated', 'animate__fadeInUp');
-                // Only scroll into view on smaller screens where the layout is stacked
-                if (window.innerWidth < 1024) { // 1024px is Tailwind's lg breakpoint
+                if (window.innerWidth < 1024) {
                     DOMElements.outputSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
                 
-                // --- Reset and hide tabs on new generation ---
+                // Reset states
+                AppState.generatedContentJson = null;
+                AppState.generatedSummaryJson = null;
                 DOMElements.tabBtnSummary.classList.add('hidden');
                 DOMElements.tabBtnSketch.classList.add('hidden');
-
-                // Reset text panel
                 DOMElements.textContentLoader.querySelector('p').textContent = getUIText(loaderTextKey);
                 DOMElements.textContentLoader.classList.remove('hidden');
                 DOMElements.outputContentContainer.classList.add('hidden');
-                
-                // Reset sketch panel
                 DOMElements.sketchPromptContainer.classList.remove('hidden');
                 DOMElements.sketchLoader.classList.add('hidden');
                 DOMElements.sketchContent.classList.add('hidden');
-                DOMElements.sketchColorPalette.classList.add('hidden');
-
-                // Reset summary panel
                 DOMElements.summaryPromptContainer.classList.remove('hidden');
                 DOMElements.summaryLoader.classList.add('hidden');
                 DOMElements.summaryContentContainer.classList.add('hidden');
 
                 DOMElements.tabBtnText.click();
 
-                // --- Generate Text Content ---
-                const textPrompt = `
-                    Anda adalah seorang copywriter ahli dan penyusun strategi konten yang sangat kreatif untuk halaman bio-link (seperti Lynk.id atau Carrd).
-                    Tugas Anda adalah mengubah jawaban sederhana dari pengguna menjadi satu konten halaman yang lengkap, profesional, dan sangat persuasif.
-                    Anda harus BISA MENGANALISIS, MENYIMPULKAN, dan MENGEMBANGKAN ide mentah menjadi tulisan yang siap jual.
+                // --- Generate Text Content as JSON ---
+                 const textPrompt = `
+                    Anda adalah seorang copywriter ahli dan penyusun strategi konten yang sangat kreatif untuk halaman bio-link (seperti Lynk.id).
+                    Tugas Anda adalah mengubah jawaban mentah dari pengguna menjadi konten halaman yang lengkap, profesional, dan persuasif dalam format JSON yang terstruktur.
                     Gunakan gaya bahasa ${languageStyle} dalam Bahasa Indonesia.
 
                     INFORMASI MENTAH DARI PENGGUNA:
@@ -1174,64 +1285,102 @@
                     TENTANG DIA & VISINYA: ${aboutYou}
                     PRODUK/JASA YANG DITAWARKAN: ${whatYouSell}
                     TARGET AUDIENS & TUJUAN: ${forWhom}
+                    ${additionalInfoString ? `\nINFORMASI TAMBAHAN:\n${additionalInfoString}` : ''}
                     ---
 
-                    TUGAS ANDA (Gunakan keahlian copywriting Anda):
-                    1.  Analisis & Ekstrak: Baca semua informasi di atas. Identifikasi siapa orang ini, apa passion/visinya, apa saja yang ia jual, dan siapa targetnya.
-                    2.  Susun Konten Lengkap: Buat konten utuh mengikuti format WAJIB di bawah ini. JANGAN hanya menyalin jawaban pengguna. Kembangkan, poles, dan buat setiap bagian menjadi menarik.
-                    3.  PENTING: Jangan gunakan format markdown. Hasilkan teks biasa (plain text) saja. Ini penting agar hasilnya rapi saat disalin atau diunduh sebagai PDF.
-                    
-                    FORMAT OUTPUT (WAJIB DIIKUTI DENGAN TEGAS):
-                    ========================================
-
-                    HEADLINE UTAMA:
-                    [Buat 1 headline yang KUAT, PENDEK, dan MENARIK yang merangkum nilai utama. Contoh: 'Desain Cantik, Tanpa Ribet.' atau 'Wujudkan Ide Liarmu.']
-
-                    BIO PROFIL:
-                    [Olah bagian 'Tentang Dia & Visinya' menjadi bio perkenalan yang hangat dan profesional (2-4 kalimat). Perkenalkan nama dan jelaskan siapa dia dan apa yang dilakukannya secara menarik.]
-
-                    APA YANG SAYA YAKINI:
-                    [Ekstrak dan kembangkan 'Visi' dari cerita pengguna. Ubah menjadi sebuah paragraf naratif singkat yang inspiratif, menjelaskan 'mengapa' dia melakukan ini.]
-
-                    DIBUAT KHUSUS UNTUK KAMU:
-                    [Tulis 2-3 kalimat yang langsung berbicara kepada 'Target Audiens'. Tunjukkan bahwa Anda memahami masalah mereka dan bagaimana penawaran Anda adalah solusinya.]
-
-                    PRODUK & LAYANAN UNGGULAN:
-                    [INI BAGIAN PALING PENTING. Analisis bagian 'Produk/Jasa yang Ditawarkan'. Untuk SETIAP produk/jasa yang Anda temukan, buat satu bagian terpisah.
-                    - Gunakan Nama Produk sebagai sub-judul yang menonjol (tambahkan emoji yang relevan).
-                    - Tulis 1-2 kalimat deskripsi yang menggugah selera.
-                    - BUAT 2-3 poin MANFAUT UTAMA (benefit-oriented, bukan hanya fitur). Contoh: 'Hemat waktu berjam-jam' bukan 'Dapat 30 template'.
-                    - Buatkan satu kalimat Call-to-Action (CTA) yang jelas dan spesifik untuk setiap produk. Contoh: '➡️ Dapatkan Templatenya Sekarang' atau '📞 Jadwalkan Konsultasi Gratis'.
-                    - Beri pemisah '---' antar produk.]
-                    
-                    SIAP MEMULAI PERJALANANMU?:
-                    [Tulis 1-2 kalimat penutup yang energetik, merangkum tujuan utama halaman (berdasarkan input 'Target Audiens & Tujuan') dan mengajak mereka mengambil langkah pertama sekarang juga.]
+                    TUGAS ANDA:
+                    1.  Analisis & Kembangkan: Baca semua informasi di atas. Jangan hanya menyalin, tapi kembangkan ide mentah menjadi tulisan yang siap jual.
+                    2.  Strukturkan ke JSON: Hasilkan output HANYA dalam format JSON, sesuai dengan skema yang diberikan.
+                    3.  Kembangkan Setiap Bagian:
+                        -   headline: Buat 1 headline yang KUAT, PENDEK, dan MENARIK.
+                        -   bio: Olah 'Tentang Dia & Visinya' menjadi bio perkenalan yang hangat (2-4 kalimat).
+                        -   vision: Ekstrak 'Visi' menjadi paragraf naratif singkat yang inspiratif.
+                        -   targetAudience: Tulis 2-3 kalimat yang langsung berbicara kepada 'Target Audiens', menunjukkan pemahaman akan masalah mereka.
+                        -   products: Untuk SETIAP produk/jasa, buat satu objek terpisah. Beri NAMA dengan emoji, tulis DESKRIPSI menarik, buat 2-3 MANFAAT (bukan fitur), dan tulis CTA yang jelas.
+                        -   additionalInfo: Olah setiap bagian informasi tambahan menjadi objek dengan judul dan konten yang dikembangkan.
+                        -   closingCta: Tulis 1-2 kalimat penutup yang energetik dan mengajak bertindak.
                 `;
+
+                const contentSchema = {
+                    type: Type.OBJECT,
+                    properties: {
+                        headline: { type: Type.STRING, description: "Headline yang kuat, pendek, dan menarik." },
+                        bio: { type: Type.STRING, description: "Bio perkenalan yang hangat dan profesional (2-4 kalimat)." },
+                        vision: { type: Type.STRING, description: "Paragraf naratif singkat yang inspiratif tentang visi pengguna." },
+                        targetAudience: { type: Type.STRING, description: "2-3 kalimat yang langsung berbicara kepada target audiens." },
+                        products: {
+                            type: Type.ARRAY,
+                            description: "Daftar produk atau layanan.",
+                            items: {
+                                type: Type.OBJECT,
+                                properties: {
+                                    name: { type: Type.STRING, description: "Nama produk/layanan, termasuk emoji yang relevan." },
+                                    description: { type: Type.STRING, description: "Deskripsi singkat yang menggugah selera." },
+                                    benefits: {
+                                        type: Type.ARRAY,
+                                        items: { type: Type.STRING },
+                                        description: "2-3 poin manfaat utama (benefit-oriented)."
+                                    },
+                                    cta: { type: Type.STRING, description: "Kalimat Call-to-Action (CTA) yang jelas." }
+                                },
+                                required: ["name", "description", "benefits", "cta"]
+                            }
+                        },
+                        additionalInfo: {
+                             type: Type.ARRAY,
+                             description: "Olah informasi tambahan dari pengguna. Jika tidak ada, kembalikan array kosong.",
+                             items: {
+                                type: Type.OBJECT,
+                                properties: {
+                                    title: { type: Type.STRING, description: "Judul asli dari bagian informasi tambahan." },
+                                    content: { type: Type.STRING, description: "Konten yang dikembangkan untuk bagian tersebut." }
+                                },
+                                required: ["title", "content"]
+                             }
+                        },
+                        closingCta: { type: Type.STRING, description: "1-2 kalimat penutup yang energetik dan mengajak bertindak." }
+                    },
+                    required: ["headline", "bio", "vision", "targetAudience", "products", "additionalInfo", "closingCta"]
+                };
                 
-                const textResult = await callGeminiAPI(textPrompt);
+                const textResult = await callGeminiAPI(textPrompt, contentSchema);
 
                 if (textResult.error) {
                     showAlert(textResult.error, 'error');
                     DOMElements.outputSection.classList.add('hidden');
-                    DOMElements.initialOutputPlaceholder.classList.remove('hidden'); // Show placeholder again on error
+                    DOMElements.initialOutputPlaceholder.classList.remove('hidden');
                     toggleButtonLoader(btn, false);
                     btn.querySelector('.btn-text span').textContent = getUIText('generateButton');
                     return;
                 }
 
-                DOMElements.outputContent.textContent = textResult.text;
-                DOMElements.textContentLoader.classList.add('hidden');
-                DOMElements.outputContentContainer.classList.remove('hidden');
-                DOMElements.outputSection.classList.add('animate__animated', 'animate__fadeInUp');
+                try {
+                    AppState.generatedContentJson = JSON.parse(textResult.text);
+                    const formattedText = formatJsonToText(AppState.generatedContentJson);
+                    DOMElements.outputContent.textContent = formattedText;
 
-                // Show summary tab after text generation is successful
-                DOMElements.tabBtnSummary.classList.remove('hidden');
-                
-                toggleButtonLoader(btn, false);
-                btn.querySelector('.btn-text span').textContent = getUIText('regenerateButton');
+                    DOMElements.textContentLoader.classList.add('hidden');
+                    DOMElements.outputContentContainer.classList.remove('hidden');
+                    DOMElements.outputSection.classList.add('animate__animated', 'animate__fadeInUp');
+
+                    DOMElements.tabBtnSummary.classList.remove('hidden');
+                } catch(e) {
+                    console.error("Error parsing generated JSON:", e);
+                    showAlert(getUIText('generationFailed'), 'error');
+                    DOMElements.outputSection.classList.add('hidden');
+                    DOMElements.initialOutputPlaceholder.classList.remove('hidden');
+                } finally {
+                    toggleButtonLoader(btn, false);
+                    btn.querySelector('.btn-text span').textContent = getUIText('regenerateButton');
+                }
             };
             
              const handleSummaryGeneration = async () => {
+                if (!AppState.generatedContentJson) {
+                    showAlert("Silakan buat konten utama terlebih dahulu.", "info");
+                    return;
+                }
+
                 toggleButtonLoader(DOMElements.generateSummaryBtn, true, getUIText('generatingSummary'));
                 toggleButtonLoader(DOMElements.regenerateSummaryBtn, true);
 
@@ -1239,26 +1388,49 @@
                 DOMElements.summaryContentContainer.classList.add('hidden');
                 DOMElements.summaryLoader.classList.remove('hidden');
 
-                const fullText = DOMElements.outputContent.textContent;
-                const summaryPrompt = `
-                    Analisis teks berikut dan ekstrak esensinya ke dalam format JSON. Setiap nilai string harus SANGAT RINGKAS, dengan panjang maksimal 150 karakter.
+                const { headline, bio, targetAudience, products, closingCta, additionalInfo } = AppState.generatedContentJson;
 
-                    Teks untuk dianalisis:
+                const summaryPrompt = `
+                    Analisis konten terstruktur berikut, lalu ekstrak esensinya ke dalam format JSON. Setiap nilai string harus SANGAT RINGKAS, dengan panjang maksimal 150 karakter.
+
+                    Konten Terstruktur untuk dianalisis:
                     ---
-                    ${fullText}
+                    Headline: ${headline}
+                    Bio: ${bio}
+                    Masalah Audiens (dapat disimpulkan dari): ${targetAudience}
+                    Solusi yang ditawarkan (dapat disimpulkan dari produk): ${products.map(p => p.name).join(', ')}
+                    Panggilan Aksi Utama: ${closingCta}
+                    Informasi Tambahan: ${additionalInfo.map(i => `${i.title}: ${i.content}`).join('\n')}
                     ---
+                    
+                    Instruksi Khusus untuk Informasi Tambahan:
+                    - Untuk SETIAP bagian informasi tambahan, buat ringkasan terpisah.
+                    - Masukkan semua ringkasan ini ke dalam array 'summarizedInfo'.
+                    - Jika tidak ada informasi tambahan, kembalikan array kosong untuk 'summarizedInfo'.
                 `;
 
                 const summarySchema = {
                     type: Type.OBJECT,
                     properties: {
-                        hook: { type: Type.STRING, description: "Kalimat pembuka yang paling menarik perhatian (headline)." },
-                        bio: { type: Type.STRING, description: "Ringkasan bio profil dalam satu kalimat. Jika nama pemilik adalah nama orang, awali dengan 'Hai, saya [Nama]...'. Jika itu nama brand/bisnis, awali dengan 'Kami adalah [Nama Brand]...'." },
+                        hook: { type: Type.STRING, description: "Ringkasan headline dalam satu kalimat." },
+                        bio: { type: Type.STRING, description: "Ringkasan bio profil dalam satu kalimat." },
                         problem: { type: Type.STRING, description: "Identifikasi masalah utama yang dihadapi target audiens." },
-                        solution: { type: Type.STRING, description: "Jelaskan bagaimana produk/jasa yang ditawarkan menjadi solusi dari masalah tersebut." },
-                        cta: { type: Type.STRING, description: "Kalimat ajakan bertindak (Call to Action) yang paling utama dan jelas." },
+                        solution: { type: Type.STRING, description: "Jelaskan bagaimana produk/jasa yang ditawarkan menjadi solusi." },
+                        cta: { type: Type.STRING, description: "Ringkasan ajakan bertindak (Call to Action) yang paling utama." },
+                        summarizedInfo: {
+                            type: Type.ARRAY,
+                            description: "Array berisi ringkasan dari setiap bagian 'Informasi Tambahan'.",
+                            items: {
+                                type: Type.OBJECT,
+                                properties: {
+                                    title: { type: Type.STRING, description: "Judul asli dari bagian informasi tambahan." },
+                                    summary: { type: Type.STRING, description: "Konten yang telah diringkas." }
+                                },
+                                required: ["title", "summary"]
+                            }
+                        }
                     },
-                    required: ["hook", "bio", "problem", "solution", "cta"]
+                    required: ["hook", "bio", "problem", "solution", "cta", "summarizedInfo"]
                 };
 
                 const summaryResult = await callGeminiAPI(summaryPrompt, summarySchema);
@@ -1269,14 +1441,15 @@
 
                 if (summaryResult.error) {
                     showAlert(getUIText('summaryGenerationFailed'), 'error');
-                    DOMElements.summaryContentContainer.classList.remove('hidden'); // Show buttons again for retry
+                    DOMElements.summaryPromptContainer.classList.remove('hidden'); // Show button again for retry
                     return;
                 }
                 
                 try {
                     const summaryData = JSON.parse(summaryResult.text);
+                    AppState.generatedSummaryJson = summaryData; // Store summary data
                     const outputContainer = DOMElements.summaryContentOutput;
-                    outputContainer.innerHTML = ''; // Clear previous content
+                    outputContainer.innerHTML = '';
 
                     const summaryItems = [
                         { key: 'hook', titleKey: 'summaryHook' },
@@ -1287,156 +1460,180 @@
                     ];
 
                     summaryItems.forEach(item => {
-                        const card = document.createElement('div');
-                        card.className = 'summary-card';
-                        card.innerHTML = `
-                            <h5>${getUIText(item.titleKey)}</h5>
-                            <p>${summaryData[item.key] || ''}</p>
-                        `;
-                        outputContainer.appendChild(card);
+                        if (summaryData[item.key]) {
+                             const card = document.createElement('div');
+                            card.className = 'summary-card';
+                            card.innerHTML = `
+                                <h5>${getUIText(item.titleKey)}</h5>
+                                <p>${summaryData[item.key]}</p>
+                            `;
+                            outputContainer.appendChild(card);
+                        }
                     });
 
+                    if (summaryData.summarizedInfo && Array.isArray(summaryData.summarizedInfo)) {
+                        summaryData.summarizedInfo.forEach(info => {
+                            if (info.title && info.summary) {
+                                const card = document.createElement('div');
+                                card.className = 'summary-card';
+                                card.innerHTML = `
+                                    <h5>${info.title}</h5>
+                                    <p>${info.summary}</p>
+                                `;
+                                outputContainer.appendChild(card);
+                            }
+                        });
+                    }
+
                     DOMElements.summaryContentContainer.classList.remove('hidden');
-                    // Show sketch tab after summary generation is successful
                     DOMElements.tabBtnSketch.classList.remove('hidden');
                 } catch (e) {
                     console.error("Error parsing summary JSON:", e);
                     showAlert(getUIText('summaryGenerationFailed'), 'error');
-                    DOMElements.summaryContentContainer.classList.remove('hidden');
-                }
-            };
-
-            const renderColorPalette = (colors) => {
-                const container = DOMElements.colorPaletteContainer;
-                container.innerHTML = '';
-
-                const createColorCard = (labelKey, hex) => {
-                    const card = document.createElement('div');
-                    card.className = 'flex items-center gap-4 p-3 rounded-lg bg-[var(--theme-bg)] border border-[var(--theme-border)]';
-                    card.innerHTML = `
-                        <div class="w-12 h-12 rounded-md border border-[var(--theme-border)]" style="background-color: ${hex};"></div>
-                        <div class="flex-grow">
-                            <p class="font-semibold text-sm text-[var(--theme-text-primary)]">${getUIText(labelKey)}</p>
-                            <div class="flex items-center gap-2">
-                                <code class="text-sm text-[var(--theme-text-secondary)] font-mono">${hex}</code>
-                                <button class="copy-color-btn text-[var(--theme-text-secondary)] hover:text-[var(--theme-accent-1)] transition-colors" data-hex="${hex}" title="Copy HEX code">
-                                    <i class="fas fa-copy fa-fw"></i>
-                                </button>
-                            </div>
-                        </div>
-                    `;
-                    return card;
-                };
-
-                container.appendChild(createColorCard('colorBg', colors.backgroundColor));
-                container.appendChild(createColorCard('colorText', colors.textColor));
-
-                container.querySelectorAll('.copy-color-btn').forEach(btn => {
-                    btn.addEventListener('click', (e) => {
-                        const hex = e.currentTarget.dataset.hex;
-                        navigator.clipboard.writeText(hex).then(() => {
-                           showAlert(`${getUIText('alertColorCopied')} (${hex})`, 'success');
-                        });
-                    });
-                });
-
-                DOMElements.sketchColorPalette.classList.remove('hidden');
-            };
-
-            const handleSketchGeneration = async () => {
-                const btnOriginal = DOMElements.generateSketchBtn;
-                const btnRegen = DOMElements.regenerateSketchBtn;
-
-                if (btnOriginal.disabled || btnRegen.disabled) return;
-                toggleButtonLoader(btnOriginal, true);
-                toggleButtonLoader(btnRegen, true);
-
-                DOMElements.sketchPromptContainer.classList.add('hidden');
-                DOMElements.sketchContent.classList.add('hidden');
-                DOMElements.sketchColorPalette.classList.add('hidden');
-                DOMElements.sketchLoader.classList.remove('hidden');
-                DOMElements.sketchLoader.querySelector('p').textContent = getUIText('generatingSketch');
-
-                const ownerName = document.getElementById('owner_name').value.trim();
-                const aboutYou = document.getElementById('about_you').value.trim();
-                const languageStyle = document.getElementById('language_style').value;
-                const generatedText = DOMElements.outputContent.textContent;
-                const contentParts = parseGeneratedText(generatedText);
-
-                const sketchPrompt = `A vertical 9:16 layout storyboard, strictly divided into three vertical sections (top, middle, bottom). Use a rough, unfinished, black and white sketch style. The human character is a generic figure with no detailed face, gender, or clothing—just loose, gestural line art, like a storyboard draft. The background is minimal or abstract. **Top Section:** A sketched human figure is on the **right side**, standing and waving their right hand in a friendly, welcoming pose. On the **left side**, add hand-written style text for a headline and bio, summarizing this text: "${contentParts.headline || 'Selamat Datang'}\n${contentParts.bio || `Hai, aku ${ownerName}!`}" Add a few small, sketchy decorative icons like leaves and sparkles around the text. **Middle Section:** A sketched human figure is on the **left side**, holding a tablet in one hand and making a peace sign (two fingers) with the other hand. On the **right side**, add a bold, hand-written style title summarizing this text: "${contentParts.products ? 'Produk & Layanan Unggulan' : 'Apa yang Saya Tawarkan'}" Below the title, add a few bullet points in rough handwriting, summarizing the offerings from this text: "${contentParts.products || 'Jasa, Konsultasi, Produk Digital'}" Add small, rough sketch icons for an e-book, a design tool (like a simplified Canva logo), and an AI symbol (like a brain or robot head) near the character or text. **Bottom Section:** A sketched human figure is in the **upper-right corner** of this section, in a sitting or kneeling pose, looking down at a phone (represented as a rectangle) in their hands. In the **lower-left area**, add friendly, handwritten text summarizing this call to action: "${contentParts.cta || 'Siap untuk memulai perjalananmu?'}" At the very bottom, centered, draw a large, decorative handwritten CTA button with the text "Mulai Dari Sini". Add small decorative elements like arrows or sparkles.`;
-                const colorPrompt = `
-                    Analyze the user's vision: "${aboutYou}" and their chosen style: "${languageStyle}".
-                    Based on this, generate a RICH and DYNAMIC color palette suitable for a modern bio-link website.
-
-                    **Key Requirements:**
-                    1.  **Colorful Background:** The background color MUST be a distinct, noticeable pastel color. Think soft pastel pink, calming mint green, warm pastel yellow, or gentle sky blue. The goal is to provide a creative and colorful starting point, NOT a neutral one.
-                    2.  **Strictly No White/Gray Backgrounds:** The background color MUST NOT be white, off-white, beige, or any shade of gray. It must be a clear, vibrant pastel color.
-                    3.  **High Contrast Text:** The text color MUST have excellent contrast against the background color to ensure readability (meeting at least WCAG AA standards). The text color should be a dark, rich color like deep charcoal, navy, or dark plum, but STRICTLY AVOID pure black (#000000).
-                    4.  **JSON Format:** Provide the output *only* in the required JSON format.
-
-                    **Example Palettes to Inspire You:**
-                    - For a "Creative & Playful" vision: { "backgroundColor": "#F7D6E0", "textColor": "#4B4453" } (Pastel Pink & Dark Plum)
-                    - For a "Calm & Natural" vision: { "backgroundColor": "#D4E2D4", "textColor": "#393E46" } (Sage Green & Charcoal)
-                    - For an "Energetic & Modern" vision: { "backgroundColor": "#F8E5A2", "textColor": "#003B46" } (Pastel Yellow & Dark Teal)
-                `;
-                
-                const colorSchema = {
-                    type: Type.OBJECT,
-                    properties: {
-                        backgroundColor: { type: Type.STRING, description: "A hex color code for the page background. Must be a vibrant pastel color like pink, green, blue, or yellow. It must NOT be white, off-white, or any shade of gray." },
-                        textColor: { type: Type.STRING, description: "A hex color code for the main text that contrasts well with the background. It must NOT be #000000 or #000." }
-                    },
-                    required: ["backgroundColor", "textColor"]
-                };
-
-                try {
-                    const [imageResult, colorResult] = await Promise.all([
-                        callImagenAPI(sketchPrompt),
-                        callGeminiAPI(colorPrompt, colorSchema)
-                    ]);
-
-                    if (imageResult.error || colorResult.error) {
-                       throw new Error(imageResult.error || colorResult.error);
-                    }
-                    
-                    const imageUrl = `data:image/png;base64,${imageResult.image}`;
-                    DOMElements.sketchImage.src = imageUrl;
-                    
-                    const colorData = JSON.parse(colorResult.text);
-                    renderColorPalette(colorData);
-
-                    DOMElements.sketchLoader.classList.add('hidden');
-                    DOMElements.sketchContent.classList.remove('hidden');
-
-                } catch(e) {
-                    console.error("Sketch/Color Generation Error:", e);
-                    DOMElements.sketchLoader.innerHTML = `<i class="fas fa-exclamation-triangle text-red-500 text-2xl"></i><p class="mt-2">${getUIText('imageAndColorGenerationFailed')}</p>`;
-                    DOMElements.sketchPromptContainer.classList.remove('hidden');
-                } finally {
-                    toggleButtonLoader(btnOriginal, false);
-                    toggleButtonLoader(btnRegen, false);
+                    DOMElements.summaryPromptContainer.classList.remove('hidden');
                 }
             };
             
-            const handleDownloadSketch = () => {
-                const imageUrl = DOMElements.sketchImage.src;
-                if (!imageUrl || !imageUrl.startsWith('data:image')) {
-                    showAlert(getUIText('alertDownloadFailed'), 'error');
+            let additionalInfoCounter = 0;
+            const addAdditionalInfoCard = () => {
+                additionalInfoCounter++;
+                const cardId = `additional-card-${additionalInfoCounter}`;
+                const card = document.createElement('div');
+                card.id = cardId;
+                card.className = 'additional-info-card p-4 space-y-3 relative animate__animated animate__fadeIn';
+                card.innerHTML = `
+                    <button type="button" class="remove-info-btn absolute top-2 right-2 btn btn-danger !p-0 w-7 h-7 text-xs" title="${getUIText('q6RemoveButtonTitle')}">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                    <div>
+                        <label for="additional_title_${additionalInfoCounter}" class="sr-only">${getUIText('q6TitleLabel')}</label>
+                        <input type="text" id="additional_title_${additionalInfoCounter}" class="form-input text-sm" placeholder="${getUIText('q6CardTitlePlaceholder')}" />
+                    </div>
+                    <div>
+                        <label for="additional_content_${additionalInfoCounter}" class="sr-only">${getUIText('q6ContentLabel')}</label>
+                        <textarea id="additional_content_${additionalInfoCounter}" rows="3" class="form-textarea text-sm" placeholder="${getUIText('q6CardContentPlaceholder')}"></textarea>
+                    </div>
+                `;
+                DOMElements.additionalInfoContainer.appendChild(card);
+            };
+            
+            // --- HTML SKETCH LAYOUT LOGIC (New, Structured Implementation) ---
+            const C = {
+                H: `<div class="layout-block layout-block--hook">HOOK</div>`,
+                B: `<div class="layout-block layout-block--bio">BIO</div>`,
+                P: `<div class="layout-block layout-block--problem">PROBLEM</div>`,
+                S: `<div class="layout-block layout-block--solution">SOLUTION</div>`,
+                CTA: `<div class="layout-block layout-block--cta">CTA</div>`,
+                CHAR: `<div class="layout-block layout-block--character">KARAKTER</div>`,
+            };
+
+            const createHorizontalRow = (elements, grow = 1) => `<div class="layout-row" style="flex-grow: ${grow};">${elements.join('')}</div>`;
+
+            const createVerticalRow = (elements, grow = 1) => `
+                <div class="layout-row" style="flex-grow: ${grow};">
+                    <div class="flex flex-col gap-3 w-full flex-grow">
+                        ${elements.join('')}
+                    </div>
+                </div>`;
+            
+            const patterns = {
+                // Phrasing: [Kiri] Karakter, [Kanan] Text
+                charLeftTextRight: (textComponent) => createHorizontalRow([C.CHAR, textComponent]),
+                // Phrasing: [Kiri] Text, [Kanan] Karakter
+                textLeftCharRight: (textComponent) => createHorizontalRow([textComponent, C.CHAR]),
+                // Phrasing: [Atas] Karakter, [Bawah] Text
+                charTopTextBottom: (textComponent) => createVerticalRow([C.CHAR, textComponent]),
+                // Phrasing: [Atas] Text, [Bawah] Karakter
+                textTopCharBottom: (textComponent) => createVerticalRow([textComponent, C.CHAR]),
+            };
+            
+            const layoutSequences = [
+                // 1. Pure Zig-Zag
+                [patterns.charLeftTextRight, patterns.textLeftCharRight, patterns.charLeftTextRight, patterns.textLeftCharRight, patterns.charLeftTextRight],
+                // 2. Pure Zag-Zig
+                [patterns.textLeftCharRight, patterns.charLeftTextRight, patterns.textLeftCharRight, patterns.charLeftTextRight, patterns.textLeftCharRight],
+                // 3. Vertical at Start (V1)
+                [patterns.charTopTextBottom, patterns.textLeftCharRight, patterns.charLeftTextRight, patterns.textLeftCharRight, patterns.charLeftTextRight],
+                // 4. Vertical at Start (V2)
+                [patterns.textTopCharBottom, patterns.charLeftTextRight, patterns.textLeftCharRight, patterns.charLeftTextRight, patterns.textLeftCharRight],
+                // 5. Vertical at Position 2 (V1)
+                [patterns.charLeftTextRight, patterns.charTopTextBottom, patterns.textLeftCharRight, patterns.charLeftTextRight, patterns.textLeftCharRight],
+                // 6. Vertical at Position 2 (V2)
+                [patterns.textLeftCharRight, patterns.textTopCharBottom, patterns.charLeftTextRight, patterns.textLeftCharRight, patterns.charLeftTextRight],
+                // 7. Vertical in Middle (V1)
+                [patterns.charLeftTextRight, patterns.textLeftCharRight, patterns.charTopTextBottom, patterns.textLeftCharRight, patterns.charLeftTextRight],
+                // 8. Vertical in Middle (V2)
+                [patterns.textLeftCharRight, patterns.charLeftTextRight, patterns.textTopCharBottom, patterns.charLeftTextRight, patterns.textLeftCharRight],
+                // 9. Vertical at Position 4 (V1)
+                [patterns.charLeftTextRight, patterns.textLeftCharRight, patterns.charLeftTextRight, patterns.charTopTextBottom, patterns.textLeftCharRight],
+                // 10. Vertical at Position 4 (V2)
+                [patterns.textLeftCharRight, patterns.charLeftTextRight, patterns.textLeftCharRight, patterns.textTopCharBottom, patterns.charLeftTextRight],
+                // 11. Vertical at CTA (V1)
+                [patterns.charLeftTextRight, patterns.textLeftCharRight, patterns.charLeftTextRight, patterns.textLeftCharRight, patterns.charTopTextBottom],
+                // 12. Vertical at CTA (V2)
+                [patterns.textLeftCharRight, patterns.charLeftTextRight, patterns.textLeftCharRight, patterns.charLeftTextRight, patterns.textTopCharBottom],
+                // 13. Vertical at Start & End
+                [patterns.charTopTextBottom, patterns.textLeftCharRight, patterns.charLeftTextRight, patterns.textLeftCharRight, patterns.textTopCharBottom],
+                // 14. Vertical at Start & End (Opposite)
+                [patterns.textTopCharBottom, patterns.charLeftTextRight, patterns.textLeftCharRight, patterns.charLeftTextRight, patterns.charTopTextBottom],
+                // 15. Two Verticals in Middle (V1, V2)
+                [patterns.charLeftTextRight, patterns.charTopTextBottom, patterns.textLeftCharRight, patterns.textTopCharBottom, patterns.charLeftTextRight],
+                // 16. Two Verticals in Middle (V2, V1)
+                [patterns.textLeftCharRight, patterns.textTopCharBottom, patterns.charLeftTextRight, patterns.charTopTextBottom, patterns.textLeftCharRight],
+                // 17. Irregular Zig-Zag with Vertical CTA
+                [patterns.charLeftTextRight, patterns.charLeftTextRight, patterns.textLeftCharRight, patterns.textLeftCharRight, patterns.charTopTextBottom],
+                // 18. Two Verticals, Separated (V2, V1)
+                [patterns.textTopCharBottom, patterns.charLeftTextRight, patterns.charTopTextBottom, patterns.textLeftCharRight, patterns.charLeftTextRight],
+                // 19. Three Verticals
+                [patterns.charTopTextBottom, patterns.textLeftCharRight, patterns.charTopTextBottom, patterns.textLeftCharRight, patterns.charTopTextBottom],
+                // 20. Mixed with two Verticals
+                [patterns.charLeftTextRight, patterns.textTopCharBottom, patterns.charLeftTextRight, patterns.textTopCharBottom, patterns.charLeftTextRight],
+            ];
+
+            const componentOrders = [
+                [C.H, C.B, C.P, C.S, C.CTA], // Order A
+                [C.H, C.P, C.B, C.S, C.CTA], // Order B
+            ];
+
+            const generateRandomLayoutHTML = () => {
+                const selectedComponentOrder = componentOrders[Math.floor(Math.random() * componentOrders.length)];
+                const selectedLayoutSequence = layoutSequences[Math.floor(Math.random() * layoutSequences.length)];
+                
+                let layoutHtml = '';
+                for (let i = 0; i < selectedComponentOrder.length; i++) {
+                    const component = selectedComponentOrder[i];
+                    const patternFunction = selectedLayoutSequence[i];
+                    layoutHtml += patternFunction(component);
+                }
+                return layoutHtml;
+            };
+
+            const handleSketchGeneration = async () => {
+                if (!AppState.generatedSummaryJson) {
+                    showAlert("Silakan buat Konten Ringkas terlebih dahulu.", "info");
                     return;
                 }
-                try {
-                    const ownerName = document.getElementById('owner_name').value || "konsep";
-                    const filename = `${ownerName.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-')}-sketch.png`;
-                    const link = document.createElement('a');
-                    link.href = imageUrl;
-                    link.download = filename;
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
-                } catch (error) {
-                    console.error("Sketch Download Error:", error);
-                    showAlert(getUIText('alertDownloadFailed'), 'error');
-                }
+
+                const btnOriginal = DOMElements.generateSketchBtn;
+                const btnRegen = DOMElements.regenerateSketchBtn;
+
+                toggleButtonLoader(btnOriginal, true);
+                toggleButtonLoader(btnRegen, true);
+                
+                DOMElements.sketchPromptContainer.classList.add('hidden');
+                DOMElements.sketchContent.classList.add('hidden');
+                DOMElements.sketchLoader.classList.remove('hidden');
+                DOMElements.sketchLoader.querySelector('p').textContent = getUIText('generatingSketch');
+                
+                setTimeout(() => {
+                    const layoutHtml = generateRandomLayoutHTML();
+                    DOMElements.sketchLayoutContainer.innerHTML = `<div class="layout-container">${layoutHtml}</div>`;
+
+                    DOMElements.sketchLoader.classList.add('hidden');
+                    DOMElements.sketchContent.classList.remove('hidden');
+                    toggleButtonLoader(btnOriginal, false);
+                    toggleButtonLoader(btnRegen, false);
+                }, 500);
             };
 
             const getSummaryAsText = () => {
@@ -1579,12 +1776,18 @@
             let modalApiKeySource;
             const renderApiModalState = (source) => {
                 const isSystem = source === 'system';
-                DOMElements.apiSourceSystem.style.borderColor = isSystem ? 'var(--theme-accent-2)' : 'var(--theme-border)';
-                DOMElements.apiSourceSystem.querySelector('i').className = `fas fa-check-circle text-xl text-[var(--theme-accent-2)]`;
-                DOMElements.apiSourcePersonal.style.borderColor = !isSystem ? 'var(--theme-accent-2)' : 'var(--theme-border)';
-                DOMElements.apiSourcePersonal.querySelector('i').className = !isSystem ? `fas fa-check-circle text-xl text-[var(--theme-accent-2)]` : `far fa-circle text-xl text-[var(--theme-text-secondary)]`;
+                
+                // Update selection styles
+                DOMElements.apiSourceSystem.style.borderColor = isSystem ? 'var(--theme-accent-1)' : 'var(--theme-border)';
+                DOMElements.apiSourceSystem.querySelector('i').className = `fas ${isSystem ? 'fa-check-circle' : 'fa-circle'} text-xl ${isSystem ? 'text-[var(--theme-accent-1)]' : 'text-[var(--theme-text-secondary)]'}`;
+                
+                DOMElements.apiSourcePersonal.style.borderColor = !isSystem ? 'var(--theme-accent-1)' : 'var(--theme-border)';
+                DOMElements.apiSourcePersonal.querySelector('i').className = `fas ${!isSystem ? 'fa-check-circle' : 'fa-circle'} text-xl ${!isSystem ? 'text-[var(--theme-accent-1)]' : 'text-[var(--theme-text-secondary)]'}`;
+                
+                // Toggle visibility of sections
                 DOMElements.personalApiDetails.classList.toggle('hidden', isSystem);
                 DOMElements.systemApiNote.classList.toggle('hidden', !isSystem);
+                
                 DOMElements.apiKeyInput.value = AppState.personalApiKey || '';
             };
             const resetAndOpenApiKeyModal = () => {
@@ -1622,12 +1825,32 @@
 
                 DOMElements.generateSketchBtn.addEventListener('click', handleSketchGeneration);
                 DOMElements.regenerateSketchBtn.addEventListener('click', handleSketchGeneration);
-                DOMElements.downloadSketchBtn.addEventListener('click', handleDownloadSketch);
 
                 DOMElements.copyBtn.addEventListener('click', handleCopy);
                 DOMElements.downloadTxtBtn.addEventListener('click', handleDownloadTxt);
                 DOMElements.downloadBtn.addEventListener('click', handleDownload);
                 
+                DOMElements.addInfoBtn.addEventListener('click', addAdditionalInfoCard);
+                DOMElements.additionalInfoContainer.addEventListener('click', e => {
+                    const removeBtn = e.target.closest('.remove-info-btn');
+                    if (removeBtn) {
+                        const cardToRemove = removeBtn.closest('.additional-info-card');
+                        if (cardToRemove) {
+                            showConfirmation('confirmDeleteInfoTitle', 'confirmDeleteInfoMessage', () => {
+                                cardToRemove.classList.remove('animate__fadeIn');
+                                cardToRemove.classList.add('animate__animated', 'animate__fadeOut');
+                                // The animation duration for fadeOut is 0.35s as defined in the CSS.
+                                // We use a setTimeout to ensure the element is removed after the animation plays.
+                                // This is more reliable than the 'animationend' event, which can be flaky
+                                // when multiple animations are occurring (e.g., modal closing).
+                                setTimeout(() => {
+                                    cardToRemove.remove();
+                                }, 350);
+                            });
+                        }
+                    }
+                });
+
                 DOMElements.togglePassword.addEventListener('click', () => {
                     const isPassword = DOMElements.passwordInput.type === 'password';
                     DOMElements.passwordInput.type = isPassword ? 'text' : 'password';
@@ -1665,11 +1888,16 @@
                 DOMElements.apiSourceSystem.addEventListener('click', () => { modalApiKeySource = 'system'; renderApiModalState(modalApiKeySource); });
                 DOMElements.apiSourcePersonal.addEventListener('click', () => { modalApiKeySource = 'personal'; renderApiModalState(modalApiKeySource); });
                 DOMElements.apiModalSaveBtn.addEventListener('click', () => {
-                    if (modalApiKeySource === 'personal' && !DOMElements.apiKeyInput.value.trim()) { showAlert(getUIText('alertApiKeyEmpty'), 'error'); return; }
                     AppState.apiKeySource = modalApiKeySource;
                     localStorage.setItem('landingpage_api_source', modalApiKeySource);
-                    AppState.personalApiKey = DOMElements.apiKeyInput.value.trim();
-                    if(AppState.personalApiKey) localStorage.setItem('landingpage_api_key', AppState.personalApiKey); else localStorage.removeItem('landingpage_api_key');
+                    const personalApiKey = DOMElements.apiKeyInput.value.trim();
+                    if(modalApiKeySource === 'personal' && personalApiKey) {
+                        AppState.personalApiKey = personalApiKey;
+                        localStorage.setItem('landingpage_api_key', AppState.personalApiKey);
+                    } else {
+                        AppState.personalApiKey = null;
+                        localStorage.removeItem('landingpage_api_key');
+                    }
                     showAlert(getUIText('alertApiSettingsSaved'), 'success');
                     closeModal(DOMElements.apiKeyModal);
                 });
@@ -1681,6 +1909,11 @@
                     DOMElements.apiKeyInput.type = isPassword ? 'text' : 'password';
                     icon.classList.toggle('fa-eye-slash', !isPassword);
                     icon.classList.toggle('fa-eye', isPassword);
+                });
+
+                DOMElements.clearApiKeyBtn.addEventListener('click', () => {
+                    DOMElements.apiKeyInput.value = '';
+                    DOMElements.apiKeyInput.focus();
                 });
 
                 // Load initial state
