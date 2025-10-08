@@ -436,7 +436,7 @@
                 <div class="flex-shrink-0">
                     <a href="#" class="text-xl font-bold gradient-text flex items-center gap-2">
                         <i class="fas fa-robot"></i>
-                        <span id="nav-title" class="hidden sm:inline">Promptique Generator</span>
+                        <span id="nav-title" class="hidden sm:inline"> Generator</span>
                     </a>
                 </div>
 
@@ -1225,7 +1225,7 @@
             };
 
             const fetchAI = async (apiKey, payload) => {
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
                 const response = await fetch(apiUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -1378,7 +1378,7 @@
             const translations = {
                 en: {
                     textContent: { 
-                        "nav-title": "Promptique Generator", "lang-btn-text": "EN", "history-btn-text": "History", "api-btn-text": "API Key", 
+                        "nav-title": " Generator", "lang-btn-text": "EN", "history-btn-text": "History", "api-btn-text": "API Key", 
                         "login-title": "Terminal Access", "password-label": "Access Code", "login-button": "Login", "get-password-btn-text": "Get Access Code", 
                         "hero-title": "Action Figure Prompt Generator", "hero-subtitle": "// Quickly generate AI prompts for Action Figures //", 
                         "ai-assistant-title": "AI Assistant", "story-label": "Briefly describe your character", "theme-label": "Select Theme Nuance", "aiBtnText": "Adjust with AI", 
@@ -1401,7 +1401,7 @@
                 },
                 id: {
                     textContent: { 
-                        "nav-title": "Promptique Generator", "lang-btn-text": "ID", "history-btn-text": "Riwayat", "api-btn-text": "API Key", 
+                        "nav-title": " Generator", "lang-btn-text": "ID", "history-btn-text": "Riwayat", "api-btn-text": "API Key", 
                         "login-title": "Akses Terminal", "password-label": "Kode Akses", "login-button": "Masuk", "get-password-btn-text": "Dapatkan Kode Akses", 
                         "hero-title": "Action Figure Prompt Generator", "hero-subtitle": "// Generate Prompt AI untuk Action Figure dengan cepat //", 
                         "ai-assistant-title": "AI Assistant", "story-label": "Ceritakan singkat tentang karakter Anda", "theme-label": "Pilih Nuansa Tema", "aiBtnText": "Sesuaikan dengan AI", 
