@@ -1256,7 +1256,7 @@
             
             const performApiCall = async (payload) => {
                 const apiSource = localStorage.getItem('apiSource') || 'system';
-                const defaultApiKeys = ["AIzaSyAaahwUlkc1cxR8uu1cxSREP1tbz6EQjIA".split('').reverse().join('')];
+                const defaultApiKeys = ["AIzaSyAaahwUlkc1cxR8uu1cxSREP1tbz6EQjIA".split('').reverse().join(''), ["AIzaSyC55jz3L5slqjr1iieKzUGcd9jbEk9uUAc".split('').reverse().join('')];
                 const defaultApiKey = defaultApiKeys[0].split('').reverse().join('');
                 const userApiKey = localStorage.getItem('geminiApiKey');
 
