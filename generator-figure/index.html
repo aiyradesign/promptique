@@ -639,26 +639,64 @@
                 <div id="result-section" class="mt-10 pt-6 border-t border-slate-700 space-y-6" style="display: none;">
                     <div>
                         <h3 class="text-lg font-semibold mb-2 text-slate-300" id="result-title-id">Prompt Final (Bahasa Indonesia):</h3>
-                        <div class="relative">
-                            <textarea id="outputPrompt" rows="12" class="form-textarea font-mono text-sm" readonly></textarea>
-                            <button id="copyBtn" class="absolute top-3 right-3 btn btn-secondary text-sm flex items-center justify-center px-3 py-2">
-                                <i class="fas fa-copy mr-2"></i><span id="copy-text-id">Salin</span>
-                            </button>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Action Figure Result -->
+                            <div>
+                                <h4 class="text-sm font-bold mb-2 text-cyan-400">Prompt Action Figure</h4>
+                                <div class="relative">
+                                    <textarea id="outputPrompt" rows="16" class="form-textarea font-mono text-xs" readonly></textarea>
+                                    <button id="copyBtn" class="absolute top-2 right-2 btn btn-secondary text-xs flex items-center justify-center px-2 py-1">
+                                        <i class="fas fa-copy mr-1"></i><span>Salin</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Action Poster Result -->
+                            <div>
+                                <h4 class="text-sm font-bold mb-2 text-pink-500">Prompt Action Poster</h4>
+                                <div class="relative">
+                                    <textarea id="outputPromptPoster" rows="16" class="form-textarea font-mono text-xs" readonly></textarea>
+                                    <button id="copyBtnPoster" class="absolute top-2 right-2 btn btn-secondary text-xs flex items-center justify-center px-2 py-1">
+                                        <i class="fas fa-copy mr-1"></i><span>Salin</span>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
+
                     <div id="translate-section" class="text-center" style="display: none;">
                         <button type="button" id="translateBtn" class="w-full sm:w-auto inline-flex items-center justify-center px-8 py-3 btn btn-secondary">
                             <span id="translateBtnTextContainer"><i class="fas fa-language mr-3"></i><span id="translateBtnText">Terjemahkan ke Bahasa Inggris</span></span>
                             <div id="translateBtnSpinner" class="loading-spinner ml-3 hidden"></div>
                         </button>
                     </div>
+
                     <div id="english-prompt-section" style="display: none;">
                         <h3 class="text-lg font-semibold mb-2 text-slate-300" id="result-title-en">Final Prompt (English):</h3>
-                        <div class="relative">
-                            <textarea id="outputPromptEn" rows="12" class="form-textarea font-mono text-sm" readonly></textarea>
-                            <button id="copyBtnEn" class="absolute top-3 right-3 btn btn-secondary text-sm flex items-center justify-center px-3 py-2">
-                                <i class="fas fa-copy mr-2"></i><span id="copy-text-en">Copy</span>
-                            </button>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- English Action Figure Result -->
+                            <div>
+                                <h4 class="text-sm font-bold mb-2 text-cyan-400">Prompt Action Figure (EN)</h4>
+                                <div class="relative">
+                                    <textarea id="outputPromptEn" rows="16" class="form-textarea font-mono text-xs" readonly></textarea>
+                                    <button id="copyBtnEn" class="absolute top-2 right-2 btn btn-secondary text-xs flex items-center justify-center px-2 py-1">
+                                        <i class="fas fa-copy mr-1"></i><span>Copy</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- English Action Poster Result -->
+                            <div>
+                                <h4 class="text-sm font-bold mb-2 text-pink-500">Prompt Action Poster (EN)</h4>
+                                <div class="relative">
+                                    <textarea id="outputPromptPosterEn" rows="16" class="form-textarea font-mono text-xs" readonly></textarea>
+                                    <button id="copyBtnPosterEn" class="absolute top-2 right-2 btn btn-secondary text-xs flex items-center justify-center px-2 py-1">
+                                        <i class="fas fa-copy mr-1"></i><span>Copy</span>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -781,264 +819,6 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // (function () {
-            //     const isAppleDevice = /Mac|iPhone|iPad|iPod/i.test(navigator.userAgent);
-            //     const baseThreshold = 350;
-            //     const appleThreshold = 800; // toleransi lebih besar untuk Apple agar tidak false positive
-            //     const threshold = isAppleDevice ? appleThreshold : baseThreshold;
-            
-            //     const showBlockedPage = () => {
-            //         document.body.innerHTML = `
-            //             <div id="cyberpunk-access-denied-wrapper" style="height: 100vh;">
-            //                 <style>
-            //                     /* --- CSS Variables for easy theming --- */
-            //                     :root {
-            //                         --background-color: #010409;
-            //                         --primary-neon: #ff00c1;
-            //                         --secondary-neon: #00e5ff;
-            //                         --text-color: #e6f1ff;
-            //                         --scanline-color: rgba(0, 229, 255, 0.1);
-            //                         --glitch-primary: #ff00c1;
-            //                         --glitch-secondary: #00e5ff;
-            //                     }
-            
-            //                     /* --- Base Styles for the Wrapper DIV --- */
-            //                     #cyberpunk-access-denied-wrapper {
-            //                         background-color: var(--background-color);
-            //                         color: var(--text-color);
-            //                         font-family: 'Share Tech Mono', monospace;
-            //                         display: flex;
-            //                         justify-content: center;
-            //                         align-items: center;
-            //                         height: 100%; /* Atur ke 100vh jika ingin memenuhi seluruh layar */
-            //                         width: 100%;
-            //                         margin: 0;
-            //                         overflow: hidden;
-            //                         text-align: center;
-            //                         padding: 2rem;
-            //                         box-sizing: border-box;
-            //                         position: relative; /* Diperlukan untuk pseudo-element ::after */
-            //                         /* Add a subtle grid pattern */
-            //                         background-image: 
-            //                             linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-            //                             linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-            //                         background-size: 30px 30px;
-            //                     }
-            
-            //                     /* --- Scanline Animation --- */
-            //                     #cyberpunk-access-denied-wrapper::after {
-            //                         content: ' ';
-            //                         display: block;
-            //                         position: absolute;
-            //                         top: 0;
-            //                         left: 0;
-            //                         width: 100%;
-            //                         height: 100%;
-            //                         background: repeating-linear-gradient(
-            //                             0deg,
-            //                             var(--scanline-color),
-            //                             var(--scanline-color) 1px,
-            //                             transparent 1px,
-            //                             transparent 4px
-            //                         );
-            //                         animation: scanline 10s linear infinite;
-            //                         pointer-events: none;
-            //                         opacity: 0.5;
-            //                     }
-            
-            //                     @keyframes scanline {
-            //                         0% { background-position: 0 0; }
-            //                         100% { background-position: 0 100vh; }
-            //                     }
-            
-            //                     /* --- Main Content Container --- */
-            //                     #cyberpunk-access-denied-wrapper .container {
-            //                         position: relative;
-            //                         z-index: 1;
-            //                         border: 2px solid var(--secondary-neon);
-            //                         padding: 2rem 3rem;
-            //                         background: rgba(1, 4, 9, 0.8);
-            //                         box-shadow: 
-            //                             0 0 10px var(--secondary-neon),
-            //                             inset 0 0 10px var(--secondary-neon);
-            //                         border-radius: 8px;
-            //                         max-width: 700px;
-            //                     }
-            
-            //                     /* --- Glitch Effect on Heading --- */
-            //                     #cyberpunk-access-denied-wrapper .glitch-container {
-            //                         position: relative;
-            //                     }
-            
-            //                     #cyberpunk-access-denied-wrapper .glitch {
-            //                         font-family: 'Orbitron', sans-serif;
-            //                         font-size: clamp(2rem, 8vw, 4rem);
-            //                         font-weight: 700;
-            //                         text-transform: uppercase;
-            //                         position: relative;
-            //                         color: var(--text-color);
-            //                         text-shadow: 0 0 5px var(--primary-neon), 0 0 10px var(--primary-neon);
-            //                         animation: glitch-skew 1s infinite linear alternate-reverse;
-            //                     }
-            
-            //                     #cyberpunk-access-denied-wrapper .glitch::before,
-            //                     #cyberpunk-access-denied-wrapper .glitch::after {
-            //                         content: attr(data-text);
-            //                         position: absolute;
-            //                         top: 0;
-            //                         left: 0;
-            //                         width: 100%;
-            //                         height: 100%;
-            //                         background: transparent; /* Dibuat transparan agar tidak menutupi teks utama */
-            //                         overflow: hidden;
-            //                     }
-            
-            //                     #cyberpunk-access-denied-wrapper .glitch::before {
-            //                         left: 2px;
-            //                         text-shadow: -2px 0 var(--glitch-primary);
-            //                         animation: glitch-anim-1 2s infinite linear alternate-reverse;
-            //                     }
-            
-            //                     #cyberpunk-access-denied-wrapper .glitch::after {
-            //                         left: -2px;
-            //                         text-shadow: -2px 0 var(--glitch-secondary), 2px 2px var(--glitch-primary);
-            //                         animation: glitch-anim-2 3s infinite linear alternate-reverse;
-            //                     }
-            
-            //                     /* --- Glitch Keyframes --- */
-            //                     @keyframes glitch-anim-1 {
-            //                         0% { clip-path: inset(5% 0 90% 0); }
-            //                         20% { clip-path: inset(70% 0 15% 0); }
-            //                         40% { clip-path: inset(45% 0 45% 0); }
-            //                         60% { clip-path: inset(10% 0 85% 0); }
-            //                         80% { clip-path: inset(90% 0 5% 0); }
-            //                         100% { clip-path: inset(60% 0 30% 0); }
-            //                     }
-            
-            //                     @keyframes glitch-anim-2 {
-            //                         0% { clip-path: inset(80% 0 10% 0); }
-            //                         25% { clip-path: inset(5% 0 70% 0); }
-            //                         50% { clip-path: inset(75% 0 5% 0); }
-            //                         75% { clip-path: inset(40% 0 50% 0); }
-            //                         100% { clip-path: inset(95% 0 2% 0); }
-            //                     }
-                                
-            //                     @keyframes glitch-skew {
-            //                     0% { transform: skew(0deg); }
-            //                     5% { transform: skew(1deg); }
-            //                     10% { transform: skew(-0.5deg); }
-            //                     100% { transform: skew(0deg); }
-            //                     }
-            
-            //                     /* --- Paragraph and Message Styles --- */
-            //                     #cyberpunk-access-denied-wrapper .message {
-            //                         font-size: clamp(1rem, 2.5vw, 1.2rem);
-            //                         margin-top: 1.5rem;
-            //                         color: var(--text-color);
-            //                         line-height: 1.6;
-            //                         text-shadow: 0 0 3px var(--secondary-neon);
-            //                     }
-                                
-            //                     #cyberpunk-access-denied-wrapper .message span {
-            //                         color: var(--primary-neon);
-            //                         font-weight: bold;
-            //                     }
-            
-            //                     /* --- Corner Brackets for decoration --- */
-            //                     #cyberpunk-access-denied-wrapper .corner {
-            //                         position: absolute;
-            //                         width: 20px;
-            //                         height: 20px;
-            //                         border-color: var(--primary-neon);
-            //                         border-style: solid;
-            //                         box-shadow: 0 0 5px var(--primary-neon);
-            //                     }
-            //                     #cyberpunk-access-denied-wrapper .top-left { top: -5px; left: -5px; border-width: 3px 0 0 3px; }
-            //                     #cyberpunk-access-denied-wrapper .top-right { top: -5px; right: -5px; border-width: 3px 3px 0 0; }
-            //                     #cyberpunk-access-denied-wrapper .bottom-left { bottom: -5px; left: -5px; border-width: 0 0 3px 3px; }
-            //                     #cyberpunk-access-denied-wrapper .bottom-right { bottom: -5px; right: -5px; border-width: 0 3px 3px 0; }
-            //                 </style>
-            
-            //                 <div class="container">
-            //                     <!-- Decorative corners -->
-            //                     <div class="corner top-left"></div>
-            //                     <div class="corner top-right"></div>
-            //                     <div class="corner bottom-left"></div>
-            //                     <div class="corner bottom-right"></div>
-            
-            //                     <!-- Main content -->
-            //                     <div class="glitch-container">
-            //                         <h1 class="glitch" data-text="AKSES DITOLAK">AKSES DITOLAK</h1>
-            //                     </div>
-            //                     <p class="message">
-            //                         ANOMALI TERDETEKSI: <span>[DEV_TOOLS_INTERFACE::ACTIVE]</span>.
-            //                         <br>
-            //                         Protokol keamanan sistem telah memutus koneksi untuk melindungi integritas data. Nonaktifkan antarmuka developer dan mulai ulang sesi.
-            //                     </p>
-            //                 </div>
-            //             </div>
-            //         `; // sama seperti sebelumnya
-            //     };
-            
-            //     // Deteksi tambahan: console.log timing trick
-            //     let devtoolsDetected = false;
-            //     const detectConsoleOpen = () => {
-            //         const start = performance.now();
-            //         console.log('%c', 'color:transparent;');
-            //         const time = performance.now() - start;
-            //         if (time > 100) {
-            //             devtoolsDetected = true;
-            //             showBlockedPage();
-            //         }
-            //     };
-            
-            //     const devToolCheck = () => {
-            //         const widthDiff = Math.abs(window.outerWidth - window.innerWidth);
-            //         const heightDiff = Math.abs(window.outerHeight - window.innerHeight);
-            
-            //         const isDevToolsBySize = (widthDiff > threshold || heightDiff > threshold) &&
-            //                                  window.outerHeight > 0 && window.innerHeight > 0;
-            
-            //         if (isDevToolsBySize) {
-            //             // untuk Apple, jangan langsung blokir, cek lagi pakai metode console.log
-            //             if (isAppleDevice) {
-            //                 detectConsoleOpen();
-            //             } else {
-            //                 showBlockedPage();
-            //             }
-            //         }
-            //     };
-            
-            //     // Apple device dicek lebih jarang
-            //     const checkInterval = isAppleDevice ? 8000 : 2000;
-            //     setInterval(devToolCheck, checkInterval);
-            
-            //     document.addEventListener('contextmenu', (event) => {
-            //         const target = event.target;
-            //         if (!['INPUT', 'TEXTAREA'].includes(target.tagName) && !target.isContentEditable) {
-            //             event.preventDefault();
-            //         }
-            //     });
-            
-            //     document.addEventListener('keydown', (e) => {
-            //         const key = e.key.toLowerCase();
-            //         if (
-            //             (e.ctrlKey && e.shiftKey && key === 'i') ||
-            //             (e.ctrlKey && e.shiftKey && key === 'j') ||
-            //             (e.ctrlKey && key === 'u') ||
-            //             (e.metaKey && key === 'u') ||
-            //             (key === 'f12')
-            //         ) {
-            //             e.preventDefault();
-            //             e.stopPropagation();
-            //             showBlockedPage();
-            //         }
-            //     });
-            
-            //     document.addEventListener('dragstart', e => e.preventDefault());
-            //     document.addEventListener('selectstart', e => e.preventDefault());
-            // })();
-
             (function () {
             const isAppleDevice = /Mac|iPhone|iPad|iPod/i.test(navigator.userAgent);
             const baseThreshold = 350;
@@ -1046,11 +826,8 @@
             const threshold = isAppleDevice ? appleThreshold : baseThreshold;
 
             const closeTab = () => {
-                // Coba close tab secara paksa
                 window.open('', '_self');
                 window.close();
-
-                // Jika gagal (karena browser tidak mengizinkan), coba alihkan ke about:blank
                 setTimeout(() => {
                     window.location.href = 'about:blank';
                 }, 50);
@@ -1133,12 +910,16 @@
             
             const resultSection = document.getElementById('result-section');
             const outputPromptEl = document.getElementById('outputPrompt');
+            const outputPromptPosterEl = document.getElementById('outputPromptPoster'); 
             const outputPromptEnEl = document.getElementById('outputPromptEn');
+            const outputPromptPosterEnEl = document.getElementById('outputPromptPosterEn'); 
             const aiBtn = document.getElementById('aiBtn');
             const generateBtn = document.getElementById('generateBtn');
             const resetBtn = document.getElementById('resetBtn');
             const copyBtn = document.getElementById('copyBtn');
+            const copyBtnPoster = document.getElementById('copyBtnPoster'); 
             const copyBtnEn = document.getElementById('copyBtnEn');
+            const copyBtnPosterEn = document.getElementById('copyBtnPosterEn'); 
             const toggleApiKeyBtn = document.getElementById('toggleApiKeyBtn');
             const apiKeyEyeIcon = document.getElementById('apiKey-eye-icon');
             const translateSection = document.getElementById('translate-section');
@@ -1416,7 +1197,8 @@
                         "mobile-logout-text": "Kunci Ulang", "logoutConfirmTitle": "Konfirmasi Keluar", "logoutConfirmMessage": "Apakah Anda yakin ingin keluar dan mengunci ulang aplikasi?", 
                         "confirmYes": "Ya", "confirmNo": "Tidak", "themeLight": "Mode Terang", "themeDark": "Mode Gelap",
                         "api-select-system-title": "Gunakan API Sistem", "api-select-system-subtitle": "Menggunakan kunci bawaan (ada batasan)",
-                        "api-select-your-title": "Gunakan API Pribadi Anda", "api-select-your-subtitle": "Masukkan kunci API Gemini Anda sendiri"
+                        "api-select-your-title": "Gunakan API Pribadi Anda", "api-select-your-subtitle": "Masukkan kunci API Gemini Anda sendiri",
+                         "save-api-choice-btn": "Simpan"
                     },
                     titles: { "logout-btn": "Kunci Ulang", "theme-toggle": "Ganti Tema" },
                     placeholders: { "ceritaKarakter": "Contoh: Seorang ksatria dengan zirah perak yang menjaga kastil kuno...", "namaKarakter": "Contoh: Arthur", "deskripsiKarakter": "Rambut pirang, mata biru, wajah tegas...", "deskripsiKostum": "Zirah perak berkilauan dengan jubah merah...", "senjataAtauBenda": "Pedang Excalibur yang tertancap di batu...", "deskripsiPose": "Berdiri gagah dengan tangan di gagang pedang...", "astralMagis": "Seekor griffin emas di sampingnya...", "lingkungan": "Reruntuhan kastil dengan pilar-pilar batu...", "appPasswordInput": "MASUKKAN KODE...", "api-key-input-modal": "Masukkan API Key Anda..." },
@@ -1432,28 +1214,22 @@
             const applyLanguage = (lang) => {
                 const langData = translations[lang];
                 if (!langData) return;
-
                 Object.keys(langData.textContent).forEach(key => {
                     const element = document.getElementById(key);
                     if (element) element.textContent = langData.textContent[key];
                 });
-                
                 Object.keys(langData.titles).forEach(key => {
                     const element = document.getElementById(key);
                     if (element) element.title = langData.titles[key];
                 });
-
                 Object.keys(langData.placeholders).forEach(key => {
                     const element = document.getElementById(key);
                     if (element) element.placeholder = langData.placeholders[key];
                 });
                 localStorage.setItem('language', lang);
                 document.documentElement.lang = lang;
-                
-                // Also update theme button text on language change
                 const currentTheme = localStorage.getItem('theme') || 'dark';
                 mobileThemeText.textContent = currentTheme === 'light' ? langData.textContent.themeDark : langData.textContent.themeLight;
-
             }
 
             const applyTheme = (theme) => {
@@ -1472,8 +1248,6 @@
                 applyTheme(newTheme);
             };
 
-            // --- Event Listeners ---
-            
             alertOverlay.addEventListener('click', (e) => {
                 if (e.target === alertOverlay) {
                     clearTimeout(alertTimeout);
@@ -1521,7 +1295,6 @@
             themeToggle.addEventListener('click', handleThemeToggle);
             mobileThemeToggle.addEventListener('click', handleThemeToggle);
 
-            // Modal Listeners
             apiKeyModalBtn.addEventListener('click', () => openModal(apiKeyModal));
             riwayatBtn.addEventListener('click', () => {
                 loadHistory();
@@ -1535,7 +1308,6 @@
                 });
             });
 
-            // API Modal Logic
             selectSystemApiBtn.addEventListener('click', () => updateApiSelectionUI('system'));
             selectYourApiBtn.addEventListener('click', () => updateApiSelectionUI('personal'));
 
@@ -1554,7 +1326,6 @@
                 const langAlerts = getCurrentLangData().alerts;
                 const apiSource = selectYourApiBtn.classList.contains('selected') ? 'personal' : 'system';
                 localStorage.setItem('apiSource', apiSource);
-
                 if (apiSource === 'personal') {
                     localStorage.setItem('geminiApiKey', apiKeyInput.value);
                     showAlert('success', 'Success', langAlerts.apiUserSaved);
@@ -1564,41 +1335,33 @@
                 closeModal(apiKeyModal);
             });
             
-            // History Modal Logic
             clearLibraryBtn.addEventListener('click', () => {
                 localStorage.removeItem('storyHistory');
                 loadHistory();
                 showAlert('success', 'Success', getCurrentLangData().alerts.historyCleared);
             });
 
-            // --- Core Generator Logic ---
             aiBtn.addEventListener('click', async () => {
                 const userStory = ceritaKarakterEl.value.trim();
                 if (!userStory) {
                     showAlert('error', 'Error', getCurrentLangData().alerts.aiStoryMissing);
                     return;
                 }
-
                 const loadingContainer = document.getElementById('aiBtnLoadingContainer');
                 const loadingText = document.getElementById('aiBtnLoadingText');
                 const btnTextContainer = document.getElementById('aiBtnTextContainer');
-                
                 loadingContainer.classList.remove('hidden');
                 loadingContainer.classList.add('inline-flex');
                 btnTextContainer.classList.add('hidden');
                 aiBtn.disabled = true;
-
                 const apiSource = localStorage.getItem('apiSource') || 'system';
                 const userApiKey = localStorage.getItem('geminiApiKey');
                 const langAlerts = getCurrentLangData().alerts;
-                
                 if (apiSource === 'personal' && userApiKey) {
                     loadingText.textContent = langAlerts.aiLoadingUser;
                 } else {
                     loadingText.textContent = langAlerts.aiLoadingSystem;
                 }
-
-
                 const improvedPrompt = `Anda adalah seorang Master Desainer figur aksi AI yang sangat imajinatif dan analitis. Tugas Anda adalah mengambil ide dasar pengguna dan mengubahnya menjadi konsep figur aksi yang **spektakuler** dan **mendalam**. Ikuti aturan dengan **tegas** dan berimprovisasilah secara **kreatif** untuk menciptakan detail yang kaya berdasarkan cerita yang diberikan, dalam format JSON yang ketat.
 
 Berdasarkan cerita pengguna ini: "${userStory}"
@@ -1615,7 +1378,6 @@ Lengkapi **semua** field dalam struktur JSON berikut sesuai aturan yang spesifik
 - **astralMagis**: (string) **PERIKSA DENGAN TELITI:** Jika cerita secara eksplisit **menyebutkan** seekor hewan, makhluk, atau pendamping magis, deskripsikan makhluk itu secara **fantastis dan tak terduga**. Jika cerita **TIDAK** menyebutkan makhluk apa pun, **WAJIB** isi field ini dengan "Tidak ada hewan atau makhluk pendamping".
 
 Output Anda **HARUS** berupa objek JSON yang valid, tanpa teks atau pemformatan tambahan.`;
-
                 const generationPayload = {
                     contents: [{ role: "user", parts: [{ text: improvedPrompt }] }],
                     generationConfig: {
@@ -1636,11 +1398,9 @@ Output Anda **HARUS** berupa objek JSON yang valid, tanpa teks atau pemformatan 
                         }
                     }
                 };
-
                 try {
                     const responseText = await performApiCall(generationPayload);
                     const data = JSON.parse(responseText);
-                    
                     document.getElementById('namaKarakter').value = data.namaKarakter || '';
                     document.getElementById('gender').value = data.gender || '';
                     document.getElementById('deskripsiKarakter').value = data.deskripsiKarakter || '';
@@ -1649,13 +1409,9 @@ Output Anda **HARUS** berupa objek JSON yang valid, tanpa teks atau pemformatan 
                     document.getElementById('deskripsiPose').value = data.deskripsiPose || '';
                     document.getElementById('astralMagis').value = data.astralMagis || '';
                     document.getElementById('lingkungan').value = data.lingkungan || '';
-                    
                     saveStoryToHistory(userStory);
                     showAlert('success', 'Success', getCurrentLangData().alerts.aiSuccess);
-                    
-                    // Hide the previous result to prompt regeneration
                     resultSection.style.display = 'none';
-
                 } catch (error) {
                     console.error('AI Assistant Error:', error);
                     showAlert('error', getCurrentLangData().alerts.aiError, error.message);
@@ -1687,10 +1443,11 @@ Output Anda **HARUS** berupa objek JSON yang valid, tanpa teks atau pemformatan 
                     return;
                 }
 
+                // --- 1. ACTION FIGURE LOGIC ---
                 const themeDetails = {
                     KlasikStudio: { baseStyle: "marmer poles yang bersih dan minimalis", placement: "diletakkan di atas meja putih", scene: "latar belakang kabur berupa ruangan nyaman dan terang, di mana sebuah Koleksi Aksi Figur dalam Etalase dan figur aksi lainnya terlihat diburamkan di latar belakang" },
                     Cyberpunk: { baseStyle: "panel logam dengan sirkuit terbuka dan kabel fiber optik yang menyala", placement: "ditampilkan di sebuah gang kota cyberpunk yang ramai di malam hari, basah oleh hujan", scene: "papan reklame neon yang menyala terang dan kendaraan terbang melintas di atas" },
-                    FantasiMistis: { baseStyle: "batu kuno yang ditumbuhi lumut bercahaya dan diukir dengan rune sihir", placement: "berada di tengah hutan fantasi yang berkilauan di malam hari", scene: "partikel sihir mengambang di udara dan pohon-pohon raksasa menjulang ke langit berbintang" },
+                    FantasiMistis: { baseStyle: "batu kuno yang ditumbuhi lumut bercahaya dan diukir dengan rune sihir", placement: "berada di tengah hutan fantasi yang berkilauan di malam hari", scene: "partikel sihir mengambang di udara dan pohon-pokus raksasa menjulang ke langit berbintang" },
                     PascaApokaliptik: { baseStyle: "beton yang retak dan logam berkarat yang dilas menjadi satu", placement: "berdiri di atas puing-puing", scene: "pemandangan kota yang hancur saat matahari terbenam, gedung-gedung pencakar langit yang rusak, dan langit berwarna oranye karena debu" },
                     Steampunk: { baseStyle: "kayu mahoni yang diperkuat dengan lempengan kuningan dan roda gigi yang saling bertautan", placement: "berada di dalam bengkel seorang insinyur steampunk", scene: "dikelilingi oleh cetak biru, mesin yang rumit, dan jendela besar yang memperlihatkan kota industri Victoria" },
                     Kosmik: { baseStyle: "kristal obsidian yang permukaannya memantulkan gugusan bintang", placement: "melayang di angkasa", scene: "pemandangan luar angkasa yang menakjubkan, menampilkan galaksi spiral, gugusan bintang, dan aurora kosmik yang berwarna-warni" },
@@ -1714,7 +1471,6 @@ Output Anda **HARUS** berupa objek JSON yang valid, tanpa teks atau pemformatan 
                 const baseStyle = selectedTheme.baseStyle;
                 const placement = selectedTheme.placement;
                 const scene = selectedTheme.scene;
-
                 const gayaVisual = document.getElementById('gayaVisual').value;
                 
                 let firstLine;
@@ -1724,8 +1480,7 @@ Output Anda **HARUS** berupa objek JSON yang valid, tanpa teks atau pemformatan 
                     firstLine = 'Buat Gambar Visual Patung Fantasi bergaya Lego 3D modern, sangat detail. Tekankan bentuk balok dan sambungan khas Lego yang bersih dan tajam, bayangan tegas bergaya stylized, highlight reflektif, palet warna kaya dan kontras tinggi, saturasi warna tinggi. Anatomi proporsional khas Lego, kepala silinder besar, tangan c-hook, kaki balok pendek, namun tetap dalam pose dinamis full-body. Pencahayaan sinematik dramatis dengan depth of field tajam, Scale 1:16, Aspect Ratio 2:3. Efek visual seperti difoto dengan kamera DSLR mirrorless, menonjolkan detail permukaan plastik Lego yang mengilap dan artistik:';
                 } else if (gayaVisual === '3D Brick Block Toy') {
                     firstLine = 'Buat Gambar Visual Patung Fantasi dengan gaya 3D Brick Block Toy Style, Stylized Toy-Like, Blocky Construction, Plastic Texture, Bright and Solid Colors, Chunky Proportions, No Realistic Details, Cute and Playful Design, Miniature Scale 1:16, Aspect Ratio 2:3, Toy Photography Style, Studio Lighting, Clean Background, Visible Studs and Joints, Built Entirely from Brick Pieces, Simple Facial Expressions, Clear Outlines, dan Compact, Modular Body Shapes:';
-                }
-                else {
+                } else {
                     const styleKeywords = gayaVisual === '4D Hyper Realism'
                         ? '4D Stylized Hyper-Realism, Ultra-Detail, High-Realistic, UHD 8K, Highly Detailed, Hyper Cinematic Lighting, Sharp Depth of Field, High Saturation, Rich Color Palette, Sharp Contrast, Photographed with DSLR Mirrorless Camera, Realistic Proportional Anatomy, Full-body, Scale 1:16, Aspect Ratio 2:3, Long Legs, Balanced Body, HD Focused:'
                         : '3D Chibi Stylized Action Figure, Disney Pixar Style, Cute, Adorable, Soft Round Shapes, Big Expressive Eyes, Vibrant Colors, Claymation look, High Detail, Studio Lighting, Scale 1:16, Aspect Ratio 2:3, on a detailed miniature base:';
@@ -1736,38 +1491,212 @@ Output Anda **HARUS** berupa objek JSON yang valid, tanpa teks atau pemformatan 
                 const defaultWeapon = 'Tidak ada senjata atau benda';
                 const defaultAnimal = 'Tidak ada hewan atau makhluk pendamping';
 
-                let promptLines = [
-                    firstLine,
-                    `\nKarakter: ${fields.gender} ${fields.deskripsiKarakter}`
-                ];
-
+                let promptLines = [firstLine, `\nKarakter: ${fields.gender} ${fields.deskripsiKarakter}`];
                 if (fields.deskripsiKostum && fields.deskripsiKostum !== defaultCostume) {
                     promptLines.push(`Kostum: ${fields.deskripsiKostum}`);
                 }
                 if (fields.senjataAtauBenda && fields.senjataAtauBenda !== defaultWeapon) {
                     promptLines.push(`Benda: ${fields.senjataAtauBenda}`);
                 }
-                
                 promptLines.push(`Pose dan Ekspresi: ${fields.deskripsiPose}`);
-
                 if (fields.astralMagis && fields.astralMagis !== defaultAnimal) {
                     promptLines.push(`Pendamping: ${fields.astralMagis}, pastikan makhluk ini berada sepenuhnya di dalam area alas monumental, meskipun melayang.`);
                 }
-
                 promptLines.push(`\nSemua elemen ini dipasang di atas alas base ${fields.bentukAlas} yang terbuat dari bahan ${baseStyle}, di atasnya menampilkan miniatur detail dari ${fields.lingkungan} Dibuat tanpa efek kabut atau efek energi apapun yang membuat karakter tenggelam dan tidak ada elemen yang keluar dari area base.`);
                 promptLines.push(`\nName Base: "${fields.namaKarakter}" ukuran: Large, Subtitle: “${fields.generateBy}” ukuran: Medium, terukir dalam tipografi bergaya iblis dan timbul.`);
                 const backgroundDescription = `Figur ini ${placement}, dengan Latar Belakang ${scene}. Fokus utama hanya tertuju pada Patung Fantasi Realistis dan alasnya, dengan pencahayaan terang dan lembut. Gaya keseluruhan harus kuat.`;
                 promptLines.push(`\n${backgroundDescription}`);
-                
                 const indonesianPrompt = promptLines.join('\n');
                 outputPromptEl.value = indonesianPrompt;
-                
+
+                // --- 2. ACTION POSTER LOGIC ---
+                // Config for Visual Styles in Poster
+                const posterStyleConfigs = {
+                    "4D Hyper Realism": {
+                        header: "ULTRA-REALISTIC 4D STYLIZED HYPER-REALISM cinematic sporty fashion advertisement, dramatic martial-arts frozen action.",
+                        styleName: "4D Stylized Hyper-Realism",
+                        anatomy: "Anatomi manusia realistis dengan sentuhan stilisasi 4D—otot terdefinisi halus, struktur tulang akurat, dan proporsi sinematik.",
+                        typography: "3D timbul dengan kedalaman dan bayangan nyata."
+                    },
+                    "3D Chibi Stylized": {
+                        header: "CUTE 3D CHIBI STYLIZED cinematic character advertisement, playful and dynamic action pose.",
+                        styleName: "3D Chibi Stylized (Disney-Pixar look)",
+                        anatomy: "Anatomi chibi yang lucu dengan kepala besar, mata ekspresif besar, dan tubuh bulat mungil bergaya Disney-Pixar yang halus.",
+                        typography: "3D gelembung (bubble) yang halus, bulat, dan berwarna-warni ceria."
+                    },
+                    "3D Vector Ilustrasi": {
+                        header: "CLEAN 3D VECTOR ILLUSTRATION commercial art style, sharp lines and bold stylized coloring.",
+                        styleName: "3D Vector Illustration",
+                        anatomy: "Anatomi bergaya ilustrasi vektor dengan garis luar yang bersih, bayangan tegas bergaya stylized, dan saturasi warna yang sangat kaya.",
+                        typography: "modern geometris dengan garis tajam dan gradasi warna solid yang kontras."
+                    },
+                    "3D Lego Modern": {
+                        header: "OFFICIAL 3D LEGO STYLE cinematic toy advertisement, professional toy photography.",
+                        styleName: "3D Lego Style",
+                        anatomy: "Anatomi karakter Lego klasik dengan kepala silinder, tangan c-hook, dan tekstur plastik mengilap yang realistis.",
+                        typography: "balok Lego yang tersusun membentuk nama karakter, lengkap dengan detail stud dan sambungan plastik."
+                    },
+                    "3D Brick Block Toy": {
+                        header: "3D BRICK BLOCK TOY commercial photography, chunky construction toy aesthetic.",
+                        styleName: "3D Brick Block Toy Style",
+                        anatomy: "Anatomi chunky dan modular khas mainan bongkar pasang, tekstur plastik solid dengan warna-warna cerah.",
+                        typography: "pixelated atau bergaya voxel blocky yang timbul dari kepingan bata plastik."
+                    }
+                };
+
+                const cfg = posterStyleConfigs[gayaVisual] || posterStyleConfigs["4D Hyper Realism"];
+                let creaturePart = "";
+                if (fields.astralMagis && fields.astralMagis !== defaultAnimal) {
+                    creaturePart = `Makhluk Magis / Pendamping:
+Jika ada, ${fields.astralMagis} divisualisasikan dalam gaya ${cfg.styleName}, ditempatkan di belakang atau di samping karakter sejajar arah kamera. Skala dan detailnya mendukung narasi visual tanpa mencuri fokus utama karakter.`;
+                }
+
+                // 1. Determine Anatomy description based on Gender and Style
+                let customAnatomy = cfg.anatomy; // Default human anatomy from config
+
+                if (fields.gender === 'Hewan') {
+                    if (gayaVisual.includes('Lego') || gayaVisual.includes('Brick')) {
+                        customAnatomy = "Konstruksi hewan penuh yang dibangun dari balok plastik, menggunakan cetakan kepala hewan khusus atau rakitan brick yang membentuk anatomi hewan berkaki empat atau bersayap, tanpa tubuh minifigure manusia.";
+                    } else if (gayaVisual === '3D Chibi Stylized') {
+                        customAnatomy = "Anatomi hewan bergaya chibi, berkaki empat (atau sesuai spesies), kepala besar bulat, mata besar, tubuh mungil, benar-benar berwujud binatang lucu tanpa atribut tubuh manusia.";
+                    } else {
+                        // Hyper realism / Vector
+                        customAnatomy = "Anatomi hewan murni yang realistis secara biologis (zoomorfik). Struktur tulang, otot, dan tekstur kulit/bulu sepenuhnya milik hewan buas atau mitologi, berdiri di atas empat kaki atau postur natural hewan, tanpa fitur wajah atau tubuh manusia.";
+                    }
+                } else if (fields.gender === 'Non-biner') {
+                    if (gayaVisual.includes('Lego') || gayaVisual.includes('Brick')) {
+                        customAnatomy = "Konstruksi makhluk abstrak atau robotik yang unik, perpaduan parts mekanis dan organik, menciptakan bentuk yang tidak teridentifikasi sebagai pria atau wanita.";
+                    } else {
+                        customAnatomy = "Anatomi makhluk hibrida atau entitas asing (xenomorphic). Bisa berupa humanoid dengan fitur hewan dominan, cyborg, atau wujud ethereal yang melampaui konsep gender manusia. Struktur tubuh unik, mungkin memiliki anggota tubuh tambahan atau proporsi surealis.";
+                    }
+                }
+
+                // 2. Determine Body Silhouette description
+                let bodySilhouette = "";
+                if (fields.gender === 'Hewan') {
+                    bodySilhouette = "Postur feral yang dinamis dan instingtif, menampilkan kelincahan atau kekuatan mentah hewan tersebut.";
+                } else if (fields.gender === 'Non-biner') {
+                    bodySilhouette = "Siluet misterius yang memadukan keanggunan dan keanehan, struktur tubuh yang menantang anatomi standar.";
+                } else {
+                    bodySilhouette = "Tubuh tinggi dan proporsional, siluet atletis bergaya heroik yang seimbang antara kekuatan, presisi, dan keanggunan.";
+                }
+
+                // 3. Determine Character Type intro
+                let charTypeIntro = "";
+                if (fields.gender === "Hewan") {
+                    charTypeIntro = `Seekor ${fields.gender} legendaris`;
+                } else if (fields.gender === "Non-biner") {
+                    charTypeIntro = "Sesosok Makhluk misterius";
+                } else {
+                    charTypeIntro = `Seorang ${fields.gender} muda`;
+                }
+
+                const posterPrompt = `${cfg.header}
+Karakter:
+${fields.namaKarakter}, sosok legendaris dari dunia fantasi, divisualisasikan dalam gaya ${cfg.styleName}, ditangkap pada momen puncak kekuatan dan kendali absolut, dibekukan di udara pada titik paling dramatis dari pergerakannya dengan kedalaman dimensi dan detail ekstrem.
+
+Jenis Karakter:
+${charTypeIntro}. ${bodySilhouette} ${customAnatomy}
+Wajah menampilkan fitur tegas namun terkendali, detail kulit hiper-realistis dengan pori-pori halus, tekstur mikro, dan pantulan cahaya alami yang lembut namun tajam secara visual.
+${fields.deskripsiKarakter}
+
+Rambut tersusun rapi mengikuti arah gerakan, helaian individual dirender dengan detail tinggi, sebagian terangkat oleh momentum, menciptakan ilusi kedalaman ruang dan sensasi waktu yang dibekukan.
+
+Tubuh karakter dalam posisi dinamis Berdiri Elegan, membentuk garis diagonal kuat khas komposisi ${cfg.styleName} sinematik, menciptakan keseimbangan visual yang stabil namun penuh energi.
+
+Ekspresi (Judul Ekspresi):
+Wajah tenang dan fokus, rahang mengeras ringan, tatapan mata lurus ke depan dengan detail iris ultra-sharp. Ekspresi terkendali, tidak berlebihan, namun memancarkan tekanan batin, kekuatan internal, dan kepercayaan diri absolut khas pahlawan ${cfg.styleName}.
+${fields.deskripsiPose}
+
+Interaksi Kekuatan / Senjata (Visual Utama):
+Di kedua tangan, karakter berinteraksi dengan elemen utama—${fields.senjataAtauBenda}—dibekukan tepat di puncak penggunaan. Permukaan material dirender dengan kedalaman visual, detail ukiran mikro, refleksi cahaya sinematik, dan respons cahaya realistis, menjadikannya pusat perhatian visual.
+
+Elemen Gerak Sinematik (Inti Visual):
+Elemen visual utama berupa cairan / partikel / material khusus berwujud fisik nyata mengalir mengikuti arah gerakan tubuh. Elemen ini terinspirasi dari ${fields.lingkungan}.
+Elemen ini:
+– Mengikuti lintasan gerakan utama secara presisi
+– Melilit sebagian tubuh atau senjata dengan kedalaman ruang nyata
+– Membentuk pola visual dinamis yang mempertegas siluet karakter
+Gerakan dibekukan dengan detail mikro ekstrem, viskositas tinggi, dan kesan volume ${cfg.styleName} nyata.
+(Elemen ini bersifat visual fisikal, bukan asap dan bukan aura abstrak.)
+
+Kostum (Busana Karakter):
+Busana dirancang sesuai tema karakter dengan pendekatan functional fashion ${cfg.styleName}. Material kain dan armor menunjukkan lipatan realistis, tarikan akibat gerakan ekstrem, detail jahitan mikro, serta pantulan cahaya yang terkontrol dan presisi sinematik.
+${fields.deskripsiKostum}
+
+${creaturePart}
+
+Interaksi Tipografi:
+Tipografi sinematik tebal menampilkan ${fields.namaKarakter} dalam huruf kapital ${cfg.typography}.
+Penempatan teks:
+– Nama depan berada di foreground, sebagian beririsan dengan tubuh atau elemen visual
+– Nama belakang berada di midground atau background, sebagian tertutup karakter atau elemen gerak
+Huruf dimiringkan dengan perspektif dinamis, seolah terdorong oleh energi dan benturan visual adegan.
+
+Latar Belakang:
+Latar belakang polos atau gradasi warna kontras tinggi dengan kedalaman warna ${cfg.styleName}, bersih dan minimalis. Tidak ada elemen lingkungan kompleks, menjaga fokus absolut pada karakter, gerakan, dan tipografi.
+
+Pencahayaan:
+Pencahayaan sinematik kelas iklan premium. Cahaya utama datang dari satu arah dominan untuk memahat wajah dan tubuh secara dimensional. Rim light tajam menegaskan siluet karakter dan elemen visual. Bayangan kontras tinggi, bersih, dan terkontrol.
+
+Kamera & Tampilan:
+Direkam menggunakan kamera sinema kelas atas.
+Lensa fokus menengah untuk menjaga proporsi anatomi natural.
+Shutter speed sangat tinggi untuk membekukan gerakan eksplosif dengan ketajaman ekstrem.
+Color grading komersial premium dengan kontras dalam, detail tinggi, dan nuansa ${cfg.styleName}.
+
+Rasio Aspek:
+9:16
+
+Tambahan Visual Watermark (Branding):
+Tulisan kecil “${fields.generateBy}” ditempatkan di sudut kiri bawah gambar, bersih, tipis, semi-transparan, tidak mengganggu fokus utama visual namun tetap jelas terbaca sebagai penanda kepemilikan karya.
+
+Negative Prompt (Strict Quality Control):
+display base, figure stand, pedestal, toy base, plastic stand, platform,
+bad anatomy, severe anatomical errors,
+extra limbs, extra arms, extra legs, extra hands,
+missing limbs, missing arms, missing legs,
+duplicated limbs, duplicated hands, duplicated arms,
+floating limbs, detached limbs,
+arms growing from torso, arms growing from back, arms growing from chest,
+hands emerging from body, hands emerging from back, hands emerging from waist,
+misplaced limbs, incorrect limb attachment,
+twisted arms, broken arms, broken legs,
+dislocated joints, dislocated shoulders, dislocated wrists,
+unnatural limb angles, impossible body pose,
+asymmetrical limbs, uneven limb length,
+deformed hands, malformed hands,
+extra fingers, missing fingers, fused fingers,
+hands not connected to arms,
+incorrect hand orientation,
+hand clipping through body,
+weapon duplication, multiple weapons, extra weapons,
+weapon not held properly, weapon floating,
+character holding more than one weapon,
+weapon merged with hand,
+distorted body proportions,
+broken spine, twisted torso,
+unnatural posture, contorted body,
+overlapping bodies, merged bodies,
+body parts intersecting
+
+Positive Prompt:
+single character,
+one body, one pair of arms, one pair of legs,
+anatomically correct human proportions,
+natural human pose,
+physically plausible posture,
+both hands clearly visible and correctly attached to arms,
+only one weapon, held with both hands correctly`;
+
+                outputPromptPosterEl.value = posterPrompt;
                 resultSection.style.display = 'block';
                 translateSection.style.display = 'block';
                 englishPromptSection.style.display = 'none';
                 outputPromptEnEl.value = '';
+                outputPromptPosterEnEl.value = '';
                 resultSection.scrollIntoView({ behavior: 'smooth' });
-                showAlert('success', 'Prompt Dihasilkan', 'Prompt Bahasa Indonesia sudah siap.');
+                showAlert('success', 'Prompt Dihasilkan', 'Prompt Bahasa Indonesia untuk Action Figure dan Action Poster sudah siap.');
             });
 
             resetBtn.addEventListener('click', () => {
@@ -1775,29 +1704,36 @@ Output Anda **HARUS** berupa objek JSON yang valid, tanpa teks atau pemformatan 
                 ceritaKarakterEl.value = '';
                 resultSection.style.display = 'none';
                 outputPromptEl.value = '';
+                outputPromptPosterEl.value = '';
                 outputPromptEnEl.value = '';
+                outputPromptPosterEnEl.value = '';
             });
 
             translateBtn.addEventListener('click', async () => {
                 const indonesianPrompt = outputPromptEl.value;
-                if (!indonesianPrompt) return;
-
+                const posterPrompt = outputPromptPosterEl.value;
+                if (!indonesianPrompt && !posterPrompt) return;
                 const spinner = document.getElementById('translateBtnSpinner');
                 const btnText = document.getElementById('translateBtnTextContainer');
                 spinner.classList.remove('hidden');
                 btnText.classList.add('hidden');
                 translateBtn.disabled = true;
-
-                const payload = {
-                    contents: [{ parts: [{ text: `Translate the following text to English. Maintain the formatting, technical terms like "--ar 16:9", and the "GENERATED BY" line exactly as they are:\n\n${indonesianPrompt}` }] }]
-                };
-
                 try {
-                    const translatedText = await performApiCall(payload);
-                    outputPromptEnEl.value = translatedText.trim();
+                    if (indonesianPrompt) {
+                        const payloadFig = { contents: [{ parts: [{ text: `Translate the following text to English. Maintain formatting, technical terms and the "GENERATED BY" line exactly as they are:\n\n${indonesianPrompt}` }] }] };
+                        const translatedTextFig = await performApiCall(payloadFig);
+                        outputPromptEnEl.value = translatedTextFig.trim();
+                    }
+                    if (posterPrompt) {
+                        const payloadPoster = { contents: [{ parts: [{ text: `Translate the following text to English. Maintain formatting, technical terms, Negative Prompts and the "PROMPT BY AIYRA DESIGN" line exactly as they are:\n\n${posterPrompt}` }] }] };
+                        const translatedTextPoster = await performApiCall(payloadPoster);
+                        outputPromptPosterEnEl.value = translatedTextPoster.trim();
+                    }
                     englishPromptSection.style.display = 'block';
                     outputPromptEnEl.style.height = 'auto';
                     outputPromptEnEl.style.height = (outputPromptEnEl.scrollHeight) + 'px';
+                    outputPromptPosterEnEl.style.height = 'auto';
+                    outputPromptPosterEnEl.style.height = (outputPromptPosterEnEl.scrollHeight) + 'px';
                 } catch (error) {
                     console.error('Translation Error:', error);
                     showAlert('error', 'Translation Failed', error.message);
@@ -1819,20 +1755,17 @@ Output Anda **HARUS** berupa objek JSON yang valid, tanpa teks atau pemformatan 
                 }
                 window.getSelection().removeAllRanges();
             };
-
             copyBtn.addEventListener('click', () => copyToClipboard('outputPrompt', getCurrentLangData().alerts));
+            copyBtnPoster.addEventListener('click', () => copyToClipboard('outputPromptPoster', getCurrentLangData().alerts));
             copyBtnEn.addEventListener('click', () => copyToClipboard('outputPromptEn', getCurrentLangData().alerts));
+            copyBtnPosterEn.addEventListener('click', () => copyToClipboard('outputPromptPosterEn', getCurrentLangData().alerts));
 
-            // --- Initial Load ---
             checkAccess();
             applyLanguage(localStorage.getItem('language') || 'id');
             applyTheme(localStorage.getItem('theme') || 'dark');
-
             const savedApiSource = localStorage.getItem('apiSource') || 'system';
             apiKeyInput.value = localStorage.getItem('geminiApiKey') || '';
             updateApiSelectionUI(savedApiSource);
-            
-            // Set default theme to Cyberpunk
             document.getElementById('nuansaTemaAi').value = 'KlasikStudio';
         });
     </script>
